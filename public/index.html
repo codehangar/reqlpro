@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>RethinkDB Client</title>
+    <!-- Fix to use react, angular, ect -->
+    <script>
+      window.nodeRequire = require;
+      delete window.require;
+      delete window.exports;
+      delete window.module;
+    </script>
+    <!-- Vender Libs -->
+    <link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../node_modules/font-awesome/css/font-awesome.min.css">
+    <!-- Main CSS File -->  
+    <link rel="stylesheet" type="text/css" href="./styles/main.css">
+  </head>
+  <body>
+    <div id="app" class="container main-content"></div>
+  </body>
+  <!-- Main App file -->
+  <script src="./scripts/app.js"></script>
+  <script>
+    // var test = window.nodeRequire('./services/RethinkDbService');
+    // var conn = test.getConnection('192.168.99.100', '32780', '');
+    // conn.then(function(conn) {
+    //   var dblist = test.getDbList(conn);
+    //   dblist.then(function(dblist) {
+    //     console.log(dblist);
+    //   });
+    // });
+    // console.log(test);
+  </script>
+</html>

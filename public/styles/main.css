@@ -1,0 +1,105 @@
+html,body,.container
+{
+    height:100%;
+    padding: 0;
+    margin: 0;
+}
+
+p {
+    color: #FFFFFF;
+}
+
+/* MAIN CONTENT LAYOUT STYLES */
+.container.main-content
+{
+    display:table;
+    width: 100%;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.row.main-content-row
+{
+    height: 100%;
+    display: table-row;
+}
+.col-md-3.no-float, .col-md-9.no-float {
+    float: none;
+    padding: 0;
+}
+.col-md-3.main-content-col
+{
+    display: table-cell;
+    background: #FFFFFF;
+    width: 25%;
+    min-width: 200px;
+}
+.col-md-9.main-content-col
+{
+    display: table-cell;
+    background: #073642;
+    width: 75%;
+    min-width: 600px;
+}
+/* MAIN CONTENT LAYOUT STYLES END */
+
+/* SIDEBAR LAYOUT STYLES */
+.container.sidebar-content
+{
+    display:table;
+    width: 100%;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.row.sidebar-content-row
+{
+    height: 100%;
+    display: table-row;
+}
+
+.col-md-3.sidebar-content-col
+{
+    display: table-cell;
+    background: #03161A;
+    width: 25%;
+    min-width: 50px;
+    position: relative;
+}
+.col-md-9.sidebar-content-col
+{
+    display: table-cell;
+    background: #002b36;
+    width: 75%;
+    min-width: 150px;
+}
+/* SIDEBAR LAYOUT STYLES END */
+
+.connectionForm {
+    width: 600px;
+    height: 450px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -225px;
+    margin-left: -300px;
+    padding: 20px;
+    border-radius: 20px;
+    background-color: #93a1a1;
+}
+
+.add-favorite {
+    position: absolute;
+    bottom: 15px;
+    left: 37%;
+    cursor: pointer;
+}
+
+.add-favorite:hover {
+    opacity: .6;
+}
+
+.add-favorites-icon {
+    color: #FFFFFF;
+    font-size: 1.5em;
+}
