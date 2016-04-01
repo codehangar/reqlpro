@@ -11,7 +11,7 @@ var Databases = React.createClass({
     var _this = this;
     var databaseNodes = this.props.selectedFavorite.databases.map(function(database) {
       return (
-        <Database key={database.name} database={database} favorite={_this.props.selectedFavorite} />
+        <Database key={database.name} database={database} />
       );
     });
     return (

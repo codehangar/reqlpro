@@ -9,7 +9,7 @@ var Database = React.createClass({
   },
   showTables: function() {
     var _this = this;
-    RethinkDbClient.updateDbTables(this.state.favorite, this.state.database).then(function(database) {
+    RethinkDbClient.updateDbTables(this.state.database).then(function(database) {
       _this.setState({
         database: database
       });

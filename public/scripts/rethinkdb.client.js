@@ -78,11 +78,11 @@ RethinkDbClient.prototype.addFavorite = function(favorite) {
 };
 
 // Show Tables
-RethinkDbClient.prototype.updateDbTables = function(favorite, database) {
+RethinkDbClient.prototype.updateDbTables = function(database) {
 	var _this = this;
 	// Get table list from rethink service
 	return new Promise(function(resolve, reject) {
-		RethinkDbService.getTableList(favorite.dbConnection, database.name).then(function(tableList) {
+		RethinkDbService.getTableList(_this.selectedFavorite.dbConnection, database.name).then(function(tableList) {
 			// Wipe out previous tables
 			database.tables = [];
 			// Build up a table object and push to tables array on database
@@ -108,6 +108,21 @@ RethinkDbClient.prototype.updateSelectedTable = function(databaseName, tableName
 		data: []
 	};
 	this.emit('updateRehinkDbClient');
+};
+
+// Get initial table data
+RethinkDbClient.prototype.getTableData = function(databaseName, tableName) {
+	var _this = this;
+	RethinkDbService.getTableData(this.selectedFavorite.dbConnection, databaseName, tableName).then(function(tableData) {
+		tableData.toArray().then(function(tableData) {
+			_this.selectedTable.data = tableData;
+			_this.emit('updateSelectedTable');
+		}).catch(function(err) {
+			console.log(err);
+		});
+	}).catch(function(err) {
+		console.log(err);
+	});
 };
 
 module.exports = new RethinkDbClient();

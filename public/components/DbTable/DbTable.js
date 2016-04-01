@@ -8,6 +8,7 @@ var Favorite = React.createClass({
   },
   updateSelectedTable: function() {
     RethinkDbClient.updateSelectedTable(this.state.database.name, this.state.table.name);
+    RethinkDbClient.getTableData(this.state.database.name, this.state.table.name);
   },
   render: function() {
     return (

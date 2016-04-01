@@ -227,4 +227,22 @@ RethinkDbService.prototype.getTableList = function(conn, db) {
 	});
 };
 
+/**
+ * Get table data
+ * @param {Object} RethinkDb Connection
+ * @param {String} Database name
+ * @param {String} Table name
+ * @returns {Promise}
+ */
+RethinkDbService.prototype.getTableData = function(conn, db, table) {
+	return new Promise(function(resolve, reject) {
+		co(function *() {
+			var tableList = yield r.db(db).table(table).run(conn);
+			resolve(tableList);
+		}).catch(function(err) {
+			reject(err);
+		});
+	});
+};
+
 module.exports = new RethinkDbService();
