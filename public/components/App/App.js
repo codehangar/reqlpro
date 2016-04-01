@@ -32,7 +32,7 @@ var App = React.createClass({
     return (
       <div className="row main-content-row">
         <Sidebar rethinkDbClient={this.state.rethinkDbClient} />
-        <Explorer />
+        <Explorer rethinkDbClient={this.state.rethinkDbClient} />
         <ConnectionForm connection={this.state.rethinkDbClient.connection.toJson()} show={this.state.rethinkDbClient.router.connectionForm} />
       </div>
     );

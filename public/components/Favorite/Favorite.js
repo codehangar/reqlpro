@@ -12,8 +12,8 @@ var Favorite = React.createClass({
   render: function() {
     return (
       <div className="favorite">
-        <p onClick={this.connectFavorite}>{this.state.favorite.name}</p>
-        <img src={'data:image/png;base64,' + this.state.favorite.identicon} />
+        <img className="favorite-identicon" src={'data:image/png;base64,' + this.state.favorite.identicon} />
+        <p className="text-center" onClick={this.connectFavorite}>{this.state.favorite.name}</p>
       </div>
     );
   }

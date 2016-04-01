@@ -210,4 +210,21 @@ RethinkDbService.prototype.getDbList = function(conn) {
 	});
 };
 
+/**
+ * Get a list of tables for a database
+ * @param {Object} RethinkDb Connection
+ * @param {String} Database name
+ * @returns {Promise}
+ */
+RethinkDbService.prototype.getTableList = function(conn, db) {
+	return new Promise(function(resolve, reject) {
+		co(function *() {
+			var tableList = yield r.db(db).tableList().run(conn);
+			resolve(tableList);
+		}).catch(function(err) {
+			reject(err);
+		});
+	});
+};
+
 module.exports = new RethinkDbService();

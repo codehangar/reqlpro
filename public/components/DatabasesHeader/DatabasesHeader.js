@@ -8,7 +8,7 @@ var DatabasesHeader = React.createClass({
   render: function() {
     return (
       <div>
-        {this.props.selectedFavorite.name}
+        <p className="databases-header">{this.props.selectedFavorite.name}</p>
       </div>
     );
   }

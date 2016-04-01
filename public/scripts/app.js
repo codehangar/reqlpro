@@ -51,8 +51,7 @@
 	var React = __webpack_require__(7);
 	var ReactDOM = __webpack_require__(163);
 	var App = __webpack_require__(164);
-	var Connection = __webpack_require__(175);
-	var RethinkDbService = window.nodeRequire('./services/RethinkDbService');
+	var Connection = __webpack_require__(180);
 
 	function init() {
 
@@ -88,21 +87,18 @@
 		};
 		this.connection = null;
 		this.favorites = [{
-			authKey: "",
-			database: "",
-			host: "192.168.99.100",
 			name: "local",
-			port: "32780"
+			host: "192.168.99.100",
+			port: "32780",
+			database: "",
+			authKey: "",
+			identicon: "iVBORw0KGgoAAAANSUhEUgAAACMAAAAjCAYAAAAe2bNZAAAABmJLR0QA/wD/AP+gvaeTAAACdElEQVRYhcWXzW/TQBDF39pO7dj5aJOWKjRSJaQCFyQqgdpjTwjx/4KqnrigFJCACxKIG0obgZ2kSZpPxx5OCXZ2k64Tr/pueZ6xfnJm92lACwqJ6NONt2jPVFv2IEn95Y1HAYWcryEiAnDhNfCz34NK/er3cO42EIJi/hxmBvKj31UKMgca8EDafYAsA9LuC0QEZHztttDyJ3iwZc0LikZG2BgQ6U1/zPmObsDRDWmAUmYLOmPz352pj2/dNhgR0Yq+mAj4eOE1Tha/4kmxjNPtXVHLJYBT2fdrd5f8FwPo1W4FT51CkjZpJYIBAAZAFVBiGEAdkPzULWgGlKYYEdUS1HsAYpNKALsaD5yqad/K1gNgDAi56jSyRrY+JKJz95q8yUhYvNbMrCOZy3XtmWn6Y9RHQ86vWlmUM2ZikI1g6qMh3rf+cP5ZaT8GkyRulP5NBLAkuSf8MsMwwPfbDucfmLZTMS1Bh1i/R/1cTjfwolCK+VlNl4cZBFN8aLsx78jO47iwM5AmAXBoOb1Dy5Gul5qZIzuP13sVaGDSobqO7oSJgMT8qpXFWWmfq69aWTUwy0AAoJwxuSO8qZaeplUgqiTMpoBI1xkLASzOCJc1AFAfD3IHpt1nkvVLlUY21douvf17JdqFEmVZapeeaPVIqlRv4E2BUo+DTYCUZNMMCEh2FI0v3Ra3WxeNDN7sPZR+ybP8Nh7ZOc4PAGEKvXOv0Zn6Me+Jk4dxXCjBnYxjyRrIr1IAVi5xgchs+RNEl8EjO4/nhR1oKlcPGUUvVw1QuwvJggCRbIquHu6E36dVg8RgokCfO02lII+dPF4Wy9xR+wdpp5NbNm65kQAAAABJRU5ErkJggg=="
 		}];
 		this.selectedFavorite = {
-			authKey: "",
-			database: "",
-			host: "192.168.99.100",
-			name: "local",
-			port: "32780",
 			databases: [],
 			dbConnection: null
 		};
+		this.selectedTable = null;
 	};
 
 	util.inherits(RethinkDbClient, EventEmitter); // Inherit eventemitter prototype
@@ -141,7 +137,7 @@
 	// Add favorite
 	RethinkDbClient.prototype.addFavorite = function (favorite) {
 		var _this = this;
-		identicon.generate({ id: favorite.name.value, size: 40 }, function (err, buffer) {
+		identicon.generate({ id: favorite.name.value, size: 35 }, function (err, buffer) {
 			if (err) throw err;
 			// buffer is identicon in PNG format.
 			_this.favorites.push({
@@ -154,6 +150,39 @@
 			});
 			_this.emit('addFavorite');
 		});
+	};
+
+	// Show Tables
+	RethinkDbClient.prototype.updateDbTables = function (favorite, database) {
+		var _this = this;
+		// Get table list from rethink service
+		return new Promise(function (resolve, reject) {
+			RethinkDbService.getTableList(favorite.dbConnection, database.name).then(function (tableList) {
+				// Wipe out previous tables
+				database.tables = [];
+				// Build up a table object and push to tables array on database
+				for (var i = 0; i < tableList.length; i++) {
+					database.tables.push({
+						name: tableList[i]
+					});
+				}
+				resolve(database);
+			}).catch(function (err) {
+				console.log(err);
+				reject(err);
+			});
+		});
+	};
+
+	// Update Selected Table
+	RethinkDbClient.prototype.updateSelectedTable = function (databaseName, tableName) {
+		this.selectedTable = {
+			databaseName: databaseName,
+			tableName: tableName,
+			type: 'tree',
+			data: []
+		};
+		this.emit('updateRehinkDbClient');
 	};
 
 	module.exports = new RethinkDbClient();
@@ -20708,10 +20737,10 @@
 
 	var React = __webpack_require__(7);
 	var Sidebar = __webpack_require__(165);
-	var Explorer = __webpack_require__(173);
-	var ConnectionForm = __webpack_require__(174);
+	var Explorer = __webpack_require__(175);
+	var ConnectionForm = __webpack_require__(179);
 	var RethinkDbClient = window.rethinkDbClient;
-	var Connection = __webpack_require__(175);
+	var Connection = __webpack_require__(180);
 
 	var App = React.createClass({
 	  displayName: 'App',
@@ -20743,7 +20772,7 @@
 	      'div',
 	      { className: 'row main-content-row' },
 	      React.createElement(Sidebar, { rethinkDbClient: this.state.rethinkDbClient }),
-	      React.createElement(Explorer, null),
+	      React.createElement(Explorer, { rethinkDbClient: this.state.rethinkDbClient }),
 	      React.createElement(ConnectionForm, { connection: this.state.rethinkDbClient.connection.toJson(), show: this.state.rethinkDbClient.router.connectionForm })
 	    );
 	  }
@@ -20910,12 +20939,12 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'favorite' },
+	      React.createElement('img', { className: 'favorite-identicon', src: 'data:image/png;base64,' + this.state.favorite.identicon }),
 	      React.createElement(
 	        'p',
-	        { onClick: this.connectFavorite },
+	        { className: 'text-center', onClick: this.connectFavorite },
 	        this.state.favorite.name
-	      ),
-	      React.createElement('img', { src: 'data:image/png;base64,' + this.state.favorite.identicon })
+	      )
 	    );
 	  }
 	});
@@ -20971,8 +21000,9 @@
 	    return this.props;
 	  },
 	  render: function render() {
+	    var _this = this;
 	    var databaseNodes = this.props.selectedFavorite.databases.map(function (database) {
-	      return React.createElement(Database, { key: database.name, database: database });
+	      return React.createElement(Database, { key: database.name, database: database, favorite: _this.props.selectedFavorite });
 	    });
 	    return React.createElement(
 	      'div',
@@ -21004,7 +21034,11 @@
 	    return React.createElement(
 	      'div',
 	      null,
-	      this.props.selectedFavorite.name
+	      React.createElement(
+	        'p',
+	        { className: 'databases-header' },
+	        this.props.selectedFavorite.name
+	      )
 	    );
 	  }
 	});
@@ -21019,18 +21053,34 @@
 
 	var React = __webpack_require__(7);
 	var classNames = __webpack_require__(166);
+	var RethinkDbClient = window.rethinkDbClient;
+	var DbTables = __webpack_require__(173);
 
 	var Database = React.createClass({
 	  displayName: 'Database',
 
 	  getInitialState: function getInitialState() {
-	    return {};
+	    return this.props;
+	  },
+	  showTables: function showTables() {
+	    var _this = this;
+	    RethinkDbClient.updateDbTables(this.state.favorite, this.state.database).then(function (database) {
+	      _this.setState({
+	        database: database
+	      });
+	    });
 	  },
 	  render: function render() {
 	    return React.createElement(
 	      'div',
-	      { className: 'database' },
-	      this.props.database.name
+	      { onClick: this.showTables, className: 'database' },
+	      React.createElement('i', { className: 'fa fa-database' }),
+	      React.createElement(
+	        'p',
+	        null,
+	        this.state.database.name
+	      ),
+	      React.createElement(DbTables, { database: this.state.database })
 	    );
 	  }
 	});
@@ -21045,18 +21095,98 @@
 
 	var React = __webpack_require__(7);
 	var classNames = __webpack_require__(166);
+	var DbTable = __webpack_require__(174);
+
+	var DbTables = React.createClass({
+	  displayName: 'DbTables',
+
+	  getInitialState: function getInitialState() {
+	    return this.props;
+	  },
+	  render: function render() {
+	    var _this = this;
+	    var dbTableNodes = this.props.database.tables.map(function (table) {
+	      return React.createElement(DbTable, { key: table.name, table: table, database: _this.state.database });
+	    });
+	    return React.createElement(
+	      'div',
+	      { className: 'db-tables' },
+	      dbTableNodes
+	    );
+	  }
+	});
+
+	module.exports = DbTables;
+
+/***/ },
+/* 174 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(7);
+	var classNames = __webpack_require__(166);
+	var RethinkDbClient = window.rethinkDbClient;
+
+	var Favorite = React.createClass({
+	  displayName: 'Favorite',
+
+	  getInitialState: function getInitialState() {
+	    return this.props;
+	  },
+	  updateSelectedTable: function updateSelectedTable() {
+	    RethinkDbClient.updateSelectedTable(this.state.database.name, this.state.table.name);
+	  },
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      { onClick: this.updateSelectedTable, className: 'db-table' },
+	      React.createElement('i', { className: 'fa fa-table' }),
+	      React.createElement(
+	        'p',
+	        null,
+	        this.state.table.name
+	      )
+	    );
+	  }
+	});
+
+	module.exports = Favorite;
+
+/***/ },
+/* 175 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(7);
+	var classNames = __webpack_require__(166);
+	var ExplorerHeader = __webpack_require__(176);
+	var ExplorerBody = __webpack_require__(177);
 
 	var Explorer = React.createClass({
 	  displayName: 'Explorer',
 
 	  getInitialState: function getInitialState() {
-	    return {};
+	    return this.props;
+	  },
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	    this.setState(nextProps);
 	  },
 	  render: function render() {
+	    var content = "Select a table";
+	    if (this.state.rethinkDbClient.selectedTable !== null) {
+	      content = React.createElement(
+	        'div',
+	        null,
+	        React.createElement(ExplorerHeader, { selectedTable: this.state.rethinkDbClient.selectedTable }),
+	        React.createElement(ExplorerBody, { selectedTable: this.state.rethinkDbClient.selectedTable })
+	      );
+	    }
 	    return React.createElement(
 	      'div',
 	      { className: 'col-md-9 main-content-col no-float' },
-	      'Explorer'
+	      content
 	    );
 	  }
 	});
@@ -21064,7 +21194,120 @@
 	module.exports = Explorer;
 
 /***/ },
-/* 174 */
+/* 176 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(7);
+	var classNames = __webpack_require__(166);
+
+	var ExplorerHeader = React.createClass({
+	  displayName: 'ExplorerHeader',
+
+	  getInitialState: function getInitialState() {
+	    return this.props;
+	  },
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	    this.setState(nextProps);
+	  },
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      { className: 'row explorer-header' },
+	      React.createElement(
+	        'div',
+	        { className: 'col-md-12' },
+	        React.createElement(
+	          'div',
+	          { className: 'bread-crumbs' },
+	          React.createElement(
+	            'p',
+	            null,
+	            this.state.selectedTable.databaseName
+	          ),
+	          ' ',
+	          React.createElement('i', { className: 'fa fa-arrow-right' }),
+	          ' ',
+	          React.createElement(
+	            'p',
+	            null,
+	            this.state.selectedTable.tableName
+	          )
+	        )
+	      )
+	    );
+	  }
+	});
+
+	module.exports = ExplorerHeader;
+
+/***/ },
+/* 177 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(7);
+	var classNames = __webpack_require__(166);
+	var ExplorerTreeView = __webpack_require__(178);
+
+	var ExplorerBody = React.createClass({
+	  displayName: 'ExplorerBody',
+
+	  getInitialState: function getInitialState() {
+	    return this.props;
+	  },
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	    this.setState(nextProps);
+	  },
+	  render: function render() {
+	    var explorerBody;
+	    if (this.state.selectedTable.type === 'tree') {
+	      explorerBody = React.createElement(ExplorerTreeView, { data: this.state.selectedTable.data });
+	    }
+	    return React.createElement(
+	      'div',
+	      { className: 'row explorer-body' },
+	      React.createElement(
+	        'div',
+	        { className: 'col-md-12' },
+	        explorerBody
+	      )
+	    );
+	  }
+	});
+
+	module.exports = ExplorerBody;
+
+/***/ },
+/* 178 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(7);
+	var classNames = __webpack_require__(166);
+
+	var ExplorerTreeView = React.createClass({
+	  displayName: 'ExplorerTreeView',
+
+	  getInitialState: function getInitialState() {
+	    return this.props;
+	  },
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      { className: 'explorer-tree-view' },
+	      'treeview'
+	    );
+	  }
+	});
+
+	module.exports = ExplorerTreeView;
+
+/***/ },
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21216,12 +21459,12 @@
 	module.exports = ConnectionForm;
 
 /***/ },
-/* 175 */
+/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Model = __webpack_require__(176);
+	var Model = __webpack_require__(181);
 
 	/** Setup Model Properties and tags **/
 	var Connection = new Model({
@@ -21265,7 +21508,7 @@
 	module.exports = Connection;
 
 /***/ },
-/* 176 */
+/* 181 */
 /***/ function(module, exports) {
 
 	'use strict';

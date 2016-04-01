@@ -8,9 +8,10 @@ var Databases = React.createClass({
     return this.props;
   },
   render: function() {
+    var _this = this;
     var databaseNodes = this.props.selectedFavorite.databases.map(function(database) {
       return (
-        <Database key={database.name} database={database} />
+        <Database key={database.name} database={database} favorite={_this.props.selectedFavorite} />
       );
     });
     return (
