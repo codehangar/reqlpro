@@ -3,6 +3,7 @@ html,body,.container
     height:100%;
     padding: 0;
     margin: 0;
+    word-wrap: break-word;
 }
 
 p {
@@ -36,10 +37,15 @@ p {
 }
 .col-md-9.main-content-col
 {
-    display: table-cell;
+    /*display: table-cell;*/
+    display: block;
+    width: 100%;
     background: #BCB8B1;
-    width: 75%;
+    /*width: 75%;*/
     min-width: 600px;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 /* MAIN CONTENT LAYOUT STYLES END */
 
