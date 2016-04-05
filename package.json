@@ -5,7 +5,8 @@
   "description": "A simple desktop client to connect to RethinkDB servers to work with data.",
   "main": "main.js",
   "scripts": {
-    "start": "electron main.js"
+    "start": "electron main.js",
+    "build": "electron-packager . MyApp --platform=darwin --arch=x64"
   },
   "repository": {},
   "keywords": [
@@ -16,6 +17,7 @@
   "bugs": {},
   "homepage": "http://codehangar.io",
   "devDependencies": {
+    "electron-packager": "^6.0.0",
     "electron-prebuilt": "^0.36.0",
     "electron-rebuild": "^1.1.3"
   },
