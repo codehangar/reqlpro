@@ -1,8 +1,8 @@
-var RethinkDbClient = window.rethinkDbClient;
 var React = require('react');
 var classNames = require('classnames');
 var Favorite = require('../Favorite/Favorite');
 var AddFavorite = require('../AddFavorite/AddFavorite');
+var RethinkDbClient = window.rethinkDbClient;
 
 var Favorites = React.createClass({
 	getInitialState: function() {

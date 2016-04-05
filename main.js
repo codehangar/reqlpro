@@ -5,32 +5,49 @@ const electron = require('electron');
 const app = electron.app;
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
+// Module to manage config files
+const ConfigService = require('./main/services/config.service.js');
+// Module to use generators to handle async code better
+const co = require('co');
+// Communication between main and renderer
+const ipcMain = require('electron').ipcMain;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
 function createWindow () {
-  // Create the browser window.
-  mainWindow = new BrowserWindow({
-    width: 1600, 
-    height: 1200,
-    'min-width': 600,
-    'min-height': 400
-  });
+  co(function *() {
+    var configFile = yield ConfigService.readConfigFile();
+    global.userConfig = configFile;
+    // Create the browser window.
+    mainWindow = new BrowserWindow({
+      width: 1600,
+      height: 1200,
+      'min-width': 600,
+      'min-height': 400
+    });
 
-  // and load the index.html of the app.
-  mainWindow.loadURL('file://' + __dirname + '/public/index.html');
+    // Setup file save events
+    ipcMain.on('writeConfigFile', function(event, args) {
+      ConfigService.writeConfigFile(args);
+    });
 
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+    // and load the index.html of the app.
+    mainWindow.loadURL('file://' + __dirname + '/public/index.html');
 
-  // Emitted when the window is closed.
-  mainWindow.on('closed', function() {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    mainWindow = null;
+    // Open the DevTools.
+    mainWindow.webContents.openDevTools();
+
+    // Emitted when the window is closed.
+    mainWindow.on('closed', function() {
+      // Dereference the window object, usually you would store windows
+      // in an array if your app supports multi windows, this is the time
+      // when you should delete the corresponding element.
+      mainWindow = null;
+    });
+  }).catch(function(err) {
+    console.log(err);
   });
 }
 

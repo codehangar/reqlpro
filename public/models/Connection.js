@@ -7,35 +7,39 @@ var Connection = new Model({
 			value: '',
 			valid: true
 		},
-		tags: []
+		tags: ['config']
 	},
 	host: {
 		value: {
 			value: '',
 			valid: true
 		},
-		tags: []
+		tags: ['config']
 	},
 	port: {
 		value: {
 			value: '',
 			valid: true
 		},
-		tags: []
+		tags: ['config']
 	},
 	database: {
 		value: {
 			value: '',
 			valid: true
 		},
-		tags: []
+		tags: ['config']
 	},
 	authKey: {
 		value: {
 			value: '',
 			valid: true
 		},
-		tags: []
+		tags: ['config']
+	},
+	identicon: {
+		value: null,
+		tags: ['config']
 	}
 });
 

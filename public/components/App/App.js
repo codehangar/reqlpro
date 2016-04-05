@@ -1,8 +1,8 @@
+var RethinkDbClient = window.rethinkDbClient;
 var React = require('react');
 var Sidebar = require('../Sidebar/Sidebar');
 var Explorer = require('../Explorer/Explorer');
 var ConnectionForm = require('../ConnectionForm/ConnectionForm');
-var RethinkDbClient = window.rethinkDbClient;
 var Connection = require('../../models/Connection');
 
 var App = React.createClass({
