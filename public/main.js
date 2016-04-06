@@ -1,3 +1,7 @@
+// Require our sass files
+require("../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss");
+require("../node_modules/font-awesome/scss/font-awesome.scss");
+require("./styles/main.scss");
 // Module needed to access global values from main process to any renderer process
 var remote = window.nodeRequire('remote');
 // Define the RethinkDbClient class

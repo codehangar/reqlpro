@@ -1,3 +1,7 @@
+$darkest-color: #463F3A;
+$dark-color: #8A817C;
+$lighter-color: #BCB8B1;
+
 html,body,.container
 {
     height:100%;
@@ -40,7 +44,7 @@ p {
     /*display: table-cell;*/
     display: block;
     width: 100%;
-    background: #BCB8B1;
+    background: $lighter-color;
     /*width: 75%;*/
     min-width: 600px;
     height: 100vh;
@@ -67,7 +71,7 @@ p {
 .col-md-3.sidebar-content-col
 {
     display: table-cell;
-    background: #463F3A;
+    background: $darkest-color;
     width: 25%;
     min-width: 90px;
     position: relative;
@@ -75,7 +79,7 @@ p {
 .col-md-9.sidebar-content-col
 {
     display: table-cell;
-    background: #8A817C;
+    background: $dark-color;
     width: 75%;
     min-width: 270px;
 }
@@ -164,7 +168,7 @@ p {
 }
 
 .explorer-header {
-    background-color: #8A817C;
+    background-color: $dark-color;
     padding: 10px 15px;
 }
 
