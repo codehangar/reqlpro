@@ -25,11 +25,11 @@ module.exports = {
     },
     plugins: [
         // Keep this off for deving
-        // new webpack.optimize.UglifyJsPlugin({
-        //     compress: {
-        //         warnings: false
-        //     }
-        // })
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            }
+        }),
         new webpack.OldWatchingPlugin() // For some reason this fixed watch not working properly
     ]
 };

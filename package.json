@@ -6,7 +6,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron main.js",
-    "build": "electron-packager . MyApp --platform=darwin --arch=x64"
+    "build": "electron-packager . ReQLPro --platform=darwin --arch=x64"
   },
   "repository": {},
   "keywords": [

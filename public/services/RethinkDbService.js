@@ -1,9 +1,9 @@
-var r = require('rethinkdb'),
-	co = require('co'),
-	uuid = require('node-uuid');
+var r = window.nodeRequire('rethinkdb'),
+	co = window.nodeRequire('co'),
+	uuid = window.nodeRequire('node-uuid');
 
 var RethinkDbService = function() {
-	
+
 };
 
 /**
@@ -187,7 +187,7 @@ RethinkDbService.prototype.createIndex = function(conn, database, table, newInde
 				console.log(newIndex + ' index on table ' + table + ' already existed.');
 				resolve(newIndex + ' index on table ' + table + ' already existed.');
 			}
-			
+
 		}).catch(function(err) {
 			reject('Failed creating the index: ' + newIndex + ' on the table: ' + table);
 		});
