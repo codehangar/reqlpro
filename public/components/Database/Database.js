@@ -5,22 +5,31 @@ var DbTables = require('../DbTables/DbTables');
 
 var Database = React.createClass({
 	getInitialState: function() {
+    var state = {
+      databases: this.props.database,
+      showTables: false
+    }
     return this.props;
   },
   showTables: function() {
     var _this = this;
     RethinkDbClient.updateDbTables(this.state.database).then(function(database) {
       _this.setState({
-        database: database
+        database: database,
+        showTables: !_this.state.showTables
       });
     });
   },
   render: function() {
+    var dbTables = '';
+    if(this.state.showTables) {
+      dbTables = <DbTables database={this.state.database} />;
+    }
     return (
       <div onClick={this.showTables} className="database">
         <i className="fa fa-database"></i>
         <p>{this.state.database.name}</p>
-        <DbTables database={this.state.database} />
+        {dbTables}
       </div>
     );
   }
