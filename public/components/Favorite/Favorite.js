@@ -6,6 +6,9 @@ var Favorite = React.createClass({
 	getInitialState: function() {
     return this.props;
   },
+  componentWillReceiveProps: function(nextProps) {
+    this.setState(nextProps);
+  },
   connectFavorite: function() {
     RethinkDbClient.updateSelectedFavorite(this.state.favorite);
   },

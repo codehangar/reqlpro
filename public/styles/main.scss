@@ -14,6 +14,10 @@ p {
     color: #FFFFFF;
 }
 
+hr {
+  margin: 10px 0;
+}
+
 /* MAIN CONTENT LAYOUT STYLES */
 .container.main-content
 {
@@ -131,6 +135,13 @@ p {
 .databases-header {
     font-size: 2em;
     padding-left: 15px;
+    display: inline;
+}
+
+.fa-pencil {
+  font-size: 1.5em;
+  color: #FFF;
+  margin-left: 10px
 }
 
 .database {

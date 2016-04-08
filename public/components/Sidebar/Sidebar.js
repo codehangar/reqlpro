@@ -8,6 +8,9 @@ var Sidebar = React.createClass({
 	getInitialState: function() {
     return this.props;
   },
+  componentWillReceiveProps: function(nextProps) {
+    this.setState(nextProps);
+  },
   render: function() {
     return (
       <div className="col-md-3 main-content-col no-float">

@@ -16,7 +16,6 @@ var App = React.createClass({
     var _this = this;
     // Event for toggling connection form
     RethinkDbClient.on('toggleConnectionForm', function() {
-      RethinkDbClient.connection = Connection.create();
       _this.setState({
         rethinkDbClient: RethinkDbClient
       });
@@ -33,7 +32,7 @@ var App = React.createClass({
       <div className="row main-content-row">
         <Sidebar rethinkDbClient={this.state.rethinkDbClient} />
         <Explorer rethinkDbClient={this.state.rethinkDbClient} />
-        <ConnectionForm connection={this.state.rethinkDbClient.connection.toJson()} show={this.state.rethinkDbClient.router.connectionForm} />
+        <ConnectionForm connection={this.state.rethinkDbClient.connection.toJson()} show={this.state.rethinkDbClient.router.connectionForm.show} action={this.state.rethinkDbClient.router.connectionForm.action} />
       </div>
     );
   }

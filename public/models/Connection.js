@@ -40,6 +40,10 @@ var Connection = new Model({
 	identicon: {
 		value: null,
 		tags: ['config']
+	},
+	index: {
+		value: null,
+		tags: ['config']
 	}
 });
 

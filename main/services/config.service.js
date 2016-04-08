@@ -37,7 +37,7 @@ ConfigService.prototype.writeConfigFile = function(data) {
           console.log(err);
           resolve(null);
         } else {
-          resolve(data);
+          resolve(JSON.stringify(data));
         }
     });
   });

@@ -7,6 +7,9 @@ var Databases = React.createClass({
 	getInitialState: function() {
     return this.props;
   },
+  componentWillReceiveProps: function(nextProps) {
+    this.setState(nextProps);
+  },
   render: function() {
     var _this = this;
     var databaseNodes = this.props.selectedFavorite.databases.map(function(database) {

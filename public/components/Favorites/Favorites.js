@@ -13,7 +13,7 @@ var Favorites = React.createClass({
   },
   setupEvents: function() {
     var _this = this;
-    RethinkDbClient.on('addFavorite', function() {
+    RethinkDbClient.on('updateFavorites', function() {
       _this.setState({
         favorites: RethinkDbClient.favorites
       });

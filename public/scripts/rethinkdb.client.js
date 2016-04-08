@@ -9,7 +9,8 @@ var RethinkDbClient = function(params) {
 	EventEmitter.call(this); // Inherit constructor
 	this.router = {
 		connectionForm: {
-			show: false
+			show: false,
+      action: 'Add'
 		}
 	};
 	this.connection = params.connection || null;
@@ -49,7 +50,22 @@ RethinkDbClient.prototype.updateSelectedFavorite = function(favorite) {
 };
 
 // Toggle Connection Form
-RethinkDbClient.prototype.toggleConnectionForm = function() {
+RethinkDbClient.prototype.toggleConnectionForm = function(info) {
+  this.connection = Connection.create();
+  if(info) {
+    // If we pass info lets set data on connection model
+    this.connection.name.value = info.name;
+    this.connection.port.value = info.port;
+    this.connection.host.value = info.host;
+    this.connection.database.value = info.database;
+    this.connection.authKey.value = info.authKey;
+    this.connection.identicon = info.identicon;
+    this.connection.index = info.index;
+    // Also set form action to edit
+    this.router.connectionForm.action = 'Edit';
+  } else {
+    this.router.connectionForm.action = 'Add';
+  }
 	this.router.connectionForm.show = !this.router.connectionForm.show;
 	this.emit('toggleConnectionForm');
 };
@@ -66,13 +82,68 @@ RethinkDbClient.prototype.addFavorite = function(favorite) {
 	    port: favorite.port.value,
 	    database: favorite.database.value,
 	    authKey: favorite.authKey.value,
-	    identicon: buffer.toString('base64')
+	    identicon: buffer.toString('base64'),
+      index: _this.favorites.length
 	  });
-	  _this.emit('addFavorite');
+	  _this.emit('updateFavorites');
     ipcRenderer.send('writeConfigFile', {
       favorites: _this.favorites
     });
 	});
+};
+
+// Edit favorite
+RethinkDbClient.prototype.editFavorite = function(favorite) {
+  var _this = this;
+  identicon.generate({ id: favorite.name.value, size: 35 }, function(err, buffer) {
+    if (err) throw err;
+    // buffer is identicon in PNG format.
+    _this.favorites[favorite.index] = {
+      name: favorite.name.value,
+      host: favorite.host.value,
+      port: favorite.port.value,
+      database: favorite.database.value,
+      authKey: favorite.authKey.value,
+      identicon: buffer.toString('base64'),
+      index: favorite.index
+    };
+    // Lets run update selected favorite since thats what we are editing
+    if(_this.selectedFavorite.index === favorite.index) {
+      _this.updateSelectedFavorite(_this.favorites[favorite.index]);
+    }
+    _this.emit('updateFavorites');
+    ipcRenderer.send('writeConfigFile', {
+      favorites: _this.favorites
+    });
+  });
+};
+
+// Edit favorite
+RethinkDbClient.prototype.deleteFavorite = function(favorite) {
+  console.log(favorite);
+  this.favorites.splice(favorite.index, 1);
+  // Lets update selected favorite since we just deleted our selected favorite
+  if(this.selectedFavorite.index === favorite.index) {
+    // If there are any favorites left lets do the first item in array
+    if(this.favorites.length) {
+      this.updateSelectedFavorite(this.favorites[0]);
+    } else {
+      // If no favorites lets set to default selectedFavorite object
+      this.selectedFavorite = {
+        databases: [],
+        dbConnection: null
+      };
+    }
+  }
+  // We need to loop through and update the index field on all the favorites after a delete
+  for(var i = 0; i < this.favorites.length; i++) {
+    this.favorites[i].index = i;
+  }
+  console.log(this.favorites);
+  this.emit('updateFavorites');
+  ipcRenderer.send('writeConfigFile', {
+    favorites: this.favorites
+  });
 };
 
 // Show Tables
