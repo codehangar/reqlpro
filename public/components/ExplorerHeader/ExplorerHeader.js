@@ -10,10 +10,12 @@ var ExplorerHeader = React.createClass({
   },
   render: function() {
     return (
-      <div className="row explorer-header">
+      <div className="row">
         <div className="col-md-12">
-          <div className="bread-crumbs">
-            <p>{this.state.selectedTable.databaseName}</p> <i className="fa fa-arrow-right"></i> <p>{this.state.selectedTable.tableName}</p>
+          <div className="explorer-header">
+            <div className="bread-crumbs">
+              <p>{this.state.selectedTable.databaseName}</p> <i className="fa fa-arrow-right"></i> <p>{this.state.selectedTable.tableName}</p>
+            </div>
           </div>
         </div>
       </div>

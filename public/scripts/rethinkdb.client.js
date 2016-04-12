@@ -29,6 +29,7 @@ RethinkDbClient.prototype.updateSelectedFavorite = function(favorite) {
     var _this = this;
     _this.selectedFavorite = JSON.parse(JSON.stringify(favorite));
     _this.selectedFavorite.databases = [];
+    _this.selectedTable = null;
     RethinkDbService.getConnection(favorite.host, favorite.port, favorite.authKey).then(function(conn) {
       _this.selectedFavorite.dbConnection = conn;
       RethinkDbService.getDbList(conn).then(function(dblist) {
@@ -42,10 +43,12 @@ RethinkDbClient.prototype.updateSelectedFavorite = function(favorite) {
         _this.selectedFavorite.databases = databases;
         _this.emit('updateRehinkDbClient');
       }).catch(function(err) {
-        console.log(err);
+        _this.selectedFavorite.dbConnection = err;
+        _this.emit('updateRehinkDbClient');
       });
     }).catch(function(err) {
-      console.log(err);
+      _this.selectedFavorite.dbConnection = err;
+      _this.emit('updateRehinkDbClient');
     });
 };
 
@@ -120,7 +123,6 @@ RethinkDbClient.prototype.editFavorite = function(favorite) {
 
 // Edit favorite
 RethinkDbClient.prototype.deleteFavorite = function(favorite) {
-  console.log(favorite);
   this.favorites.splice(favorite.index, 1);
   // Lets update selected favorite since we just deleted our selected favorite
   if(this.selectedFavorite.index === favorite.index) {
@@ -139,7 +141,6 @@ RethinkDbClient.prototype.deleteFavorite = function(favorite) {
   for(var i = 0; i < this.favorites.length; i++) {
     this.favorites[i].index = i;
   }
-  console.log(this.favorites);
   this.emit('updateFavorites');
   ipcRenderer.send('writeConfigFile', {
     favorites: this.favorites

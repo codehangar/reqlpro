@@ -11,9 +11,19 @@ var Explorer = React.createClass({
     this.setState(nextProps);
   },
   render: function() {
-    var content = "Select a table";
+    var content = <p className="select-table">Select a table from a database</p>;
     if(this.state.rethinkDbClient.selectedTable !== null) {
       content = <div><ExplorerHeader selectedTable={this.state.rethinkDbClient.selectedTable} /><ExplorerBody selectedTable={this.state.rethinkDbClient.selectedTable} /></div>;
+    }
+    if(this.state.rethinkDbClient.selectedFavorite.dbConnection !== null) {
+      console.log(this.state.rethinkDbClient.selectedFavorite.dbConnection);
+      try {
+        if(this.state.rethinkDbClient.selectedFavorite.dbConnection.name === 'ReqlDriverError') {
+          content = <p className="text-danger">{this.state.rethinkDbClient.selectedFavorite.dbConnection.msg}</p>;
+        }
+      } catch(e) {
+        console.log(e);
+      }
     }
     return (
       <div className="col-md-9 main-content-col no-float">

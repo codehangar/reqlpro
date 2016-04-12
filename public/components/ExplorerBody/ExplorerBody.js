@@ -29,7 +29,7 @@ var ExplorerBody = React.createClass({
         explorerBody = <ExplorerTreeView data={this.state.selectedTable.data} />;
       }
     } else {
-      explorerBody = "No Data in Table";
+      explorerBody = <p className="empty-table">Table is empty!</p>;
     }
     return (
       <div className="row explorer-body">

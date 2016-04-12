@@ -15,10 +15,9 @@ var DatabasesHeader = React.createClass({
   },
   render: function() {
     return (
-      <div>
-        <p className="databases-header">{this.state.selectedFavorite.name}</p>
+      <div className="databases-header">
+        <p>{this.state.selectedFavorite.name}</p>
         <i onClick={this.editFavorite} className="fa fa-pencil"></i>
-        <hr/>
       </div>
     );
   }

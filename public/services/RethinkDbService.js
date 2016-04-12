@@ -23,7 +23,6 @@ RethinkDbService.prototype.getConnection = function(host, port, authkey) {
 	    	// });
 	        resolve(conn);
 	    }).catch(function(err) {
-	    	console.log(err);
 	        reject(err);
 	    });
 	});

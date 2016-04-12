@@ -14,10 +14,6 @@ p {
     color: #FFFFFF;
 }
 
-hr {
-  margin: 10px 0;
-}
-
 /* MAIN CONTENT LAYOUT STYLES */
 .container.main-content
 {
@@ -133,6 +129,12 @@ hr {
 }
 
 .databases-header {
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #FFF;
+}
+
+.databases-header p {
     font-size: 2em;
     padding-left: 15px;
     display: inline;
@@ -180,7 +182,9 @@ hr {
 
 .explorer-header {
     background-color: $dark-color;
-    padding: 10px 15px;
+    margin-bottom: 15px;
+    padding: 13px 10px;
+    border-bottom: 1px solid #FFF;
 }
 
 .bread-crumbs p {
@@ -194,4 +198,12 @@ hr {
     display: inline;
     padding-left: 10px;
     padding-right: 10px;
+}
+
+.empty-table {
+    padding: 0 10px;
+}
+
+.select-table {
+    padding: 15px 10px;
 }
