@@ -1,6 +1,8 @@
 var React = require('react');
 var classNames = require('classnames');
 var ExplorerTreeView = require('../ExplorerTreeView/ExplorerTreeView');
+var ExplorerTableView = require('../ExplorerTableView/ExplorerTableView');
+var ExplorerFooter = require('../ExplorerFooter/ExplorerFooter');
 var RethinkDbClient = window.rethinkDbClient;
 
 var ExplorerBody = React.createClass({
@@ -11,7 +13,7 @@ var ExplorerBody = React.createClass({
     this.setState(nextProps);
   },
   componentDidMount: function() {
-    this.setupEvents();
+    this.setupEvents(this.findDOMNode);
   },
   setupEvents: function() {
     var _this = this;
@@ -26,14 +28,17 @@ var ExplorerBody = React.createClass({
     var explorerBody;
     if(this.state.selectedTable.data.length) {
       if(this.state.selectedTable.type === 'tree') {
-        explorerBody = <ExplorerTreeView data={this.state.selectedTable.data} />;
+        explorerBody = <div><ExplorerTreeView data={this.state.selectedTable.data} /><ExplorerFooter selectedTable={this.state.selectedTable} /></div>;
+      }
+      if(this.state.selectedTable.type === 'table') {
+        explorerBody = <div><ExplorerTableView data={this.state.selectedTable.data} /><ExplorerFooter selectedTable={this.state.selectedTable} /></div>;
       }
     } else {
       explorerBody = <p className="empty-table">Table is empty!</p>;
     }
     return (
-      <div className="row explorer-body">
-        <div className="col-md-12">
+      <div className="row explorer-body" id="explorer-body">
+        <div className="col-md-12" style={{marginTop: '-15px'}}>
           {explorerBody}
         </div>
       </div>

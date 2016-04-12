@@ -195,4 +195,10 @@ RethinkDbClient.prototype.getTableData = function(databaseName, tableName) {
 	});
 };
 
+// Toggle Selected Table Type
+RethinkDbClient.prototype.toggleExplorerBody = function(type) {
+  this.selectedTable.type = type;
+  this.emit('updateRehinkDbClient');
+};
+
 module.exports = RethinkDbClient;

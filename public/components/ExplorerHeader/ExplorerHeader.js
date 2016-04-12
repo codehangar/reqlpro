@@ -1,5 +1,6 @@
 var React = require('react');
 var classNames = require('classnames');
+var RethinkDbClient = window.rethinkDbClient;
 
 var ExplorerHeader = React.createClass({
 	getInitialState: function() {
@@ -8,6 +9,10 @@ var ExplorerHeader = React.createClass({
   componentWillReceiveProps: function(nextProps) {
     this.setState(nextProps);
   },
+  toggleExplorerBody: function(key, e) {
+    e.preventDefault();
+    RethinkDbClient.toggleExplorerBody(key);
+  },
   render: function() {
     return (
       <div className="row">
@@ -15,6 +20,10 @@ var ExplorerHeader = React.createClass({
           <div className="explorer-header">
             <div className="bread-crumbs">
               <p>{this.state.selectedTable.databaseName}</p> <i className="fa fa-arrow-right"></i> <p>{this.state.selectedTable.tableName}</p>
+              <div className="pull-right">
+                <button onClick={this.toggleExplorerBody.bind(this, 'tree')} className="btn fa fa-tree" />
+                <button onClick={this.toggleExplorerBody.bind(this, 'table')} className="btn fa fa-th" />
+              </div>
             </div>
           </div>
         </div>

@@ -16,7 +16,6 @@ var Explorer = React.createClass({
       content = <div><ExplorerHeader selectedTable={this.state.rethinkDbClient.selectedTable} /><ExplorerBody selectedTable={this.state.rethinkDbClient.selectedTable} /></div>;
     }
     if(this.state.rethinkDbClient.selectedFavorite.dbConnection !== null) {
-      console.log(this.state.rethinkDbClient.selectedFavorite.dbConnection);
       try {
         if(this.state.rethinkDbClient.selectedFavorite.dbConnection.name === 'ReqlDriverError') {
           content = <p className="text-danger">{this.state.rethinkDbClient.selectedFavorite.dbConnection.msg}</p>;

@@ -1,6 +1,6 @@
-$darkest-color: #463F3A;
-$dark-color: #8A817C;
-$lighter-color: #BCB8B1;
+$darkest-color: #002b36;
+$dark-color: #073642;
+$lighter-color: rgb(245,245,245);
 
 html,body,.container
 {
@@ -184,7 +184,15 @@ p {
     background-color: $dark-color;
     margin-bottom: 15px;
     padding: 13px 10px;
-    border-bottom: 1px solid #FFF;
+}
+
+.explorer-footer {
+    margin-top: 15px;
+    padding: 13px 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: $lighter-color;
 }
 
 .bread-crumbs p {
@@ -202,8 +210,10 @@ p {
 
 .empty-table {
     padding: 0 10px;
+    color: $dark-color;
 }
 
 .select-table {
     padding: 15px 10px;
+    color: $dark-color;
 }
