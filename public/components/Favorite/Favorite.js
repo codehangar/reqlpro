@@ -12,10 +12,13 @@ var Favorite = React.createClass({
   connectFavorite: function() {
     RethinkDbClient.updateSelectedFavorite(this.state.favorite);
   },
+  createMarkup: function() {
+    return {__html: this.state.favorite.identicon};
+  },
   render: function() {
     return (
       <div className="favorite">
-        <img className="favorite-identicon" src={'data:image/png;base64,' + this.state.favorite.identicon} />
+        <div className="favorite-identicon"><div dangerouslySetInnerHTML={this.createMarkup()} /></div>
         <p className="text-center" onClick={this.connectFavorite}>{this.state.favorite.name}</p>
       </div>
     );

@@ -1,9 +1,10 @@
 var util = require("util");
 var EventEmitter = require("events").EventEmitter;
 var RethinkDbService = window.nodeRequire('./services/RethinkDbService');
-var identicon = window.nodeRequire('identicon');
+var jdenticon = require('jdenticon');
 var ipcRenderer = window.nodeRequire('electron').ipcRenderer;
 var Connection = require('../models/Connection');
+var md5 = require('md5');
 
 var RethinkDbClient = function(params) {
 	EventEmitter.call(this); // Inherit constructor
@@ -75,49 +76,39 @@ RethinkDbClient.prototype.toggleConnectionForm = function(info) {
 
 // Add favorite
 RethinkDbClient.prototype.addFavorite = function(favorite) {
-	var _this = this;
-	identicon.generate({ id: favorite.name.value, size: 35 }, function(err, buffer) {
-    if (err) throw err;
-    // buffer is identicon in PNG format.
-	  _this.favorites.push({
-	    name: favorite.name.value,
-	    host: favorite.host.value,
-	    port: favorite.port.value,
-	    database: favorite.database.value,
-	    authKey: favorite.authKey.value,
-	    identicon: buffer.toString('base64'),
-      index: _this.favorites.length
-	  });
-	  _this.emit('updateFavorites');
-    ipcRenderer.send('writeConfigFile', {
-      favorites: _this.favorites
-    });
-	});
+  this.favorites.push({
+    name: favorite.name.value,
+    host: favorite.host.value,
+    port: favorite.port.value,
+    database: favorite.database.value,
+    authKey: favorite.authKey.value,
+    identicon: jdenticon.toSvg(md5(favorite.name.value), 40),
+    index: this.favorites.length
+  });
+  this.emit('updateFavorites');
+  ipcRenderer.send('writeConfigFile', {
+    favorites: this.favorites
+  });
 };
 
 // Edit favorite
 RethinkDbClient.prototype.editFavorite = function(favorite) {
-  var _this = this;
-  identicon.generate({ id: favorite.name.value, size: 35 }, function(err, buffer) {
-    if (err) throw err;
-    // buffer is identicon in PNG format.
-    _this.favorites[favorite.index] = {
-      name: favorite.name.value,
-      host: favorite.host.value,
-      port: favorite.port.value,
-      database: favorite.database.value,
-      authKey: favorite.authKey.value,
-      identicon: buffer.toString('base64'),
-      index: favorite.index
-    };
-    // Lets run update selected favorite since thats what we are editing
-    if(_this.selectedFavorite.index === favorite.index) {
-      _this.updateSelectedFavorite(_this.favorites[favorite.index]);
-    }
-    _this.emit('updateFavorites');
-    ipcRenderer.send('writeConfigFile', {
-      favorites: _this.favorites
-    });
+  this.favorites[favorite.index] = {
+    name: favorite.name.value,
+    host: favorite.host.value,
+    port: favorite.port.value,
+    database: favorite.database.value,
+    authKey: favorite.authKey.value,
+    identicon: jdenticon.toSvg(md5(favorite.name.value), 40),
+    index: favorite.index
+  };
+  // Lets run update selected favorite since thats what we are editing
+  if(this.selectedFavorite.index === favorite.index) {
+    this.updateSelectedFavorite(this.favorites[favorite.index]);
+  }
+  this.emit('updateFavorites');
+  ipcRenderer.send('writeConfigFile', {
+    favorites: this.favorites
   });
 };
 
