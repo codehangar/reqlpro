@@ -27,6 +27,7 @@ var Favorites = React.createClass({
     });
     return (
       <div className="col-md-3 sidebar-content-col no-float">
+        <br />
         {favoriteNodes}
         <AddFavorite />
       </div>
