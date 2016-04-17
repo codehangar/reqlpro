@@ -16,8 +16,16 @@ var Favorite = React.createClass({
     return {__html: this.state.favorite.identicon};
   },
   render: function() {
+    var favoriteClasses = {
+      name: classNames({
+        'favorite': true,
+        'active': RethinkDbClient.selectedFavorite.name === this.state.favorite.name,
+      })
+    };
+    // console.log('fav state', this.state)
+    console.log('RethinkDbClient',RethinkDbClient.selectedFavorite.name, this.state.favorite.name,  RethinkDbClient.selectedFavorite.name === this.state.favorite.name)
     return (
-      <div className="favorite" onClick={this.connectFavorite}>
+      <div className={favoriteClasses.name} onClick={this.connectFavorite}>
         <div className="favorite-identicon"><div dangerouslySetInnerHTML={this.createMarkup()} /></div>
         <p className="text-center">{this.state.favorite.name}</p>
       </div>
