@@ -13,7 +13,22 @@ var ExplorerHeader = React.createClass({
     e.preventDefault();
     RethinkDbClient.toggleExplorerBody(key);
   },
+  toggleButtonClassNames: function (type) {
+    var classNames = "btn fa";
+    switch (type) {
+      case 'tree':
+        classNames += " fa-tree";
+        classNames += this.state.selectedTable.type === type ? " active" : "";
+      case 'table':
+        classNames += " fa-th";
+        classNames += this.state.selectedTable.type === type ? " active" : "";
+    }
+    return classNames;
+  },
   render: function() {
+    let treeClasses = this.toggleButtonClassNames('tree');
+    let tableClasses = this.toggleButtonClassNames('table');
+
     return (
       <div className="row">
         <div className="col-md-12">
@@ -21,8 +36,8 @@ var ExplorerHeader = React.createClass({
             <div className="bread-crumbs">
               <p>{this.state.selectedTable.databaseName}</p> <i className="fa fa-arrow-right"></i> <p>{this.state.selectedTable.tableName}</p>
               <div className="pull-right">
-                <button onClick={this.toggleExplorerBody.bind(this, 'tree')} className="btn fa fa-tree" />
-                <button onClick={this.toggleExplorerBody.bind(this, 'table')} className="btn fa fa-th" />
+                <button onClick={this.toggleExplorerBody.bind(this, 'tree')} className={treeClasses} />
+                <button onClick={this.toggleExplorerBody.bind(this, 'table')} className={tableClasses} />
               </div>
             </div>
           </div>
