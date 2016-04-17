@@ -165,7 +165,7 @@ RethinkDbClient.prototype.updateSelectedTable = function(databaseName, tableName
 	this.selectedTable = {
 		databaseName: databaseName,
 		tableName: tableName,
-		type: 'tree',
+		type: this.selectedTable ? this.selectedTable.type : 'tree',
 		data: []
 	};
 	this.emit('updateRehinkDbClient');
