@@ -30,7 +30,12 @@ function createWindow () {
 
     // Setup file save events
     ipcMain.on('writeConfigFile', function(event, args) {
-      ConfigService.writeConfigFile(args);
+      co(function *() {
+        configFile = yield ConfigService.writeConfigFile(args);
+        global.userConfig = configFile;
+      }).catch(function(err) {
+        console.log(err);
+      });
     });
 
     // and load the index.html of the app.
