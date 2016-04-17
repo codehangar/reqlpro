@@ -126,6 +126,7 @@ RethinkDbClient.prototype.deleteFavorite = function(favorite) {
         databases: [],
         dbConnection: null
       };
+      this.selectedTable = null;
     }
   }
   // We need to loop through and update the index field on all the favorites after a delete
