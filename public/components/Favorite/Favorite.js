@@ -17,9 +17,9 @@ var Favorite = React.createClass({
   },
   render: function() {
     return (
-      <div className="favorite">
+      <div className="favorite" onClick={this.connectFavorite}>
         <div className="favorite-identicon"><div dangerouslySetInnerHTML={this.createMarkup()} /></div>
-        <p className="text-center" onClick={this.connectFavorite}>{this.state.favorite.name}</p>
+        <p className="text-center">{this.state.favorite.name}</p>
       </div>
     );
   }
