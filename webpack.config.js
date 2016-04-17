@@ -4,7 +4,8 @@ module.exports = {
     entry: "./public/main.js",
     output: {
         path: './public',
-        filename: "dist.js"
+        filename: "dist.js",
+        sourceMapFilename: 'dist.map'
     },
     module: {
         loaders: [
@@ -23,6 +24,7 @@ module.exports = {
           loader: "file-loader?name=./dist_files/[hash].[ext]"
         }]
     },
+    devtool: 'source-map',
     plugins: [
         // Keep this off for deving
         // new webpack.optimize.UglifyJsPlugin({
@@ -30,6 +32,7 @@ module.exports = {
         //         warnings: false
         //     }
         // }),
-        new webpack.OldWatchingPlugin() // For some reason this fixed watch not working properly
+        new webpack.OldWatchingPlugin(), // For some reason this fixed watch not working properly
+        new webpack.optimize.UglifyJsPlugin({minimize: true})
     ]
 };

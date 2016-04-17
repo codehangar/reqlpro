@@ -5,7 +5,7 @@
   "description": "A simple desktop client to connect to RethinkDB servers to work with data.",
   "main": "main.js",
   "scripts": {
-    "start": "electron main.js",
+    "start": "node tools/start.js",
     "build": "electron-packager . ReQLPro --platform=darwin --arch=x64",
     "package": "asar pack ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/app ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/app.asar"
   },
