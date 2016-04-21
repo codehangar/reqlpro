@@ -19,7 +19,7 @@ var Favorite = React.createClass({
     var favoriteClasses = {
       name: classNames({
         'favorite': true,
-        'active': RethinkDbClient.selectedFavorite.name === this.state.favorite.name,
+        'active': RethinkDbClient.selectedFavorite.index === this.state.favorite.index,
       })
     };
     return (

@@ -22,7 +22,7 @@ var Favorites = React.createClass({
   render: function() {
     var favoriteNodes = this.state.favorites.map(function(favorite) {
       return (
-        <Favorite key={favorite.name} favorite={favorite} />
+        <Favorite key={favorite.index} favorite={favorite} />
       );
     });
     return (
