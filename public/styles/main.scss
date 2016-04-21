@@ -1,6 +1,7 @@
 $darkest-color: #002b36;
 $dark-color: #073642;
 $lighter-color: rgb(245,245,245);
+$darker-grey: rgb(150,150,150);
 
 html,body,.container
 {
@@ -87,15 +88,15 @@ html,body,.container
 
 .connectionForm {
     width: 600px;
-    height: 450px;
+    height: 300px;
     position: absolute;
     top: 50%;
     left: 50%;
-    margin-top: -225px;
+    margin-top: -150px;
     margin-left: -300px;
     padding: 20px;
     border-radius: 20px;
-    background-color: #F4F3EE;
+    background-color: $darker-grey;
 }
 
 .add-favorite {
