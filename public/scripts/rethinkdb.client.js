@@ -1,6 +1,6 @@
 var ipcRenderer = window.nodeRequire('electron').ipcRenderer;
+var RethinkDbService = window.nodeRequire('../main/services/rethinkdb.service');
 
-var RethinkDbService = require('../services/RethinkDbService');
 var util = require("util");
 var EventEmitter = require("events").EventEmitter;
 var jdenticon = require('jdenticon');
