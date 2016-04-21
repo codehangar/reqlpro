@@ -6,7 +6,7 @@ var ConnectionForm = require('../ConnectionForm/ConnectionForm');
 var Connection = require('../../models/Connection');
 
 var App = React.createClass({
-	getInitialState: function() {
+  getInitialState: function() {
     return this.props;
   },
   componentDidMount: function() {

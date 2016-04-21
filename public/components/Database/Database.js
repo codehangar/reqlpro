@@ -4,7 +4,7 @@ var RethinkDbClient = window.rethinkDbClient;
 var DbTables = require('../DbTables/DbTables');
 
 var Database = React.createClass({
-	getInitialState: function() {
+  getInitialState: function() {
     var state = {
       databases: this.props.database,
       showTables: false
@@ -22,7 +22,7 @@ var Database = React.createClass({
   },
   render: function() {
     var dbTables = '';
-    if(this.state.showTables) {
+    if (this.state.showTables) {
       dbTables = <DbTables database={this.state.database} />;
     }
     return (

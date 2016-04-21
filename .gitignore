@@ -1,7 +1,4 @@
 node_modules
 npm-debug.log
-dist.js
-dist.map
-dist_files
-_dist
+dev
 ReQLPro-darwin-x64
