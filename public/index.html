@@ -9,6 +9,112 @@
       delete window.require;
       delete window.exports;
       delete window.module;
+      var remote = window.nodeRequire('remote');
+      var Menu = remote.require('menu');
+      var template = [
+        {
+          label: 'ReqlPro',
+          submenu: [
+            {
+              label: 'Hide ReqlPro',
+              accelerator: 'Command+H',
+              selector: 'hide:'
+            },
+            {
+              label: 'Hide Others',
+              accelerator: 'Command+Shift+H',
+              selector: 'hideOtherApplications:'
+            },
+            {
+              label: 'Show All',
+              selector: 'unhideAllApplications:'
+            },
+            {
+              type: 'separator'
+            },
+            {
+              label: 'Quit',
+              accelerator: 'Command+Q',
+              selector: 'terminate:'
+            },
+          ]
+        },
+        {
+          label: 'Edit',
+          submenu: [
+            {
+              label: 'Undo',
+              accelerator: 'Command+Z',
+              selector: 'undo:'
+            },
+            {
+              label: 'Redo',
+              accelerator: 'Shift+Command+Z',
+              selector: 'redo:'
+            },
+            {
+              type: 'separator'
+            },
+            {
+              label: 'Cut',
+              accelerator: 'Command+X',
+              selector: 'cut:'
+            },
+            {
+              label: 'Copy',
+              accelerator: 'Command+C',
+              selector: 'copy:'
+            },
+            {
+              label: 'Paste',
+              accelerator: 'Command+V',
+              selector: 'paste:'
+            },
+            {
+              label: 'Select All',
+              accelerator: 'Command+A',
+              selector: 'selectAll:'
+            }
+          ]
+        },
+        {
+          label: 'Window',
+          submenu: [
+            {
+              label: 'Minimize',
+              accelerator: 'Command+M',
+              selector: 'performMiniaturize:'
+            },
+            {
+              label: 'Close',
+              accelerator: 'Command+W',
+              selector: 'performClose:'
+            },
+            {
+              type: 'separator'
+            },
+            {
+              label: 'Bring All to Front',
+              selector: 'arrangeInFront:'
+            }
+          ]
+        },
+        {
+          label: 'Contribute',
+          submenu: [
+            {
+              label: 'Donate',
+              click: function() { window.nodeRequire('electron').shell.openExternal('http://codehangar.io') }
+            },
+            {
+              label: 'Feedback',
+              click: function() { window.nodeRequire('electron').shell.openExternal('http://codehangar.io') }
+            }
+          ]
+        }
+      ];
+      menu = Menu.buildFromTemplate(template);
+      Menu.setApplicationMenu(menu);
     </script>
     <link rel="stylesheet" type="text/css" href="../node_modules/fixed-data-table/dist/fixed-data-table.css">
   </head>
