@@ -1,3 +1,5 @@
+'use strict';
+
 var r = window.nodeRequire('rethinkdb');
 // var r = require('rethinkdb');
 var co = require('co');
@@ -20,7 +22,7 @@ RethinkDbService.prototype.getConnection = function(host, port, authkey) {
   return new Promise(function(resolve, reject) {
     r.connect(connectionInfo).then(function(conn) {
       // conn.on('close', function() {
-      // 	console.log('closed a database connection');
+      //  console.log('closed a database connection');
       // });
       resolve(conn);
     }).catch(function(err) {
@@ -44,7 +46,7 @@ RethinkDbService.prototype.getDatabaseConnection = function() {
     r.connect(connectionInfo).then(function(conn) {
       // console.log('opening a database connection');
       // conn.on('close', function() {
-      // 	console.log('closed a database connection');
+      //  console.log('closed a database connection');
       // });
       resolve(conn);
     }).catch(function(err) {
@@ -238,13 +240,93 @@ RethinkDbService.prototype.getTableList = function(conn, db) {
  * @param {Object} RethinkDb Connection
  * @param {String} Database name
  * @param {String} Table name
+ * @param {String} Index name
+ * @param {String} Index value to start from for pagination
  * @returns {Promise}
  */
-RethinkDbService.prototype.getTableData = function(conn, db, table) {
+RethinkDbService.prototype.getTableData = function(conn, db, table, index, limit, page) {
   return new Promise(function(resolve, reject) {
     co(function*() {
-      var tableList = yield r.db(db).table(table).run(conn);
-      resolve(tableList);
+      const count = yield r.db(db).table(table).count().run(conn);
+
+      if (page < 1) {
+        throw new Error('page cannot be less than 1');
+      }
+      const minval = ((page - 1) * limit) || 1;
+      const maxval = page * limit;
+
+      let tableData = yield r.db(db).table(table).orderBy({
+        index: index || 'id'
+      }).slice(minval, maxval).run(conn);
+
+      console.log("tableData", tableData)
+      resolve(tableData);
+    }).catch(function(err) {
+      reject(err);
+    });
+  });
+};
+
+/**
+ * Get table data
+ * @param {Object} RethinkDb Connection
+ * @param {String} Database name
+ * @param {String} Table name
+ * @param {String} Index name
+ * @param {String} Index value to start from for pagination
+ * @returns {Promise}
+ */
+RethinkDbService.prototype.getTableDataBetween = function(conn, db, table, index, start, end) {
+  return new Promise(function(resolve, reject) {
+    co(function*() {
+
+      const count = yield r.db(db).table(table).count().run(conn);
+      console.log("getTableDataBetween start", start)
+      console.log("getTableDataBetween end", end)
+
+      let tableData;
+      if (start) {
+        tableData = yield r.db(db).table(table).between(start, r.maxval, {
+            leftBound: "open",
+            index: index
+          })
+          .orderBy({
+            index: index
+          }).limit(25).run(conn);
+      } else if (end) {
+        // TODO: This doesn't work, as it start over from "zero" position
+        tableData = yield r.db(db).table(table).between(r.minval, end, {
+            rightBound: "open",
+            index: index
+          })
+          .orderBy({
+            index: index
+          }).limit(25).run(conn);
+      } else {
+        tableData = yield r.db(db).table(table).orderBy({
+          index: index || 'id'
+        }).limit(25).run(conn);
+      }
+      console.log("tableData", tableData)
+      resolve(tableData);
+    }).catch(function(err) {
+      reject(err);
+    });
+  });
+};
+
+/**
+ * Get table size
+ * @param {Object} RethinkDb Connection
+ * @param {String} Database name
+ * @param {String} Table name
+ * @returns {Promise}
+ */
+RethinkDbService.prototype.getTableSize = function(conn, db, table) {
+  return new Promise(function(resolve, reject) {
+    co(function*() {
+      const tableSize = yield r.db(db).table(table).count().run(conn);
+      resolve(tableSize);
     }).catch(function(err) {
       reject(err);
     });

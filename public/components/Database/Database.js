@@ -12,11 +12,10 @@ var Database = React.createClass({
     return this.props;
   },
   showTables: function() {
-    var _this = this;
-    RethinkDbClient.updateDbTables(this.state.database).then(function(database) {
-      _this.setState({
+    RethinkDbClient.updateDbTables(this.state.database).then((database) => {
+      this.setState({
         database: database,
-        showTables: !_this.state.showTables
+        showTables: !this.state.showTables
       });
     });
   },

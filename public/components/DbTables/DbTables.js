@@ -3,14 +3,11 @@ var classNames = require('classnames');
 var DbTable = require('../DbTable/DbTable')
 
 var DbTables = React.createClass({
-	getInitialState: function() {
-    return this.props;
-  },
   render: function() {
     var _this = this;
-    var dbTableNodes = this.props.database.tables.map(function(table) {
+    var dbTableNodes = this.props.database.tables.map((table) => {
       return (
-        <DbTable key={table.name} table={table} database={_this.state.database} />
+        <DbTable key={table.name} table={table} database={this.props.database} />
       );
     });
     return (

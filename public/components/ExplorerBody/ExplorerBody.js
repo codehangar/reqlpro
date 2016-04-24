@@ -6,7 +6,7 @@ var ExplorerFooter = require('../ExplorerFooter/ExplorerFooter');
 var RethinkDbClient = window.rethinkDbClient;
 
 var ExplorerBody = React.createClass({
-	getInitialState: function() {
+  getInitialState: function() {
     return this.props;
   },
   componentWillReceiveProps: function(nextProps) {
@@ -20,18 +20,27 @@ var ExplorerBody = React.createClass({
     // Event for updating selected table data
     RethinkDbClient.on('updateSelectedTable', function() {
       _this.setState({
-        selectedTable: RethinkDbClient.selectedTable
+        table: RethinkDbClient.selectedTable
       });
     });
   },
   render: function() {
     var explorerBody;
-    if(this.state.selectedTable.data.length) {
-      if(this.state.selectedTable.type === 'tree') {
-        explorerBody = <div><ExplorerTreeView data={this.state.selectedTable.data} /><ExplorerFooter selectedTable={this.state.selectedTable} /></div>;
-      }
-      if(this.state.selectedTable.type === 'table') {
-        explorerBody = <div><ExplorerTableView data={this.state.selectedTable.data} /><ExplorerFooter selectedTable={this.state.selectedTable} /></div>;
+    if (this.state.table.data.length) {
+      if (this.state.table.type === 'tree') {
+        explorerBody = (
+          <div>
+            <ExplorerTreeView table={this.state.table} />
+            <ExplorerFooter table={this.state.table} />
+          </div>
+        );
+      } else if (this.state.table.type === 'table') {
+        explorerBody = (
+          <div>
+            <ExplorerTableView table={this.state.table} />
+            <ExplorerFooter table={this.state.table} />
+          </div>
+        );
       }
     } else {
       explorerBody = <p className="empty-table">Table is empty!</p>;

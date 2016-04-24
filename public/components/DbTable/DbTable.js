@@ -3,18 +3,16 @@ var classNames = require('classnames');
 var RethinkDbClient = window.rethinkDbClient;
 
 var Favorite = React.createClass({
-	getInitialState: function() {
-    return this.props;
-  },
   updateSelectedTable: function() {
-    RethinkDbClient.updateSelectedTable(this.state.database.name, this.state.table.name);
-    RethinkDbClient.getTableData(this.state.database.name, this.state.table.name);
+    RethinkDbClient.updateSelectedTable(this.props.database.name, this.props.table.name);
+    RethinkDbClient.getTableData(this.props.table.name);
+    RethinkDbClient.getTableSize(this.props.table.name);
   },
   render: function() {
     return (
       <div onClick={this.updateSelectedTable} className="db-table">
         <i className="fa fa-table"></i>
-        <p>{this.state.table.name}</p>
+        <p>{this.props.table.name}OK</p>
       </div>
     );
   }

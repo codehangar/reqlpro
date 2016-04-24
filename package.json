@@ -6,7 +6,7 @@
   "main": "main.js",
   "scripts": {
     "start": "node tools/start.js",
-    "build": "electron-packager . ReQLPro --platform=darwin --arch=x64 && cp ./public/icon.icns ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/atom.icns",
+    "build": "electron-packager . ReQLPro --platform=darwin --arch=x64 && cp ./public/reqlpro.icns ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/atom.icns",
     "icon": "cp ./public/icon.icns ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/atom.icns",
     "package": "asar pack ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/app ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/app.asar"
   },

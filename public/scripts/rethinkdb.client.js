@@ -166,25 +166,61 @@ RethinkDbClient.prototype.updateDbTables = function(database) {
 RethinkDbClient.prototype.updateSelectedTable = function(databaseName, tableName) {
   this.selectedTable = {
     databaseName: databaseName,
-    tableName: tableName,
-    type: this.selectedTable ? this.selectedTable.type : 'tree',
+    name: tableName,
+    type: this.selectedTable ? this.selectedTable.type : 'table',
     data: []
   };
   this.emit('updateRehinkDbClient');
 };
 
 // Get initial table data
-RethinkDbClient.prototype.getTableData = function(databaseName, tableName) {
-  var _this = this;
-  RethinkDbService.getTableData(this.selectedFavorite.dbConnection, databaseName, tableName).then(function(tableData) {
-    tableData.toArray().then(function(tableData) {
-      _this.selectedTable.data = tableData;
-      _this.emit('updateSelectedTable');
+RethinkDbClient.prototype.getTableData = function(tableName, index, limit = 25, page = 1) {
+  const conn = this.selectedFavorite.dbConnection;
+  const db = this.selectedTable.databaseName;
+
+  if (page < 1) {
+    page = 1;
+  }
+
+  RethinkDbService.getTableData(conn, db, tableName, index, limit, page).then((tableData) => {
+    tableData.toArray().then((tableData) => {
+      this.selectedTable.data = tableData;
+      this.selectedTable.limit = limit;
+      this.selectedTable.page = page;
+      this.emit('updateSelectedTable');
     }).catch(function(err) {
-      console.log(err);
+      console.error(err);
     });
   }).catch(function(err) {
-    console.log(err);
+    console.error(err);
+  });
+};
+
+// Get initial table data
+RethinkDbClient.prototype.getTableDataBetween = function(tableName, index, start, end) {
+  const conn = this.selectedFavorite.dbConnection;
+  const db = this.selectedTable.databaseName;
+  RethinkDbService.getTableDataBetween(conn, db, tableName, index, start, end).then((tableData) => {
+    tableData.toArray().then((tableData) => {
+      this.selectedTable.data = tableData;
+      this.emit('updateSelectedTable');
+    }).catch(function(err) {
+      console.error(err);
+    });
+  }).catch(function(err) {
+    console.error(err);
+  });
+};
+
+// Get table size
+RethinkDbClient.prototype.getTableSize = function(tableName) {
+  const conn = this.selectedFavorite.dbConnection;
+  const db = this.selectedTable.databaseName;
+  RethinkDbService.getTableSize(conn, db, tableName).then((tableSize) =>{
+    this.selectedTable.size = tableSize;
+    this.emit('updateSelectedTable');
+  }).catch(function(err) {
+    console.error(err);
   });
 };
 
