@@ -78,23 +78,23 @@ var ConnectionForm = React.createClass({
 	      	<div className="col-sm-12">
 		        <form>
 			    		<div className={inputValidationClasses.name}>
-					    	<label for="name">Connection Name</label>
+					    	<label htmlFor="name">Connection Name</label>
 					    	<input type="text" className="form-control" id="name" placeholder="Connection Name" value={this.state.connection.name.value} onChange={this.handleTextChange.bind(this, 'name')} />
 					  	</div>
 					  	<div className={inputValidationClasses.host}>
-					    	<label for="host">Host</label>
+					    	<label htmlFor="host">Host</label>
 					    	<input type="text" className="form-control" id="host" placeholder="Host" value={this.state.connection.host.value} onChange={this.handleTextChange.bind(this, 'host')} />
 					  	</div>
 					  	<div className={inputValidationClasses.port}>
-					    	<label for="port">Port</label>
+					    	<label htmlFor="port">Port</label>
 					    	<input type="text" className="form-control" id="port" placeholder="Port" value={this.state.connection.port.value} onChange={this.handleTextChange.bind(this, 'port')} />
 					  	</div>
 					  	{/*<div className={inputValidationClasses.database}>
-					    	<label for="database">Database</label>
+					    	<label htmlFor="database">Database</label>
 					    	<input type="text" className="form-control" id="database" placeholder="Database" value={this.state.connection.database.value} onChange={this.handleTextChange.bind(this, 'database')} />
 					  	</div>
 					  	<div className={inputValidationClasses.authKey}>
-					    	<label for="authKey">Auth Key</label>
+					    	<label htmlFor="authKey">Auth Key</label>
 					    	<input type="text" className="form-control" id="authKey" placeholder="Auth Key" value={this.state.connection.authKey.value} onChange={this.handleTextChange.bind(this, 'authKey')} />
 					  	</div>*/}
 							<button type="submit" className="btn btn-default" onClick={this.handleSubmit}>{this.state.action} Connection</button>
