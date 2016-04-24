@@ -43,7 +43,12 @@ var ExplorerBody = React.createClass({
         );
       }
     } else {
-      explorerBody = <p className="empty-table">Table is empty!</p>;
+      explorerBody = (
+          <div>
+            <p className="empty-table">Table is empty!</p>
+            <ExplorerFooter table={this.state.table} />
+          </div>
+        );
     }
     return (
       <div className="row explorer-body" id="explorer-body">

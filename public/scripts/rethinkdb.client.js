@@ -203,6 +203,9 @@ RethinkDbClient.prototype.getTableDataBetween = function(tableName, index, start
   RethinkDbService.getTableDataBetween(conn, db, tableName, index, start, end).then((tableData) => {
     tableData.toArray().then((tableData) => {
       this.selectedTable.data = tableData;
+      if (end) {
+        this.selectedTable.data.reverse();
+      }
       this.emit('updateSelectedTable');
     }).catch(function(err) {
       console.error(err);
@@ -218,6 +221,18 @@ RethinkDbClient.prototype.getTableSize = function(tableName) {
   const db = this.selectedTable.databaseName;
   RethinkDbService.getTableSize(conn, db, tableName).then((tableSize) =>{
     this.selectedTable.size = tableSize;
+    this.emit('updateSelectedTable');
+  }).catch(function(err) {
+    console.error(err);
+  });
+};
+
+// Get table size
+RethinkDbClient.prototype.insert = function(tableName, record) {
+  const conn = this.selectedFavorite.dbConnection;
+  const db = this.selectedTable.databaseName;
+  RethinkDbService.insert(conn, db, tableName, record).then((result) =>{
+    this.selectedTable.lastResult = result;
     this.emit('updateSelectedTable');
   }).catch(function(err) {
     console.error(err);

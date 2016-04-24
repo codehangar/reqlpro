@@ -281,8 +281,7 @@ RethinkDbService.prototype.getTableDataBetween = function(conn, db, table, index
     co(function*() {
 
       const count = yield r.db(db).table(table).count().run(conn);
-      console.log("getTableDataBetween start", start)
-      console.log("getTableDataBetween end", end)
+      console.log("getTableDataBetween:", index, start, end)
 
       let tableData;
       if (start) {
@@ -292,7 +291,7 @@ RethinkDbService.prototype.getTableDataBetween = function(conn, db, table, index
           })
           .orderBy({
             index: index
-          }).limit(25).run(conn);
+          }).limit(5).run(conn);
       } else if (end) {
         // TODO: This doesn't work, as it start over from "zero" position
         tableData = yield r.db(db).table(table).between(r.minval, end, {
@@ -300,12 +299,12 @@ RethinkDbService.prototype.getTableDataBetween = function(conn, db, table, index
             index: index
           })
           .orderBy({
-            index: index
-          }).limit(25).run(conn);
+            index: r.desc(index)
+          }).limit(5).run(conn);
       } else {
         tableData = yield r.db(db).table(table).orderBy({
           index: index || 'id'
-        }).limit(25).run(conn);
+        }).limit(5).run(conn);
       }
       console.log("tableData", tableData)
       resolve(tableData);
@@ -327,6 +326,25 @@ RethinkDbService.prototype.getTableSize = function(conn, db, table) {
     co(function*() {
       const tableSize = yield r.db(db).table(table).count().run(conn);
       resolve(tableSize);
+    }).catch(function(err) {
+      reject(err);
+    });
+  });
+};
+
+/**
+ * Insert record into table
+ * @param {Object} RethinkDb Connection
+ * @param {String} Database name
+ * @param {String} Table name
+ * @param {String} Record
+ * @returns {Promise}
+ */
+RethinkDbService.prototype.insert = function(conn, db, table, record) {
+  return new Promise(function(resolve, reject) {
+    co(function*() {
+      const result = yield r.db(db).table(table).insert(record).run(conn);
+      resolve(result);
     }).catch(function(err) {
       reject(err);
     });
