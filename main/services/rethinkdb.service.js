@@ -351,4 +351,23 @@ RethinkDbService.prototype.insert = function(conn, db, table, record) {
   });
 };
 
+/**
+ * Update record in table
+ * @param {Object} RethinkDb Connection
+ * @param {String} Database name
+ * @param {String} Table name
+ * @param {String} Record
+ * @returns {Promise}
+ */
+RethinkDbService.prototype.update = function(conn, db, table, record) {
+  return new Promise(function(resolve, reject) {
+    co(function*() {
+      const result = yield r.db(db).table(table).get(record.id).update(record).run(conn);
+      resolve(result);
+    }).catch(function(err) {
+      reject(err);
+    });
+  });
+};
+
 module.exports = new RethinkDbService();

@@ -3,27 +3,32 @@ var classNames = require('classnames');
 var RethinkDbClient = window.rethinkDbClient;
 
 var ExplorerFooter = React.createClass({
-  prevPage: function () {
-    const limit = this.props.table.limit;
-    const page = this.props.table.page - 1;
-    RethinkDbClient.getTableData(this.props.table.name, 'id', limit, page);
+  prevPage: function() {
+    const index = this.props.table.query.index;
+    const limit = this.props.table.query.limit;
+    const page = this.props.table.query.page - 1;
+    RethinkDbClient.query({index, limit, page});
   },
-  nextPage: function () {
-    const limit = this.props.table.limit;
-    const page = this.props.table.page + 1;
-    RethinkDbClient.getTableData(this.props.table.name, 'id', limit, page);
+  nextPage: function() {
+    const index = this.props.table.query.index;
+    const limit = this.props.table.query.limit;
+    const page = this.props.table.query.page + 1;
+    RethinkDbClient.query({index, limit, page});
   },
-  prevPageBetween: function () {
+  prevPageBetween: function() {
+    const index = this.props.table.query.index;
     const end = this.props.table.data[0].name;
-    RethinkDbClient.getTableDataBetween(this.props.table.name, 'name', null, end);
+    RethinkDbClient.query({index, end});
   },
-  nextPageBetween: function () {
-    const start = this.props.table.data[this.props.table.data.length-1].name;
-    RethinkDbClient.getTableDataBetween(this.props.table.name, 'name', start);
+  nextPageBetween: function() {
+    const index = this.props.table.query.index;
+    const start = this.props.table.data[this.props.table.data.length - 1].name;
+    RethinkDbClient.query({index, start});
   },
-  addItem: function () {
-    RethinkDbClient.insert(this.props.table.name, {
-      name: 'Johnny ' + (new Date()).getSeconds()
+  addItem: function() {
+    RethinkDbClient.insert({
+      name: 'Johnny ' + (new Date()).getSeconds(),
+      age: (new Date()).getSeconds()
     });
   },
   render: function() {

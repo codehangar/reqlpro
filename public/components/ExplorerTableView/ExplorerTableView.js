@@ -1,22 +1,14 @@
 const React = require('react');
 const {Table, Column, Cell} = require('fixed-data-table');
+import InlineEdit from 'react-edit-inline';
 import JSONTree from 'react-json-tree';
+import ExplorerTableCell from './ExplorerTableCell.js'
+var RethinkDbClient = window.rethinkDbClient;
 
 var ExplorerTableView = React.createClass({
-  composeCellBody: function(data) {
-    if(typeof data !== 'object') {
-      return data;
-    } else {
-      if(data) {
-        if(Object.keys(data).length) {
-          return <JSONTree data={data} />;
-        } else {
-          return JSON.stringify(data);
-        }
-      } else {
-        return JSON.stringify(data);
-      }
-    }
+  rowChanged: function (row) {
+    console.log("rowChanged row", row)
+    RethinkDbClient.update(this.props.table.name, row);
   },
   render: function() {
     var maximumProps = 0; // Keep track of what has had the most props so far
@@ -28,14 +20,14 @@ var ExplorerTableView = React.createClass({
     });
 
     var _this = this;
-    var columnNodes = Object.keys(this.props.table.data[rowIndexOfMaximum]).map(function(value, index) {
+    var columnNodes = Object.keys(this.props.table.data[rowIndexOfMaximum]).map((fieldName, index) => {
       return (
         <Column
           key={index}
-          header={<Cell>{value}</Cell>}
+          header={<Cell>{fieldName}</Cell>}
           cell={props => (
             <Cell>
-              {_this.composeCellBody(_this.props.table.data[props.rowIndex][value])}
+              <ExplorerTableCell row={this.props.table.data[props.rowIndex]} fieldName={fieldName} rowChanged={this.rowChanged} />
             </Cell>
           )}
           width={200} />

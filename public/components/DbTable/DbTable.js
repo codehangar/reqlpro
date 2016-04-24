@@ -5,9 +5,10 @@ var RethinkDbClient = window.rethinkDbClient;
 var Favorite = React.createClass({
   updateSelectedTable: function() {
     RethinkDbClient.updateSelectedTable(this.props.database.name, this.props.table.name);
-    // RethinkDbClient.getTableData(this.props.table.name);
-    RethinkDbClient.getTableDataBetween(this.props.table.name, 'name');
-    RethinkDbClient.getTableSize(this.props.table.name);
+    RethinkDbClient.query({
+      index: 'name'
+    });
+    RethinkDbClient.getTableSize();
   },
   render: function() {
     return (
