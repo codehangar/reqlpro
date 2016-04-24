@@ -174,8 +174,9 @@ RethinkDbClient.prototype.updateSelectedTable = function(databaseName, tableName
 };
 
 // Get initial table data
-RethinkDbClient.prototype.query = function(queryParams = {}) {
+RethinkDbClient.prototype.query = function(queryParams = this.selectedTable.query) {
   this.selectedTable.query = queryParams;
+  console.log("QUERY this.selectedTable.query", this.selectedTable.query)
   if (queryParams.page) {
     this.getTableData(queryParams.index, queryParams.limit, queryParams.page);
   } else if (queryParams.index) {
@@ -246,9 +247,11 @@ RethinkDbClient.prototype.insert = function(record) {
 
   RethinkDbService.insert(conn, db, table, record).then((result) =>{
     this.selectedTable.lastResult = result;
-    this.emit('updateSelectedTable');
+    // Run last query to update view
+    this.query();
   }).catch((err) => {
-    this.emit('updateSelectedTable');
+    // Run last query to update view
+    this.query();
     console.error(err);
   });
 };
@@ -261,9 +264,12 @@ RethinkDbClient.prototype.update = function(record) {
 
   RethinkDbService.update(conn, db, table, record).then((result) =>{
     this.selectedTable.lastResult = result;
-    this.emit('updateSelectedTable');
+    // Run last query to update view
+    this.query();
+    console.log("--------> result", result)
   }).catch((err) => {
-    this.emit('updateSelectedTable');
+    // Run last query to update view
+    this.query();
     console.error(err);
   });
 };

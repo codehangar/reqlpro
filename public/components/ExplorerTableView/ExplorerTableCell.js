@@ -1,5 +1,5 @@
 const React = require('react');
-import InlineEdit from 'react-edit-inline';
+import { RIEInput } from 'riek'
 import JSONTree from 'react-json-tree';
 import _ from 'lodash';
 
@@ -7,8 +7,7 @@ console.log("heeeyyyyy")
 
 var ExplorerTableCell = React.createClass({
   dataChanged: function(data) {
-    console.log("dataChanged", this.props.row)
-    this.props.rowChanged('', _.merge({}, this.props.row, data), this.props.fieldName);
+    this.props.rowChanged(_.merge({}, this.props.row, data), this.props.fieldName);
   },
   composeCellBody: function(row, fieldName) {
     // const data = JSON.parse(JSON.stringify(row[fieldName]));
@@ -18,7 +17,7 @@ var ExplorerTableCell = React.createClass({
     }
     // data = new Date().getSeconds();
     if (typeof data !== 'object') {
-      return <InlineEdit text={data} change={this.dataChanged} paramName={fieldName} />;
+      return <RIEInput value={data} change={this.dataChanged} propName={fieldName} shouldBlockWhileLoading={true} classLoading="loading-cell" classEditing="form-control" />;
     } else {
       if (data) {
         if (Object.keys(data).length) {

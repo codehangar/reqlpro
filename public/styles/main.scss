@@ -232,3 +232,8 @@ html,body,.container
 .favorite.active{
     border: 1px solid #fff;
 }
+
+.loading-cell {
+    font-style: italic;
+    color: $dark-color;
+}
