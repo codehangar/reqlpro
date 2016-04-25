@@ -249,6 +249,7 @@ RethinkDbClient.prototype.insert = function(record) {
     this.selectedTable.lastResult = result;
     // Run last query to update view
     this.query();
+    console.log("--------> insert result", result)
   }).catch((err) => {
     // Run last query to update view
     this.query();
@@ -266,7 +267,7 @@ RethinkDbClient.prototype.update = function(record) {
     this.selectedTable.lastResult = result;
     // Run last query to update view
     this.query();
-    console.log("--------> result", result)
+    console.log("--------> update result", result)
   }).catch((err) => {
     // Run last query to update view
     this.query();

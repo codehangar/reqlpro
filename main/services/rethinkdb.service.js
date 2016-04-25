@@ -247,7 +247,6 @@ RethinkDbService.prototype.getTableList = function(conn, db) {
 RethinkDbService.prototype.getTableData = function(conn, db, table, index, limit, page) {
   return new Promise(function(resolve, reject) {
     co(function*() {
-      const count = yield r.db(db).table(table).count().run(conn);
 
       if (page < 1) {
         throw new Error('page cannot be less than 1');
@@ -280,9 +279,6 @@ RethinkDbService.prototype.getTableDataBetween = function(conn, db, table, index
   return new Promise(function(resolve, reject) {
     co(function*() {
 
-      const count = yield r.db(db).table(table).count().run(conn);
-      console.log("getTableDataBetween:", index, start, end)
-
       let tableData;
       if (start) {
         tableData = yield r.db(db).table(table).between(start, r.maxval, {
@@ -306,6 +302,7 @@ RethinkDbService.prototype.getTableDataBetween = function(conn, db, table, index
           index: index || 'id'
         }).limit(5).run(conn);
       }
+
       console.log("tableData", tableData)
       resolve(tableData);
     }).catch(function(err) {

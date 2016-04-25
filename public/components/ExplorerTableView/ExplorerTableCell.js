@@ -26,6 +26,10 @@ var ExplorerTableCell = React.createClass({
     }
   },
   render: function() {
+    if (this.props.row.id === '965c8bd9-ba13-4448-a4c9-be258bdc182d' && this.props.fieldName === 'name') {
+      console.log("    --> ExplorerTableCell render")
+    }
+
     return (
       <div>
         {this.composeCellBody(this.props.row, this.props.fieldName)}

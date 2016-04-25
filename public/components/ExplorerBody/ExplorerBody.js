@@ -18,6 +18,7 @@ var ExplorerBody = React.createClass({
   setupEvents: function() {
     var _this = this;
     // Event for updating selected table data
+    console.log("   --> ExplorerBody updateSelectedTable")
     RethinkDbClient.on('updateSelectedTable', function() {
       _this.setState({
         table: RethinkDbClient.selectedTable

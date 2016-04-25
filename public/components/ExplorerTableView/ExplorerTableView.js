@@ -11,6 +11,7 @@ var ExplorerTableView = React.createClass({
     RethinkDbClient.update(row);
   },
   render: function() {
+    console.log(" --> ExplorerTableView render")
     var maximumProps = 0; // Keep track of what has had the most props so far
     var rowIndexOfMaximum = 0; // The item in the data with the most props
 
@@ -21,15 +22,22 @@ var ExplorerTableView = React.createClass({
 
     var _this = this;
     var columnNodes = Object.keys(this.props.table.data[rowIndexOfMaximum]).map((fieldName, index) => {
+      console.log("  --> ExplorerTableView columnNodes", fieldName)
       return (
         <Column
           key={index}
           header={<Cell>{fieldName}</Cell>}
-          cell={props => (
-            <Cell>
-              <ExplorerTableCell row={this.props.table.data[props.rowIndex]} fieldName={fieldName} rowChanged={this.rowChanged} />
-            </Cell>
-          )}
+          cell={(props) => {
+                if (this.props.table.data[props.rowIndex].id === '965c8bd9-ba13-4448-a4c9-be258bdc182d' && fieldName === 'name') {
+                  console.log("   --> ExplorerTableView cell render", this.props.table.data[props.rowIndex][fieldName])
+                }
+                return(
+                  <Cell>
+                    <ExplorerTableCell row={this.props.table.data[props.rowIndex]} fieldName={fieldName} rowChanged={this.rowChanged} />
+                  </Cell>
+                );
+              }
+          }
           width={200} />
       );
     });
