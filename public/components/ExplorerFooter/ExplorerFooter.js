@@ -5,6 +5,9 @@ var ExplorerPagination = require('../ExplorerPagination/ExplorerPagination');
 const ace = require('brace');
 
 var ExplorerFooter = React.createClass({
+  componentDidMount: function() {
+    window.onresize = () => this.forceUpdate();
+  },
   prevPage: function() {
     const index = this.props.table.query.index;
     const limit = this.props.table.query.limit;
@@ -45,17 +48,20 @@ var ExplorerFooter = React.createClass({
 
     if (this.props.table.type === 'code') {
       footerBody = (
-        <div className="not-text-center">
+        <div className="not-text-center pull-right">
           <span className="btn btn-primary" onClick={this.save}>Save</span>
         </div>
       );
     }
 
+    const containerStyles = {
+      'width': window.innerWidth - document.getElementById('sidebar').offsetWidth
+    }
 
     return (
       <div className="row">
         <div className="col-md-12">
-          <footer className="footer explorer-footer">
+          <footer className="footer explorer-footer" style={containerStyles}>
             {footerBody}
           </footer>
         </div>

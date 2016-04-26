@@ -24,6 +24,9 @@ var ExplorerTableView = React.createClass({
       columnWidths: columnWidths
     };
   },
+  componentDidMount: function() {
+    window.onresize = () => this.forceUpdate();
+  },
   componentWillReceiveProps: function() {
     console.log(" -> ExplorerTableView componentWillReceiveProps this.props", this.props)
   },
@@ -101,8 +104,8 @@ var ExplorerTableView = React.createClass({
     console.log("columnNodes", columnNodes)
 
     columnNodes = [actionColumn].concat(columnNodes);
-
     console.log("columnNodes", columnNodes)
+
     return (
       <Table
         rowsCount={this.props.table.data.length}
@@ -110,7 +113,7 @@ var ExplorerTableView = React.createClass({
         headerHeight={30}
         onColumnResizeEndCallback={this._onColumnResizeEndCallback}
         isColumnResizing={false}
-        width={document.getElementById('explorer-body').offsetWidth - 30}
+        width={(window.innerWidth - document.getElementById('sidebar').offsetWidth)}
         height={window.innerHeight - 100}>
         {columnNodes}
       </Table>

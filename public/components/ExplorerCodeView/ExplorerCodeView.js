@@ -14,6 +14,7 @@ const ExplorerCodeView = React.createClass({
     this.editor.gotoLine(2);
     this.editor.setValue(JSON.stringify(this.props.table.codeBody, null, '\t'), -1);
     this.editor.focus();
+    window.onresize = () => this.forceUpdate();
   },
   componentWillReceiveProps: function() {
     this.editor.setValue(JSON.stringify(this.props.table.codeBody, null, '\t'), -1);
