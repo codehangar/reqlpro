@@ -31,7 +31,12 @@ var ExplorerFooter = React.createClass({
     const editor = ace.edit("editor");
     const string = editor.getValue();
     const obj = JSON.parse(string);
-    RethinkDbClient.insert(obj);
+
+    if (this.props.table.editItem) {
+      RethinkDbClient.update(obj);
+    } else {
+      RethinkDbClient.insert(obj);
+    }
   },
   render: function() {
     let footerBody = (
