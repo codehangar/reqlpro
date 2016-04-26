@@ -7,21 +7,34 @@ var ExplorerHeader = React.createClass({
     e.preventDefault();
     RethinkDbClient.toggleExplorerBody(key);
   },
-  toggleButtonClassNames: function (type) {
-    var classNames = "btn fa";
-    switch (type) {
-      case 'tree':
-        classNames += " fa-tree";
-        classNames += this.props.table.type === type ? " active" : "";
-      case 'table':
-        classNames += " fa-th";
-        classNames += this.props.table.type === type ? " active" : "";
-    }
-    return classNames;
-  },
+  // toogleAddItem: function() {
+  //   RethinkDbClient.insert({
+  //     name: 'Johnny ' + (new Date()).getSeconds(),
+  //     age: (new Date()).getSeconds()
+  //   });
+  // },
   render: function() {
-    let treeClasses = this.toggleButtonClassNames('tree');
-    let tableClasses = this.toggleButtonClassNames('table');
+
+    let buttonClasses = {
+      tree: classNames({
+        'btn': true,
+        'fa': true,
+        'fa-tree': true,
+        'active': this.props.table.type === 'tree'
+      }),
+      table: classNames({
+        'btn': true,
+        'fa': true,
+        'fa-th': true,
+        'active': this.props.table.type === 'table'
+      }),
+      add: classNames({
+        'btn': true,
+        'fa': true,
+        'fa-plus': true,
+        'active': this.props.table.type === 'add'
+      })
+    };
 
     return (
       <div className="row">
@@ -32,8 +45,9 @@ var ExplorerHeader = React.createClass({
               <i className="fa fa-arrow-right"></i>
               <p>{this.props.table.name}</p>
               <div className="pull-right">
-                <button onClick={this.toggleExplorerBody.bind(this, 'tree')} className={treeClasses} />
-                <button onClick={this.toggleExplorerBody.bind(this, 'table')} className={tableClasses} />
+                <button onClick={this.toggleExplorerBody.bind(this, 'add')} className={buttonClasses.add} />
+                <button onClick={this.toggleExplorerBody.bind(this, 'tree')} className={buttonClasses.tree} />
+                <button onClick={this.toggleExplorerBody.bind(this, 'table')} className={buttonClasses.table} />
               </div>
             </div>
           </div>

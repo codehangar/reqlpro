@@ -26,12 +26,6 @@ var ExplorerFooter = React.createClass({
     const start = this.props.table.data[this.props.table.data.length - 1].name;
     RethinkDbClient.query({index, start});
   },
-  addItem: function() {
-    RethinkDbClient.insert({
-      name: 'Johnny ' + (new Date()).getSeconds(),
-      age: (new Date()).getSeconds()
-    });
-  },
   render: function() {
     return (
       <div className="row">
@@ -42,9 +36,6 @@ var ExplorerFooter = React.createClass({
                 prevPage={this.prevPage}
                 nextPage={this.nextPage}
                 table={this.props.table} />
-              <button className="btn" onClick={this.addItem}>
-                <i className="fa fa-plus"></i>
-              </button>
             </div>
           </footer>
         </div>
