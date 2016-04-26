@@ -5,19 +5,17 @@ require('brace/mode/json');
 
 const ExplorerCodeView = React.createClass({
   componentDidMount: function() {
-    const editor = ace.edit("editor");
-    editor.getSession().setMode("ace/mode/json");
-
-    if (this.props.table.editItem) {
-      editor.setValue(JSON.stringify(this.props.table.editItem)); // or session.setValue
-    } else {
-      editor.setValue("{\n  \n}"); // or session.setValue
-    }
-
-    editor.getSession().setTabSize(2);
-    editor.getSession().setUseSoftTabs(true);
-    editor.setHighlightActiveLine(false);
-    editor.gotoLine(2);
+    this.editor = ace.edit("editor");
+    this.editor.$blockScrolling = Infinity;
+    this.editor.getSession().setMode("ace/mode/json");
+    this.editor.setValue(JSON.stringify(this.props.table.codeBody, null, '\t'));
+    this.editor.getSession().setTabSize(2);
+    this.editor.getSession().setUseSoftTabs(true);
+    this.editor.setHighlightActiveLine(false);
+    this.editor.gotoLine(2);
+  },
+  componentWillReceiveProps: function() {
+    this.editor.setValue(JSON.stringify(this.props.table.codeBody, null, '\t'));
   },
   render: function() {
     return (

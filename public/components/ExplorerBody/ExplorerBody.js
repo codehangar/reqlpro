@@ -28,7 +28,7 @@ var ExplorerBody = React.createClass({
   },
   render: function() {
     var explorerBody;
-    if (this.state.table.data.length) {
+    if (this.state.table.data.length || this.state.table.type === 'code') {
       if (this.state.table.type === 'tree') {
         explorerBody = (
           <div>
@@ -43,7 +43,7 @@ var ExplorerBody = React.createClass({
             <ExplorerFooter table={this.state.table} />
           </div>
         );
-      } else if(this.state.table.type === 'add') {
+      } else if(this.state.table.type === 'code') {
         explorerBody = (
           <div>
             <ExplorerCodeView table={this.state.table} />

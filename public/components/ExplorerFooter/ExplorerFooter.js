@@ -31,12 +31,7 @@ var ExplorerFooter = React.createClass({
     const editor = ace.edit("editor");
     const string = editor.getValue();
     const obj = JSON.parse(string);
-
-    if (this.props.table.editItem) {
-      RethinkDbClient.update(obj);
-    } else {
-      RethinkDbClient.insert(obj);
-    }
+    RethinkDbClient.saveRow(obj);
   },
   render: function() {
     let footerBody = (
@@ -48,7 +43,7 @@ var ExplorerFooter = React.createClass({
       </div>
     );
 
-    if (this.props.table.type === 'add') {
+    if (this.props.table.type === 'code') {
       footerBody = (
         <div className="not-text-center">
           <span className="btn btn-primary" onClick={this.save}>Save</span>

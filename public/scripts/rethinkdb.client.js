@@ -168,7 +168,9 @@ RethinkDbClient.prototype.updateSelectedTable = function(databaseName, tableName
     databaseName: databaseName,
     name: tableName,
     type: this.selectedTable ? this.selectedTable.type : 'table',
-    data: []
+    data: [],
+    codeBody: {},
+    codeAction: 'add'
   };
   this.emit('updateRehinkDbClient');
 };
@@ -261,8 +263,9 @@ RethinkDbClient.prototype.insert = function(record) {
 
 // Switch to edit mode
 RethinkDbClient.prototype.startEdit = function(record) {
-  this.selectedTable.editItem = record;
-  this.selectedTable.type = 'add';
+  this.selectedTable.codeAction = 'update';
+  this.selectedTable.codeBody = record;
+  this.selectedTable.type = 'code';
   this.emit('updateRehinkDbClient');
 };
 
@@ -284,9 +287,57 @@ RethinkDbClient.prototype.update = function(record) {
   });
 };
 
+// Replace row
+// The difference here is that it will create a new record if an id is not found
+RethinkDbClient.prototype.replace = function(record) {
+  const conn = this.selectedFavorite.dbConnection;
+  const db = this.selectedTable.databaseName;
+  const table = this.selectedTable.name;
+
+  RethinkDbService.replace(conn, db, table, record).then((result) =>{
+    this.selectedTable.lastResult = result;
+    // Run last query to update view
+    this.query();
+    console.log("--------> replace result", result)
+  }).catch((err) => {
+    // Run last query to update view
+    this.query();
+    console.error(err);
+  });
+};
+
+// Save Row from code view
+RethinkDbClient.prototype.saveRow = function(row) {
+  // Lets update the codeBody for when the rerender happens
+  this.selectedTable.codeBody = row;
+  if (this.selectedTable.codeAction === 'update') {
+    let matched = false;
+    // Extra protection here if people alter the id when updating
+    // Using replace will insert a new record
+    // I'm assuming replace is less performant than update so lets use update when possible
+    this.selectedTable.data.forEach(function(item, index) {
+      if(item.id === row.id) {
+        matched = true;
+      }
+    });
+    if(matched) {
+      this.update(row);
+    } else {
+      this.replace(row);
+    }
+  }
+  if (this.selectedTable.codeAction === 'add') {
+    this.insert(row);
+  }
+};
+
 // Toggle Selected Table Type
 RethinkDbClient.prototype.toggleExplorerBody = function(type) {
   this.selectedTable.type = type;
+  if(type === 'code') {
+    this.selectedTable.codeAction = 'add';
+    this.selectedTable.codeBody = {};
+  }
   this.emit('updateRehinkDbClient');
 };
 
