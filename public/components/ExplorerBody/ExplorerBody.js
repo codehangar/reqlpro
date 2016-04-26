@@ -2,6 +2,7 @@ var React = require('react');
 var classNames = require('classnames');
 var ExplorerTreeView = require('../ExplorerTreeView/ExplorerTreeView');
 var ExplorerTableView = require('../ExplorerTableView/ExplorerTableView');
+var ExplorerCodeView = require('../ExplorerCodeView/ExplorerCodeView');
 var ExplorerFooter = require('../ExplorerFooter/ExplorerFooter');
 var RethinkDbClient = window.rethinkDbClient;
 
@@ -42,6 +43,13 @@ var ExplorerBody = React.createClass({
             <ExplorerFooter table={this.state.table} />
           </div>
         );
+      } else if(this.state.table.type === 'add') {
+        explorerBody = (
+          <div>
+            <ExplorerCodeView table={this.state.table} />
+            <ExplorerFooter table={this.state.table} />
+          </div>
+        )
       }
     } else {
       explorerBody = (
