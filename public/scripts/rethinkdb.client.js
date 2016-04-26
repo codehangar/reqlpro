@@ -331,6 +331,24 @@ RethinkDbClient.prototype.saveRow = function(row) {
   }
 };
 
+// Delete Row
+RethinkDbClient.prototype.deleteRow = function(row) {
+  const conn = this.selectedFavorite.dbConnection;
+  const db = this.selectedTable.databaseName;
+  const table = this.selectedTable.name;
+
+  RethinkDbService.delete(conn, db, table, row).then((result) =>{
+    this.selectedTable.lastResult = result;
+    // Run last query to update view
+    this.query();
+    console.log("--------> replace result", result)
+  }).catch((err) => {
+    // Run last query to update view
+    this.query();
+    console.error(err);
+  });
+};
+
 // Toggle Selected Table Type
 RethinkDbClient.prototype.toggleExplorerBody = function(type) {
   this.selectedTable.type = type;

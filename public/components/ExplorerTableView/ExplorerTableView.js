@@ -43,7 +43,7 @@ var ExplorerTableView = React.createClass({
     RethinkDbClient.startEdit(row);
   },
   deleteRow: function (row) {
-    console.log("deleteRow row", row)
+    RethinkDbClient.deleteRow(row);
   },
   render: function() {
     console.log(" --> ExplorerTableView render")

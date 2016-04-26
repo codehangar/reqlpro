@@ -386,4 +386,23 @@ RethinkDbService.prototype.replace = function(conn, db, table, record) {
   });
 };
 
+/**
+ * Delete record in table
+ * @param {Object} RethinkDb Connection
+ * @param {String} Database name
+ * @param {String} Table name
+ * @param {String} Record
+ * @returns {Promise}
+ */
+RethinkDbService.prototype.delete = function(conn, db, table, record) {
+  return new Promise(function(resolve, reject) {
+    co(function*() {
+      const result = yield r.db(db).table(table).get(record.id).delete().run(conn);
+      resolve(result);
+    }).catch(function(err) {
+      reject(err);
+    });
+  });
+};
+
 module.exports = new RethinkDbService();
