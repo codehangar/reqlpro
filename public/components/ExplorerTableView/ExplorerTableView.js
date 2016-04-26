@@ -38,6 +38,13 @@ var ExplorerTableView = React.createClass({
     console.log("rowChanged row", row)
     RethinkDbClient.update(row);
   },
+  startEditRow: function (row) {
+    console.log("startEditRow row", row)
+    RethinkDbClient.startEdit(row);
+  },
+  deleteRow: function (row) {
+    console.log("deleteRow row", row)
+  },
   render: function() {
     console.log(" --> ExplorerTableView render")
     var maximumProps = 0; // Keep track of what has had the most props so far
@@ -49,6 +56,26 @@ var ExplorerTableView = React.createClass({
     });
 
     var _this = this;
+
+    var actionColumn = (
+      <Column
+        key="actions"
+        header={<Cell>Action</Cell>}
+        isResizable={true}
+        columnKey="action"
+        cell={(props) => {
+              const row = this.props.table.data[props.rowIndex];
+              return(
+                <Cell className="action-buttons">
+                  <span className="btn btn-sm btn-primary fa fa-pencil" onClick={this.startEditRow.bind(this, row)}></span>
+                  <span className="btn btn-sm btn-danger fa fa-trash" onClick={this.deleteRow.bind(this, row)}></span>
+                </Cell>
+              );
+            }
+        }
+        width={100} />
+    );
+
     var columnNodes = Object.keys(this.props.table.data[rowIndexOfMaximum]).map((fieldName, index) => {
       console.log("  --> ExplorerTableView columnNodes", fieldName)
       return (
@@ -71,6 +98,11 @@ var ExplorerTableView = React.createClass({
           width={this.state.columnWidths[fieldName]} />
       );
     });
+    console.log("columnNodes", columnNodes)
+
+    columnNodes = [actionColumn].concat(columnNodes);
+
+    console.log("columnNodes", columnNodes)
     return (
       <Table
         rowsCount={this.props.table.data.length}

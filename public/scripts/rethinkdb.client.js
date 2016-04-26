@@ -259,6 +259,13 @@ RethinkDbClient.prototype.insert = function(record) {
   });
 };
 
+// Switch to edit mode
+RethinkDbClient.prototype.startEdit = function(record) {
+  this.selectedTable.editItem = record;
+  this.selectedTable.type = 'add';
+  this.emit('updateRehinkDbClient');
+};
+
 // Update row
 RethinkDbClient.prototype.update = function(record) {
   const conn = this.selectedFavorite.dbConnection;
