@@ -26,17 +26,36 @@ var ExplorerFooter = React.createClass({
     const start = this.props.table.data[this.props.table.data.length - 1].name;
     RethinkDbClient.query({index, start});
   },
+  save: function() {
+    const editor = ace.edit("editor");
+    const string = editor.getValue();
+    const obj = JSON.parse(string);
+    RethinkDbClient.insert(obj);
+  },
   render: function() {
+    let footerBody = (
+      <div className="not-text-center">
+        <ExplorerPagination
+          prevPage={this.prevPage}
+          nextPage={this.nextPage}
+          table={this.props.table} />
+      </div>
+    );
+
+    if (this.props.table.type === 'add') {
+      footerBody = (
+        <div className="not-text-center">
+          <span className="btn btn-primary" onClick={this.save}>Save</span>
+        </div>
+      );
+    }
+
+
     return (
       <div className="row">
         <div className="col-md-12">
           <footer className="footer explorer-footer">
-            <div className="not-text-center">
-              <ExplorerPagination
-                prevPage={this.prevPage}
-                nextPage={this.nextPage}
-                table={this.props.table} />
-            </div>
+            {footerBody}
           </footer>
         </div>
       </div>

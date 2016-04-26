@@ -1,9 +1,15 @@
-var React = require('react');
-var classNames = require('classnames');
+const React = require('react');
+const classNames = require('classnames');
 
-var ExplorerCodeView = React.createClass({
+const ExplorerCodeView = React.createClass({
   componentDidMount: function() {
-    var editor = ace.edit("editor");
+    const editor = ace.edit("editor");
+    editor.getSession().setMode("ace/mode/json");
+    editor.setValue("{\n  \n}"); // or session.setValue
+    editor.getSession().setTabSize(2);
+    editor.getSession().setUseSoftTabs(true);
+    editor.setHighlightActiveLine(false);
+    editor.gotoLine(2);
   },
   render: function() {
     return (
