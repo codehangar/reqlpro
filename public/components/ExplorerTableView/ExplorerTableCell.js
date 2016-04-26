@@ -1,5 +1,5 @@
 const React = require('react');
-import { RIEInput } from 'riek'
+import { RIEInput, RIENumber } from 'riek'
 import JSONTree from 'react-json-tree';
 import _ from 'lodash';
 
@@ -12,8 +12,10 @@ var ExplorerTableCell = React.createClass({
 
     const data = row[fieldName];
 
-    if (typeof data !== 'object') {
+    if (typeof data === 'string') {
       return <RIEInput value={data} change={this.dataChanged} propName={fieldName} shouldBlockWhileLoading={true} classLoading="loading-cell" classEditing="form-control" />;
+    } else if (typeof data === 'number') {
+      return <RIENumber value={data} change={this.dataChanged} propName={fieldName} shouldBlockWhileLoading={true} classLoading="loading-cell" classEditing="form-control" />;
     } else {
       if (data) {
         if (Object.keys(data).length) {
