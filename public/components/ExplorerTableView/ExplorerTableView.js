@@ -114,7 +114,7 @@ var ExplorerTableView = React.createClass({
         onColumnResizeEndCallback={this._onColumnResizeEndCallback}
         isColumnResizing={false}
         width={(window.innerWidth - document.getElementById('sidebar').offsetWidth)}
-        height={window.innerHeight - 100}>
+        height={window.innerHeight - 113}>
         {columnNodes}
       </Table>
     );
