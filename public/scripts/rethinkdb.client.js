@@ -341,6 +341,7 @@ RethinkDbClient.prototype.deleteRow = function(row) {
     this.selectedTable.lastResult = result;
     // Run last query to update view
     this.query();
+    this.getTableSize();
     console.log("--------> replace result", result)
   }).catch((err) => {
     // Run last query to update view
