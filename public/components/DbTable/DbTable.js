@@ -6,7 +6,8 @@ var Favorite = React.createClass({
   updateSelectedTable: function() {
     RethinkDbClient.updateSelectedTable(this.props.database.name, this.props.table.name);
     RethinkDbClient.query({
-      index: 'name'
+      page: 1,
+      limit: 5
     });
     RethinkDbClient.getTableSize();
   },
@@ -14,7 +15,7 @@ var Favorite = React.createClass({
     return (
       <div onClick={this.updateSelectedTable} className="db-table">
         <i className="fa fa-table"></i>
-        <p>{this.props.table.name}OK</p>
+        <p>{this.props.table.name}</p>
       </div>
     );
   }

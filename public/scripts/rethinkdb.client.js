@@ -188,12 +188,13 @@ RethinkDbClient.prototype.query = function(queryParams = this.selectedTable.quer
 RethinkDbClient.prototype.getTableData = function(index, limit = 25, page = 1) {
   const conn = this.selectedFavorite.dbConnection;
   const db = this.selectedTable.databaseName;
+  const table = this.selectedTable.name;
 
   if (page < 1) {
     page = 1;
   }
 
-  RethinkDbService.getTableData(conn, db, tableName, index, limit, page).then((tableData) => {
+  RethinkDbService.getTableData(conn, db, table, index, limit, page).then((tableData) => {
     tableData.toArray().then((tableData) => {
       this.selectedTable.data = tableData;
       this.emit('updateSelectedTable');
@@ -215,6 +216,7 @@ RethinkDbClient.prototype.getTableDataBetween = function(index, start, end) {
       if (end) {
         tableData.reverse();
       }
+      console.log(tableData);
       this.selectedTable.data = tableData;
       this.emit('updateSelectedTable');
     }).catch(function(err) {

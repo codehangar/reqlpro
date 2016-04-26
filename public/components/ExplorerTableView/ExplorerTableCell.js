@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 var ExplorerTableCell = React.createClass({
   dataChanged: function(data) {
+    // {fieldName: value}
     this.props.rowChanged(_.merge({}, this.props.row, data), this.props.fieldName);
   },
   composeCellBody: function(row, fieldName) {
@@ -26,7 +27,7 @@ var ExplorerTableCell = React.createClass({
     }
   },
   render: function() {
-    if (this.props.row.id === '965c8bd9-ba13-4448-a4c9-be258bdc182d' && this.props.fieldName === 'name') {
+    if (this.props.row.id === '11698a1f-f9db-4f9c-9fb8-4c27d75e1990' && this.props.fieldName === 'name') {
       console.log("    --> ExplorerTableCell render")
     }
 

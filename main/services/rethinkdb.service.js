@@ -251,7 +251,7 @@ RethinkDbService.prototype.getTableData = function(conn, db, table, index, limit
       if (page < 1) {
         throw new Error('page cannot be less than 1');
       }
-      const minval = ((page - 1) * limit) || 1;
+      const minval = ((page - 1) * limit);
       const maxval = page * limit;
 
       let tableData = yield r.db(db).table(table).orderBy({

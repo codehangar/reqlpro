@@ -58,7 +58,7 @@ var ExplorerTableView = React.createClass({
           isResizable={true}
           columnKey={fieldName}
           cell={(props) => {
-                if (this.props.table.data[props.rowIndex].id === '965c8bd9-ba13-4448-a4c9-be258bdc182d' && fieldName === 'name') {
+                if (this.props.table.data[props.rowIndex].id === '11698a1f-f9db-4f9c-9fb8-4c27d75e1990' && fieldName === 'name') {
                   console.log("   --> ExplorerTableView cell render", this.props.table.data[props.rowIndex][fieldName])
                 }
                 return(
