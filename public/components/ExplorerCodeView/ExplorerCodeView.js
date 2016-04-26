@@ -1,5 +1,7 @@
 const React = require('react');
 const classNames = require('classnames');
+const ace = require('brace');
+require('brace/mode/json');
 
 const ExplorerCodeView = React.createClass({
   componentDidMount: function() {

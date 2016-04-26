@@ -2,6 +2,7 @@ var React = require('react');
 var classNames = require('classnames');
 var RethinkDbClient = window.rethinkDbClient;
 var ExplorerPagination = require('../ExplorerPagination/ExplorerPagination');
+const ace = require('brace');
 
 var ExplorerFooter = React.createClass({
   prevPage: function() {
