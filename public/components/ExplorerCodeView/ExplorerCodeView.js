@@ -8,14 +8,16 @@ const ExplorerCodeView = React.createClass({
     this.editor = ace.edit("editor");
     this.editor.$blockScrolling = Infinity;
     this.editor.getSession().setMode("ace/mode/json");
-    this.editor.setValue(JSON.stringify(this.props.table.codeBody, null, '\t'));
     this.editor.getSession().setTabSize(2);
     this.editor.getSession().setUseSoftTabs(true);
     this.editor.setHighlightActiveLine(false);
     this.editor.gotoLine(2);
+    this.editor.setValue(JSON.stringify(this.props.table.codeBody, null, '\t'), -1);
+    this.editor.focus();
   },
   componentWillReceiveProps: function() {
-    this.editor.setValue(JSON.stringify(this.props.table.codeBody, null, '\t'));
+    this.editor.setValue(JSON.stringify(this.props.table.codeBody, null, '\t'), -1);
+    this.editor.focus();
   },
   render: function() {
     return (
