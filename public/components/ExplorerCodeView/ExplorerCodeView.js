@@ -9,7 +9,7 @@ var ExplorerCodeView = React.createClass({
     return (
       <div className="explorer-code-view" style={{
         'height': window.innerHeight - 115,
-        'width': document.getElementById('explorer-body').offsetWidth
+        'width': document.getElementById('explorer-body').offsetWidth - 30
       }}>
         <div id="editor"></div>
       </div>
