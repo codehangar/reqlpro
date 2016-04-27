@@ -11,6 +11,18 @@ var App = React.createClass({
   },
   componentDidMount: function() {
     this.setupEvents();
+    this.resizeTimeoutFunction = () => {
+      this.resizeTimeout = setTimeout(() => {
+        this.forceUpdate();
+      }, 100);
+    }
+    window.onresize = () => {
+      clearTimeout(this.resizeTimeout)
+      this.resizeTimeoutFunction();
+    }
+  },
+  componentWillUnmount: function() {
+    window.onresize = null;
   },
   setupEvents: function() {
     var _this = this;
@@ -28,10 +40,17 @@ var App = React.createClass({
     });
   },
   render: function() {
+    const calcExplorerWidth = () => {
+      if(window.innerWidth * .25 < 360) {
+        return window.innerWidth - 360
+      } else {
+        return window.innerWidth * .75
+      }
+    };
     return (
       <div className="row main-content-row">
         <Sidebar rethinkDbClient={this.state.rethinkDbClient} />
-        <Explorer rethinkDbClient={this.state.rethinkDbClient} />
+        <Explorer rethinkDbClient={this.state.rethinkDbClient} width={calcExplorerWidth()} />
         <ConnectionForm connection={this.state.rethinkDbClient.connection.toJson()} show={this.state.rethinkDbClient.router.connectionForm.show} action={this.state.rethinkDbClient.router.connectionForm.action} />
       </div>
     );

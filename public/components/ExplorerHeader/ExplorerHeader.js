@@ -72,9 +72,9 @@ var ExplorerHeader = React.createClass({
     }
 
     return (
-      <div className="row">
+      <div className="row explorer-header" id="explorer-header">
         <div className="col-md-12">
-          <div className="explorer-header">
+          <div>
             <div className="bread-crumbs">
               {breadCrumbText}
               <div className="pull-right">

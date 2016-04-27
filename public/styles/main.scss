@@ -11,6 +11,10 @@ html,body,.container
     word-wrap: break-word;
 }
 
+.row {
+    margin: 0;
+}
+
 .sidebar-content-row p {
     color: #FFFFFF;
 }
@@ -37,8 +41,8 @@ html,body,.container
 {
     display: table-cell;
     background: #FFFFFF;
-    width: 25%;
-    min-width: 260px;
+    z-index: 10;
+    min-width: 360px;
 }
 .col-md-9.main-content-col
 {
@@ -46,9 +50,8 @@ html,body,.container
     display: block;
     width: 100%;
     background: $lighter-color;
-    /*width: 75%;*/
-    min-width: 440px;
     height: 100vh;
+    min-width: 440px;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -188,7 +191,6 @@ html,body,.container
 
 .explorer-header {
     background-color: $dark-color;
-    margin-bottom: 15px;
     padding: 13px 10px;
 }
 
@@ -201,8 +203,13 @@ html,body,.container
     padding: 13px 10px;
     position: fixed;
     bottom: 0;
+    left: 0;
     width: 100%;
     background: $lighter-color;
+}
+
+.table-view-container {
+    margin-left: -15px;
 }
 
 .bread-crumbs p {

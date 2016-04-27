@@ -5,6 +5,12 @@ var ExplorerBody = require('../ExplorerBody/ExplorerBody');
 var RethinkDbClient = window.rethinkDbClient;
 
 var Explorer = React.createClass({
+  getInitialState: function() {
+    return this.props;
+  },
+  componentWillReceiveProps: function(nextProps) {
+    this.setState(nextProps);
+  },
   render: function() {
     var content = <p className="select-table">Select a table from a database</p>;
 
@@ -20,8 +26,8 @@ var Explorer = React.createClass({
     } else if (this.props.rethinkDbClient.selectedTable !== null) {
       content = (
         <div>
-          <ExplorerHeader table={this.props.rethinkDbClient.selectedTable} />
-          <ExplorerBody table={this.props.rethinkDbClient.selectedTable} />
+          <ExplorerHeader table={this.props.rethinkDbClient.selectedTable} width={this.props.width} />
+          <ExplorerBody table={this.props.rethinkDbClient.selectedTable} width={this.props.width} />
         </div>
       );
     } else if (this.props.rethinkDbClient.selectedFavorite.dbConnection !== null) {
@@ -35,7 +41,9 @@ var Explorer = React.createClass({
     }
 
     return (
-      <div className="col-md-9 main-content-col no-float">
+      <div className="col-md-9 main-content-col no-float" width={{
+        width: this.props.width
+      }}>
           {content}
       </div>
     );

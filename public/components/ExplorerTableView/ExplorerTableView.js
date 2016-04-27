@@ -24,9 +24,6 @@ var ExplorerTableView = React.createClass({
       columnWidths: columnWidths
     };
   },
-  componentDidMount: function() {
-    window.onresize = () => this.forceUpdate();
-  },
   componentWillReceiveProps: function() {
     console.log(" -> ExplorerTableView componentWillReceiveProps this.props", this.props)
   },
@@ -113,7 +110,7 @@ var ExplorerTableView = React.createClass({
         headerHeight={30}
         onColumnResizeEndCallback={this._onColumnResizeEndCallback}
         isColumnResizing={false}
-        width={(window.innerWidth - document.getElementById('sidebar').offsetWidth)}
+        width={this.props.width - 15}
         height={window.innerHeight - 113}>
         {columnNodes}
       </Table>

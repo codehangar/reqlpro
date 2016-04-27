@@ -5,9 +5,6 @@ var ExplorerPagination = require('../ExplorerPagination/ExplorerPagination');
 const ace = require('brace');
 
 var ExplorerFooter = React.createClass({
-  componentDidMount: function() {
-    window.onresize = () => this.forceUpdate();
-  },
   prevPage: function() {
     const index = this.props.table.query.index;
     const limit = this.props.table.query.limit;
@@ -54,15 +51,15 @@ var ExplorerFooter = React.createClass({
       );
     }
 
-    const containerStyles = {
-      'width': window.innerWidth - document.getElementById('sidebar').offsetWidth
-    }
-
     return (
       <div className="row">
         <div className="col-md-12">
-          <footer className="footer explorer-footer" style={containerStyles}>
+          <footer className="footer explorer-footer">
+            <div style={{
+              marginLeft: document.getElementById('sidebar').offsetWidth
+            }}>
             {footerBody}
+            </div>
           </footer>
         </div>
       </div>

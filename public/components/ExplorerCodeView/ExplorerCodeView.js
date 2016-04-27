@@ -14,7 +14,6 @@ const ExplorerCodeView = React.createClass({
     this.editor.gotoLine(2);
     this.editor.setValue(JSON.stringify(this.props.table.codeBody, null, '\t'), -1);
     this.editor.focus();
-    window.onresize = () => this.forceUpdate();
   },
   componentWillReceiveProps: function() {
     this.editor.setValue(JSON.stringify(this.props.table.codeBody, null, '\t'), -1);
@@ -24,7 +23,7 @@ const ExplorerCodeView = React.createClass({
     return (
       <div className="explorer-code-view" style={{
         'height': window.innerHeight - 115,
-        'width': document.getElementById('explorer-body').offsetWidth - 30
+        'width': '100%'
       }}>
         <div id="editor"></div>
       </div>

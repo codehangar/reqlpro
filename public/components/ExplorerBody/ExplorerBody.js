@@ -38,8 +38,8 @@ var ExplorerBody = React.createClass({
         );
       } else if (this.state.table.type === 'table') {
         explorerBody = (
-          <div>
-            <ExplorerTableView table={this.state.table} />
+          <div className="table-view-container">
+            <ExplorerTableView table={this.state.table} width={this.props.width} />
             <ExplorerFooter table={this.state.table} />
           </div>
         );
@@ -60,8 +60,10 @@ var ExplorerBody = React.createClass({
         );
     }
     return (
-      <div className="row explorer-body" id="explorer-body">
-        <div className="col-md-12" style={{marginTop: '-15px'}}>
+      <div className="row explorer-body" id="explorer-body" style={{
+        width: this.props.width
+      }}>
+        <div className="col-md-12">
           {explorerBody}
         </div>
       </div>
