@@ -18,6 +18,7 @@ var Explorer = React.createClass({
       content = (
         <div className="panel panel-default">
           <div className="panel-body text-center">
+            <div><img src="http://placehold.it/250x250"/></div>
             <h2>No database connections added.</h2>
             <p>Click the <strong>"+"</strong> to add a RethinkDB connection.</p>
           </div>
