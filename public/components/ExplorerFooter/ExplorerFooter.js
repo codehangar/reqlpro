@@ -35,7 +35,7 @@ var ExplorerFooter = React.createClass({
   },
   render: function() {
     let footerBody = (
-      <div className="not-text-center">
+      <div className="text-center">
         <ExplorerPagination
           prevPage={this.prevPage}
           nextPage={this.nextPage}
@@ -53,17 +53,7 @@ var ExplorerFooter = React.createClass({
 
     return (
       <div className="explorer-footer">
-        <div className="row">
-          <div className="col-md-12">
-            <footer className="">
-              <div style={{
-                marginLeft: document.getElementById('sidebar').offsetWidth
-              }}>
-              {footerBody}
-              </div>
-            </footer>
-          </div>
-        </div>
+        {footerBody}
       </div>
     );
   }

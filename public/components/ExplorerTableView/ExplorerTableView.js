@@ -110,8 +110,8 @@ var ExplorerTableView = React.createClass({
         headerHeight={30}
         onColumnResizeEndCallback={this._onColumnResizeEndCallback}
         isColumnResizing={false}
-        width={this.props.width - 15}
-        height={window.innerHeight - 113}>
+        width={window.innerWidth - 360}
+        height={window.innerHeight - 105}>
         {columnNodes}
       </Table>
     );

@@ -40,17 +40,10 @@ var App = React.createClass({
     });
   },
   render: function() {
-    const calcExplorerWidth = () => {
-      if(window.innerWidth * .25 < 360) {
-        return window.innerWidth - 360
-      } else {
-        return window.innerWidth * .75
-      }
-    };
     return (
       <div className="row main-content-row">
         <Sidebar rethinkDbClient={this.state.rethinkDbClient} />
-        <Explorer rethinkDbClient={this.state.rethinkDbClient} width={calcExplorerWidth()} />
+        <Explorer rethinkDbClient={this.state.rethinkDbClient}/>
         <ConnectionForm connection={this.state.rethinkDbClient.connection.toJson()} show={this.state.rethinkDbClient.router.connectionForm.show} action={this.state.rethinkDbClient.router.connectionForm.action} />
       </div>
     );

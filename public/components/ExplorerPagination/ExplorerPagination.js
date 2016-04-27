@@ -8,13 +8,13 @@ var PrevButton = ({
   var prevButton;
   if(table.query.page === 1) {
     prevButton = (
-        <button className="btn" disabled onClick={prevPage}>
+        <button className="btn btn-default btn-sm pull-left" disabled onClick={prevPage}>
           <i className="fa fa-arrow-left"></i>
         </button>
     );
   } else {
     prevButton = (
-        <button className="btn" onClick={prevPage}>
+        <button className="btn btn-default btn-sm pull-left" onClick={prevPage}>
           <i className="fa fa-arrow-left"></i>
         </button>
     );
@@ -30,13 +30,13 @@ var NextButton = ({
   var nextButton;
   if(table.query.page === Math.ceil(table.size / table.query.limit)) {
     nextButton = (
-      <button className="btn" disabled onClick={nextPage}>
+      <button className="btn btn-default btn-sm pull-right" disabled onClick={nextPage}>
         <i className="fa fa-arrow-right"></i>
       </button>
     );
   } else {
     nextButton = (
-      <button className="btn" onClick={nextPage}>
+      <button className="btn btn-default btn-sm pull-right" onClick={nextPage}>
         <i className="fa fa-arrow-right"></i>
       </button>
     );
@@ -65,7 +65,7 @@ var ExplorerPagination = ({
   table
 }) => {
     return (
-      <div className="pull-left">
+      <div>
         <PrevButton table={table} prevPage={prevPage} />
         <PageDetails table={table} />
         <NextButton table={table} nextPage={nextPage} />

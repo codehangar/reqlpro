@@ -3,7 +3,6 @@ var classNames = require('classnames');
 var ExplorerTreeView = require('../ExplorerTreeView/ExplorerTreeView');
 var ExplorerTableView = require('../ExplorerTableView/ExplorerTableView');
 var ExplorerCodeView = require('../ExplorerCodeView/ExplorerCodeView');
-var ExplorerFooter = require('../ExplorerFooter/ExplorerFooter');
 var RethinkDbClient = window.rethinkDbClient;
 
 var ExplorerBody = React.createClass({
@@ -33,21 +32,18 @@ var ExplorerBody = React.createClass({
         explorerBody = (
           <div>
             <ExplorerTreeView table={this.state.table} />
-            <ExplorerFooter table={this.state.table} />
           </div>
         );
       } else if (this.state.table.type === 'table') {
         explorerBody = (
           <div className="table-view-container">
-            <ExplorerTableView table={this.state.table} width={this.props.width} />
-            <ExplorerFooter table={this.state.table} />
+            <ExplorerTableView table={this.state.table} className="data-table-main"/>
           </div>
         );
       } else if(this.state.table.type === 'code') {
         explorerBody = (
           <div>
             <ExplorerCodeView table={this.state.table} />
-            <ExplorerFooter table={this.state.table} />
           </div>
         )
       }
@@ -55,7 +51,6 @@ var ExplorerBody = React.createClass({
       explorerBody = (
           <div>
             <p className="empty-table">Table is empty!</p>
-            <ExplorerFooter table={this.state.table} />
           </div>
         );
     }
@@ -63,9 +58,7 @@ var ExplorerBody = React.createClass({
       <div className="row explorer-body" id="explorer-body" style={{
         width: this.props.width
       }}>
-        <div>
           {explorerBody}
-        </div>
       </div>
     );
   }

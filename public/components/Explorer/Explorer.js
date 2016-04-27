@@ -2,6 +2,7 @@ var React = require('react');
 var classNames = require('classnames');
 var ExplorerHeader = require('../ExplorerHeader/ExplorerHeader');
 var ExplorerBody = require('../ExplorerBody/ExplorerBody');
+var ExplorerFooter = require('../ExplorerFooter/ExplorerFooter');
 var RethinkDbClient = window.rethinkDbClient;
 
 var Explorer = React.createClass({
@@ -29,6 +30,7 @@ var Explorer = React.createClass({
         <div className="explorer-container">
           <ExplorerHeader table={this.props.rethinkDbClient.selectedTable}/>
           <ExplorerBody table={this.props.rethinkDbClient.selectedTable} width={this.props.width} />
+          <ExplorerFooter table={this.props.rethinkDbClient.selectedTable} />
         </div>
       );
     } else if (this.props.rethinkDbClient.selectedFavorite.dbConnection !== null) {
