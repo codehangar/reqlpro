@@ -72,20 +72,22 @@ html,body,.container
     display: table-row;
 }
 
-.col-md-3.sidebar-content-col
+.fav-content-col
 {
     display: table-cell;
     background: $darkest-color;
     width: 25%;
     min-width: 90px;
     position: relative;
+    padding:0;
 }
-.col-md-9.sidebar-content-col
+.db-content-col
 {
     display: table-cell;
     background: $dark-color;
     width: 75%;
     min-width: 270px;
+    padding:0;
 }
 /* SIDEBAR LAYOUT STYLES END */
 

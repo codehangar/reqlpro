@@ -27,7 +27,7 @@ var Databases = React.createClass({
     });
 
     return (
-      <div className="col-md-9 sidebar-content-col no-float">
+      <div className="db-content-col">
         {content()}
       </div>
     );
