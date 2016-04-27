@@ -37,23 +37,23 @@ html,body,.container
     float: none;
     padding: 0;
 }
-.col-md-3.main-content-col
+.left-content-col
 {
     display: table-cell;
-    background: #FFFFFF;
-    z-index: 10;
-    min-width: 360px;
+    width: 360px;
+    padding:0;
 }
-.col-md-9.main-content-col
+.body-content-col
 {
     /*display: table-cell;*/
-    display: block;
-    width: 100%;
+    /*display: block;*/
+    /*width: 100%;*/
     background: $lighter-color;
     height: 100vh;
     min-width: 440px;
     overflow-y: auto;
     overflow-x: hidden;
+    padding:0;
 }
 /* MAIN CONTENT LAYOUT STYLES END */
 

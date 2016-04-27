@@ -42,9 +42,7 @@ var Explorer = React.createClass({
     }
 
     return (
-      <div className="col-md-9 main-content-col no-float" width={{
-        width: this.props.width
-      }}>
+      <div className="body-content-col">
           {content}
       </div>
     );

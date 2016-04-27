@@ -13,7 +13,7 @@ var Sidebar = React.createClass({
   },
   render: function() {
     return (
-      <div className="col-md-3 main-content-col no-float">
+      <div className="left-content-col">
         <div id="sidebar" className="container sidebar-content">
           <div className="row sidebar-content-row">
             <Favorites favorites={this.state.rethinkDbClient.favorites} />
