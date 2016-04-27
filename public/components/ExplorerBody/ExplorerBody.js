@@ -63,7 +63,7 @@ var ExplorerBody = React.createClass({
       <div className="row explorer-body" id="explorer-body" style={{
         width: this.props.width
       }}>
-        <div className="col-md-12">
+        <div>
           {explorerBody}
         </div>
       </div>

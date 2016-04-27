@@ -45,15 +45,16 @@ html,body,.container
 }
 .body-content-col
 {
-    /*display: table-cell;*/
+    display: table-cell;
     /*display: block;*/
     /*width: 100%;*/
     background: $lighter-color;
-    height: 100vh;
+    /*height: 100vh;*/
     min-width: 440px;
     overflow-y: auto;
     overflow-x: hidden;
     padding:0;
+    position: relative;
 }
 /* MAIN CONTENT LAYOUT STYLES END */
 
@@ -189,6 +190,13 @@ html,body,.container
     color: #FFF;
 }
 
+.explorer-container{
+/*    position: absolute;
+    bottom: 0;
+    top: 0;
+    width: 100%;*/
+}
+
 .explorer-header {
     background-color: $dark-color;
     padding: 13px 10px;
@@ -199,17 +207,17 @@ html,body,.container
 }
 
 .explorer-footer {
-    margin-top: 15px;
-    padding: 13px 10px;
-    position: fixed;
+    /*margin-top: 15px;*/
+    /*padding: 13px 10px;*/
+    /*position: fixed;*/
     bottom: 0;
     left: 0;
-    width: 100%;
+    /*width: 100%;*/
     background: $lighter-color;
 }
 
 .table-view-container {
-    margin-left: -15px;
+    /*margin-left: -15px;*/
 }
 
 .bread-crumbs p {

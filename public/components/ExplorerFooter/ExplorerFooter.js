@@ -52,15 +52,17 @@ var ExplorerFooter = React.createClass({
     }
 
     return (
-      <div className="row">
-        <div className="col-md-12">
-          <footer className="footer explorer-footer">
-            <div style={{
-              marginLeft: document.getElementById('sidebar').offsetWidth
-            }}>
-            {footerBody}
-            </div>
-          </footer>
+      <div className="explorer-footer">
+        <div className="row">
+          <div className="col-md-12">
+            <footer className="">
+              <div style={{
+                marginLeft: document.getElementById('sidebar').offsetWidth
+              }}>
+              {footerBody}
+              </div>
+            </footer>
+          </div>
         </div>
       </div>
     );

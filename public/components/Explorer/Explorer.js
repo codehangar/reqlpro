@@ -26,8 +26,8 @@ var Explorer = React.createClass({
       );
     } else if (this.props.rethinkDbClient.selectedTable !== null) {
       content = (
-        <div>
-          <ExplorerHeader table={this.props.rethinkDbClient.selectedTable} width={this.props.width} />
+        <div className="explorer-container">
+          <ExplorerHeader table={this.props.rethinkDbClient.selectedTable}/>
           <ExplorerBody table={this.props.rethinkDbClient.selectedTable} width={this.props.width} />
         </div>
       );
