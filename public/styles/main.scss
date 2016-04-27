@@ -97,9 +97,7 @@ html,body,.container
     left: 50%;
     margin-top: -150px;
     margin-left: -300px;
-    padding: 20px;
-    border-radius: 20px;
-    background-color: $darker-grey;
+    z-index: 100000;
 }
 
 .add-favorite {
