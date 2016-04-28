@@ -15,8 +15,8 @@ const Database = React.createClass({
           this.props.selectDatabase(this.props.database)
         }}>
           <i className="fa fa-database"></i>
-          {this.props.database.name}
-        </div>
+            &nbsp;&nbsp;{this.props.database.name}
+          </div>
         {dbTables}
       </div>
     );
