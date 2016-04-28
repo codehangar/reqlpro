@@ -12,6 +12,19 @@ var Explorer = React.createClass({
   componentWillReceiveProps: function(nextProps) {
     this.setState(nextProps);
   },
+  componentDidMount: function() {
+    this.setupEvents(this.findDOMNode);
+  },
+  setupEvents: function() {
+    var _this = this;
+    // Event for updating selected table data
+    console.log("   --> ExplorerBody updateSelectedTable")
+    RethinkDbClient.on('updateSelectedTable', function() {
+      _this.setState({
+        table: RethinkDbClient.selectedTable
+      });
+    });
+  },
   render: function() {
     var content = <p className="select-table">Select a table from a database</p>;
 
@@ -25,18 +38,22 @@ var Explorer = React.createClass({
           </div>
         </div>
       );
-    } else if (this.props.rethinkDbClient.selectedTable !== null) {
+    } else if (RethinkDbClient.selectedTable !== null) {
       content = (
         <div className="explorer-container">
-          <ExplorerHeader table={this.props.rethinkDbClient.selectedTable}/>
-          <ExplorerBody table={this.props.rethinkDbClient.selectedTable} width={this.props.width} />
-          <ExplorerFooter table={this.props.rethinkDbClient.selectedTable} />
+          <ExplorerHeader table={RethinkDbClient.selectedTable}/>
+          <ExplorerBody table={RethinkDbClient.selectedTable} width={this.props.width} />
+          <ExplorerFooter table={RethinkDbClient.selectedTable} />
         </div>
       );
-    } else if (this.props.rethinkDbClient.selectedFavorite.dbConnection !== null) {
+    } else if (RethinkDbClient.selectedFavorite.dbConnection !== null) {
       try {
-        if (this.props.rethinkDbClient.selectedFavorite.dbConnection.name === 'ReqlDriverError') {
-          content = <p className="text-danger">{this.props.rethinkDbClient.selectedFavorite.dbConnection.msg}</p>;
+        if (RethinkDbClient.selectedFavorite.dbConnection.name === 'ReqlDriverError') {
+          content = (
+            <div className="jumbotron">
+              <p className="text-danger">{RethinkDbClient.selectedFavorite.dbConnection.msg}</p>
+            </div>
+          );
         }
       } catch (e) {
         console.log(e);

@@ -6,44 +6,25 @@ var ExplorerCodeView = require('../ExplorerCodeView/ExplorerCodeView');
 var RethinkDbClient = window.rethinkDbClient;
 
 var ExplorerBody = React.createClass({
-  getInitialState: function() {
-    return this.props;
-  },
-  componentWillReceiveProps: function(nextProps) {
-    this.setState(nextProps);
-  },
-  componentDidMount: function() {
-    this.setupEvents(this.findDOMNode);
-  },
-  setupEvents: function() {
-    var _this = this;
-    // Event for updating selected table data
-    console.log("   --> ExplorerBody updateSelectedTable")
-    RethinkDbClient.on('updateSelectedTable', function() {
-      _this.setState({
-        table: RethinkDbClient.selectedTable
-      });
-    });
-  },
   render: function() {
     var explorerBody;
-    if (this.state.table.data.length || this.state.table.type === 'code') {
-      if (this.state.table.type === 'tree') {
+    if (this.props.table.data.length || this.props.table.type === 'code') {
+      if (this.props.table.type === 'tree') {
         explorerBody = (
           <div>
-            <ExplorerTreeView table={this.state.table} />
+            <ExplorerTreeView table={this.props.table} />
           </div>
         );
-      } else if (this.state.table.type === 'table') {
+      } else if (this.props.table.type === 'table') {
         explorerBody = (
           <div className="table-view-container">
-            <ExplorerTableView table={this.state.table} className="data-table-main"/>
+            <ExplorerTableView table={this.props.table} className="data-table-main"/>
           </div>
         );
-      } else if(this.state.table.type === 'code') {
+      } else if(this.props.table.type === 'code') {
         explorerBody = (
           <div>
-            <ExplorerCodeView table={this.state.table} />
+            <ExplorerCodeView table={this.props.table} />
           </div>
         )
       }
