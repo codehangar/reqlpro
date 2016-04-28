@@ -6,6 +6,9 @@ require("./styles/main.scss");
 // TEMPLATES
 require.context('./', true, /index\.html$/);
 
+// IMAGES
+require.context('./images', true, /^\.\//);
+
 // Module needed to access global values from main process to any renderer process
 var remote = window.nodeRequire('remote');
 // var remote = require('remote');
