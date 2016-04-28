@@ -1,34 +1,25 @@
-var React = require('react');
-var classNames = require('classnames');
-var ExplorerHeader = require('../ExplorerHeader/ExplorerHeader');
-var ExplorerBody = require('../ExplorerBody/ExplorerBody');
-var ExplorerFooter = require('../ExplorerFooter/ExplorerFooter');
-var RethinkDbClient = window.rethinkDbClient;
+const React = require('react');
+const ExplorerHeader = require('../ExplorerHeader/ExplorerHeader');
+const ExplorerBody = require('../ExplorerBody/ExplorerBody');
+const ExplorerFooter = require('../ExplorerFooter/ExplorerFooter');
 
-var Explorer = React.createClass({
+const Explorer = React.createClass({
   getInitialState: function() {
-    return this.props;
-  },
-  componentWillReceiveProps: function(nextProps) {
-    this.setState(nextProps);
+    return this.context.store;
   },
   componentDidMount: function() {
-    this.setupEvents(this.findDOMNode);
+    this.setupEvents();
   },
   setupEvents: function() {
-    var _this = this;
-    // Event for updating selected table data
-    console.log("   --> ExplorerBody updateSelectedTable")
-    RethinkDbClient.on('updateSelectedTable', function() {
-      _this.setState({
-        table: RethinkDbClient.selectedTable
-      });
+    this.state.on('updateSelectedTable', () => {
+      console.log("   --> ExplorerBody updateSelectedTable")
+      this.forceUpdate();
     });
   },
   render: function() {
-    var content = <p className="select-table">Select a table from a database</p>;
+    let content = <p className="select-table">Select a table from a database</p>;
 
-    if (RethinkDbClient.favorites.length === 0) {
+    if (this.state.favorites.length === 0) {
       content = (
         <div className="panel panel-default">
           <div className="panel-body text-center">
@@ -38,20 +29,21 @@ var Explorer = React.createClass({
           </div>
         </div>
       );
-    } else if (RethinkDbClient.selectedTable !== null) {
+    } else if (this.state.selectedTable !== null) {
+      console.log("this.state.selectedTable", this.state.selectedTable)
       content = (
         <div className="explorer-container">
-          <ExplorerHeader table={RethinkDbClient.selectedTable}/>
-          <ExplorerBody table={RethinkDbClient.selectedTable} width={this.props.width} />
-          <ExplorerFooter table={RethinkDbClient.selectedTable} />
+          <ExplorerHeader table={this.state.selectedTable} store={this.state} />
+          <ExplorerBody table={this.state.selectedTable} width={this.props.width} />
+          <ExplorerFooter table={this.state.selectedTable} store={this.state} />
         </div>
       );
-    } else if (RethinkDbClient.selectedFavorite.dbConnection !== null) {
+    } else if (this.state.selectedFavorite.dbConnection !== null) {
       try {
-        if (RethinkDbClient.selectedFavorite.dbConnection.name === 'ReqlDriverError') {
+        if (this.state.selectedFavorite.dbConnection.name === 'ReqlDriverError') {
           content = (
             <div className="jumbotron">
-              <p className="text-danger">{RethinkDbClient.selectedFavorite.dbConnection.msg}</p>
+              <p className="text-danger">{this.state.selectedFavorite.dbConnection.msg}</p>
             </div>
           );
         }
@@ -67,5 +59,8 @@ var Explorer = React.createClass({
     );
   }
 });
+Explorer.contextTypes = {
+  store: React.PropTypes.object
+};
 
 module.exports = Explorer;

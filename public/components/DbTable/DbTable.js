@@ -1,15 +1,24 @@
 var React = require('react');
-var classNames = require('classnames');
-var RethinkDbClient = window.rethinkDbClient;
 
-var Favorite = React.createClass({
+var DbTable = React.createClass({
+  getInitialState: function() {
+    return this.context.store;
+  },
+  componentDidMount: function() {
+    this.setupEvents();
+  },
+  setupEvents: function() {
+    this.state.on('updateRehinkDbClient', () => {
+      this.forceUpdate();
+    });
+  },
   updateSelectedTable: function() {
-    RethinkDbClient.updateSelectedTable(this.props.database.name, this.props.table.name);
-    RethinkDbClient.query({
+    this.state.updateSelectedTable(this.props.database.name, this.props.table.name);
+    this.state.query({
       page: 1,
       limit: 5
     });
-    RethinkDbClient.getTableSize();
+    this.state.getTableSize();
   },
   render: function() {
     return (
@@ -19,5 +28,8 @@ var Favorite = React.createClass({
     );
   }
 });
+DbTable.contextTypes = {
+  store: React.PropTypes.object
+};
 
-module.exports = Favorite;
+module.exports = DbTable;

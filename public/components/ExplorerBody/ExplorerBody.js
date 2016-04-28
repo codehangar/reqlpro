@@ -1,13 +1,12 @@
-var React = require('react');
-var classNames = require('classnames');
-var ExplorerTreeView = require('../ExplorerTreeView/ExplorerTreeView');
-var ExplorerTableView = require('../ExplorerTableView/ExplorerTableView');
-var ExplorerCodeView = require('../ExplorerCodeView/ExplorerCodeView');
-var RethinkDbClient = window.rethinkDbClient;
+const React = require('react');
+const ExplorerTreeView = require('../ExplorerTreeView/ExplorerTreeView');
+const ExplorerTableView = require('../ExplorerTableView/ExplorerTableView');
+const ExplorerCodeView = require('../ExplorerCodeView/ExplorerCodeView');
 
-var ExplorerBody = React.createClass({
+const ExplorerBody = React.createClass({
   render: function() {
-    var explorerBody;
+    let explorerBody;
+
     if (this.props.table.data.length || this.props.table.type === 'code') {
       if (this.props.table.type === 'tree') {
         explorerBody = (
@@ -35,6 +34,7 @@ var ExplorerBody = React.createClass({
           </div>
         );
     }
+
     return (
       <div className="row explorer-body" id="explorer-body" style={{
         width: this.props.width

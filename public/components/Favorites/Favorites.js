@@ -1,37 +1,49 @@
-var React = require('react');
-var classNames = require('classnames');
-var Favorite = require('../Favorite/Favorite');
-var AddFavorite = require('../AddFavorite/AddFavorite');
-var RethinkDbClient = window.rethinkDbClient;
+const React = require('react');
+const Favorite = require('../Favorite/Favorite');
+const AddFavorite = require('../AddFavorite/AddFavorite');
 
-var Favorites = React.createClass({
-	getInitialState: function() {
-    return this.props;
+const Favorites = React.createClass({
+  getInitialState: function() {
+    return this.context.store;
   },
   componentDidMount: function() {
     this.setupEvents();
   },
   setupEvents: function() {
-    var _this = this;
-    RethinkDbClient.on('updateFavorites', function() {
-      _this.setState({
-        favorites: RethinkDbClient.favorites
-      });
+    this.state.on('updateRehinkDbClient', () => {
+      this.forceUpdate();
+    });
+    this.state.on('updateFavorites', () => {
+      this.forceUpdate();
     });
   },
+  connectFavorite: function(favorite) {
+    this.state.updateSelectedFavorite(favorite);
+  },
+  addFavorite: function() {
+    this.state.toggleConnectionForm();
+  },
   render: function() {
-    var favoriteNodes = this.state.favorites.map(function(favorite) {
+    const favoriteNodes = this.state.favorites.map((favorite) => {
       return (
-        <Favorite key={favorite.index} favorite={favorite} />
+        <Favorite
+          key={favorite.index}
+          favorite={favorite}
+          selectedFavorite={this.state.selectedFavorite}
+          connectFavorite={this.connectFavorite}
+        />
       );
     });
     return (
       <div className="fav-content-col">
         {favoriteNodes}
-        <AddFavorite />
+        <AddFavorite addFavorite={this.addFavorite} />
       </div>
     );
   }
 });
+Favorites.contextTypes = {
+  store: React.PropTypes.object
+};
 
 module.exports = Favorites;

@@ -13,34 +13,49 @@ require.context('./images', true, /^\.\//);
 var remote = window.nodeRequire('remote');
 // var remote = require('remote');
 
-// Define the RethinkDbClient class
-var RethinkDbClient = require('./scripts/rethinkdb.client');
+// Define the store class
+var Store = require('./scripts/global.store');
 
 // Connection model for connection favorites
 var Connection = require('./models/Connection');
 
-// Instantiate RethinkDbClient Class with any params needed
-RethinkDbClient = new RethinkDbClient({
+// Instantiate store Class with any params needed
+const store = new Store({
   favorites: JSON.parse(remote.getGlobal('userConfig')).favorites, // Setup favorites from config file
   connection: Connection.create() // Setup default connection for connectionForm
 });
-
-// Attach this new instance to window object for global access
-window.rethinkDbClient = RethinkDbClient;
 
 // React Specific libs/components
 var React = require('react');
 var ReactDOM = require('react-dom');
 var App = require('./components/App/App');
 
+// Create Provider Class to provide global store to anyone who wants it
+class Provider extends React.Component {
+  getChildContext() {
+    return {
+      store: this.props.store
+    };
+  }
+
+  render() {
+    return this.props.children;
+  }
+}
+Provider.childContextTypes = {
+  store: React.PropTypes.object
+}
+
 function init() {
   // If anything in memeory for favorites load the first one when app starts
-  if (window.rethinkDbClient.favorites.length) {
-    window.rethinkDbClient.updateSelectedFavorite(window.rethinkDbClient.favorites[0]);
+  if (store.favorites.length) {
+    store.updateSelectedFavorite(store.favorites[0]);
   }
   // Render App Component
   ReactDOM.render(
-    <App rethinkDbClient={window.rethinkDbClient} />,
+    <Provider store={store}>
+      <App />
+    </Provider>,
     document.getElementById('app')
   );
 };

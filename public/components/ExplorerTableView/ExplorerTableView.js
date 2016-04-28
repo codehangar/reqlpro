@@ -61,7 +61,6 @@ var ExplorerTableView = React.createClass({
       <Column
         key="actions"
         header={<Cell>Action</Cell>}
-        isResizable={true}
         columnKey="action"
         cell={(props) => {
               const row = this.props.table.data[props.rowIndex];
@@ -98,8 +97,8 @@ var ExplorerTableView = React.createClass({
           width={this.state.columnWidths[fieldName]} />
       );
     });
-    console.log("columnNodes", columnNodes)
 
+    console.log("columnNodes", columnNodes)
     columnNodes = [actionColumn].concat(columnNodes);
     console.log("columnNodes", columnNodes)
 

@@ -1,13 +1,11 @@
-var RethinkDbClient = window.rethinkDbClient;
-var React = require('react');
-var Sidebar = require('../Sidebar/Sidebar');
-var Explorer = require('../Explorer/Explorer');
-var ConnectionForm = require('../ConnectionForm/ConnectionForm');
-var Connection = require('../../models/Connection');
+const React = require('react');
+const Sidebar = require('../Sidebar/Sidebar');
+const Explorer = require('../Explorer/Explorer');
+const ConnectionForm = require('../ConnectionForm/ConnectionForm');
 
-var App = React.createClass({
+const App = React.createClass({
   getInitialState: function() {
-    return this.props;
+    return this.context.store;
   },
   componentDidMount: function() {
     this.setupEvents();
@@ -25,29 +23,30 @@ var App = React.createClass({
     window.onresize = null;
   },
   setupEvents: function() {
-    var _this = this;
+
     // Event for toggling connection form
-    RethinkDbClient.on('toggleConnectionForm', function() {
-      _this.setState({
-        rethinkDbClient: RethinkDbClient
-      });
+    this.state.on('toggleConnectionForm', () => {
+      console.log("toggleConnectionForm")
+      this.forceUpdate();
     });
+
     // Event for updating selected favorite
-    RethinkDbClient.on('updateRehinkDbClient', function() {
-      _this.setState({
-        rethinkDbClient: RethinkDbClient
-      });
+    this.state.on('updateRehinkDbClient', () => {
+      this.forceUpdate();
     });
   },
   render: function() {
     return (
       <div className="row main-content-row">
-        <Sidebar rethinkDbClient={this.state.rethinkDbClient} />
-        <Explorer rethinkDbClient={this.state.rethinkDbClient}/>
-        <ConnectionForm connection={this.state.rethinkDbClient.connection.toJson()} show={this.state.rethinkDbClient.router.connectionForm.show} action={this.state.rethinkDbClient.router.connectionForm.action} />
+        <Sidebar  />
+        <Explorer />
+        <ConnectionForm />
       </div>
     );
   }
 });
+App.contextTypes = {
+  store: React.PropTypes.object
+};
 
 module.exports = App;

@@ -1,18 +1,11 @@
-var React = require('react');
-var classNames = require('classnames');
-var RethinkDbClient = window.rethinkDbClient;
+const React = require('react');
+const classNames = require('classnames');
 
-var ExplorerHeader = React.createClass({
+const ExplorerHeader = React.createClass({
   toggleExplorerBody: function(key, e) {
     e.preventDefault();
-    RethinkDbClient.toggleExplorerBody(key);
+    this.props.store.toggleExplorerBody(key);
   },
-  // toogleAddItem: function() {
-  //   RethinkDbClient.insert({
-  //     name: 'Johnny ' + (new Date()).getSeconds(),
-  //     age: (new Date()).getSeconds()
-  //   });
-  // },
   render: function() {
 
     let buttonClasses = {
@@ -36,10 +29,9 @@ var ExplorerHeader = React.createClass({
       })
     };
 
-    var breadCrumbText;
-    console.log(this.props.table);
-    if(this.props.table.type === 'code') {
-      if(this.props.table.codeAction === 'update') {
+    let breadCrumbText;
+    if (this.props.table.type === 'code') {
+      if (this.props.table.codeAction === 'update') {
         breadCrumbText = (
           <div className="breadcrumb-text-container">
             <span><i className="fa fa-database"></i> {this.props.table.databaseName} </span>
@@ -50,7 +42,7 @@ var ExplorerHeader = React.createClass({
           </div>
         );
       }
-      if(this.props.table.codeAction === 'add') {
+      if (this.props.table.codeAction === 'add') {
         breadCrumbText = (
           <div className="breadcrumb-text-container">
             <span><i className="fa fa-database"></i> {this.props.table.databaseName} </span>

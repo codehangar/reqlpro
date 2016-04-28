@@ -7,7 +7,7 @@ var jdenticon = require('jdenticon');
 var Connection = require('../models/Connection');
 var md5 = require('md5');
 
-var RethinkDbClient = function(params) {
+var store = function(params) {
   EventEmitter.call(this); // Inherit constructor
   this.router = {
     connectionForm: {
@@ -24,10 +24,10 @@ var RethinkDbClient = function(params) {
   this.selectedTable = null;
 };
 
-util.inherits(RethinkDbClient, EventEmitter); // Inherit eventemitter prototype
+util.inherits(store, EventEmitter); // Inherit eventemitter prototype
 
 // Update selected favorite
-RethinkDbClient.prototype.updateSelectedFavorite = function(favorite) {
+store.prototype.updateSelectedFavorite = function(favorite) {
   var _this = this;
   _this.selectedFavorite = JSON.parse(JSON.stringify(favorite));
   _this.selectedFavorite.databases = [];
@@ -55,7 +55,7 @@ RethinkDbClient.prototype.updateSelectedFavorite = function(favorite) {
 };
 
 // Toggle Connection Form
-RethinkDbClient.prototype.toggleConnectionForm = function(info) {
+store.prototype.toggleConnectionForm = function(info) {
   this.connection = Connection.create();
   if (info) {
     // If we pass info lets set data on connection model
@@ -72,11 +72,13 @@ RethinkDbClient.prototype.toggleConnectionForm = function(info) {
     this.router.connectionForm.action = 'Add';
   }
   this.router.connectionForm.show = !this.router.connectionForm.show;
+      console.log("emit toggleConnectionForm")
+
   this.emit('toggleConnectionForm');
 };
 
 // Add favorite
-RethinkDbClient.prototype.addFavorite = function(favorite) {
+store.prototype.addFavorite = function(favorite) {
   this.favorites.push({
     name: favorite.name.value,
     host: favorite.host.value,
@@ -93,7 +95,7 @@ RethinkDbClient.prototype.addFavorite = function(favorite) {
 };
 
 // Edit favorite
-RethinkDbClient.prototype.editFavorite = function(favorite) {
+store.prototype.editFavorite = function(favorite) {
   this.favorites[favorite.index] = {
     name: favorite.name.value,
     host: favorite.host.value,
@@ -114,7 +116,7 @@ RethinkDbClient.prototype.editFavorite = function(favorite) {
 };
 
 // Edit favorite
-RethinkDbClient.prototype.deleteFavorite = function(favorite) {
+store.prototype.deleteFavorite = function(favorite) {
   this.favorites.splice(favorite.index, 1);
   // Lets update selected favorite since we just deleted our selected favorite
   if (this.selectedFavorite.index === favorite.index) {
@@ -141,29 +143,26 @@ RethinkDbClient.prototype.deleteFavorite = function(favorite) {
 };
 
 // Show Tables
-RethinkDbClient.prototype.updateDbTables = function(database) {
-  var _this = this;
+store.prototype.updateDbTables = function(database) {
   // Get table list from rethink service
-  return new Promise(function(resolve, reject) {
-    RethinkDbService.getTableList(_this.selectedFavorite.dbConnection, database.name).then(function(tableList) {
-      // Wipe out previous tables
-      database.tables = [];
-      // Build up a table object and push to tables array on database
-      for (var i = 0; i < tableList.length; i++) {
-        database.tables.push({
-          name: tableList[i]
-        });
-      }
-      resolve(database);
-    }).catch(function(err) {
-      console.log(err);
-      reject(err);
-    });
+  RethinkDbService.getTableList(this.selectedFavorite.dbConnection, database.name).then((tableList) => {
+    // Wipe out previous tables
+    database.tables = [];
+
+    // Build up a table object and push to tables array on database
+    for (var i = 0; i < tableList.length; i++) {
+      database.tables.push({
+        name: tableList[i]
+      });
+    }
+
+    this.selectedDatabase = database;
+    this.emit('updateRehinkDbClient');
   });
 };
 
 // Update Selected Table
-RethinkDbClient.prototype.updateSelectedTable = function(databaseName, tableName) {
+store.prototype.updateSelectedTable = function(databaseName, tableName) {
   this.selectedTable = {
     databaseName: databaseName,
     name: tableName,
@@ -176,7 +175,7 @@ RethinkDbClient.prototype.updateSelectedTable = function(databaseName, tableName
 };
 
 // Get initial table data
-RethinkDbClient.prototype.query = function(queryParams = this.selectedTable.query) {
+store.prototype.query = function(queryParams = this.selectedTable.query) {
   this.selectedTable.query = queryParams;
   console.log("QUERY this.selectedTable.query", this.selectedTable.query)
   if (queryParams.page) {
@@ -187,7 +186,7 @@ RethinkDbClient.prototype.query = function(queryParams = this.selectedTable.quer
 };
 
 // Get initial table data
-RethinkDbClient.prototype.getTableData = function(index, limit = 25, page = 1) {
+store.prototype.getTableData = function(index, limit = 25, page = 1) {
   const conn = this.selectedFavorite.dbConnection;
   const db = this.selectedTable.databaseName;
   const table = this.selectedTable.name;
@@ -209,7 +208,7 @@ RethinkDbClient.prototype.getTableData = function(index, limit = 25, page = 1) {
 };
 
 // Get initial table data
-RethinkDbClient.prototype.getTableDataBetween = function(index, start, end) {
+store.prototype.getTableDataBetween = function(index, start, end) {
   const conn = this.selectedFavorite.dbConnection;
   const db = this.selectedTable.databaseName;
   const table = this.selectedTable.name;
@@ -230,12 +229,12 @@ RethinkDbClient.prototype.getTableDataBetween = function(index, start, end) {
 };
 
 // Get table size
-RethinkDbClient.prototype.getTableSize = function() {
+store.prototype.getTableSize = function() {
   const conn = this.selectedFavorite.dbConnection;
   const db = this.selectedTable.databaseName;
   const table = this.selectedTable.name;
 
-  RethinkDbService.getTableSize(conn, db, table).then((tableSize) =>{
+  RethinkDbService.getTableSize(conn, db, table).then((tableSize) => {
     this.selectedTable.size = tableSize;
     this.emit('updateSelectedTable');
   }).catch(function(err) {
@@ -244,12 +243,12 @@ RethinkDbClient.prototype.getTableSize = function() {
 };
 
 // Insert row
-RethinkDbClient.prototype.insert = function(record) {
+store.prototype.insert = function(record) {
   const conn = this.selectedFavorite.dbConnection;
   const db = this.selectedTable.databaseName;
   const table = this.selectedTable.name;
 
-  RethinkDbService.insert(conn, db, table, record).then((result) =>{
+  RethinkDbService.insert(conn, db, table, record).then((result) => {
     this.selectedTable.lastResult = result;
     // Run last query to update view
     this.query();
@@ -263,7 +262,7 @@ RethinkDbClient.prototype.insert = function(record) {
 };
 
 // Switch to edit mode
-RethinkDbClient.prototype.startEdit = function(record) {
+store.prototype.startEdit = function(record) {
   this.selectedTable.codeAction = 'update';
   this.selectedTable.codeBody = record;
   this.selectedTable.type = 'code';
@@ -271,12 +270,12 @@ RethinkDbClient.prototype.startEdit = function(record) {
 };
 
 // Update row
-RethinkDbClient.prototype.update = function(record) {
+store.prototype.update = function(record) {
   const conn = this.selectedFavorite.dbConnection;
   const db = this.selectedTable.databaseName;
   const table = this.selectedTable.name;
 
-  RethinkDbService.update(conn, db, table, record).then((result) =>{
+  RethinkDbService.update(conn, db, table, record).then((result) => {
     this.selectedTable.lastResult = result;
     // Run last query to update view
     this.query();
@@ -290,12 +289,12 @@ RethinkDbClient.prototype.update = function(record) {
 
 // Replace row
 // The difference here is that it will create a new record if an id is not found
-RethinkDbClient.prototype.replace = function(record) {
+store.prototype.replace = function(record) {
   const conn = this.selectedFavorite.dbConnection;
   const db = this.selectedTable.databaseName;
   const table = this.selectedTable.name;
 
-  RethinkDbService.replace(conn, db, table, record).then((result) =>{
+  RethinkDbService.replace(conn, db, table, record).then((result) => {
     this.selectedTable.lastResult = result;
     // Run last query to update view
     this.query();
@@ -309,7 +308,7 @@ RethinkDbClient.prototype.replace = function(record) {
 };
 
 // Save Row from code view
-RethinkDbClient.prototype.saveRow = function(row) {
+store.prototype.saveRow = function(row) {
   // Lets update the codeBody for when the rerender happens
   this.selectedTable.codeBody = row;
   if (this.selectedTable.codeAction === 'update') {
@@ -318,11 +317,11 @@ RethinkDbClient.prototype.saveRow = function(row) {
     // Using replace will insert a new record
     // I'm assuming replace is less performant than update so lets use update when possible
     this.selectedTable.data.forEach(function(item, index) {
-      if(item.id === row.id) {
+      if (item.id === row.id) {
         matched = true;
       }
     });
-    if(matched) {
+    if (matched) {
       this.update(row);
     } else {
       this.replace(row);
@@ -334,12 +333,12 @@ RethinkDbClient.prototype.saveRow = function(row) {
 };
 
 // Delete Row
-RethinkDbClient.prototype.deleteRow = function(row) {
+store.prototype.deleteRow = function(row) {
   const conn = this.selectedFavorite.dbConnection;
   const db = this.selectedTable.databaseName;
   const table = this.selectedTable.name;
 
-  RethinkDbService.delete(conn, db, table, row).then((result) =>{
+  RethinkDbService.delete(conn, db, table, row).then((result) => {
     this.selectedTable.lastResult = result;
     // Run last query to update view
     this.query();
@@ -353,13 +352,13 @@ RethinkDbClient.prototype.deleteRow = function(row) {
 };
 
 // Toggle Selected Table Type
-RethinkDbClient.prototype.toggleExplorerBody = function(type) {
+store.prototype.toggleExplorerBody = function(type) {
   this.selectedTable.type = type;
-  if(type === 'code') {
+  if (type === 'code') {
     this.selectedTable.codeAction = 'add';
     this.selectedTable.codeBody = {};
   }
   this.emit('updateRehinkDbClient');
 };
 
-module.exports = RethinkDbClient;
+module.exports = store;

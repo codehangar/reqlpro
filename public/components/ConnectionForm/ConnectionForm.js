@@ -1,13 +1,33 @@
-var React = require('react');
-var classNames = require('classnames');
-var RethinkDbClient = window.rethinkDbClient;
+const React = require('react');
+const classNames = require('classnames');
 
-var ConnectionForm = React.createClass({
+const ConnectionForm = React.createClass({
   getInitialState: function() {
-    return this.props;
+    return {
+      store: this.context.store,
+      connection: this.context.store.connection,
+      show: this.context.store.router.connectionForm.show,
+      action: this.context.store.router.connectionForm.action
+    };
   },
-  componentWillReceiveProps: function(nextProps) {
-    this.setState(nextProps);
+  componentDidMount: function() {
+    this.setupEvents();
+  },
+  setupEvents: function() {
+    const updateState = () => {
+      this.setState({
+        connection: this.context.store.connection,
+        show: this.context.store.router.connectionForm.show,
+        action: this.context.store.router.connectionForm.action
+      });
+    }
+
+    this.state.store.on('updateRehinkDbClient', () => {
+      updateState();
+    });
+    this.state.store.on('toggleConnectionForm', () => {
+      updateState();
+    });
   },
   handleTextChange: function(key, e) {
     var attribute = this.state.connection;
@@ -22,33 +42,31 @@ var ConnectionForm = React.createClass({
     this.setState(attributes);
   },
   handleSubmit: function(e) {
-    e.preventDefault();
     this.handleValidation();
     if (this.state.connection.name.valid && this.state.connection.host.valid && this.state.connection.port.valid) {
       // Save new favorite and turn off form
       if (this.state.action === 'Add') {
-        RethinkDbClient.addFavorite(this.state.connection);
+        this.state.store.addFavorite(this.state.connection);
       } else {
-        RethinkDbClient.editFavorite(this.state.connection);
+        this.state.store.editFavorite(this.state.connection);
       }
-      RethinkDbClient.toggleConnectionForm();
+      this.state.store.toggleConnectionForm();
     }
   },
   handleCancel: function(e) {
-    e.preventDefault();
-    RethinkDbClient.toggleConnectionForm();
+    this.state.store.toggleConnectionForm();
   },
   handleDelete: function(e) {
-    e.preventDefault();
-    RethinkDbClient.deleteFavorite(this.state.connection);
-    RethinkDbClient.toggleConnectionForm();
+    this.state.store.deleteFavorite(this.state.connection);
+    this.state.store.toggleConnectionForm();
   },
   render: function() {
     var containerStyles = {
       display: this.state.show ? 'block' : 'none'
     };
+
     // Validation Classes
-    var inputValidationClasses = {
+    const inputValidationClasses = {
       name: classNames({
         'form-group': true,
         'has-error': !this.state.connection.name.valid
@@ -68,10 +86,12 @@ var ConnectionForm = React.createClass({
         'form-group': true
       })
     };
-    var deleteButton = '';
+
+    let deleteButton = '';
     if (this.state.action === 'Edit') {
       deleteButton = <button type="delete" className="btn btn-default" onClick={this.handleDelete}>Delete</button>
     }
+
     return (
       <div className="connectionForm" style={containerStyles}>
         <div className="panel panel-default">
@@ -117,5 +137,8 @@ var ConnectionForm = React.createClass({
     );
   }
 });
+ConnectionForm.contextTypes = {
+  store: React.PropTypes.object
+};
 
 module.exports = ConnectionForm;

@@ -1,17 +1,40 @@
 var React = require('react');
-var classNames = require('classnames');
 var DatabasesHeader = require('../DatabasesHeader/DatabasesHeader');
 var Database = require('../Database/Database');
-var RethinkDbClient = window.rethinkDbClient;
 
 var Databases = React.createClass({
+  getInitialState: function() {
+    return this.context.store;
+  },
+  componentDidMount: function() {
+    this.setupEvents();
+  },
+  setupEvents: function() {
+    this.state.on('updateRehinkDbClient', () => {
+      this.forceUpdate();
+    });
+  },
+  selectDatabase: function(database) {
+    this.state.updateDbTables(database);
+  },
   render: function() {
 
+    const databaseNodes = this.state.selectedFavorite.databases.map((database) => {
+      return (
+        <Database
+          key={database.name}
+          database={database}
+          selectedDatabase={this.state.selectedDatabase}
+          selectDatabase={this.selectDatabase}
+        />
+      );
+    });
+
     const content = () => {
-      if (RethinkDbClient.favorites.length > 0) {
+      if (this.state.favorites.length > 0) {
         return (
           <span>
-            <DatabasesHeader selectedFavorite={this.props.selectedFavorite} />
+            <DatabasesHeader selectedFavorite={this.state.selectedFavorite} store={this.state} />
             {databaseNodes}
           </span>
         );
@@ -19,12 +42,6 @@ var Databases = React.createClass({
         return (<div></div>);
       }
     }
-
-    var databaseNodes = this.props.selectedFavorite.databases.map((database) => {
-      return (
-        <Database key={database.name} database={database} />
-      );
-    });
 
     return (
       <div className="db-content-col">
@@ -34,5 +51,8 @@ var Databases = React.createClass({
 
   }
 });
+Databases.contextTypes = {
+  store: React.PropTypes.object
+};
 
 module.exports = Databases;
