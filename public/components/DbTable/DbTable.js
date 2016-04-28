@@ -14,8 +14,7 @@ var Favorite = React.createClass({
   render: function() {
     return (
       <div onClick={this.updateSelectedTable} className="db-table">
-        <i className="fa fa-table"></i>
-        <p>{this.props.table.name}</p>
+        <div><i className="fa fa-table"></i> {this.props.table.name}</div>
       </div>
     );
   }

@@ -11,9 +11,10 @@ html, body, .container {
   word-wrap: break-word;
 }
 
-.sidebar-content-row p {
+
+/*.sidebar-content-row p {
   color: #FFFFFF;
-}
+}*/
 
 
 /* MAIN CONTENT LAYOUT STYLES */
@@ -71,12 +72,12 @@ html, body, .container {
 .sidebar-content-row {
   height: 100%;
   display: table-row;
+  color: #fff;
 }
 
 .fav-content-col {
   display: table-cell;
   background: $darkest-color;
-  width: 25%;
   min-width: 90px;
   position: relative;
   padding: 0;
@@ -121,17 +122,21 @@ html, body, .container {
 }
 
 .favorite-identicon {
-  border-radius: 5px;
+  border-radius: 2px;
   margin-left: 24px;
   cursor: pointer;
   width: 40px;
   height: 40px;
   margin-bottom: 5px;
   background: #FFF;
+  margin-bottom: 15px;
 }
 
-.favorite:first-of-type {
-  margin-top: -25px;
+.favorite {
+  position: relative;
+  top: 30px;
+  margin-bottom: 30px;
+  font-size: 11px;
 }
 
 .favorite p {
@@ -139,57 +144,78 @@ html, body, .container {
 }
 
 .databases-header {
-  padding-bottom: 10px;
-  margin-bottom: 15px;
-  border-bottom: 1px solid #FFF;
-  margin-top: 6px;
+  height: 28px;
+  position: relative;
+  top: -10px;
+  padding: 0px 20px;
+  font-weight: bold;
 }
 
 .databases-header p {
-  font-size: 2em;
-  padding-left: 15px;
+  /*font-size: 2em;*/
+  /*padding-left: 15px;*/
   display: inline;
 }
 
-.edit-connection {
-  font-size: 1.5em;
-  color: #FFF;
-  margin-left: 10px
+.databases-header .edit-connection {
+  float: right;
+  color: lighten($dark-color, 10%);
 }
 
-.database {
-  padding-left: 20px;
+.databases-header .edit-connection:hover {
+  color: lighten($dark-color, 30%);
+}
+
+.database .db {
+  padding: 10px 20px;
   cursor: pointer;
+  background: lighten($dark-color, 2%);
+  border-bottom: $dark-color 1px solid;
 }
 
-.fa-database {
+.database .db:hover {
+  background: lighten($dark-color, 4%);
+}
+
+
+/*.fa-database {
   display: inline;
   font-size: 1.5em;
   color: #FFF;
-}
+}*/
 
-.database p {
+
+/*.database p {
   display: inline;
   padding-left: 10px;
   font-size: 1.5em;
   margin-top: 5px;
-}
+}*/
 
-.db-tables {
+
+/*.db-tables {
   padding-left: 20px;
   margin-top: 10px;
   margin-bottom: 10px;
+}*/
+
+.db-table div {
+  padding: 10px 40px;
+  cursor: pointer;
+  background: darken($dark-color, 1%);
+  border-bottom: darken($dark-color, 2%) 1px solid;
 }
 
-.db-table p {
-  font-size: 1em;
+.db-table div:hover {
+  background: $dark-color;
 }
 
-.fa-table {
+
+/*.fa-table {
   display: inline;
   font-size: 1em;
   color: #FFF;
-}
+}*/
 
 .explorer-container {
   position: absolute;
@@ -199,13 +225,16 @@ html, body, .container {
 }
 
 .explorer-header {
-  background-color: $dark-color;
-  padding: 13px 10px;
+  background: $lighter-color;
+  padding: 15px 20px;
+  ;
+  height: 55px;
+  color: #999;
 }
 
-.explorer-header button {
-  margin-left: 5px;
-  margin: 0;
+.explorer-header .btn-group {
+  margin-left: 10px;
+  /* margin: 0; */
 }
 
 .explorer-body {
@@ -225,7 +254,7 @@ html, body, .container {
   /* width: 100%; */
   left: 360px;
   background: $lighter-color;
-  height:50px;
+  height: 50px;
   padding: 10px;
 }
 
@@ -246,18 +275,23 @@ html, body, .container {
   bottom: 50px;
 }
 
-.bread-crumbs p {
-  color: #FFF;
+.breadcrumb-text-container {
   display: inline;
-  font-size: 1.5em;
+  position: relative;
+  top: 6px;
+}
+
+.breadcrumb-text-container span {
+  /*display: inline;*/
+  /*font-size: 1.5em;*/
 }
 
 .bread-crumbs .fa-arrow-right {
-  color: #FFF;
-  font-size: 1.5em;
-  display: inline;
-  padding-left: 10px;
-  padding-right: 10px;
+  /*color: #FFF;*/
+  /*font-size: 1.5em;*/
+  /*display: inline;*/
+  /*padding-left: 10px;*/
+  /*padding-right: 10px;*/
 }
 
 .empty-table {
@@ -270,8 +304,8 @@ html, body, .container {
   color: $dark-color;
 }
 
-.favorite.active {
-  border: 1px solid #fff;
+.favorite.active .favorite-identicon {
+  box-shadow: 0 0 0px 12px lighten($darkest-color, 4%);
 }
 
 .loading-cell {
@@ -282,6 +316,7 @@ html, body, .container {
 .pagination-details {
   display: inline;
   line-height: 32px;
+  color: #999;
 }
 
 #editor {
@@ -292,6 +327,6 @@ html, body, .container {
   left: 0;
 }
 
-.breadcrumb-text-container {
-  display: inline;
+.action-buttons .btn {
+  margin-right: 5px;
 }

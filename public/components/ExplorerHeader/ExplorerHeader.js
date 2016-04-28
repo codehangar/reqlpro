@@ -17,19 +17,19 @@ var ExplorerHeader = React.createClass({
 
     let buttonClasses = {
       tree: classNames({
-        'btn': true,
+        'btn btn-default btn-sm': true,
         'fa': true,
         'fa-tree': true,
         'active': this.props.table.type === 'tree'
       }),
       table: classNames({
-        'btn': true,
+        'btn btn-default btn-sm': true,
         'fa': true,
         'fa-th': true,
         'active': this.props.table.type === 'table'
       }),
       code: classNames({
-        'btn': true,
+        'btn btn-default btn-sm': true,
         'fa': true,
         'fa-plus': true,
         'active': this.props.table.type === 'code'
@@ -42,46 +42,44 @@ var ExplorerHeader = React.createClass({
       if(this.props.table.codeAction === 'update') {
         breadCrumbText = (
           <div className="breadcrumb-text-container">
-            <p>{this.props.table.databaseName}</p>
-            <i className="fa fa-arrow-right"></i>
-            <p>{this.props.table.name}</p>
-            <i className="fa fa-arrow-right"></i>
-            <p>Update</p>
+            <span><i className="fa fa-database"></i> {this.props.table.databaseName} </span>
+            <i className="fa fa-angle-right"></i>
+            <span> <i className="fa fa-table"></i> {this.props.table.name} </span>
+            <i className="fa fa-angle-right"></i>
+            <span>Update</span>
           </div>
         );
       }
       if(this.props.table.codeAction === 'add') {
         breadCrumbText = (
           <div className="breadcrumb-text-container">
-            <p>{this.props.table.databaseName}</p>
-            <i className="fa fa-arrow-right"></i>
-            <p>{this.props.table.name}</p>
-            <i className="fa fa-arrow-right"></i>
-            <p>Insert</p>
+            <span><i className="fa fa-database"></i> {this.props.table.databaseName} </span>
+            <i className="fa fa-angle-right"></i>
+            <span> <i className="fa fa-table"></i> {this.props.table.name} </span>
+            <i className="fa fa-angle-right"></i>
+            <span>Insert</span>
           </div>
         );
       }
     } else {
       breadCrumbText = (
         <div className="breadcrumb-text-container">
-          <p>{this.props.table.databaseName}</p>
-          <i className="fa fa-arrow-right"></i>
-          <p>{this.props.table.name}</p>
+          <span><i className="fa fa-database"></i> {this.props.table.databaseName} </span>
+          <i className="fa fa-angle-right"></i>
+          <span> <i className="fa fa-table"></i> {this.props.table.name} </span>
         </div>
       );
     }
 
     return (
-      <div className="row explorer-header" id="explorer-header">
-        <div className="col-md-12">
-          <div>
-            <div className="bread-crumbs">
-              {breadCrumbText}
-              <div className="pull-right">
-                <button onClick={this.toggleExplorerBody.bind(this, 'code')} className={buttonClasses.code} />
-                <button onClick={this.toggleExplorerBody.bind(this, 'tree')} className={buttonClasses.tree} />
-                <button onClick={this.toggleExplorerBody.bind(this, 'table')} className={buttonClasses.table} />
-              </div>
+      <div className="explorer-header" id="explorer-header">
+        <div className="bread-crumbs">
+          {breadCrumbText}
+          <div className="pull-right">
+            <span onClick={this.toggleExplorerBody.bind(this, 'code')} className={buttonClasses.code} />
+            <div className="btn-group" role="group">
+              <span onClick={this.toggleExplorerBody.bind(this, 'tree')} className={buttonClasses.tree} />
+              <span onClick={this.toggleExplorerBody.bind(this, 'table')} className={buttonClasses.table} />
             </div>
           </div>
         </div>

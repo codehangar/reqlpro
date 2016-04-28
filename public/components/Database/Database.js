@@ -26,8 +26,8 @@ var Database = React.createClass({
     }
     return (
       <div className="database">
-        <i className="fa fa-database"></i>
-        <p onClick={this.showTables}>{this.state.database.name}</p>
+        
+        <div className="db" onClick={this.showTables}><i className="fa fa-database"></i> {this.state.database.name}</div>
         {dbTables}
       </div>
     );

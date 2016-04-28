@@ -27,7 +27,6 @@ var Favorites = React.createClass({
     });
     return (
       <div className="fav-content-col">
-        <br />
         {favoriteNodes}
         <AddFavorite />
       </div>
