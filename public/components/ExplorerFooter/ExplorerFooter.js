@@ -51,6 +51,10 @@ var ExplorerFooter = React.createClass({
       );
     }
 
+    if (this.props.table.type !== 'code' && !this.props.table.data.length) {
+      footerBody = '';
+    }
+
     return (
       <div className="explorer-footer">
         {footerBody}
