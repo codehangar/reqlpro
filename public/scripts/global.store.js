@@ -263,6 +263,7 @@ store.prototype.insert = function(record) {
     // Run last query to update view
     this.query();
     this.getTableSize();
+    this.selectedTable.type = 'table';
     console.log("--------> insert result", result)
   }).catch((err) => {
     // Run last query to update view
@@ -289,6 +290,7 @@ store.prototype.update = function(record) {
     this.selectedTable.lastResult = result;
     // Run last query to update view
     this.query();
+    this.selectedTable.type = 'table';
     console.log("--------> update result", result)
   }).catch((err) => {
     // Run last query to update view
@@ -309,6 +311,7 @@ store.prototype.replace = function(record) {
     // Run last query to update view
     this.query();
     this.getTableSize();
+    this.selectedTable.type = 'table';
     console.log("--------> replace result", result)
   }).catch((err) => {
     // Run last query to update view
