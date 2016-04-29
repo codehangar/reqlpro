@@ -328,13 +328,16 @@ store.prototype.saveRow = function(row) {
     row = JSON.parse(row);
     this.selectedTable.codeBodyError = null;
   } catch(e) {
-    this.selectedTable.codeBodyError = 'You can only save valid json to your table.';
+    this.selectedTable.codeBodyError = 'You can only save valid json to your table';
     this.emit('updateSelectedTable');
     return;
   }
-  // Lets update the codeBody for when the rerender happens
-  this.selectedTable.codeBody = row;
   if (this.selectedTable.codeAction === 'update') {
+    if(row.length) {
+      this.selectedTable.codeBodyError = 'Update expects a single item';
+      this.emit('updateSelectedTable');
+      return;
+    }
     let matched = false;
     // Extra protection here if people alter the id when updating
     // Using replace will insert a new record
