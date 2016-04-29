@@ -8,7 +8,7 @@ var DbTable = React.createClass({
     this.state.updateSelectedTable(this.props.database.name, this.props.table.name);
     this.state.query({
       page: 1,
-      limit: 5
+      limit: 25
     });
     this.state.getTableSize();
   },
