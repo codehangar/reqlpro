@@ -335,3 +335,16 @@ html, body, .container {
     max-width: 60%;
     margin: 50px 0;
 }
+
+.toast-container {
+  position: absolute;
+  z-index: 1;
+  right: 15px;
+  top: 15px;
+  padding: 0 30px;
+  border-radius: 5px;
+
+  i {
+    margin-right: -10px;
+  }
+}

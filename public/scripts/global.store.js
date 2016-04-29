@@ -56,13 +56,14 @@ store.prototype.updateSelectedFavorite = function(favorite) {
 
 // Update CodeBody for Code view
 store.prototype.updateCodeBody = function(body) {
-  try {
-    const obj = JSON.parse(body);
-    this.selectedTable.codeBody = obj;
-  } catch(e) {
-    return;
-  }
+  this.selectedTable.codeBody = body;
 };
+
+// Clear CodeBody error
+store.prototype.clearCodeBodyError = function() {
+  this.selectedTable.codeBodyError = null;
+  this.emit('updateSelectedTable');
+}
 
 // Toggle Connection Form
 store.prototype.toggleConnectionForm = function(info) {
@@ -178,8 +179,9 @@ store.prototype.updateSelectedTable = function(databaseName, tableName) {
     name: tableName,
     type: this.selectedTable ? this.selectedTable.type : 'table',
     data: [],
-    codeBody: {},
-    codeAction: 'add'
+    codeBody: "{}",
+    codeAction: 'add',
+    codeBodyError: null
   };
   this.emit('updateRehinkDbClient');
 };
@@ -275,7 +277,7 @@ store.prototype.insert = function(record) {
 // Switch to edit mode
 store.prototype.startEdit = function(record) {
   this.selectedTable.codeAction = 'update';
-  this.selectedTable.codeBody = record;
+  this.selectedTable.codeBody = JSON.stringify(record, null, '\t');
   this.selectedTable.type = 'code';
   this.emit('updateRehinkDbClient');
 };
@@ -322,6 +324,14 @@ store.prototype.replace = function(record) {
 
 // Save Row from code view
 store.prototype.saveRow = function(row) {
+  try {
+    row = JSON.parse(row);
+    this.selectedTable.codeBodyError = null;
+  } catch(e) {
+    this.selectedTable.codeBodyError = 'You can only save valid json to your table.';
+    this.emit('updateSelectedTable');
+    return;
+  }
   // Lets update the codeBody for when the rerender happens
   this.selectedTable.codeBody = row;
   if (this.selectedTable.codeAction === 'update') {
@@ -369,7 +379,7 @@ store.prototype.toggleExplorerBody = function(type) {
   this.selectedTable.type = type;
   if (type === 'code') {
     this.selectedTable.codeAction = 'add';
-    this.selectedTable.codeBody = {};
+    this.selectedTable.codeBody = "{}";
   }
   this.emit('updateRehinkDbClient');
 };

@@ -29,8 +29,7 @@ var ExplorerFooter = React.createClass({
   save: function() {
     const editor = ace.edit("editor");
     const string = editor.getValue();
-    const obj = JSON.parse(string);
-    this.props.store.saveRow(obj);
+    this.props.store.saveRow(string);
   },
   render: function() {
     let footerBody = (
