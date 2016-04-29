@@ -54,6 +54,16 @@ store.prototype.updateSelectedFavorite = function(favorite) {
   });
 };
 
+// Update CodeBody for Code view
+store.prototype.updateCodeBody = function(body) {
+  try {
+    const obj = JSON.parse(body);
+    this.selectedTable.codeBody = obj;
+  } catch(e) {
+    return;
+  }
+};
+
 // Toggle Connection Form
 store.prototype.toggleConnectionForm = function(info) {
   this.connection = Connection.create();

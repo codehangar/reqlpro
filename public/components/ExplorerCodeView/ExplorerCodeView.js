@@ -4,6 +4,11 @@ const ace = require('brace');
 require('brace/mode/json');
 
 const ExplorerCodeView = React.createClass({
+  getInitialState: function() {
+    return {
+      store: this.context.store
+    }
+  },
   componentDidMount: function() {
     this.editor = ace.edit("editor");
     this.editor.$blockScrolling = Infinity;
@@ -12,11 +17,15 @@ const ExplorerCodeView = React.createClass({
     this.editor.getSession().setUseSoftTabs(true);
     this.editor.setHighlightActiveLine(false);
     this.editor.gotoLine(2);
-    this.editor.setValue(JSON.stringify(this.props.table.codeBody, null, '\t'), -1);
+    this.editor.setValue(JSON.stringify(this.state.store.selectedTable.codeBody, null, '\t'), -1);
     this.editor.focus();
+    this.editor.getSession().on('change', () => {
+      const string = ace.edit("editor").getValue();
+      this.state.store.updateCodeBody(string);
+    });
   },
   componentWillReceiveProps: function() {
-    this.editor.setValue(JSON.stringify(this.props.table.codeBody, null, '\t'), -1);
+    this.editor.setValue(JSON.stringify(this.state.store.selectedTable.codeBody, null, '\t'), -1);
     this.editor.focus();
   },
   render: function() {
@@ -30,5 +39,8 @@ const ExplorerCodeView = React.createClass({
     );
   }
 });
+ExplorerCodeView.contextTypes = {
+  store: React.PropTypes.object
+};
 
 module.exports = ExplorerCodeView;

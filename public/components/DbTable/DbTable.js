@@ -4,14 +4,6 @@ var DbTable = React.createClass({
   getInitialState: function() {
     return this.context.store;
   },
-  componentDidMount: function() {
-    this.setupEvents();
-  },
-  setupEvents: function() {
-    this.state.on('updateRehinkDbClient', () => {
-      this.forceUpdate();
-    });
-  },
   updateSelectedTable: function() {
     this.state.updateSelectedTable(this.props.database.name, this.props.table.name);
     this.state.query({
