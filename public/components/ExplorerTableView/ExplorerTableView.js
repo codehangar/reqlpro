@@ -3,7 +3,6 @@ const {Table, Column, Cell} = require('fixed-data-table');
 import JSONTree from 'react-json-tree';
 import ExplorerTableCell from './ExplorerTableCell.js';
 import _ from 'lodash';
-var RethinkDbClient = window.rethinkDbClient;
 
 var ExplorerTableView = React.createClass({
   getInitialState: function() {
@@ -21,7 +20,8 @@ var ExplorerTableView = React.createClass({
     });
 
     return {
-      columnWidths: columnWidths
+      columnWidths: columnWidths,
+      store: this.context.store
     };
   },
   componentWillReceiveProps: function() {
@@ -36,14 +36,14 @@ var ExplorerTableView = React.createClass({
   },
   rowChanged: function (row) {
     console.log("rowChanged row", row)
-    RethinkDbClient.update(row);
+    this.state.store.update(row);
   },
   startEditRow: function (row) {
     console.log("startEditRow row", row)
-    RethinkDbClient.startEdit(row);
+    this.state.store.startEdit(row);
   },
   deleteRow: function (row) {
-    RethinkDbClient.deleteRow(row);
+    this.state.store.deleteRow(row);
   },
   render: function() {
     console.log(" --> ExplorerTableView render")
@@ -116,5 +116,8 @@ var ExplorerTableView = React.createClass({
     );
   }
 });
+ExplorerTableView.contextTypes = {
+  store: React.PropTypes.object
+};
 
 module.exports = ExplorerTableView;
