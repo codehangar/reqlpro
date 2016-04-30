@@ -3,6 +3,7 @@ const {Table, Column, Cell} = require('fixed-data-table');
 import JSONTree from 'react-json-tree';
 import ExplorerTableCell from './ExplorerTableCell.js';
 import _ from 'lodash';
+const classNames = require('classnames');
 
 var ExplorerTableView = React.createClass({
   getInitialState: function() {
@@ -45,6 +46,9 @@ var ExplorerTableView = React.createClass({
   deleteRow: function (row) {
     this.state.store.deleteRow(row);
   },
+  sortTable: function(sort) {
+    this.state.store.updateTableSort(sort);
+  },
   render: function() {
     console.log(" --> ExplorerTableView render")
     var maximumProps = 0; // Keep track of what has had the most props so far
@@ -76,11 +80,21 @@ var ExplorerTableView = React.createClass({
     );
 
     var columnNodes = Object.keys(this.props.table.data[rowIndexOfMaximum]).map((fieldName, index) => {
-      console.log("  --> ExplorerTableView columnNodes", fieldName)
+      console.log("  --> ExplorerTableView columnNodes", fieldName);
+      const iconClasses = classNames({
+        'fa': true,
+        'fa-sort-asc': this.props.table.query.direction,
+        'fa-sort-desc': !this.props.table.query.direction,
+        'pull-right': true
+      });
+      let iconBody = '';
+      if(this.props.table.query.sort === fieldName) {
+        iconBody = <i className={iconClasses}></i>;
+      }
       return (
         <Column
           key={index}
-          header={<Cell>{fieldName}</Cell>}
+          header={<Cell className="tableview-header" onClick={this.sortTable.bind(this, fieldName)}>{fieldName}{iconBody}</Cell>}
           isResizable={true}
           columnKey={fieldName}
           cell={(props) => {

@@ -184,7 +184,9 @@ store.prototype.updateSelectedTable = function(databaseName, tableName) {
     codeBodyError: null,
     query: {
       page: 1,
-      limit: this.selectedTable ? this.selectedTable.query.limit : 5
+      limit: this.selectedTable ? this.selectedTable.query.limit : 5,
+      sort: 'id',
+      direction: 1 // ASC = 1, DESC = 0
     }
   };
   this.emit('updateRehinkDbClient');
@@ -196,19 +198,30 @@ store.prototype.updatePageLimit = function(limit) {
   this.query();
 };
 
+// Update Table Sort
+store.prototype.updateTableSort = function(sort) {
+  if(sort === this.selectedTable.query.sort) {
+    this.selectedTable.query.direction = !this.selectedTable.query.direction
+  } else {
+    this.selectedTable.query.direction = 1;
+  }
+  this.selectedTable.query.sort = sort;
+  this.query();
+};
+
 // Get initial table data
 store.prototype.query = function(queryParams = this.selectedTable.query) {
   this.selectedTable.query = queryParams;
   console.log("QUERY this.selectedTable.query", this.selectedTable.query)
   if (queryParams.page) {
-    this.getTableData(queryParams.index, queryParams.limit, queryParams.page);
+    this.getTableData(queryParams.sort, queryParams.direction, queryParams.limit, queryParams.page);
   } else if (queryParams.index) {
     this.getTableDataBetween(queryParams.index, queryParams.start, queryParams.end);
   }
 };
 
 // Get initial table data
-store.prototype.getTableData = function(index, limit = 25, page = 1) {
+store.prototype.getTableData = function(sort, direction, limit = 25, page = 1) {
   const conn = this.selectedFavorite.dbConnection;
   const db = this.selectedTable.databaseName;
   const table = this.selectedTable.name;
@@ -217,7 +230,7 @@ store.prototype.getTableData = function(index, limit = 25, page = 1) {
     page = 1;
   }
 
-  RethinkDbService.getTableData(conn, db, table, index, limit, page).then((tableData) => {
+  RethinkDbService.getTableData(conn, db, table, sort, direction, limit, page).then((tableData) => {
     tableData.toArray().then((tableData) => {
       this.selectedTable.data = tableData;
       this.emit('updateSelectedTable');
