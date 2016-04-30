@@ -19,7 +19,7 @@ var ExplorerTableCell = React.createClass({
     } else {
       if (data) {
         if (Object.keys(data).length) {
-          return <JSONTree data={data} />;
+          return '{Object ...}';
         } else {
           return JSON.stringify(data);
         }
