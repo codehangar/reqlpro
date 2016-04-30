@@ -181,9 +181,19 @@ store.prototype.updateSelectedTable = function(databaseName, tableName) {
     data: [],
     codeBody: "{}",
     codeAction: 'add',
-    codeBodyError: null
+    codeBodyError: null,
+    query: {
+      page: 1,
+      limit: this.selectedTable ? this.selectedTable.query.limit : 5
+    }
   };
   this.emit('updateRehinkDbClient');
+};
+
+// Update Page Limit
+store.prototype.updatePageLimit = function(limit) {
+  this.selectedTable.query.limit = parseInt(limit);
+  this.query();
 };
 
 // Get initial table data

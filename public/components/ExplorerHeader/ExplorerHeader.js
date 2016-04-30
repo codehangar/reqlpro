@@ -6,6 +6,9 @@ const ExplorerHeader = React.createClass({
     e.preventDefault();
     this.props.store.toggleExplorerBody(key);
   },
+  updatePageLimit: function(e) {
+    this.props.store.updatePageLimit(e.target.value);
+  },
   render: function() {
 
     let buttonClasses = {
@@ -67,6 +70,13 @@ const ExplorerHeader = React.createClass({
       <div className="explorer-header" id="explorer-header">
         <div className="bread-crumbs">
           {breadCrumbText}
+          <select onChange={this.updatePageLimit}>
+            <option>5</option>
+            <option>10</option>
+            <option>25</option>
+            <option>50</option>
+            <option>100</option>
+          </select>
           <div className="pull-right">
             <span onClick={this.toggleExplorerBody.bind(this, 'code')} className={buttonClasses.code} />
             <div className="btn-group" role="group">
