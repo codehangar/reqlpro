@@ -28,7 +28,10 @@ var ExplorerFooter = React.createClass({
   },
   save: function() {
     const editor = ace.edit("editor");
-    const string = editor.getValue();
+    let string = editor.getValue();
+
+    // Allows new Date() to be entered on edit view
+    string = string.replace('new Date()', '"' + new Date() + '"');
     this.props.store.saveRow(string);
   },
   render: function() {
