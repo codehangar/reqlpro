@@ -12,7 +12,7 @@ var ExplorerTableView = React.createClass({
     let rowIndexOfMaximum = 0;
     this.props.table.data.map(function(row, index) {
       maximumProps = Object.keys(row).length > maximumProps ? Object.keys(row).length : maximumProps;
-      rowIndexOfMaximum = Object.keys(row).length > maximumProps ? index : rowIndexOfMaximum;
+      rowIndexOfMaximum = Object.keys(row).length >= maximumProps ? index : rowIndexOfMaximum;
     });
 
     let columnWidths = {};
@@ -56,7 +56,7 @@ var ExplorerTableView = React.createClass({
 
     this.props.table.data.map(function(row, index) {
       maximumProps = Object.keys(row).length > maximumProps ? Object.keys(row).length : maximumProps;
-      rowIndexOfMaximum = Object.keys(row).length > maximumProps ? index : rowIndexOfMaximum;
+      rowIndexOfMaximum = Object.keys(row).length >= maximumProps ? index : rowIndexOfMaximum;
     });
 
     var _this = this;
