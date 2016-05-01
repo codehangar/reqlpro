@@ -338,11 +338,13 @@ html, body, .container {
 
 .toast-container {
   position: absolute;
-  z-index: 1;
-  right: 15px;
+  z-index: 5;
+  right: 10%;
   top: 15px;
   padding: 0 30px;
   border-radius: 5px;
+  max-width: 80%;
+  max-height: 80%;
 
   i {
     margin-right: -10px;

@@ -285,12 +285,20 @@ store.prototype.insert = function(record) {
 
   RethinkDbService.insert(conn, db, table, record).then((result) => {
     this.selectedTable.lastResult = result;
-    // Run last query to update view
-    this.query();
-    this.getTableSize();
-    this.selectedTable.type = 'table';
     console.log("--------> insert result", result)
+
+    if (result.errors) {
+      this.selectedTable.codeBodyError = result.first_error;
+      this.emit('updateSelectedTable');
+    } else {
+      // Run last query to update view
+      this.query();
+      this.getTableSize();
+      this.selectedTable.type = 'table';
+    }
   }).catch((err) => {
+    console.error("err", err)
+    this.selectedTable.codeBodyError = err.first_error;
     // Run last query to update view
     this.query();
     console.error(err);
@@ -313,11 +321,19 @@ store.prototype.update = function(record) {
 
   RethinkDbService.update(conn, db, table, record).then((result) => {
     this.selectedTable.lastResult = result;
-    // Run last query to update view
-    this.query();
-    this.selectedTable.type = 'table';
     console.log("--------> update result", result)
+
+    if (result.errors) {
+      this.selectedTable.codeBodyError = result.first_error;
+      this.emit('updateSelectedTable');
+    } else {
+      // Run last query to update view
+      this.query();
+      this.selectedTable.type = 'table';
+    }
   }).catch((err) => {
+    console.error("err", err)
+    this.selectedTable.codeBodyError = err.first_error;
     // Run last query to update view
     this.query();
     console.error(err);
@@ -333,12 +349,19 @@ store.prototype.replace = function(record) {
 
   RethinkDbService.replace(conn, db, table, record).then((result) => {
     this.selectedTable.lastResult = result;
-    // Run last query to update view
-    this.query();
-    this.getTableSize();
-    this.selectedTable.type = 'table';
     console.log("--------> replace result", result)
+
+    if (result.errors) {
+      this.selectedTable.codeBodyError = result.first_error;
+      this.emit('updateSelectedTable');
+    } else {
+      // Run last query to update view
+      this.query();
+      this.selectedTable.type = 'table';
+    }
   }).catch((err) => {
+    console.error("err", err)
+    this.selectedTable.codeBodyError = err.first_error;
     // Run last query to update view
     this.query();
     console.error(err);
