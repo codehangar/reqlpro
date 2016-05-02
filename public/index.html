@@ -10,11 +10,20 @@
       delete window.exports;
       delete window.module;
       var remote = window.nodeRequire('remote');
+      var ipc = window.nodeRequire('electron').ipcRenderer;
       var Menu = remote.require('menu');
       var template = [
         {
           label: 'ReqlPro',
           submenu: [
+            {
+              label: 'New Window',
+              accelerator: 'Command+N',
+              click: function () {
+                console.log("ipc", ipc)
+                ipc.send('new-window', {});
+              }
+            },
             {
               label: 'Hide ReqlPro',
               accelerator: 'Command+H',

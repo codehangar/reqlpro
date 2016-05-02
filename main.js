@@ -56,6 +56,23 @@ function createWindow () {
   });
 }
 
+// Create new window instances
+function createNewWindow() {
+  var win = new BrowserWindow({
+    width: 1000,
+    height: 700,
+    show: true
+  });
+  win.loadURL('file://' + __dirname + '/dev/index.html');
+  win.webContents.openDevTools();
+
+  win.on('closed', function() {
+    win = null;
+  });
+}
+
+ipcMain.on('new-window', createNewWindow);
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.on('ready', createWindow);
