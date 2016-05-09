@@ -14,7 +14,7 @@
       var Menu = remote.require('menu');
       var template = [
         {
-          label: 'ReqlPro',
+          label: 'ReqlPro (Beta)',
           submenu: [
             {
               label: 'New Window',
@@ -109,8 +109,12 @@
           ]
         },
         {
-          label: 'Contribute',
+          label: 'Help',
           submenu: [
+            {
+              label: 'Donate',
+              click: function() { window.nodeRequire('electron').shell.openExternal('http://codehangar.io') }
+            },
             {
               label: 'Donate',
               click: function() { window.nodeRequire('electron').shell.openExternal('http://codehangar.io') }
