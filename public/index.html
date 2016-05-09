@@ -133,7 +133,27 @@
   </head>
   <body>
     <div id="app" class="container main-content"></div>
+    <!-- HelpScout Customer Feedback -->
+    <script>!function(e,o,n){window.HSCW=o,window.HS=n,n.beacon=n.beacon||{};var t=n.beacon;t.userConfig={},t.readyQueue=[],t.config=function(e){this.userConfig=e},t.ready=function(e){this.readyQueue.push(e)},o.config={docs:{enabled:!1,baseUrl:""},contact:{enabled:!0,formId:"c808f13a-1628-11e6-aae8-0a7d6919297d"}};var r=e.getElementsByTagName("script")[0],c=e.createElement("script");c.type="text/javascript",c.async=!0,c.src="https://djtflbt20bdde.cloudfront.net/",r.parentNode.insertBefore(c,r)}(document,window.HSCW||{},window.HS||{});
+    // copy and paste your embed code on this line
+      HS.beacon.config({
+        // modal: false,
+        icon: 'question',
+        color: '#0c5c70',
+        translation: {
+          searchLabel: 'En que podemos ayudarte?',
+          searchErrorLabel: 'Lo sentimos, hubo un error con tu busqueda'
+        },
+        topics: [
+          { val: 'need-help', label: 'Need help with the product' },
+          { val: 'bug', label: 'I think I found a bug'}
+        ],
+        attachment: true,
+        instructions:'This is instructional text that goes above the form.'
+      });
+    </script>
   </body>
+
   <!-- Main App file -->
   <script src="dist.js"></script>
 </html>
