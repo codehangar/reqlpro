@@ -7,7 +7,7 @@ child.stderr.pipe(process.stderr);
 child.stdout.pipe(process.stdout);
 child.stdout.on('data', function(chunk) {
 
-  var child2 = spawn('electron', ['main.js']);
+  var child2 = spawn('electron', ['main.js', '--dev']);
   child2.stdout.pipe(process.stdout);
   child2.stderr.pipe(process.stderr);
 
