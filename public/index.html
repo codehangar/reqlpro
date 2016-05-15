@@ -112,16 +112,12 @@
           label: 'Help',
           submenu: [
             {
-              label: 'Donate',
-              click: function() { window.nodeRequire('electron').shell.openExternal('http://codehangar.io') }
-            },
-            {
-              label: 'Donate',
-              click: function() { window.nodeRequire('electron').shell.openExternal('http://codehangar.io') }
+              label: 'User Guide',
+              click: function() { window.nodeRequire('electron').shell.openExternal('http://utils.codehangar.io/rethink') }
             },
             {
               label: 'Feedback',
-              click: function() { window.nodeRequire('electron').shell.openExternal('http://codehangar.io') }
+              click: function() { HS.beacon.open(); }
             }
           ]
         }
@@ -138,6 +134,7 @@
     // copy and paste your embed code on this line
       HS.beacon.config({
         // modal: false,
+        modal: true,
         icon: 'question',
         color: '#0c5c70',
         translation: {
@@ -146,9 +143,11 @@
         },
         topics: [
           { val: 'need-help', label: 'Need help with the product' },
-          { val: 'bug', label: 'I think I found a bug'}
+          { val: 'bug', label: 'I think I found a bug'},
+          { val: 'suggestion', label: 'Suggestion for improvement'}
         ],
         attachment: true,
+        topArticles: true,
         instructions:'This is instructional text that goes above the form.'
       });
     </script>
