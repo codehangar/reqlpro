@@ -9,6 +9,7 @@
     "electron": "electron main.js",
     "watch": "webpack --colors --watch",
     "build": "electron-packager . ReQLPro --platform=darwin --arch=x64 && cp ./public/reqlpro.icns ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/atom.icns",
+    "build-dmg": "node tools/build-dmg.js",
     "icon": "cp ./public/icon.icns ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/atom.icns",
     "package": "asar pack ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/app ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/app.asar"
   },
@@ -21,6 +22,7 @@
   "bugs": {},
   "homepage": "http://codehangar.io",
   "devDependencies": {
+    "appdmg": "^0.4.0",
     "asar": "^0.10.0",
     "babel-core": "^6.3.26",
     "babel-loader": "^6.2.0",
