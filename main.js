@@ -20,6 +20,7 @@ function createWindow() {
   co(function*() {
     var configFile = yield ConfigService.readConfigFile();
     global.userConfig = configFile;
+    global.appVersion = '0.0.1';
     // Create the browser window.
     mainWindow = new BrowserWindow({
       width: 1600,
@@ -60,13 +61,13 @@ function createWindow() {
 }
 
 // Create new window instances
-function createNewWindow() {
+function createNewWindow(event, config) {
   var win = new BrowserWindow({
-    width: 1000,
-    height: 700,
+    width: config.width || 1000,
+    height: config.height || 700,
     show: true
   });
-  win.loadURL('file://' + __dirname + '/dev/index.html');
+  win.loadURL('file://' + __dirname + (config.path || '/dev/index.html'));
   win.webContents.openDevTools();
 
   win.on('closed', function() {
@@ -75,6 +76,10 @@ function createNewWindow() {
 }
 
 ipcMain.on('new-window', createNewWindow);
+
+// Open About Info Window
+
+ipcMain.on('about-window', createNewWindow);
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
