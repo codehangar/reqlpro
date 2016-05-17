@@ -19,7 +19,6 @@
             {
               label: 'About ReqlPro (Beta)',
               click: function () {
-                console.log("ipc", ipc)
                 ipc.send('new-window', {
                   path: '/dev/about.html',
                   width: 300,
@@ -31,7 +30,6 @@
               label: 'New Window',
               accelerator: 'Command+N',
               click: function () {
-                console.log("ipc", ipc)
                 ipc.send('new-window', {});
               }
             },

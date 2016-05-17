@@ -12,6 +12,8 @@ const co = require('co');
 // Communication between main and renderer
 const ipcMain = require('electron').ipcMain;
 
+var packageDetails = require('./package.json');
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
@@ -20,7 +22,7 @@ function createWindow() {
   co(function*() {
     var configFile = yield ConfigService.readConfigFile();
     global.userConfig = configFile;
-    global.appVersion = '0.0.1';
+    global.appVersion = packageDetails.version;
     // Create the browser window.
     mainWindow = new BrowserWindow({
       width: 1600,
