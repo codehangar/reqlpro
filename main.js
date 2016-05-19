@@ -70,7 +70,12 @@ function createNewWindow(event, config) {
     show: true
   });
   win.loadURL('file://' + __dirname + (config.path || '/dev/index.html'));
-  win.webContents.openDevTools();
+
+  // Open the DevTools (if dev flag is passed)
+  if (process.argv.indexOf('--dev') > 1) {
+    // Open the DevTools.
+    mainWindow.webContents.openDevTools();
+  }
 
   win.on('closed', function() {
     win = null;
