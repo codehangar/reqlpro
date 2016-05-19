@@ -4,6 +4,8 @@ const app = electron.app;
 const fs = require('fs');
 
 var ConfigService = function() {
+  this.name = app.getName();
+  console.log("this.name", this.name)
   this.configPath = app.getPath('userData');
   this.configFileName = 'config.json';
   this.fullConfigPath = this.configPath + '/' + this.configFileName;

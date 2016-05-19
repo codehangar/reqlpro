@@ -1,5 +1,6 @@
 {
-  "name": "rethinkdb-client",
+  "name": "reqlpro",
+  "productName": "ReQLPro",
   "version": "0.0.1",
   "engine": "node 5.9.1",
   "description": "A simple desktop client to connect to RethinkDB servers to work with data.",
