@@ -177,7 +177,7 @@ store.prototype.updateSelectedTable = function(databaseName, tableName) {
   this.selectedTable = {
     databaseName: databaseName,
     name: tableName,
-    type: this.selectedTable ? this.selectedTable.type : 'table',
+    type: this.selectedTable ? this.selectedTable.type !== 'code' ? this.selectedTable.type : 'table' : 'table',
     data: [],
     codeBody: "{}",
     codeAction: 'add',
