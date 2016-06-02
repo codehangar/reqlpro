@@ -70,14 +70,17 @@ const ExplorerHeader = React.createClass({
       <div className="explorer-header" id="explorer-header">
         <div className="bread-crumbs">
           {breadCrumbText}
-          <select onChange={this.updatePageLimit} className="page-select">
-            <option>5</option>
-            <option>10</option>
-            <option>25</option>
-            <option>50</option>
-            <option>100</option>
-          </select>
+          
           <div className="pull-right">
+          <span className="rows-per-page-selector">Rows per page: 
+            <select onChange={this.updatePageLimit} className="page-select">
+              <option>5</option>
+              <option>10</option>
+              <option>25</option>
+              <option>50</option>
+              <option>100</option>
+            </select>
+          </span>
             <span onClick={this.toggleExplorerBody.bind(this, 'code')} className={buttonClasses.code} />
             <div className="btn-group" role="group">
               <span onClick={this.toggleExplorerBody.bind(this, 'tree')} className={buttonClasses.tree} />

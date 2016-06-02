@@ -327,6 +327,16 @@ html, body, .container {
   color: #999;
 }
 
+.rows-per-page-selector{
+    padding: 0 15px;
+}
+
+.page-select{
+  padding: 0 10px;
+  position: relative;
+  left: 3px;
+}
+
 #editor {
   position: absolute;
   top: 0;
