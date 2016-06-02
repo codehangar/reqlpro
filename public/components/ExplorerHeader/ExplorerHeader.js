@@ -70,7 +70,7 @@ const ExplorerHeader = React.createClass({
       <div className="explorer-header" id="explorer-header">
         <div className="bread-crumbs">
           {breadCrumbText}
-          <select onChange={this.updatePageLimit}>
+          <select onChange={this.updatePageLimit} className="page-select">
             <option>5</option>
             <option>10</option>
             <option>25</option>

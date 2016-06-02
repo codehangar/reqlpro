@@ -12,7 +12,7 @@ const Explorer = React.createClass({
   },
   setupEvents: function() {
     this.state.on('updateSelectedTable', () => {
-      console.log("   --> ExplorerBody updateSelectedTable")
+      // console.log("   --> ExplorerBody updateSelectedTable")
       this.forceUpdate();
     });
   },
@@ -30,7 +30,7 @@ const Explorer = React.createClass({
         </div>
       );
     } else if (this.state.selectedTable !== null) {
-      console.log("this.state.selectedTable", this.state.selectedTable)
+      // console.log("this.state.selectedTable", this.state.selectedTable)
       content = (
         <div className="explorer-container">
           <ExplorerHeader table={this.state.selectedTable} store={this.state} />

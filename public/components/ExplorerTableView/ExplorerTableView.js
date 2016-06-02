@@ -26,7 +26,7 @@ var ExplorerTableView = React.createClass({
     };
   },
   componentWillReceiveProps: function() {
-    console.log(" -> ExplorerTableView componentWillReceiveProps this.props", this.props)
+    // console.log(" -> ExplorerTableView componentWillReceiveProps this.props", this.props)
   },
   _onColumnResizeEndCallback: function (newColumnWidth, columnKey) {
     var width= {};
@@ -36,11 +36,11 @@ var ExplorerTableView = React.createClass({
     }));
   },
   rowChanged: function (row) {
-    console.log("rowChanged row", row)
+    // console.log("rowChanged row", row)
     this.state.store.update(row);
   },
   startEditRow: function (row) {
-    console.log("startEditRow row", row)
+    // console.log("startEditRow row", row)
     this.state.store.startEdit(row);
   },
   deleteRow: function (row) {
@@ -50,7 +50,7 @@ var ExplorerTableView = React.createClass({
     this.state.store.updateTableSort(sort);
   },
   render: function() {
-    console.log(" --> ExplorerTableView render")
+    // console.log(" --> ExplorerTableView render")
     var maximumProps = 0; // Keep track of what has had the most props so far
     var rowIndexOfMaximum = 0; // The item in the data with the most props
 
@@ -80,7 +80,7 @@ var ExplorerTableView = React.createClass({
     );
 
     var columnNodes = Object.keys(this.props.table.data[rowIndexOfMaximum]).map((fieldName, index) => {
-      console.log("  --> ExplorerTableView columnNodes", fieldName);
+      // console.log("  --> ExplorerTableView columnNodes", fieldName);
       const iconClasses = classNames({
         'fa': true,
         'fa-sort-asc': this.props.table.query.direction,
@@ -99,7 +99,7 @@ var ExplorerTableView = React.createClass({
           columnKey={fieldName}
           cell={(props) => {
                 if (this.props.table.data[props.rowIndex].id === '11698a1f-f9db-4f9c-9fb8-4c27d75e1990' && fieldName === 'name') {
-                  console.log("   --> ExplorerTableView cell render", this.props.table.data[props.rowIndex][fieldName])
+                  // console.log("   --> ExplorerTableView cell render", this.props.table.data[props.rowIndex][fieldName])
                 }
                 return(
                   <Cell>
@@ -112,9 +112,9 @@ var ExplorerTableView = React.createClass({
       );
     });
 
-    console.log("columnNodes", columnNodes)
+    // console.log("columnNodes", columnNodes)
     columnNodes = [actionColumn].concat(columnNodes);
-    console.log("columnNodes", columnNodes)
+    // console.log("columnNodes", columnNodes)
 
     return (
       <Table
