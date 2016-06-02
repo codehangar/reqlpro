@@ -11,7 +11,7 @@ var DbTables = React.createClass({
     });
 
     return (
-      <div className="db-tables">
+      <div className="db-tables noselect">
         {dbTableNodes}
       </div>
     );

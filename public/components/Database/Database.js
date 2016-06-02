@@ -14,7 +14,7 @@ const Database = React.createClass({
 
     return (
       <div className="database">
-        <div className="db" onClick={() => {
+        <div className="db noselect" onClick={() => {
           this.props.selectDatabase(this.props.database)
           this.showDbTables = !this.showDbTables;
         }}>

@@ -207,6 +207,13 @@ html, body, .container {
   border-bottom: darken($dark-color, 2%) 1px solid;
 }
 
+.db-table.selected div {
+  padding: 10px 40px;
+  cursor: pointer;
+  background: lighten($dark-color, 1%);
+  border-bottom: lighten($dark-color, 3%) 1px solid;
+}
+
 .db-table div:hover {
   background: $dark-color;
 }
@@ -360,6 +367,16 @@ html, body, .container {
 
 .about-container {
   background: $lighter-color;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;           /* Non-prefixed version, currently
+                                  not supported by any browser */
 }
 
 
