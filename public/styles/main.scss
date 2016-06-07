@@ -389,4 +389,12 @@ html, body, .container {
                                   not supported by any browser */
 }
 
+/* Explorer Body Loading styles */
+
+.explorer-loading {
+  margin: 25% 50%;
+  display: inline-block;
+  font-size: 3.5em;
+  color: $dark-color;
+}
 

@@ -179,6 +179,7 @@ store.prototype.updateSelectedTable = function(databaseName, tableName) {
     name: tableName,
     type: this.selectedTable ? this.selectedTable.type !== 'code' ? this.selectedTable.type : 'table' : 'table',
     data: [],
+    loading: true,
     codeBody: "{}",
     codeAction: 'add',
     codeBodyError: null,
@@ -212,6 +213,8 @@ store.prototype.updateTableSort = function(sort) {
 // Get initial table data
 store.prototype.query = function(queryParams = this.selectedTable.query) {
   this.selectedTable.query = queryParams;
+  this.selectedTable.loading = true;
+  this.emit('updateSelectedTable');
   console.log("QUERY this.selectedTable.query", this.selectedTable.query)
   if (queryParams.page) {
     this.getTableData(queryParams.sort, queryParams.direction, queryParams.limit, queryParams.page);
@@ -233,7 +236,10 @@ store.prototype.getTableData = function(sort, direction, limit = 25, page = 1) {
   RethinkDbService.getTableData(conn, db, table, sort, direction, limit, page).then((tableData) => {
     tableData.toArray().then((tableData) => {
       this.selectedTable.data = tableData;
-      this.emit('updateSelectedTable');
+      setTimeout(() => {
+        this.selectedTable.loading = false;
+        this.emit('updateSelectedTable');
+      }, 200);
     }).catch(function(err) {
       console.error(err);
     });
@@ -254,7 +260,10 @@ store.prototype.getTableDataBetween = function(index, start, end) {
       }
       console.log(tableData);
       this.selectedTable.data = tableData;
-      this.emit('updateSelectedTable');
+      setTimeout(() => {
+        this.selectedTable.loading = false;
+        this.emit('updateSelectedTable');
+      }, 200);
     }).catch(function(err) {
       console.error(err);
     });
@@ -432,5 +441,10 @@ store.prototype.toggleExplorerBody = function(type) {
   }
   this.emit('updateRehinkDbClient');
 };
+
+// Refresh Explorer Body
+store.prototype.refreshExplorerBody = function() {
+  this.query();
+}
 
 module.exports = store;

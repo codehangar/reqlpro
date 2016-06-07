@@ -6,6 +6,9 @@ const ExplorerHeader = React.createClass({
     e.preventDefault();
     this.props.store.toggleExplorerBody(key);
   },
+  refreshExplorerBody: function() {
+    this.props.store.refreshExplorerBody();
+  },
   updatePageLimit: function(e) {
     this.props.store.updatePageLimit(e.target.value);
   },
@@ -29,6 +32,12 @@ const ExplorerHeader = React.createClass({
         'fa': true,
         'fa-plus': true,
         'active': this.props.table.type === 'code'
+      }),
+      refresh: classNames({
+        'btn btn-default btn-sm': true,
+        'fa': true,
+        'fa-refresh': true,
+        'hidden': this.props.table.type === 'code'
       })
     };
 
@@ -70,11 +79,11 @@ const ExplorerHeader = React.createClass({
       <div className="explorer-header" id="explorer-header">
         <div className="bread-crumbs">
           {breadCrumbText}
-          
+
           <div className="pull-right">
           {
-            (this.props.table.type === 'tree' || this.props.table.type === 'code') ? '' : 
-            (<span className="rows-per-page-selector">Rows per page: 
+            (this.props.table.type === 'code') ? '' :
+            (<span className="rows-per-page-selector">Rows per page:
             <select onChange={this.updatePageLimit} className="page-select">
               <option>5</option>
               <option>10</option>
@@ -84,7 +93,7 @@ const ExplorerHeader = React.createClass({
             </select>
           </span>)
           }
-          
+            <span onClick={this.refreshExplorerBody} className={buttonClasses.refresh} />
             <span onClick={this.toggleExplorerBody.bind(this, 'code')} className={buttonClasses.code} />
             <div className="btn-group" role="group">
               <span onClick={this.toggleExplorerBody.bind(this, 'tree')} className={buttonClasses.tree} />
