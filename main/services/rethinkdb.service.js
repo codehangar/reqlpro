@@ -145,6 +145,25 @@ RethinkDbService.prototype.createDb = function(conn, newDatabase) {
 };
 
 /**
+ * Delete a RethinkDB Database
+ * @param {Object} RethinkDb Connection
+ * @param {String} Database Name
+ * @returns {Promise}
+ */
+RethinkDbService.prototype.deleteDb = function(conn, dbName) {
+  return new Promise(function(resolve, reject) {
+    r.dbDrop(dbName).run(conn, function(err, results) {
+      if (err) {
+        console.log(err);
+        reject(err);
+      } else {
+        resolve();
+      }
+    });
+  });
+};
+
+/**
  * Create a RethinkDB Table
  * @param {Object} RethinkDb Connection
  * @param {String} Database Name

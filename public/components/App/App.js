@@ -2,7 +2,7 @@ const React = require('react');
 const Sidebar = require('../Sidebar/Sidebar');
 const Explorer = require('../Explorer/Explorer');
 const ConnectionForm = require('../ConnectionForm/ConnectionForm');
-const DatabaseForm = require('../DatabaseForm/DatabaseForm');
+const EntityForm = require('../EntityForm/EntityForm');
 
 const App = React.createClass({
   getInitialState: function() {
@@ -27,12 +27,10 @@ const App = React.createClass({
 
     // Event for toggling connection form
     this.state.on('toggleConnectionForm', () => {
-      console.log("toggleConnectionForm")
       this.forceUpdate();
     });
 
-    this.state.on('toggleDatabaseForm', () => {
-      console.log("toggleDatabaseForm")
+    this.state.on('toggleEntityForm', () => {
       this.forceUpdate();
     });
 
@@ -47,7 +45,7 @@ const App = React.createClass({
         <Sidebar  />
         <Explorer />
         <ConnectionForm />
-        <DatabaseForm />
+        <EntityForm />
       </div>
     );
   }

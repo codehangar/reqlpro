@@ -6,8 +6,8 @@ const ConnectionForm = React.createClass({
     return {
       store: this.context.store,
       connection: this.context.store.connection,
-      show: this.context.store.router.connectionForm.show,
-      action: this.context.store.router.connectionForm.action
+      show: this.context.store.router.ConnectionForm.show,
+      action: this.context.store.router.ConnectionForm.action
     };
   },
   componentDidMount: function() {
@@ -17,8 +17,8 @@ const ConnectionForm = React.createClass({
     const updateState = () => {
       this.setState({
         connection: this.context.store.connection,
-        show: this.context.store.router.connectionForm.show,
-        action: this.context.store.router.connectionForm.action
+        show: this.context.store.router.ConnectionForm.show,
+        action: this.context.store.router.ConnectionForm.action
       });
     }
 
@@ -93,7 +93,7 @@ const ConnectionForm = React.createClass({
     }
 
     return (
-      <div className="connectionForm" style={containerStyles}>
+      <div className="ConnectionForm" style={containerStyles}>
         <div className="panel panel-default">
           <div className="panel-heading">
             <strong>Add RethinkDB Connection</strong>

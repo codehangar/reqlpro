@@ -10,15 +10,25 @@ var md5 = require('md5');
 var store = function(params) {
   EventEmitter.call(this); // Inherit constructor
   this.router = {
-    connectionForm: {
+    ConnectionForm: {
       show: false,
       action: 'Add'
     },
-    connectionActionMenu: {
+    ConnectionActionMenu: {
       show: false
     },
-    databaseForm: {
-      show: false
+    EntityForm: {
+      show: false,
+      action: 'Add',
+      type: 'Database',
+      toDeleteName: '',
+      errMessage: '',
+      formElems: {
+        name: {
+          valid: true,
+          value: ''
+        }
+      }
     }
   };
   this.connection = params.connection || null;
@@ -84,47 +94,58 @@ store.prototype.toggleConnectionForm = function(info) {
     this.connection.identicon = info.identicon;
     this.connection.index = info.index;
     // Also set form action to edit
-    this.router.connectionForm.action = 'Edit';
+    this.router.ConnectionForm.action = 'Edit';
   } else {
-    this.router.connectionForm.action = 'Add';
+    this.router.ConnectionForm.action = 'Add';
   }
-  this.router.connectionForm.show = !this.router.connectionForm.show;
-  this.clearConnectionActionMenu();
-  this.clearDatabaseForm();
+  this.router.ConnectionForm.show = !this.router.ConnectionForm.show;
+  if(this.router.ConnectionForm.show) {
+    this.clearAll('ConnectionForm');
+  }
   this.emit('toggleConnectionForm');
 };
 
 store.prototype.toggleConnectionActionMenu = function() {
-  this.router.connectionActionMenu.show = !this.router.connectionActionMenu.show;
+  this.router.ConnectionActionMenu.show = !this.router.ConnectionActionMenu.show;
+  if(this.router.ConnectionActionMenu.show) {
+    this.clearAll('ConnectionActionMenu');
+  }
   this.emit('updateRehinkDbClient');
 };
 
-store.prototype.toggleDatabaseForm = function() {
-  this.router.databaseForm.show = !this.router.databaseForm.show;
-  this.clearConnectionActionMenu();
-  this.clearConnectionForm();
+store.prototype.toggleEntityForm = function(type, action, toDeleteName) {
+  this.router.EntityForm.show = !this.router.EntityForm.show;
+  // If turning off EntityForm lets result defaults
+  if(!this.router.EntityForm.show) {
+    this.router.EntityForm = {
+      show: false,
+      action: 'Add',
+      type: 'Database',
+      toDeleteName: '',
+      errMessage: '',
+      formElems: {
+        name: {
+          valid: true,
+          value: ''
+        }
+      }
+    };
+  } else {
+    this.router.EntityForm.type = type;
+    this.router.EntityForm.action = action;
+    this.router.EntityForm.toDeleteName = toDeleteName;
+    this.clearAll('EntityForm');
+  }
   this.emit('updateRehinkDbClient');
 };
 
-store.prototype.clearConnectionActionMenu = function() {
-  if(this.router.connectionActionMenu.show) {
-    // Clear action menu
-    this.router.connectionActionMenu.show = false;
-  }
-};
-
-store.prototype.clearConnectionForm = function() {
-  if(this.router.connectionForm.show) {
-    // Clear action menu
-    this.router.connectionForm.show = false;
-  }
-};
-
-store.prototype.clearDatabaseForm = function() {
-  if(this.router.databaseForm.show) {
-    // Clear action menu
-    this.router.databaseForm.show = false;
-  }
+store.prototype.clearAll = function(currentActive) {
+  Object.keys(this.router).forEach((key) => {
+    if(this.router[key].show && key !== currentActive) {
+      // hide content
+      this['toggle' + key]();
+    }
+  });
 };
 
 // Add favorite
@@ -496,7 +517,27 @@ store.prototype.saveDatabase = function(dbName) {
         name: dbName,
         tables: []
       });
-      this.toggleDatabaseForm();
+      this.toggleEntityForm();
+      resolve();
+    }).catch((err) => {
+      console.error(err);
+      reject(err);
+    });
+  });
+};
+
+// Delete Database
+store.prototype.deleteDatabase = function(dbName) {
+  const conn = this.selectedFavorite.dbConnection;
+  return new Promise((resolve, reject) => {
+    RethinkDbService.deleteDb(conn, dbName).then((results) => {
+      // Remove database from selectedfavorite list
+      this.selectedFavorite.databases.forEach((db, index) => {
+        if(db.name === dbName) {
+          this.selectedFavorite.databases.splice(index, 1);
+        }
+      });
+      this.toggleEntityForm();
       resolve();
     }).catch((err) => {
       console.error(err);

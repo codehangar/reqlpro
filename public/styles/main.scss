@@ -95,7 +95,7 @@ html, body, .container {
 
 /* SIDEBAR LAYOUT STYLES END */
 
-.connectionForm {
+.ConnectionForm {
   width: 600px;
   height: 300px;
   position: absolute;
@@ -106,7 +106,7 @@ html, body, .container {
   z-index: 100000;
 }
 
-.databaseForm {
+.EntityForm {
   width: 600px;
   height: 300px;
   position: absolute;
@@ -115,6 +115,17 @@ html, body, .container {
   margin-top: -150px;
   margin-left: -300px;
   z-index: 100000;
+}
+
+.delete-db-warning {
+  color: #900000;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.delete-db-validation-error {
+  border-radius: 5px;
+  padding: 10px;
 }
 
 .add-favorite {
@@ -169,13 +180,46 @@ html, body, .container {
   display: inline;
 }
 
-.databases-header .edit-connection {
+.databases-header .connection-action-menu-button {
   float: right;
   color: lighten($dark-color, 10%);
 }
 
-.databases-header .edit-connection:hover {
+.databases-header .connection-action-menu-button:hover {
   color: lighten($dark-color, 30%);
+}
+
+.database {
+  position: relative;
+
+  .database-name {
+    width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1;
+    display: inline-block;
+  }
+
+  &:hover {
+    .btn-group {
+      display: block;
+    }
+  }
+
+}
+
+.database .btn-group {
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: none;
+
+  button {
+    height: 39px;
+    border-radius: 0;
+  }
+
 }
 
 .database .db {
@@ -416,6 +460,8 @@ html, body, .container {
   color: black;
   padding: 0;
   border-radius: 10px;
+  position: relative;
+  z-index: 5;
 
   li {
     margin: 0;

@@ -10,7 +10,7 @@ const DatabasesHeader = React.createClass({
     this.props.store.toggleConnectionActionMenu();
   },
   addDatabase: function(e) {
-    this.props.store.toggleDatabaseForm();
+    this.props.store.toggleEntityForm('Database', 'Add');
   },
   render: function() {
     var classes = {
@@ -19,14 +19,14 @@ const DatabasesHeader = React.createClass({
         'panel',
         'panel-default',
         {
-          'show': this.props.store.router.connectionActionMenu.show,
-          'hidden': !this.props.store.router.connectionActionMenu.show
+          'show': this.props.store.router.ConnectionActionMenu.show,
+          'hidden': !this.props.store.router.ConnectionActionMenu.show
         }
       )
     }
     return (
       <div className="databases-header">
-        <div>{this.props.selectedFavorite.name} <i onClick={this.toggleConnectionActionMenu} className="fa fa-bars edit-connection"></i></div>
+        <div>{this.props.selectedFavorite.name} <i onClick={this.toggleConnectionActionMenu} className="fa fa-bars connection-action-menu-button"></i></div>
         <ul className={classes.actionMenu}>
           <li onClick={this.editFavorite}>Edit Connection</li>
           <li onClick={this.addDatabase}>Add database</li>

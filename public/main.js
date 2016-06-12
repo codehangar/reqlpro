@@ -24,7 +24,7 @@ var Connection = require('./models/Connection');
 // Instantiate store Class with any params needed
 const store = new Store({
   favorites: JSON.parse(remote.getGlobal('userConfig')).favorites, // Setup favorites from config file
-  connection: Connection.create() // Setup default connection for connectionForm
+  connection: Connection.create() // Setup default connection for ConnectionForm
 });
 
 // React Specific libs/components
