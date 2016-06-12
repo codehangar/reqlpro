@@ -106,6 +106,17 @@ html, body, .container {
   z-index: 100000;
 }
 
+.databaseForm {
+  width: 600px;
+  height: 300px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -150px;
+  margin-left: -300px;
+  z-index: 100000;
+}
+
 .add-favorite {
   position: absolute;
   bottom: 15px;
@@ -396,5 +407,32 @@ html, body, .container {
   display: inline-block;
   font-size: 3.5em;
   color: $dark-color;
+}
+
+/* Connection Action Menu styles */
+
+.connection-action-menu {
+  list-style: none;
+  color: black;
+  padding: 0;
+  border-radius: 10px;
+
+  li {
+    margin: 0;
+    padding: 10px;
+    text-align: right;
+    border-bottom: #073642 1px solid;
+    cursor: pointer;
+  }
+
+  li:last-of-type {
+    border-bottom: none;
+    border-bottom-radius: 10px;
+  }
+
+  li:first-of-type {
+    border-top-radius: 10px;
+  }
+
 }
 

@@ -13,6 +13,12 @@ var store = function(params) {
     connectionForm: {
       show: false,
       action: 'Add'
+    },
+    connectionActionMenu: {
+      show: false
+    },
+    databaseForm: {
+      show: false
     }
   };
   this.connection = params.connection || null;
@@ -83,9 +89,42 @@ store.prototype.toggleConnectionForm = function(info) {
     this.router.connectionForm.action = 'Add';
   }
   this.router.connectionForm.show = !this.router.connectionForm.show;
-      console.log("emit toggleConnectionForm")
-
+  this.clearConnectionActionMenu();
+  this.clearDatabaseForm();
   this.emit('toggleConnectionForm');
+};
+
+store.prototype.toggleConnectionActionMenu = function() {
+  this.router.connectionActionMenu.show = !this.router.connectionActionMenu.show;
+  this.emit('updateRehinkDbClient');
+};
+
+store.prototype.toggleDatabaseForm = function() {
+  this.router.databaseForm.show = !this.router.databaseForm.show;
+  this.clearConnectionActionMenu();
+  this.clearConnectionForm();
+  this.emit('updateRehinkDbClient');
+};
+
+store.prototype.clearConnectionActionMenu = function() {
+  if(this.router.connectionActionMenu.show) {
+    // Clear action menu
+    this.router.connectionActionMenu.show = false;
+  }
+};
+
+store.prototype.clearConnectionForm = function() {
+  if(this.router.connectionForm.show) {
+    // Clear action menu
+    this.router.connectionForm.show = false;
+  }
+};
+
+store.prototype.clearDatabaseForm = function() {
+  if(this.router.databaseForm.show) {
+    // Clear action menu
+    this.router.databaseForm.show = false;
+  }
 };
 
 // Add favorite
@@ -445,6 +484,25 @@ store.prototype.toggleExplorerBody = function(type) {
 // Refresh Explorer Body
 store.prototype.refreshExplorerBody = function() {
   this.query();
-}
+};
+
+// Save Database
+store.prototype.saveDatabase = function(dbName) {
+  const conn = this.selectedFavorite.dbConnection;
+  return new Promise((resolve, reject) => {
+    RethinkDbService.createDb(conn, dbName).then((results) => {
+      // Add database to selectedfavorite list
+      this.selectedFavorite.databases.push({
+        name: dbName,
+        tables: []
+      });
+      this.toggleDatabaseForm();
+      resolve();
+    }).catch((err) => {
+      console.error(err);
+      reject(err);
+    });
+  });
+};
 
 module.exports = store;

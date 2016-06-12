@@ -2,6 +2,7 @@ const React = require('react');
 const Sidebar = require('../Sidebar/Sidebar');
 const Explorer = require('../Explorer/Explorer');
 const ConnectionForm = require('../ConnectionForm/ConnectionForm');
+const DatabaseForm = require('../DatabaseForm/DatabaseForm');
 
 const App = React.createClass({
   getInitialState: function() {
@@ -30,6 +31,11 @@ const App = React.createClass({
       this.forceUpdate();
     });
 
+    this.state.on('toggleDatabaseForm', () => {
+      console.log("toggleDatabaseForm")
+      this.forceUpdate();
+    });
+
     // Event for updating selected favorite
     this.state.on('updateRehinkDbClient', () => {
       this.forceUpdate();
@@ -41,6 +47,7 @@ const App = React.createClass({
         <Sidebar  />
         <Explorer />
         <ConnectionForm />
+        <DatabaseForm />
       </div>
     );
   }
