@@ -114,7 +114,7 @@ const EntityForm = React.createClass({
                   </p>
                   <p className={classes.deleteDatabaseWarning}>
                     Deleting the database will delete all the tables in it.
-                    This action <strong>cannot</strong> be undone.
+                    This action <strong>cannot</strong> be undone. Please type in the name of the database to confirm.
                   </p>
                   <div className={classes.name}>
                     <label htmlFor="name">{this.state.store.router.EntityForm.type} Name</label>
