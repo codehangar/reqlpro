@@ -11,6 +11,7 @@
       delete window.module;
       var remote = window.nodeRequire('remote');
       var ipc = window.nodeRequire('electron').ipcRenderer;
+      var Analytics = window.nodeRequire('analytics-node');
       var Menu = remote.require('menu');
       var template = [
         {
