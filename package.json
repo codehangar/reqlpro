@@ -45,6 +45,7 @@
     "webpack": "^1.12.9"
   },
   "dependencies": {
+    "analytics-node": "^2.1.0",
     "bootstrap-sass": "^3.3.6",
     "classnames": "^2.2.3",
     "co": "^4.6.0",
