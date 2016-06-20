@@ -3,6 +3,7 @@ require("../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss");
 require("../node_modules/font-awesome/scss/font-awesome.scss");
 require("./styles/main.scss");
 
+
 // Index template
 require.context('./', true, /index\.html$/);
 // About template
@@ -32,6 +33,10 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var App = require('./components/App/App');
 
+// Segment
+var Segment = require('./services/segment.service');
+console.log('Segment',Segment);
+
 // Create Provider Class to provide global store to anyone who wants it
 class Provider extends React.Component {
   getChildContext() {
@@ -53,6 +58,12 @@ function init() {
   if (store.favorites.length) {
     store.updateSelectedFavorite(store.favorites[0]);
   }
+
+  Segment.track({
+    event: 'app.open',
+    properties: {}
+  })
+
   // Render App Component
   ReactDOM.render(
     <Provider store={store}>
