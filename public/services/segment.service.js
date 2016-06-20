@@ -21,14 +21,17 @@ function Segment() {
     });
   };
 
-  this.identify = function(payload) {
+  this.identify = function() {
     AnonId.get(function(anonId) {
-      angular.extend(payload, {
-        anonymousId: anonId,
-        context: {
-          userAgent: navigator.userAgent
+      // angular.extend(payload, {
+      var payload = {
+          anonymousId: anonId,
+          userId: anonId,
+          context: {
+            userAgent: navigator.userAgent
+          }
         }
-      });
+        // });
       analytics.identify(payload);
     });
   };

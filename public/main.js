@@ -35,7 +35,6 @@ var App = require('./components/App/App');
 
 // Segment
 var Segment = require('./services/segment.service');
-console.log('Segment',Segment);
 
 // Create Provider Class to provide global store to anyone who wants it
 class Provider extends React.Component {
@@ -59,10 +58,12 @@ function init() {
     store.updateSelectedFavorite(store.favorites[0]);
   }
 
+  Segment.identify();
   Segment.track({
     event: 'app.open',
     properties: {}
   })
+
 
   // Render App Component
   ReactDOM.render(
