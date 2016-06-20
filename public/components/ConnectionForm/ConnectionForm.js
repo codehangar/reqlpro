@@ -1,5 +1,6 @@
 const React = require('react');
 const classNames = require('classnames');
+const Segment = require('../../services/segment.service');
 
 const ConnectionForm = React.createClass({
   getInitialState: function() {
@@ -47,6 +48,10 @@ const ConnectionForm = React.createClass({
       // Save new favorite and turn off form
       if (this.state.action === 'Add') {
         this.state.store.addFavorite(this.state.connection);
+        Segment.track({
+          event: 'connection.add',
+          properties: {}
+        })
       } else {
         this.state.store.editFavorite(this.state.connection);
       }
