@@ -23,7 +23,7 @@ const EntityForm = React.createClass({
           if(this.state.store.router.EntityForm.toDeleteName === this.state.store.router.EntityForm.formElems.name.value) {
             this.saveForm(this.state.store.router.EntityForm.formElems.name.value);
           } else {
-            this.state.store.router.EntityForm.errMessage = 'This name doesn\'t match the name of the database you\'re trying to delete.';
+            this.state.store.router.EntityForm.errMessage = 'This name doesn\'t match the name of the ' + this.state.store.router.EntityForm.type +  ' you\'re trying to delete.';
             this.setState(this.state.store);
           }
         } else {
@@ -41,23 +41,49 @@ const EntityForm = React.createClass({
   },
   saveForm: function(name) {
     if(this.state.store.router.EntityForm.action === 'Add') {
-      // Lets save database for this connection
-      this.state.store.saveDatabase(name).then(() => {
-        this.resetState();
-      }).catch((err) => {
-        console.log(err);
-      });
+      // Lets save entity for this connection
+      switch (this.state.store.router.EntityForm.type) {
+        case 'Database':
+          this.state.store.saveDatabase(name).then(() => {
+            this.resetState();
+          }).catch((err) => {
+            console.log(err);
+          });
+          break;
+        case 'Table':
+          this.state.store.saveTable(name).then(() => {
+            this.resetState();
+          }).catch((err) => {
+            console.log(err);
+          });
+          break;
+        default:
+          break;
+      }
     }
     if(this.state.store.router.EntityForm.action === 'Edit') {
-      // Lets edit database for this connection
+      // Lets edit entity for this connection
     }
     if(this.state.store.router.EntityForm.action === 'Delete') {
-      // Lets delete database for this connection
-      this.state.store.deleteDatabase(name).then(() => {
-        this.resetState();
-      }).catch((err) => {
-        console.log(err);
-      });
+      // Lets delete entity for this connection
+      switch (this.state.store.router.EntityForm.type) {
+        case 'Database':
+          this.state.store.deleteDatabase(name).then(() => {
+            this.resetState();
+          }).catch((err) => {
+            console.log(err);
+          });
+          break;
+        case 'Table':
+          this.state.store.deleteTable(name).then(() => {
+            this.resetState();
+          }).catch((err) => {
+            console.log(err);
+          });
+          break;
+        default:
+          break;
+      }
     }
   },
   resetState: function() {
@@ -90,6 +116,14 @@ const EntityForm = React.createClass({
           'hidden': this.state.store.router.EntityForm.action !== 'Delete' || this.state.store.router.EntityForm.type !== 'Database'
         }
       ),
+      deleteTableWarning: classNames(
+        'bg-danger',
+        'delete-db-warning',
+        {
+          'show': this.state.store.router.EntityForm.action === 'Delete' && this.state.store.router.EntityForm.type === 'Table',
+          'hidden': this.state.store.router.EntityForm.action !== 'Delete' || this.state.store.router.EntityForm.type !== 'Table'
+        }
+      ),
       deleteDatabaseValidationError: classNames(
         'bg-warning',
         'delete-db-validation-error',
@@ -115,6 +149,9 @@ const EntityForm = React.createClass({
                   <p className={classes.deleteDatabaseWarning}>
                     Deleting the database will delete all the tables in it.
                     This action <strong>cannot</strong> be undone. Please type in the name of the database to confirm.
+                  </p>
+                  <p className={classes.deleteTableWarning}>
+                    This action <strong>cannot</strong> be undone. Please type in the name of the table to confirm.
                   </p>
                   <div className={classes.name}>
                     <label htmlFor="name">{this.state.store.router.EntityForm.type} Name</label>

@@ -172,7 +172,7 @@ html, body, .container {
   position: relative;
   top: -10px;
   padding: 0px 20px;
-  
+
 }
 
 .databases-header .title{
@@ -209,15 +209,30 @@ html, body, .container {
     top: 5px;
   }
 
-  &:hover {
-    .btn-group {
-      display: block;
+  .db {
+    &:hover {
+      .delete-db {
+        display: block;
+      }
     }
   }
 
 }
 
-.database .btn-group {
+.delete-db {
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: none;
+
+  button {
+    height: 41px;
+    border-radius: 0;
+  }
+
+}
+
+.delete-table {
   position: absolute;
   right: 0;
   top: 0;
@@ -265,16 +280,22 @@ html, body, .container {
 }*/
 .db-table{
   color:#fff;
+  position: relative;
+  &:hover {
+    .delete-table {
+      display: block;
+    }
+  }
 }
 
-.db-table div {
+.db-table div:first-child {
   padding: 10px 40px;
   cursor: pointer;
   background: darken($dark-color, 1%);
   border-bottom: darken($dark-color, 2%) 1px solid;
 }
 
-.db-table.selected div {
+.db-table.selected div:first-child {
   padding: 10px 40px;
   cursor: pointer;
   background: lighten($dark-color, 1%);

@@ -526,6 +526,24 @@ store.prototype.saveDatabase = function(dbName) {
   });
 };
 
+// Save Table
+store.prototype.saveTable = function(tableName) {
+  const conn = this.selectedFavorite.dbConnection;
+  return new Promise((resolve, reject) => {
+    RethinkDbService.createTable(conn, this.selectedDatabase.name, tableName, 'id').then((results) => {
+      // Add table to selectedDatabase list
+      this.selectedDatabase.tables.push({
+        name: tableName
+      });
+      this.toggleEntityForm();
+      resolve();
+    }).catch((err) => {
+      console.error(err);
+      reject(err);
+    });
+  });
+};
+
 // Delete Database
 store.prototype.deleteDatabase = function(dbName) {
   const conn = this.selectedFavorite.dbConnection;
@@ -535,6 +553,26 @@ store.prototype.deleteDatabase = function(dbName) {
       this.selectedFavorite.databases.forEach((db, index) => {
         if(db.name === dbName) {
           this.selectedFavorite.databases.splice(index, 1);
+        }
+      });
+      this.toggleEntityForm();
+      resolve();
+    }).catch((err) => {
+      console.error(err);
+      reject(err);
+    });
+  });
+};
+
+// Delete Database
+store.prototype.deleteTable = function(tableName) {
+  const conn = this.selectedFavorite.dbConnection;
+  return new Promise((resolve, reject) => {
+    RethinkDbService.deleteTable(conn, this.selectedDatabase.name, tableName).then((results) => {
+      // Remove database from selectedfavorite list
+      this.selectedDatabase.tables.forEach((table, index) => {
+        if(table.name === tableName) {
+          this.selectedDatabase.tables.splice(index, 1);
         }
       });
       this.toggleEntityForm();

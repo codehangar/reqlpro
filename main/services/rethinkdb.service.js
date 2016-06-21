@@ -133,6 +133,7 @@ RethinkDbService.prototype.createDb = function(conn, newDatabase) {
         if (results.indexOf(newDatabase) === -1) {
           // Lets create the new db
           r.dbCreate(newDatabase).run(conn, function(err, results) {
+            console.log(err);
             console.log(newDatabase + ' was successfully created.');
             resolve(newDatabase + ' was successfully created.');
           });
@@ -153,6 +154,26 @@ RethinkDbService.prototype.createDb = function(conn, newDatabase) {
 RethinkDbService.prototype.deleteDb = function(conn, dbName) {
   return new Promise(function(resolve, reject) {
     r.dbDrop(dbName).run(conn, function(err, results) {
+      if (err) {
+        console.log(err);
+        reject(err);
+      } else {
+        resolve();
+      }
+    });
+  });
+};
+
+/**
+ * Delete a RethinkDB Table
+ * @param {Object} RethinkDb Connection
+ * @param {String} Database Name
+ * @param {String} Table Name
+ * @returns {Promise}
+ */
+RethinkDbService.prototype.deleteTable = function(conn, dbName, tableName) {
+  return new Promise(function(resolve, reject) {
+    r.db(dbName).tableDrop(tableName).run(conn, function(err, results) {
       if (err) {
         console.log(err);
         reject(err);

@@ -1,5 +1,6 @@
 var React = require('react');
-var DbTable = require('../DbTable/DbTable')
+var DbTable = require('../DbTable/DbTable');
+var AddDbTable = require('../AddDbTable/AddDbTable');
 
 var DbTables = React.createClass({
   render: function() {
@@ -13,6 +14,7 @@ var DbTables = React.createClass({
     return (
       <div className="db-tables noselect">
         {dbTableNodes}
+        <AddDbTable />
       </div>
     );
   }

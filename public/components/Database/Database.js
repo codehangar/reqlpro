@@ -31,7 +31,7 @@ const Database = React.createClass({
         }}>
           <i className="fa fa-database"></i>
             &nbsp;&nbsp;<span className="database-name">{this.props.database.name}</span>
-            <div className="btn-group" role="group">
+            <div className="delete-db btn-group" role="group">
               <button onClick={this.deleteDatabase.bind(this, this.props.database.name)} className="btn btn-default fa fa-trash"></button>
               {/*<button onClick={this.editDatabase.bind(this, this.props.database.name)} className="btn btn-default fa fa-pencil"></button>*/}
             </div>
