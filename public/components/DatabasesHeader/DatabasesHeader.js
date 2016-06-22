@@ -8,6 +8,14 @@ const DatabasesHeader = React.createClass({
   },
   toggleConnectionActionMenu: function(e) {
     this.props.store.toggleConnectionActionMenu();
+
+    const documentClickListener = () => {
+      console.log("clicked document");
+      this.props.store.toggleConnectionActionMenu();
+      window.document.removeEventListener('click', documentClickListener, false);
+    };
+
+    window.document.addEventListener('click', documentClickListener, false);
   },
   addDatabase: function(e) {
     this.props.store.toggleEntityForm('Database', 'Add');
@@ -31,7 +39,7 @@ const DatabasesHeader = React.createClass({
               <li onClick={this.editFavorite}><a href="#">Edit Connection</a></li>
               <li onClick={this.addDatabase}><a href="#">Add database</a></li>
             </ul>
-          </div>  
+          </div>
         </div>
       </div>
     );

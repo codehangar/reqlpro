@@ -189,6 +189,7 @@ html, body, .container {
 .databases-header .connection-action-menu-button {
   float: right;
   color: lighten($dark-color, 10%);
+  cursor: pointer;
 }
 
 .databases-header .connection-action-menu-button:hover {
