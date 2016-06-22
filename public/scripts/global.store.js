@@ -6,6 +6,9 @@ var EventEmitter = require("events").EventEmitter;
 var jdenticon = require('jdenticon');
 var Connection = require('../models/Connection');
 var md5 = require('md5');
+const _ = require('lodash');
+const DateTypeService = require('../services/date-type.service.js');
+
 
 var store = function(params) {
   EventEmitter.call(this); // Inherit constructor
@@ -377,6 +380,7 @@ store.prototype.insert = function(record) {
 // Switch to edit mode
 store.prototype.startEdit = function(record) {
   this.selectedTable.codeAction = 'update';
+  this.selectedTable.editingRecord = record;
   this.selectedTable.codeBody = JSON.stringify(record, null, '\t');
   this.selectedTable.type = 'code';
   this.emit('updateRehinkDbClient');
@@ -441,6 +445,8 @@ store.prototype.replace = function(record) {
 store.prototype.saveRow = function(row) {
   try {
     row = JSON.parse(row);
+    row = DateTypeService.convertStringsToDates(this.selectedTable.editingRecord, row);
+
     this.selectedTable.codeBodyError = null;
   } catch(e) {
     this.selectedTable.codeBodyError = 'You can only save valid json to your table';
