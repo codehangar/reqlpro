@@ -51,7 +51,7 @@ const ConnectionForm = React.createClass({
         Segment.track({
           event: 'connection.add',
           properties: {}
-        })
+        });
       } else {
         this.state.store.editFavorite(this.state.connection);
       }

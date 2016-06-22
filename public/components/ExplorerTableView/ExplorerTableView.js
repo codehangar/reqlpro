@@ -4,6 +4,7 @@ import JSONTree from 'react-json-tree';
 import ExplorerTableCell from './ExplorerTableCell.js';
 import _ from 'lodash';
 const classNames = require('classnames');
+const Segment = require('../../services/segment.service');
 
 var ExplorerTableView = React.createClass({
   getInitialState: function() {
@@ -42,9 +43,19 @@ var ExplorerTableView = React.createClass({
   startEditRow: function (row) {
     // console.log("startEditRow row", row)
     this.state.store.startEdit(row);
+
+    Segment.track({
+      event: 'tableview.row.editBtn',
+      properties: {}
+    });
   },
   deleteRow: function (row) {
     this.state.store.deleteRow(row);
+
+    Segment.track({
+      event: 'tableview.row.deleteBtn',
+      properties: {}
+    });
   },
   sortTable: function(sort) {
     this.state.store.updateTableSort(sort);

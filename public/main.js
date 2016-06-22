@@ -62,7 +62,7 @@ function init() {
   Segment.track({
     event: 'app.open',
     properties: {}
-  })
+  });
 
 
   // Render App Component

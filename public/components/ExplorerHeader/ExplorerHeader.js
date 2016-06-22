@@ -1,10 +1,18 @@
 const React = require('react');
 const classNames = require('classnames');
+const Segment = require('../../services/segment.service');
 
 const ExplorerHeader = React.createClass({
   toggleExplorerBody: function(key, e) {
     e.preventDefault();
     this.props.store.toggleExplorerBody(key);
+
+    Segment.track({
+      event: 'explorer.toggleView',
+      properties: {
+        'view': key
+      }
+    });
   },
   refreshExplorerBody: function() {
     this.props.store.refreshExplorerBody();

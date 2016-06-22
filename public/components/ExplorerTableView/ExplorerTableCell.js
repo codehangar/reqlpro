@@ -1,6 +1,5 @@
 const React = require('react');
 import { RIEInput, RIENumber } from 'riek'
-import JSONTree from 'react-json-tree';
 import _ from 'lodash';
 
 var ExplorerTableCell = React.createClass({
