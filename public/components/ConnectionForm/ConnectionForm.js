@@ -26,7 +26,10 @@ const ConnectionForm = React.createClass({
     this.state.store.on('updateRehinkDbClient', () => {
       updateState();
     });
-    this.state.store.on('toggleConnectionForm', () => {
+    this.state.store.on('showConnectionForm', () => {
+      updateState();
+    });
+    this.state.store.on('hideConnectionForm', () => {
       updateState();
     });
   },
@@ -55,15 +58,15 @@ const ConnectionForm = React.createClass({
       } else {
         this.state.store.editFavorite(this.state.connection);
       }
-      this.state.store.toggleConnectionForm();
+      this.state.store.hideConnectionForm();
     }
   },
   handleCancel: function(e) {
-    this.state.store.toggleConnectionForm();
+    this.state.store.hideConnectionForm();
   },
   handleDelete: function(e) {
     this.state.store.deleteFavorite(this.state.connection);
-    this.state.store.toggleConnectionForm();
+    this.state.store.hideConnectionForm();
   },
   render: function() {
     var containerStyles = {
@@ -101,7 +104,7 @@ const ConnectionForm = React.createClass({
       <div className="ConnectionForm" style={containerStyles}>
         <div className="panel panel-default">
           <div className="panel-heading">
-            <strong>Add RethinkDB Connection</strong>
+            <strong>{this.state.action} RethinkDB Connection</strong>
           </div>
           <div className="panel-body">
             <div className="row">

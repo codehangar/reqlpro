@@ -26,7 +26,10 @@ const App = React.createClass({
   setupEvents: function() {
 
     // Event for toggling connection form
-    this.state.on('toggleConnectionForm', () => {
+    this.state.on('showConnectionForm', () => {
+      this.forceUpdate();
+    });
+    this.state.on('hideConnectionForm', () => {
       this.forceUpdate();
     });
 

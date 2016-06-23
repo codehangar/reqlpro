@@ -84,8 +84,14 @@ store.prototype.clearCodeBodyError = function() {
   this.emit('updateSelectedTable');
 }
 
+
+store.prototype.hideConnectionForm = function(info) {
+  this.router.ConnectionForm.show = false;
+  this.emit('hideConnectionForm');
+};
+
 // Toggle Connection Form
-store.prototype.toggleConnectionForm = function(info) {
+store.prototype.showConnectionForm = function(info) {
   this.connection = Connection.create();
   if (info) {
     // If we pass info lets set data on connection model
@@ -101,18 +107,12 @@ store.prototype.toggleConnectionForm = function(info) {
   } else {
     this.router.ConnectionForm.action = 'Add';
   }
-  this.router.ConnectionForm.show = !this.router.ConnectionForm.show;
-  if(this.router.ConnectionForm.show) {
-    this.clearAll('ConnectionForm');
-  }
-  this.emit('toggleConnectionForm');
+  this.router.ConnectionForm.show = true;
+  this.emit('showConnectionForm');
 };
 
 store.prototype.toggleConnectionActionMenu = function() {
   this.router.ConnectionActionMenu.show = !this.router.ConnectionActionMenu.show;
-  if(this.router.ConnectionActionMenu.show) {
-    this.clearAll('ConnectionActionMenu');
-  }
   this.emit('updateRehinkDbClient');
 };
 
@@ -137,18 +137,8 @@ store.prototype.toggleEntityForm = function(type, action, toDeleteName) {
     this.router.EntityForm.type = type;
     this.router.EntityForm.action = action;
     this.router.EntityForm.toDeleteName = toDeleteName;
-    this.clearAll('EntityForm');
   }
   this.emit('updateRehinkDbClient');
-};
-
-store.prototype.clearAll = function(currentActive) {
-  Object.keys(this.router).forEach((key) => {
-    if(this.router[key].show && key !== currentActive) {
-      // hide content
-      this['toggle' + key]();
-    }
-  });
 };
 
 // Add favorite

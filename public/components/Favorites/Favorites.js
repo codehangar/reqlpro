@@ -21,7 +21,7 @@ const Favorites = React.createClass({
     this.state.updateSelectedFavorite(favorite);
   },
   addFavorite: function() {
-    this.state.toggleConnectionForm();
+    this.state.showConnectionForm();
   },
   render: function() {
     const favoriteNodes = this.state.favorites.map((favorite) => {
