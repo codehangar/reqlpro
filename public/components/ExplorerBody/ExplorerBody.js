@@ -8,8 +8,8 @@ const ExplorerBody = React.createClass({
     let explorerBody;
     if (this.props.table.loading) {
       explorerBody = (
-        <div>
-          <span className="fa fa-refresh fa-spin explorer-loading"></span>
+        <div className="explorer-loading">
+           <span className="fa fa-refresh fa-spin"></span>
         </div>
       );
     } else {
@@ -22,8 +22,10 @@ const ExplorerBody = React.createClass({
           );
         } else if (this.props.table.type === 'table') {
           explorerBody = (
-            <div className="table-view-container">
-              <ExplorerTableView table={this.props.table} className="data-table-main"/>
+            <div style={{position:'relative'}}>
+              <div className="table-view-container">
+                <ExplorerTableView table={this.props.table} className="data-table-main"/>
+              </div>
             </div>
           );
         } else if(this.props.table.type === 'code') {
@@ -43,7 +45,7 @@ const ExplorerBody = React.createClass({
     }
 
     return (
-      <div className="row explorer-body" id="explorer-body" style={{
+      <div className="explorer-body" style={{
         width: this.props.width
       }}>
           {explorerBody}

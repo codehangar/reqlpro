@@ -33,10 +33,10 @@ var Databases = React.createClass({
     const content = () => {
       if (this.state.favorites.length > 0) {
         return (
-          <span>
+          <div>
             <DatabasesHeader selectedFavorite={this.state.selectedFavorite} store={this.state} />
             {databaseNodes}
-          </span>
+          </div>
         );
       } else {
         return (<div></div>);

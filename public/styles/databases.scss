@@ -1,0 +1,111 @@
+.databases-header {
+  // height: 28px;
+  // position: relative;
+  // top: -10px;
+  padding: 15px 20px;
+}
+
+.databases-header .title {
+  color: #fff;
+  font-weight: bold;
+}
+
+.databases-header p {
+  /*font-size: 2em;*/
+  /*padding-left: 15px;*/
+  display: inline;
+}
+
+.databases-header .connection-action-menu-button {
+  float: right;
+  color: lighten($dark-color, 10%);
+  cursor: pointer;
+  padding: 3px;
+}
+
+.databases-header .connection-action-menu-button:hover {
+  color: lighten($dark-color, 30%);
+}
+
+.database {
+  position: relative;
+  .database-name {
+    width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
+    display: inline-block;
+    position: relative;
+    top: 5px;
+  }
+  .db {
+    &:hover {
+      .delete-db {
+        display: block;
+      }
+    }
+  }
+}
+
+.delete-db {
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: none;
+  button {
+    height: 41px;
+    border-radius: 0;
+  }
+}
+
+.delete-table {
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: none;
+  button {
+    height: 39px;
+    border-radius: 0;
+  }
+}
+
+.database .db {
+  padding: 10px 20px;
+  cursor: pointer;
+  background: lighten($dark-color, 2%);
+  border-bottom: $dark-color 1px solid;
+  color: #fff;
+}
+
+.database .db:hover {
+  background: lighten($dark-color, 4%);
+}
+
+.db-table {
+  color: #fff;
+  position: relative;
+  &:hover {
+    .delete-table {
+      display: block;
+    }
+  }
+}
+
+.db-table div:first-child {
+  padding: 10px 40px;
+  cursor: pointer;
+  background: darken($dark-color, 1%);
+  border-bottom: darken($dark-color, 2%) 1px solid;
+}
+
+.db-table.selected div:first-child {
+  padding: 10px 40px;
+  cursor: pointer;
+  background: lighten($dark-color, 1%);
+  border-bottom: lighten($dark-color, 3%) 1px solid;
+}
+
+.db-table div:hover {
+  background: $dark-color;
+}

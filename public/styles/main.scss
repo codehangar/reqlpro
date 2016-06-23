@@ -1,8 +1,10 @@
+
 $darkest-color: #002b36;
 $dark-color: #073642;
 $lighter-color: rgb(245, 245, 245);
 $darker-grey: rgb(150, 150, 150);
-html, body, .container {
+
+html, body, .main-content {
   height: 100%;
   width: 100%;
   overflow: hidden;
@@ -12,86 +14,40 @@ html, body, .container {
   font-family: 'Open Sans', sans-serif;
 }
 
-
-/*.sidebar-content-row p {
-  color: #FFFFFF;
-}*/
-
+.content-wrapper {
+  display: flex;
+  height: 100%;
+}
 
 /* MAIN CONTENT LAYOUT STYLES */
 
-.container.main-content {
-  display: table;
-  width: 100%;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-.main-content-row {
-  height: 100%;
-  display: table-row;
-}
-
-.col-md-3.no-float, .col-md-9.no-float {
-  float: none;
-  padding: 0;
-}
-
-.left-content-col {
-  display: table-cell;
-  width: 360px;
-  padding: 0;
-}
-
 .body-content-col {
-  /*display: table-cell;*/
-  /*display: block;*/
-  /*width: 100%;*/
+  flex: 1 1;
   background: $lighter-color;
-  /*height: 100vh;*/
-  min-width: 440px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 0;
-  position: relative;
-  height: 100%;
+  display: flex;
 }
-
 
 /* MAIN CONTENT LAYOUT STYLES END */
 
 
 /* SIDEBAR LAYOUT STYLES */
 
-.container.sidebar-content {
-  display: table;
-  width: 100%;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-.sidebar-content-row {
-  height: 100%;
-  display: table-row;
-  /*color: #fff;*/
+.sidebar {
+  flex: 0 0 360px;
+  display: flex;
 }
 
 .fav-content-col {
-  display: table-cell;
+  flex: 0 0 90px;
   background: $darkest-color;
-  min-width: 90px;
   position: relative;
-  padding: 0;
 }
 
 .db-content-col {
-  display: table-cell;
+  flex: 1;
   background: $dark-color;
-  width: 75%;
-  min-width: 270px;
-  padding: 0;
+  overflow: scroll;
 }
-
 
 /* SIDEBAR LAYOUT STYLES END */
 
@@ -117,232 +73,7 @@ html, body, .container {
   z-index: 100000;
 }
 
-.add-favorite {
-  position: absolute;
-  bottom: 15px;
-  left: 37%;
-  cursor: pointer;
-}
 
-.add-favorite:hover {
-  opacity: .6;
-}
-
-.add-favorites-icon {
-  color: #FFFFFF;
-  font-size: 1.5em;
-}
-
-.favorite-identicon {
-  border-radius: 2px;
-  margin-left: 24px;
-  cursor: pointer;
-  width: 40px;
-  height: 40px;
-  margin-bottom: 5px;
-  background: #FFF;
-  margin-bottom: 15px;
-}
-
-.favorite {
-  position: relative;
-  top: 30px;
-  margin-bottom: 30px;
-  font-size: 11px;
-  color:#fff;
-}
-
-.favorite p {
-  cursor: pointer;
-}
-
-.databases-header {
-  height: 28px;
-  position: relative;
-  top: -10px;
-  padding: 0px 20px;
-
-}
-
-.databases-header .title{
-  color: #fff;
-  font-weight: bold;
-}
-
-.databases-header p {
-  /*font-size: 2em;*/
-  /*padding-left: 15px;*/
-  display: inline;
-}
-
-.databases-header .connection-action-menu-button {
-  float: right;
-  color: lighten($dark-color, 10%);
-  cursor: pointer;
-}
-
-.databases-header .connection-action-menu-button:hover {
-  color: lighten($dark-color, 30%);
-}
-
-.database {
-  position: relative;
-
-  .database-name {
-    width: 150px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 1.3;
-    display: inline-block;
-    position: relative;
-    top: 5px;
-  }
-
-  .db {
-    &:hover {
-      .delete-db {
-        display: block;
-      }
-    }
-  }
-
-}
-
-.delete-db {
-  position: absolute;
-  right: 0;
-  top: 0;
-  display: none;
-
-  button {
-    height: 41px;
-    border-radius: 0;
-  }
-
-}
-
-.delete-table {
-  position: absolute;
-  right: 0;
-  top: 0;
-  display: none;
-
-  button {
-    height: 39px;
-    border-radius: 0;
-  }
-
-}
-
-.database .db {
-  padding: 10px 20px;
-  cursor: pointer;
-  background: lighten($dark-color, 2%);
-  border-bottom: $dark-color 1px solid;
-  color: #fff;
-}
-
-.database .db:hover {
-  background: lighten($dark-color, 4%);
-}
-
-
-/*.fa-database {
-  display: inline;
-  font-size: 1.5em;
-  color: #FFF;
-}*/
-
-
-/*.database p {
-  display: inline;
-  padding-left: 10px;
-  font-size: 1.5em;
-  margin-top: 5px;
-}*/
-
-
-/*.db-tables {
-  padding-left: 20px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}*/
-.db-table{
-  color:#fff;
-  position: relative;
-  &:hover {
-    .delete-table {
-      display: block;
-    }
-  }
-}
-
-.db-table div:first-child {
-  padding: 10px 40px;
-  cursor: pointer;
-  background: darken($dark-color, 1%);
-  border-bottom: darken($dark-color, 2%) 1px solid;
-}
-
-.db-table.selected div:first-child {
-  padding: 10px 40px;
-  cursor: pointer;
-  background: lighten($dark-color, 1%);
-  border-bottom: lighten($dark-color, 3%) 1px solid;
-}
-
-.db-table div:hover {
-  background: $dark-color;
-}
-
-
-/*.fa-table {
-  display: inline;
-  font-size: 1em;
-  color: #FFF;
-}*/
-
-.explorer-container {
-  position: absolute;
-  bottom: 0;
-  top: 0;
-  width: 100%;
-}
-
-.explorer-header {
-  background: $lighter-color;
-  padding: 15px 20px;
-  ;
-  height: 55px;
-  color: #999;
-}
-
-.explorer-header .btn-group {
-  margin-left: 10px;
-  /* margin: 0; */
-}
-
-.explorer-body {
-  position: absolute;
-  // top: 55px;
-  // bottom: 0;
-  margin: 0;
-  width: 100%;
-}
-
-.explorer-footer {
-  /* margin-top: 15px; */
-  /* padding: 13px 10px; */
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  /* width: 100%; */
-  left: 360px;
-  background: $lighter-color;
-  height: 50px;
-  padding: 10px;
-}
 
 .table-view-container {
   /*margin-left: -15px;*/
@@ -385,9 +116,12 @@ html, body, .container {
   color: $dark-color;
 }
 
-.select-table {
+.explorer-full-message {
+  margin-top: 60px;
   padding: 15px 10px;
   color: $dark-color;
+  text-align: center;
+  font-size: 25px;
 }
 
 .favorite.active .favorite-identicon {
@@ -467,41 +201,4 @@ html, body, .container {
                                   not supported by any browser */
 }
 
-/* Explorer Body Loading styles */
-
-.explorer-loading {
-  margin: 25% 50%;
-  display: inline-block;
-  font-size: 3.5em;
-  color: $dark-color;
-}
-
-/* Connection Action Menu styles */
-
-.connection-action-menu {
-  list-style: none;
-  color: black;
-  padding: 0;
-  border-radius: 10px;
-  position: relative;
-  z-index: 5;
-
-  li {
-    margin: 0;
-    padding: 10px;
-    text-align: right;
-    border-bottom: #073642 1px solid;
-    cursor: pointer;
-  }
-
-  li:last-of-type {
-    border-bottom: none;
-    border-bottom-radius: 10px;
-  }
-
-  li:first-of-type {
-    border-top-radius: 10px;
-  }
-
-}
 

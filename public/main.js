@@ -1,7 +1,7 @@
 // Require our sass files
 require("../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss");
 require("../node_modules/font-awesome/scss/font-awesome.scss");
-require("./styles/main.scss");
+require("./styles/index.scss");
 
 
 // Index template

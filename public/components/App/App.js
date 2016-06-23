@@ -44,7 +44,7 @@ const App = React.createClass({
   },
   render: function() {
     return (
-      <div className="row main-content-row">
+      <div className="content-wrapper">
         <Sidebar  />
         <Explorer />
         <ConnectionForm />

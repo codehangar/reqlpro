@@ -17,7 +17,13 @@ const Explorer = React.createClass({
     });
   },
   render: function() {
-    let content = <p className="select-table">Select a table from a database</p>;
+    let content = (
+      <div className="explorer-container">
+        <div className="explorer-full-message">
+          <p className="select-table">Select a table from a database</p>
+        </div>
+      </div>
+    );
 
     if (this.state.favorites.length === 0) {
       content = (
@@ -42,8 +48,10 @@ const Explorer = React.createClass({
       try {
         if (this.state.selectedFavorite.dbConnection.name === 'ReqlDriverError') {
           content = (
-            <div className="jumbotron">
-              <p className="text-danger">{this.state.selectedFavorite.dbConnection.msg}</p>
+            <div className="explorer-container">
+              <div className="explorer-full-message">
+                <p className="text-danger">{this.state.selectedFavorite.dbConnection.msg}</p>
+              </div>
             </div>
           );
         }

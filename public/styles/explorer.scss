@@ -1,0 +1,48 @@
+.explorer-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.explorer-header {
+  flex: 0 0 55px;
+  padding: 15px 20px;
+  color: #999;
+  // background: $lighter-color;
+}
+
+.explorer-header .btn-group {
+  margin-left: 10px;
+}
+
+.explorer-body {
+  flex: 1 1;
+  position: relative;
+  overflow: scroll;
+  // border: 1px solid red;
+}
+
+.explorer-footer {
+  flex: 0 0 50px;
+  padding: 10px;
+  // background: $lighter-color;
+}
+
+
+/* Explorer Body Loading styles */
+
+.explorer-loading {
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  .fa {
+    position: absolute;
+    font-size: 100px;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -50px;
+    color: $dark-color;
+  }
+}

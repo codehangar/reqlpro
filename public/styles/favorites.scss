@@ -1,0 +1,38 @@
+.add-favorite {
+  position: absolute;
+  bottom: 15px;
+  left: 37%;
+  cursor: pointer;
+}
+
+.add-favorite:hover {
+  opacity: .6;
+}
+
+.add-favorites-icon {
+  color: #FFFFFF;
+  font-size: 1.5em;
+}
+
+.favorite-identicon {
+  border-radius: 2px;
+  margin-left: 24px;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 5px;
+  background: #FFF;
+  margin-bottom: 15px;
+}
+
+.favorite {
+  position: relative;
+  top: 30px;
+  margin-bottom: 30px;
+  font-size: 11px;
+  color: #fff;
+}
+
+.favorite p {
+  cursor: pointer;
+}
