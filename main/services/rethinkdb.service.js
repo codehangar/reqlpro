@@ -133,9 +133,11 @@ RethinkDbService.prototype.createDb = function(conn, newDatabase) {
         if (results.indexOf(newDatabase) === -1) {
           // Lets create the new db
           r.dbCreate(newDatabase).run(conn, function(err, results) {
-            console.log(err);
-            console.log(newDatabase + ' was successfully created.');
-            resolve(newDatabase + ' was successfully created.');
+            if (err) {
+              reject(err);
+            } else {
+              resolve(newDatabase + ' was successfully created.');
+            }
           });
         } else {
           resolve(newDatabase + ' already exists.');
@@ -194,22 +196,12 @@ RethinkDbService.prototype.deleteTable = function(conn, dbName, tableName) {
 RethinkDbService.prototype.createTable = function(conn, database, newTable, primaryKey) {
   return new Promise(function(resolve, reject) {
     co(function*() {
-      // Get a list of database tables
-      var dblist = yield r.db(database).tableList().run(conn);
-      // If tables do not exist in dblist array then create the tables
-      if (dblist.indexOf(newTable) === -1) {
-        yield r.db(database).tableCreate(newTable, {
-          primaryKey: primaryKey
-        }).run(conn);
-        console.log(newTable + ' was successfully created.');
-        resolve(newTable + ' was successfully created.');
-      } else {
-        console.log(newTable + ' already existed.');
-        resolve(newTable + ' already existed.');
-      }
-
+      const result = yield r.db(database).tableCreate(newTable, {
+        primaryKey: primaryKey
+      }).run(conn);
+      resolve(result);
     }).catch(function(err) {
-      reject('Failed creating the table: ' + newTable);
+      reject(err);
     });
   });
 };

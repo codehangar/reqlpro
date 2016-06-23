@@ -47,14 +47,16 @@ const EntityForm = React.createClass({
           this.state.store.saveDatabase(name).then(() => {
             this.resetState();
           }).catch((err) => {
-            console.log(err);
+            this.state.store.router.EntityForm.errMessage = err.msg;
+            this.setState(this.state.store);
           });
           break;
         case 'Table':
           this.state.store.saveTable(name).then(() => {
             this.resetState();
           }).catch((err) => {
-            console.log(err);
+            this.state.store.router.EntityForm.errMessage = err.msg;
+            this.setState(this.state.store);
           });
           break;
         default:
@@ -109,24 +111,24 @@ const EntityForm = React.createClass({
         'has-error': !this.state.store.router.EntityForm.formElems.name.valid
       }),
       deleteDatabaseWarning: classNames(
-        'bg-danger',
-        'delete-db-warning',
+        'alert',
+        'alert-warning',
         {
           'show': this.state.store.router.EntityForm.action === 'Delete' && this.state.store.router.EntityForm.type === 'Database',
           'hidden': this.state.store.router.EntityForm.action !== 'Delete' || this.state.store.router.EntityForm.type !== 'Database'
         }
       ),
       deleteTableWarning: classNames(
-        'bg-danger',
-        'delete-db-warning',
+        'alert',
+        'alert-warning',
         {
           'show': this.state.store.router.EntityForm.action === 'Delete' && this.state.store.router.EntityForm.type === 'Table',
           'hidden': this.state.store.router.EntityForm.action !== 'Delete' || this.state.store.router.EntityForm.type !== 'Table'
         }
       ),
       deleteDatabaseValidationError: classNames(
-        'bg-warning',
-        'delete-db-validation-error',
+        'alert',
+        'alert-danger',
         {
           'show': this.state.store.router.EntityForm.errMessage !== '',
           'hidden': this.state.store.router.EntityForm.errMessage === ''

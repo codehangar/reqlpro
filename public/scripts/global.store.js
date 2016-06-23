@@ -516,7 +516,6 @@ store.prototype.saveDatabase = function(dbName) {
       this.toggleEntityForm();
       resolve();
     }).catch((err) => {
-      console.error(err);
       reject(err);
     });
   });
@@ -534,7 +533,6 @@ store.prototype.saveTable = function(tableName) {
       this.toggleEntityForm();
       resolve();
     }).catch((err) => {
-      console.error(err);
       reject(err);
     });
   });
@@ -554,7 +552,6 @@ store.prototype.deleteDatabase = function(dbName) {
       this.toggleEntityForm();
       resolve();
     }).catch((err) => {
-      console.error(err);
       reject(err);
     });
   });
@@ -574,7 +571,6 @@ store.prototype.deleteTable = function(tableName) {
       this.toggleEntityForm();
       resolve();
     }).catch((err) => {
-      console.error(err);
       reject(err);
     });
   });
