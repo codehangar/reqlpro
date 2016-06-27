@@ -11,10 +11,10 @@
     "test-coverage": "npm test && istanbul cover node_modules/mocha/bin/_mocha -- -R spec",
     "electron": "electron main.js",
     "watch": "webpack --colors --watch",
-    "build": "electron-packager . ReQLPro --platform=darwin --arch=x64 && cp ./public/reqlpro.icns ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/atom.icns",
+    "build": "rm -rf ReQLPro-darwin-x64/ && electron-packager . ReQLPro --platform=darwin --arch=x64 && cp ./public/reqlpro.icns ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/atom.icns",
     "build-dmg": "node tools/build-dmg.js",
     "icon": "cp ./public/icon.icns ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/atom.icns",
-    "package": "asar pack ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/app ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/app.asar"
+    "package": "asar pack ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/app ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/app.asar && rm -rf ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/app/"
   },
   "repository": {},
   "keywords": [
