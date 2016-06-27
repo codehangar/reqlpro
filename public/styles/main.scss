@@ -14,6 +14,11 @@ html, body, .main-content {
   font-family: 'Open Sans', sans-serif;
 }
 
+::-webkit-scrollbar{
+  display:none;
+}
+/*https://css-tricks.com/custom-scrollbars-in-webkit/*/
+
 .content-wrapper {
   display: flex;
   height: 100%;
