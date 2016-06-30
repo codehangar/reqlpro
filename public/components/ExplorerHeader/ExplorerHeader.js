@@ -83,10 +83,20 @@ const ExplorerHeader = React.createClass({
       );
     }
 
+    let queryProfile;
+    if (this.props.table.lastResult) {
+      queryProfile = '[' + this.props.table.lastResult.profile[0].description + ' - ' ;
+      queryProfile += this.props.table.lastResult.profile[0]['duration(ms)'] + 'ms]';
+    }
+
     return (
       <div className="explorer-header" id="explorer-header">
         <div className="bread-crumbs">
           {breadCrumbText}
+
+          <div className="breadcrumb-text-container" style={{marginLeft: '20px'}}>
+            {queryProfile}
+          </div>
 
           <div className="pull-right">
           {

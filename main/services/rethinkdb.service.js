@@ -289,9 +289,9 @@ RethinkDbService.prototype.getTableData = function(conn, db, table, sort, direct
       let tableData;
 
       if(direction) {
-        tableData = yield r.db(db).table(table).orderBy(sort || 'id').slice(minval, maxval).run(conn);
+        tableData = yield r.db(db).table(table).orderBy(sort || 'id').slice(minval, maxval).run(conn, {profile: true});
       } else {
-        tableData = yield r.db(db).table(table).orderBy(r.desc(sort || 'id')).slice(minval, maxval).run(conn);
+        tableData = yield r.db(db).table(table).orderBy(r.desc(sort || 'id')).slice(minval, maxval).run(conn, {profile: true});
       }
 
       console.log("tableData", tableData)
@@ -376,7 +376,7 @@ RethinkDbService.prototype.getTableSize = function(conn, db, table) {
 RethinkDbService.prototype.insert = function(conn, db, table, record) {
   return new Promise(function(resolve, reject) {
     co(function*() {
-      const result = yield r.db(db).table(table).insert(record).run(conn);
+      const result = yield r.db(db).table(table).insert(record).run(conn, {profile: true});
       resolve(result);
     }).catch(function(err) {
       reject(err);
@@ -395,7 +395,7 @@ RethinkDbService.prototype.insert = function(conn, db, table, record) {
 RethinkDbService.prototype.update = function(conn, db, table, record) {
   return new Promise(function(resolve, reject) {
     co(function*() {
-      const result = yield r.db(db).table(table).get(record.id).update(record).run(conn);
+      const result = yield r.db(db).table(table).get(record.id).update(record).run(conn, {profile: true});
       resolve(result);
     }).catch(function(err) {
       reject(err);

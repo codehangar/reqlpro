@@ -287,7 +287,12 @@ store.prototype.getTableData = function(sort, direction, limit = 25, page = 1) {
     page = 1;
   }
 
-  RethinkDbService.getTableData(conn, db, table, sort, direction, limit, page).then((tableData) => {
+  RethinkDbService.getTableData(conn, db, table, sort, direction, limit, page).then((result) => {
+    console.log("result.profile", result.profile)
+
+    this.selectedTable.lastResult = result;
+    const tableData = result.value;
+
     tableData.toArray().then((tableData) => {
       this.selectedTable.data = tableData;
       setTimeout(() => {
@@ -347,11 +352,13 @@ store.prototype.insert = function(record) {
   const table = this.selectedTable.name;
 
   RethinkDbService.insert(conn, db, table, record).then((result) => {
-    this.selectedTable.lastResult = result;
     console.log("--------> insert result", result)
 
-    if (result.errors) {
-      this.selectedTable.codeBodyError = result.first_error;
+    this.selectedTable.lastResult = result;
+    const data = result.value;
+
+    if (data.errors) {
+      this.selectedTable.codeBodyError = data.first_error;
       this.emit('updateSelectedTable');
     } else {
       // Run last query to update view
@@ -360,11 +367,10 @@ store.prototype.insert = function(record) {
       this.selectedTable.type = 'table';
     }
   }).catch((err) => {
-    console.error("err", err)
-    this.selectedTable.codeBodyError = err.first_error;
+    console.error(err);
+    this.selectedTable.codeBodyError = err.first_error || err + '';
     // Run last query to update view
     this.query();
-    console.error(err);
   });
 };
 
@@ -385,11 +391,13 @@ store.prototype.update = function(record) {
   const table = this.selectedTable.name;
 
   RethinkDbService.update(conn, db, table, record).then((result) => {
-    this.selectedTable.lastResult = result;
     console.log("--------> update result", result)
 
-    if (result.errors) {
-      this.selectedTable.codeBodyError = result.first_error;
+    this.selectedTable.lastResult = result;
+    const data = result.value;
+
+    if (data.errors) {
+      this.selectedTable.codeBodyError = data.first_error;
       this.emit('updateSelectedTable');
     } else {
       // Run last query to update view
@@ -397,11 +405,10 @@ store.prototype.update = function(record) {
       this.selectedTable.type = 'table';
     }
   }).catch((err) => {
-    console.error("err", err)
-    this.selectedTable.codeBodyError = err.first_error;
+    console.error(err);
+    this.selectedTable.codeBodyError = err.first_error || err + '';
     // Run last query to update view
     this.query();
-    console.error(err);
   });
 };
 
@@ -413,11 +420,13 @@ store.prototype.replace = function(record) {
   const table = this.selectedTable.name;
 
   RethinkDbService.replace(conn, db, table, record).then((result) => {
-    this.selectedTable.lastResult = result;
     console.log("--------> replace result", result)
 
-    if (result.errors) {
-      this.selectedTable.codeBodyError = result.first_error;
+    this.selectedTable.lastResult = result;
+    const data = result.value;
+
+    if (data.errors) {
+      this.selectedTable.codeBodyError = data.first_error;
       this.emit('updateSelectedTable');
     } else {
       // Run last query to update view
@@ -425,11 +434,10 @@ store.prototype.replace = function(record) {
       this.selectedTable.type = 'table';
     }
   }).catch((err) => {
-    console.error("err", err)
-    this.selectedTable.codeBodyError = err.first_error;
+    console.error(err);
+    this.selectedTable.codeBodyError = err.first_error || err + '';
     // Run last query to update view
     this.query();
-    console.error(err);
   });
 };
 
@@ -480,15 +488,18 @@ store.prototype.deleteRow = function(row) {
   const table = this.selectedTable.name;
 
   RethinkDbService.delete(conn, db, table, row).then((result) => {
+    console.log("--------> delete result", result)
+
     this.selectedTable.lastResult = result;
+
     // Run last query to update view
     this.query();
     this.getTableSize();
-    console.log("--------> replace result", result)
   }).catch((err) => {
+    console.error(err);
+
     // Run last query to update view
     this.query();
-    console.error(err);
   });
 };
 
