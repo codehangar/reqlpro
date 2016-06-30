@@ -106,7 +106,7 @@ const ExplorerCodeView = React.createClass({
         <div className={toastClasses}>
           <div className="row">
             <i className="btn fa fa-close pull-right" onClick={() => this.state.store.clearCodeBodyError()}></i>
-            <p style={{margin: '5px'}}>{this.state.store.selectedTable.codeBodyError}</p>
+            <pre style={{margin: '5px'}}>{this.state.store.selectedTable.codeBodyError}</pre>
           </div>
         </div>
         <div id="editor"></div>
