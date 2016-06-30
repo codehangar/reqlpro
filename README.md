@@ -22,3 +22,6 @@ The rethinkdb.client.js file is the the source of the truth for all the applicat
 - npm run build (builds the .app)
 - npm run package (makes an archive of the app folder)
 - delete Appfolder/AppName.app/Contents/Resources/app (this is so people cant see the source code of the app)
+
+## Installing Wine for building Windows distributions on Mac
+https://www.davidbaumgold.com/tutorials/wine-mac/#part-2:-install-homebrew-cask

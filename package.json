@@ -13,6 +13,7 @@
     "watch": "webpack --colors --watch",
     "build": "rm -rf ReQLPro-darwin-x64/ && electron-packager . ReQLPro --platform=darwin --arch=x64 && cp ./public/reqlpro.icns ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/atom.icns",
     "build-dmg": "node tools/build-dmg.js",
+    "build-win": "./tools/build-windows.sh",
     "icon": "cp ./public/icon.icns ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/atom.icns",
     "package": "asar pack ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/app ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/app.asar && rm -rf ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/app/"
   },
