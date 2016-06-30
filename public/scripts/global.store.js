@@ -233,7 +233,7 @@ store.prototype.updateSelectedTable = function(databaseName, tableName) {
     type: this.selectedTable ? this.selectedTable.type !== 'code' ? this.selectedTable.type : 'table' : 'table',
     data: [],
     loading: true,
-    codeBody: "{}",
+    codeBody: "{\n  \n}",
     codeAction: 'add',
     codeBodyError: null,
     query: {
@@ -371,7 +371,8 @@ store.prototype.insert = function(record) {
 store.prototype.startEdit = function(record) {
   this.selectedTable.codeAction = 'update';
   this.selectedTable.editingRecord = record;
-  this.selectedTable.codeBody = JSON.stringify(record, null, '\t');
+  this.selectedTable.codeBody = JSON.stringify(record, null, '  ');
+  this.selectedTable.codeBodyError = null;
   this.selectedTable.type = 'code';
   this.emit('updateRehinkDbClient');
 };
@@ -493,7 +494,8 @@ store.prototype.toggleExplorerBody = function(type) {
   this.selectedTable.type = type;
   if (type === 'code') {
     this.selectedTable.codeAction = 'add';
-    this.selectedTable.codeBody = "{}";
+    this.selectedTable.codeBodyError = null;
+    this.selectedTable.codeBody = "{\n  \n}";
   }
   this.emit('updateRehinkDbClient');
 };

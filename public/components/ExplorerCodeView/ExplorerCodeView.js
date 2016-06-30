@@ -24,9 +24,15 @@ const ExplorerCodeView = React.createClass({
     this.editor.getSession().setMode("ace/mode/json");
     this.editor.getSession().setTabSize(2);
     this.editor.getSession().setUseSoftTabs(true);
+
+    // Disables Syntax error highlighting
+    // http://stackoverflow.com/questions/12886857/how-can-i-disable-the-syntax-checker-in-ace-editor
+    this.editor.getSession().setUseWorker(false);
+
+    this.editor.setShowInvisibles(true);
     this.editor.setHighlightActiveLine(false);
     this.editor.setValue(this.state.store.selectedTable.codeBody, -1);
-    this.editor.gotoLine(2);
+    this.editor.gotoLine(2, 2);
     this.editor.focus();
 
     this.editor.getSession().on('change', () => {
