@@ -1,5 +1,6 @@
 var ipcRenderer = window.nodeRequire('electron').ipcRenderer;
 var RethinkDbService = window.nodeRequire('../main/services/rethinkdb.service');
+var ReQLEval = window.nodeRequire('../main/services/reql-eval.service.js');
 
 var util = require("util");
 var EventEmitter = require("events").EventEmitter;
@@ -434,40 +435,42 @@ store.prototype.replace = function(record) {
 
 // Save Row from code view
 store.prototype.saveRow = function(row) {
-  try {
-    row = JSON.parse(row);
-    row = DateTypeService.convertStringsToDates(this.selectedTable.editingRecord, row);
 
+  ReQLEval(row).then((rowObj) => {
+    console.log("EVAL RESULT:", rowObj)
+
+    row = DateTypeService.convertStringsToDates(this.selectedTable.editingRecord, rowObj);
     this.selectedTable.codeBodyError = null;
-  } catch(e) {
-    this.selectedTable.codeBodyError = 'You can only save valid json to your table';
-    this.emit('updateSelectedTable');
-    return;
-  }
-  if (this.selectedTable.codeAction === 'update') {
-    if(row.length) {
-      this.selectedTable.codeBodyError = 'Update expects a single item';
-      this.emit('updateSelectedTable');
-      return;
-    }
-    let matched = false;
-    // Extra protection here if people alter the id when updating
-    // Using replace will insert a new record
-    // I'm assuming replace is less performant than update so lets use update when possible
-    this.selectedTable.data.forEach(function(item, index) {
-      if (item.id === row.id) {
-        matched = true;
+
+    if (this.selectedTable.codeAction === 'update') {
+      if (row.length) {
+        this.selectedTable.codeBodyError = 'Update expects a single item';
+        this.emit('updateSelectedTable');
+        return;
       }
-    });
-    if (matched) {
-      this.update(row);
-    } else {
-      this.replace(row);
+      let matched = false;
+      // Extra protection here if people alter the id when updating
+      // Using replace will insert a new record
+      // I'm assuming replace is less performant than update so lets use update when possible
+      this.selectedTable.data.forEach(function(item, index) {
+        if (item.id === row.id) {
+          matched = true;
+        }
+      });
+      if (matched) {
+        this.update(row);
+      } else {
+        this.replace(row);
+      }
+    } else if (this.selectedTable.codeAction === 'add') {
+      this.insert(row);
     }
-  }
-  if (this.selectedTable.codeAction === 'add') {
-    this.insert(row);
-  }
+  }).catch((err) => {
+    console.error(err)
+    this.selectedTable.codeBodyError = err.first_error || err + '' || 'There wasYou can only save valid json to your table';
+    this.emit('updateSelectedTable');
+  });
+
 };
 
 // Delete Row
