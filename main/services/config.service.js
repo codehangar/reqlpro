@@ -17,12 +17,15 @@ ConfigService.prototype.readConfigFile = function() {
       encoding: 'utf-8'
     }, (err, data) => {
         if(err) {
-          console.log(err);
+          console.error(err);
           var data = {
             favorites: []
           };
+          resolve(this.writeConfigFile(data));
+
+          // TODO: Research File not found errors
+          // This works on mac, but not windows
           if(err.errno === -2) {
-            resolve(this.writeConfigFile(data));
           }
         } else {
           // Data is a string at this point
