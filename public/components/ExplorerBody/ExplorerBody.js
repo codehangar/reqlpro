@@ -37,10 +37,15 @@ const ExplorerBody = React.createClass({
         }
       } else {
         explorerBody = (
-            <div>
-              <p className="empty-table">Table is empty!</p>
+          <div className="explorer-container">
+            <div className="explorer-full-message">
+              <p className="super-large-text">Empty!</p>
+              <p className="">Your table has no data. Try adding a new record.</p>
+              <p className="small-text">Having trouble? Visit our <a href="http://utils.codehangar.io/rethink/support" target="_blank">Help Center</a> or <a onClick={function() { HS.beacon.open(); }}>send us a message</a>.</p>
+              {/* <p className="text-danger small-text">{this.state.selectedFavorite.dbConnection.msg}</p> */}
             </div>
-          );
+          </div>
+        );
       }
     }
 

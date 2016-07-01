@@ -20,7 +20,10 @@ const Explorer = React.createClass({
     let content = (
       <div className="explorer-container">
         <div className="explorer-full-message">
-          <p className="select-table">Select a table from a database</p>
+          <p className="super-large-text">Connected!</p>
+          <p className="">Start browsing your data by clicking on a database.</p>
+          <p className="small-text">Having trouble? Visit our <a href="http://utils.codehangar.io/rethink/support" target="_blank">Help Center</a> or <a onClick={function() { HS.beacon.open(); }}>send us a message</a>.</p>
+          {/* <p className="text-danger small-text">{this.state.selectedFavorite.dbConnection.msg}</p> */}
         </div>
       </div>
     );
@@ -50,7 +53,10 @@ const Explorer = React.createClass({
           content = (
             <div className="explorer-container">
               <div className="explorer-full-message">
-                <p className="text-danger">{this.state.selectedFavorite.dbConnection.msg}</p>
+                <p className="super-large-text">Woops!</p>
+                <p className="">Something isn't right. Check your connection details.</p>
+                <p className="small-text">Still having trouble? Visit our <a href="http://utils.codehangar.io/rethink/support" target="_blank">Help Center</a> or <a onClick={function() { HS.beacon.open(); }}>send us a message</a>.</p>
+                <p className="text-danger small-text">{this.state.selectedFavorite.dbConnection.msg}</p>
               </div>
             </div>
           );
