@@ -112,15 +112,15 @@ const ConnectionForm = React.createClass({
                 <form>
                   <div className={inputValidationClasses.name}>
                     <label htmlFor="name">Connection Name</label>
-                    <input type="text" className="form-control" id="name" placeholder="Connection Name" value={this.state.connection.name.value} onChange={this.handleTextChange.bind(this, 'name')} />
+                    <input type="text" className="form-control" id="name" placeholder="i.e. TodoApp-local" value={this.state.connection.name.value} onChange={this.handleTextChange.bind(this, 'name')} />
                   </div>
                   <div className={inputValidationClasses.host}>
                     <label htmlFor="host">Host</label>
-                    <input type="text" className="form-control" id="host" placeholder="Host" value={this.state.connection.host.value} onChange={this.handleTextChange.bind(this, 'host')} />
+                    <input type="text" className="form-control" id="host" placeholder="i.e. localhost" value={this.state.connection.host.value} onChange={this.handleTextChange.bind(this, 'host')} />
                   </div>
                   <div className={inputValidationClasses.port}>
                     <label htmlFor="port">Port</label>
-                    <input type="text" className="form-control" id="port" placeholder="Port" value={this.state.connection.port.value} onChange={this.handleTextChange.bind(this, 'port')} />
+                    <input type="text" className="form-control" id="port" placeholder="i.e. 28015" value={this.state.connection.port.value} onChange={this.handleTextChange.bind(this, 'port')} />
                   </div>
                   {/*<div className={inputValidationClasses.database}>
                     <label htmlFor="database">Database</label>
