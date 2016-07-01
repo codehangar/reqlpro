@@ -18,7 +18,11 @@ var ExplorerTableView = React.createClass({
 
     let columnWidths = {};
     Object.keys(this.props.table.data[rowIndexOfMaximum]).map((fieldName, index) => {
-      columnWidths[fieldName] = 200;
+      if (this.props.table.columnWidths  && this.props.table.columnWidths[fieldName]) {
+        columnWidths[fieldName] = this.props.table.columnWidths[fieldName];
+      } else {
+        columnWidths[fieldName] = 200;
+      }
     });
 
     return {
@@ -32,9 +36,15 @@ var ExplorerTableView = React.createClass({
   _onColumnResizeEndCallback: function (newColumnWidth, columnKey) {
     var width= {};
     width[columnKey] = newColumnWidth;
+
+    // Update local state
     this.setState(({columnWidths}) => ({
       columnWidths: _.extend({}, columnWidths, width)
     }));
+
+    // Also back up in the store to maintain across paging
+    var cWs = _.extend({}, this.props.table.columnWidths, width)
+    this.state.store.setColumnWidths(cWs);
   },
   rowChanged: function (row) {
     // console.log("rowChanged row", row)

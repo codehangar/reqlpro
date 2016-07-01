@@ -433,7 +433,7 @@ RethinkDbService.prototype.replace = function(conn, db, table, record) {
 RethinkDbService.prototype.delete = function(conn, db, table, record) {
   return new Promise(function(resolve, reject) {
     co(function*() {
-      const result = yield r.db(db).table(table).get(record.id).delete().run(conn);
+      const result = yield r.db(db).table(table).get(record.id).delete().run(conn, {profile: true});
       resolve(result);
     }).catch(function(err) {
       reject(err);

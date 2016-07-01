@@ -334,6 +334,10 @@ store.prototype.getTableDataBetween = function(index, start, end) {
   });
 };
 
+store.prototype.setColumnWidths = function (columnWidths) {
+  this.selectedTable.columnWidths = columnWidths;
+};
+
 // Get table size
 store.prototype.getTableSize = function() {
   const conn = this.selectedFavorite.dbConnection;
