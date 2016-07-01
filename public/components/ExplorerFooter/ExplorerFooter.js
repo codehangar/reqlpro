@@ -34,6 +34,9 @@ var ExplorerFooter = React.createClass({
     // string = string.replace('new Date()', '"' + new Date() + '"');
     this.props.store.saveRow(string);
   },
+  cancel: function() {
+    this.props.store.cancelEdit();
+  },
   render: function() {
     let footerBody = (
       <div className="text-center">
@@ -47,6 +50,7 @@ var ExplorerFooter = React.createClass({
     if (this.props.table.type === 'code') {
       footerBody = (
         <div className="not-text-center pull-right">
+          <span className="btn btn-default" onClick={this.cancel} style={{marginRight: '10px'}}>Cancel</span>
           <span className="btn btn-primary" onClick={this.save}>Save</span>
         </div>
       );

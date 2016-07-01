@@ -334,7 +334,7 @@ store.prototype.getTableDataBetween = function(index, start, end) {
   });
 };
 
-store.prototype.setColumnWidths = function (columnWidths) {
+store.prototype.setColumnWidths = function(columnWidths) {
   this.selectedTable.columnWidths = columnWidths;
 };
 
@@ -371,7 +371,7 @@ store.prototype.insert = function(record) {
       // Run last query to update view
       this.query();
       this.getTableSize();
-      this.selectedTable.type = 'table';
+      this.selectedTable.type = this.selectedTable.previousType;
     }
   }).catch((err) => {
     console.error(err);
@@ -387,6 +387,7 @@ store.prototype.startEdit = function(record) {
   this.selectedTable.editingRecord = record;
   this.selectedTable.codeBody = JSON.stringify(record, null, '  ');
   this.selectedTable.codeBodyError = null;
+  this.selectedTable.previousType = this.selectedTable.type;
   this.selectedTable.type = 'code';
   this.emit('updateRehinkDbClient');
 };
@@ -446,6 +447,10 @@ store.prototype.replace = function(record) {
     // Run last query to update view
     this.query();
   });
+};
+
+store.prototype.cancelEdit = function() {
+  this.toggleExplorerBody(this.selectedTable.previousType);
 };
 
 // Save Row from code view
@@ -512,6 +517,7 @@ store.prototype.deleteRow = function(row) {
 
 // Toggle Selected Table Type
 store.prototype.toggleExplorerBody = function(type) {
+  this.selectedTable.previousType = this.selectedTable.type;
   this.selectedTable.type = type;
   if (type === 'code') {
     this.selectedTable.codeAction = 'add';
