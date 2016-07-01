@@ -10,7 +10,6 @@ var md5 = require('md5');
 const _ = require('lodash');
 const DateTypeService = require('../services/date-type.service.js');
 
-
 var store = function(params) {
   EventEmitter.call(this); // Inherit constructor
   this.router = {
@@ -85,7 +84,6 @@ store.prototype.clearCodeBodyError = function() {
   this.emit('updateSelectedTable');
 }
 
-
 store.prototype.hideConnectionForm = function(info) {
   this.router.ConnectionForm.show = false;
   this.emit('hideConnectionForm');
@@ -120,7 +118,7 @@ store.prototype.toggleConnectionActionMenu = function() {
 store.prototype.toggleEntityForm = function(type, action, toDeleteName) {
   this.router.EntityForm.show = !this.router.EntityForm.show;
   // If turning off EntityForm lets result defaults
-  if(!this.router.EntityForm.show) {
+  if (!this.router.EntityForm.show) {
     this.router.EntityForm = {
       show: false,
       action: 'Add',
@@ -153,6 +151,11 @@ store.prototype.addFavorite = function(favorite) {
     identicon: jdenticon.toSvg(md5(favorite.name.value), 40),
     index: this.favorites.length
   });
+
+  if (this.favorites.length === 1) {
+    this.updateSelectedFavorite(this.favorites[0]);
+  }
+
   this.emit('updateFavorites');
   ipcRenderer.send('writeConfigFile', {
     favorites: this.favorites
@@ -255,7 +258,7 @@ store.prototype.updatePageLimit = function(limit) {
 
 // Update Table Sort
 store.prototype.updateTableSort = function(sort) {
-  if(sort === this.selectedTable.query.sort) {
+  if (sort === this.selectedTable.query.sort) {
     this.selectedTable.query.direction = !this.selectedTable.query.direction
   } else {
     this.selectedTable.query.direction = 1;
@@ -561,7 +564,7 @@ store.prototype.deleteDatabase = function(dbName) {
     RethinkDbService.deleteDb(conn, dbName).then((results) => {
       // Remove database from selectedfavorite list
       this.selectedFavorite.databases.forEach((db, index) => {
-        if(db.name === dbName) {
+        if (db.name === dbName) {
           this.selectedFavorite.databases.splice(index, 1);
         }
       });
@@ -580,7 +583,7 @@ store.prototype.deleteTable = function(tableName) {
     RethinkDbService.deleteTable(conn, this.selectedDatabase.name, tableName).then((results) => {
       // Remove database from selectedfavorite list
       this.selectedDatabase.tables.forEach((table, index) => {
-        if(table.name === tableName) {
+        if (table.name === tableName) {
           this.selectedDatabase.tables.splice(index, 1);
         }
       });

@@ -46,7 +46,7 @@ const Explorer = React.createClass({
       );
     } else if (this.state.selectedFavorite.dbConnection !== null) {
       try {
-        if (this.state.selectedFavorite.dbConnection.name === 'ReqlDriverError') {
+        if (this.state.selectedFavorite.dbConnection && this.state.selectedFavorite.dbConnection.name === 'ReqlDriverError') {
           content = (
             <div className="explorer-container">
               <div className="explorer-full-message">
