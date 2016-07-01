@@ -87,6 +87,16 @@ html, body, .main-content {
   z-index: 100000;
 }
 
+.ConfirmRowDelete {
+  width: 450px;
+  height: 150px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -75px;
+  margin-left: -225px;
+  z-index: 100000;
+}
 
 
 .table-view-container {

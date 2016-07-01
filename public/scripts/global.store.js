@@ -32,6 +32,10 @@ var store = function(params) {
           value: ''
         }
       }
+    },
+    ConfirmRowDelete: {
+      show: false,
+      row: null
     }
   };
   this.connection = params.connection || null;
@@ -112,6 +116,12 @@ store.prototype.showConnectionForm = function(info) {
 
 store.prototype.toggleConnectionActionMenu = function() {
   this.router.ConnectionActionMenu.show = !this.router.ConnectionActionMenu.show;
+  this.emit('updateRehinkDbClient');
+};
+
+store.prototype.toggleConfirmRowDelete = function(row) {
+  this.router.ConfirmRowDelete.row = row
+  this.router.ConfirmRowDelete.show = !this.router.ConfirmRowDelete.show;
   this.emit('updateRehinkDbClient');
 };
 
@@ -504,12 +514,14 @@ store.prototype.deleteRow = function(row) {
 
     this.selectedTable.lastResult = result;
 
+    // Toggle ConfirmRowDelete popup
+    this.toggleConfirmRowDelete(null);
+
     // Run last query to update view
     this.query();
     this.getTableSize();
   }).catch((err) => {
     console.error(err);
-
     // Run last query to update view
     this.query();
   });

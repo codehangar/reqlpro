@@ -74,12 +74,7 @@ var ExplorerTableView = React.createClass({
     });
   },
   deleteRow: function (row) {
-    this.state.store.deleteRow(row);
-
-    Segment.track({
-      event: 'tableview.row.deleteBtn',
-      properties: {}
-    });
+    this.state.store.toggleConfirmRowDelete(row);
   },
   sortTable: function(sort) {
     this.state.store.updateTableSort(sort);

@@ -3,6 +3,7 @@ const Sidebar = require('../Sidebar/Sidebar');
 const Explorer = require('../Explorer/Explorer');
 const ConnectionForm = require('../ConnectionForm/ConnectionForm');
 const EntityForm = require('../EntityForm/EntityForm');
+const ConfirmRowDelete = require('../ConfirmRowDelete/ConfirmRowDelete');
 
 const App = React.createClass({
   getInitialState: function() {
@@ -49,6 +50,7 @@ const App = React.createClass({
         <Explorer />
         <ConnectionForm />
         <EntityForm />
+        <ConfirmRowDelete />
       </div>
     );
   }
