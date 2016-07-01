@@ -9,15 +9,28 @@ const Segment = require('../../services/segment.service');
 var ExplorerTableView = React.createClass({
   getInitialState: function() {
 
-    let maximumProps = 0;
-    let rowIndexOfMaximum = 0;
-    this.props.table.data.map(function(row, index) {
-      maximumProps = Object.keys(row).length > maximumProps ? Object.keys(row).length : maximumProps;
-      rowIndexOfMaximum = Object.keys(row).length >= maximumProps ? index : rowIndexOfMaximum;
+    var columnNames = [];
+    _.forEach(this.props.table.data, function(row) {
+      columnNames = columnNames.concat(Object.keys(row));
+    });
+    columnNames = _.uniq(columnNames);
+
+    // Sort columns aplhabetically, with id always coming first
+    columnNames.sort(function (a, b) {
+      if (a === 'id') {
+        return -1;
+      } else if (b === 'id') {
+        return 1;
+      } else if (a < b){
+        return -1;
+      } else if (a > b) {
+        return 1;
+      }
+      return 0;
     });
 
     let columnWidths = {};
-    Object.keys(this.props.table.data[rowIndexOfMaximum]).map((fieldName, index) => {
+    columnNames.map((fieldName, index) => {
       if (this.props.table.columnWidths  && this.props.table.columnWidths[fieldName]) {
         columnWidths[fieldName] = this.props.table.columnWidths[fieldName];
       } else {
@@ -27,6 +40,7 @@ var ExplorerTableView = React.createClass({
 
     return {
       columnWidths: columnWidths,
+      columnNames: columnNames,
       store: this.context.store
     };
   },
@@ -72,13 +86,6 @@ var ExplorerTableView = React.createClass({
   },
   render: function() {
     // console.log(" --> ExplorerTableView render")
-    var maximumProps = 0; // Keep track of what has had the most props so far
-    var rowIndexOfMaximum = 0; // The item in the data with the most props
-
-    this.props.table.data.map(function(row, index) {
-      maximumProps = Object.keys(row).length > maximumProps ? Object.keys(row).length : maximumProps;
-      rowIndexOfMaximum = Object.keys(row).length >= maximumProps ? index : rowIndexOfMaximum;
-    });
 
     var _this = this;
 
@@ -100,7 +107,7 @@ var ExplorerTableView = React.createClass({
         width={100} />
     );
 
-    var columnNodes = Object.keys(this.props.table.data[rowIndexOfMaximum]).map((fieldName, index) => {
+    var columnNodes = this.state.columnNames.map((fieldName, index) => {
       // console.log("  --> ExplorerTableView columnNodes", fieldName);
       const iconClasses = classNames({
         'fa': true,
