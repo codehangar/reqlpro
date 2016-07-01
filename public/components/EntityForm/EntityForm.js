@@ -73,14 +73,16 @@ const EntityForm = React.createClass({
           this.state.store.deleteDatabase(name).then(() => {
             this.resetState();
           }).catch((err) => {
-            console.log(err);
+            this.state.store.router.EntityForm.errMessage = err.msg;
+            this.setState(this.state.store);
           });
           break;
         case 'Table':
           this.state.store.deleteTable(name).then(() => {
             this.resetState();
           }).catch((err) => {
-            console.log(err);
+            this.state.store.router.EntityForm.errMessage = err.msg;
+            this.setState(this.state.store);
           });
           break;
         default:
