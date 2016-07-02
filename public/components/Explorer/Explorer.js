@@ -28,7 +28,7 @@ const Explorer = React.createClass({
       </div>
     );
 
-    if (this.state.favorites.length === 0) {
+    if (this.state.userConfig.favorites.length === 0) {
       content = (
         <div className="panel panel-default">
           <div className="panel-body text-center">

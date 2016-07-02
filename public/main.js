@@ -24,7 +24,7 @@ var Connection = require('./models/Connection');
 
 // Instantiate store Class with any params needed
 const store = new Store({
-  favorites: JSON.parse(remote.getGlobal('userConfig')).favorites, // Setup favorites from config file
+  userConfig: JSON.parse(remote.getGlobal('userConfig')), // Setup userConfig from config file
   connection: Connection.create() // Setup default connection for ConnectionForm
 });
 
@@ -53,12 +53,11 @@ Provider.childContextTypes = {
 }
 
 function init() {
-  // If anything in memeory for favorites load the first one when app starts
-  if (store.favorites.length) {
-    store.updateSelectedFavorite(store.favorites[0]);
+  // If anything in memory for favorites load the first one when app starts
+  if (store.userConfig.favorites.length) {
+    store.updateSelectedFavorite(store.userConfig.favorites[0]);
   }
 
-  Segment.identify();
   Segment.track({
     event: 'app.open',
     properties: {}

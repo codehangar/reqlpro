@@ -4,6 +4,7 @@ const Explorer = require('../Explorer/Explorer');
 const ConnectionForm = require('../ConnectionForm/ConnectionForm');
 const EntityForm = require('../EntityForm/EntityForm');
 const ConfirmRowDelete = require('../ConfirmRowDelete/ConfirmRowDelete');
+const EmailIntro = require('../EmailIntro/EmailIntro');
 
 const App = React.createClass({
   getInitialState: function() {
@@ -46,6 +47,7 @@ const App = React.createClass({
   render: function() {
     return (
       <div className="content-wrapper">
+        <EmailIntro />
         <Sidebar  />
         <Explorer />
         <ConnectionForm />

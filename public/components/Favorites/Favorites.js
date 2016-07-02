@@ -24,7 +24,7 @@ const Favorites = React.createClass({
     this.state.showConnectionForm();
   },
   render: function() {
-    const favoriteNodes = this.state.favorites.map((favorite) => {
+    const favoriteNodes = this.state.userConfig.favorites.map((favorite) => {
       return (
         <Favorite
           key={favorite.index}

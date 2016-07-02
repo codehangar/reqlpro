@@ -31,7 +31,7 @@ var Databases = React.createClass({
     });
 
     const content = () => {
-      if (this.state.favorites.length > 0) {
+      if (this.state.userConfig.favorites.length > 0) {
         return (
           <div>
             <DatabasesHeader selectedFavorite={this.state.selectedFavorite} store={this.state} />

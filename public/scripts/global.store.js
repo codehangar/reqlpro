@@ -13,6 +13,9 @@ const DateTypeService = require('../services/date-type.service.js');
 var store = function(params) {
   EventEmitter.call(this); // Inherit constructor
   this.router = {
+    EmailIntro: {
+      show: !params.userConfig.email
+    },
     ConnectionForm: {
       show: false,
       action: 'Add'
@@ -39,15 +42,24 @@ var store = function(params) {
     }
   };
   this.connection = params.connection || null;
-  this.favorites = params.favorites || [];
+  this.userConfig = params.userConfig;
   this.selectedFavorite = {
     databases: [],
     dbConnection: null
   };
   this.selectedTable = null;
+
+  console.log("[global.store] init params", params)
 };
 
 util.inherits(store, EventEmitter); // Inherit eventemitter prototype
+
+store.prototype.addEmail = function(email) {
+  this.userConfig.email = email;
+  this.router.EmailIntro.show = false;
+  ipcRenderer.send('writeConfigFile', this.userConfig);
+  this.emit('updateRehinkDbClient');
+}
 
 // Update selected favorite
 store.prototype.updateSelectedFavorite = function(favorite) {
@@ -152,29 +164,27 @@ store.prototype.toggleEntityForm = function(type, action, toDeleteName) {
 
 // Add favorite
 store.prototype.addFavorite = function(favorite) {
-  this.favorites.push({
+  this.userConfig.favorites.push({
     name: favorite.name.value,
     host: favorite.host.value,
     port: favorite.port.value,
     database: favorite.database.value,
     authKey: favorite.authKey.value,
     identicon: jdenticon.toSvg(md5(favorite.name.value), 40),
-    index: this.favorites.length
+    index: this.userConfig.favorites.length
   });
 
-  if (this.favorites.length === 1) {
-    this.updateSelectedFavorite(this.favorites[0]);
+  if (this.userConfig.favorites.length === 1) {
+    this.updateSelectedFavorite(this.userConfig.favorites[0]);
   }
 
   this.emit('updateFavorites');
-  ipcRenderer.send('writeConfigFile', {
-    favorites: this.favorites
-  });
+  ipcRenderer.send('writeConfigFile', this.userConfig);
 };
 
 // Edit favorite
 store.prototype.editFavorite = function(favorite) {
-  this.favorites[favorite.index] = {
+  this.userConfig.favorites[favorite.index] = {
     name: favorite.name.value,
     host: favorite.host.value,
     port: favorite.port.value,
@@ -185,22 +195,20 @@ store.prototype.editFavorite = function(favorite) {
   };
   // Lets run update selected favorite since thats what we are editing
   if (this.selectedFavorite.index === favorite.index) {
-    this.updateSelectedFavorite(this.favorites[favorite.index]);
+    this.updateSelectedFavorite(this.userConfig.favorites[favorite.index]);
   }
   this.emit('updateFavorites');
-  ipcRenderer.send('writeConfigFile', {
-    favorites: this.favorites
-  });
+  ipcRenderer.send('writeConfigFile', this.userConfig);
 };
 
 // Edit favorite
 store.prototype.deleteFavorite = function(favorite) {
-  this.favorites.splice(favorite.index, 1);
+  this.userConfig.favorites.splice(favorite.index, 1);
   // Lets update selected favorite since we just deleted our selected favorite
   if (this.selectedFavorite.index === favorite.index) {
     // If there are any favorites left lets do the first item in array
-    if (this.favorites.length) {
-      this.updateSelectedFavorite(this.favorites[0]);
+    if (this.userConfig.favorites.length) {
+      this.updateSelectedFavorite(this.userConfig.favorites[0]);
     } else {
       // If no favorites lets set to default selectedFavorite object
       this.selectedFavorite = {
@@ -211,13 +219,11 @@ store.prototype.deleteFavorite = function(favorite) {
     }
   }
   // We need to loop through and update the index field on all the favorites after a delete
-  for (var i = 0; i < this.favorites.length; i++) {
-    this.favorites[i].index = i;
+  for (var i = 0; i < this.userConfig.favorites.length; i++) {
+    this.userConfig.favorites[i].index = i;
   }
   this.emit('updateFavorites');
-  ipcRenderer.send('writeConfigFile', {
-    favorites: this.favorites
-  });
+  ipcRenderer.send('writeConfigFile', this.userConfig);
 };
 
 // Show Tables

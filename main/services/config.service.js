@@ -16,6 +16,7 @@ ConfigService.prototype.readConfigFile = function() {
     fs.readFile(this.fullConfigPath, {
       encoding: 'utf-8'
     }, (err, data) => {
+        console.log(" ***readConfigFile", data)
         if(err) {
           console.error(err);
           var data = {
@@ -36,6 +37,7 @@ ConfigService.prototype.readConfigFile = function() {
 };
 
 ConfigService.prototype.writeConfigFile = function(data) {
+  console.log(" ***writeConfigFile", data)
   return new Promise((resolve, reject) => {
     fs.writeFile(this.fullConfigPath, JSON.stringify(data), (err) => {
         if(err) {

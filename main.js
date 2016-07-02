@@ -21,7 +21,19 @@ let mainWindow;
 function createWindow() {
   co(function*() {
     var configFile = yield ConfigService.readConfigFile();
-    global.userConfig = configFile;
+    configFile = JSON.parse(configFile);
+    console.log("typeof configFile", typeof configFile)
+    if (typeof configFile.favorites === 'undefined') {
+      console.log("typeof configFile.favorites", typeof configFile.favorites)
+      configFile = {
+        favorites: []
+      };
+      yield ConfigService.writeConfigFile(configFile);
+    }
+    console.log("---> configFile", configFile)
+    console.log("---> configFile.favorites", configFile.favorites)
+    global.userConfig = JSON.stringify(configFile);
+
     global.appVersion = packageDetails.version;
     // Create the browser window.
     mainWindow = new BrowserWindow({
@@ -37,7 +49,7 @@ function createWindow() {
         configFile = yield ConfigService.writeConfigFile(args);
         global.userConfig = configFile;
       }).catch(function(err) {
-        console.log(err);
+        console.error(err);
       });
     });
 
@@ -58,7 +70,7 @@ function createWindow() {
       mainWindow = null;
     });
   }).catch(function(err) {
-    console.log(err);
+    console.error(err);
   });
 }
 
