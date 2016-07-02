@@ -2,7 +2,7 @@
 var _ = require('lodash');
 var AnonId = require('./anon-id.service');
 
-var analytics = new Analytics('78RGOCvUxccFFdR2EIj9wEUGt8qLSPqS', {
+var analytics = new Analytics('lU0Oq54ABsjViXkKOcZe8YfeB18UbaNU', {
   flushAt: 1
 });
 
@@ -17,34 +17,33 @@ function Segment() {
         }
       });
       analytics.track(payload);
-      console.log('payload', payload, analytics);
+      console.log('[Segment] track', payload);
     });
   };
 
-  this.identify = function() {
+  this.identify = function(payload) {
     AnonId.get(function(anonId) {
-      // angular.extend(payload, {
-      var payload = {
-          anonymousId: anonId,
-          userId: anonId,
-          context: {
-            userAgent: navigator.userAgent
-          }
+      _.extend(payload, {
+        anonymousId: anonId,
+        context: {
+          userAgent: navigator.userAgent
         }
-        // });
+      });
       analytics.identify(payload);
+      console.log("[Segment] identify", payload)
     });
   };
 
-  this.getUserId = function(user, cfg) {
-    if (user && user.email) {
-      return user.email;
-    } else if (cfg && cfg.bitlyConfig && cfg.bitlyConfig.email) {
-      return cfg.bitlyConfig.email;
-    } else {
-      return void 0;
-    }
-  }
+  this.alias = function(userId) {
+    AnonId.get(function(anonId) {
+      var payload = {
+        previousId: anonId,
+        userId: userId
+      };
+      analytics.alias(payload);
+      console.log("[Segment] alias", payload)
+    });
+  };
 
   return this;
 

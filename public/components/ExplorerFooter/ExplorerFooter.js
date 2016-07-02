@@ -1,6 +1,7 @@
 var React = require('react');
 var classNames = require('classnames');
 var ExplorerPagination = require('../ExplorerPagination/ExplorerPagination');
+const Segment = require('../../services/segment.service');
 const ace = require('brace');
 
 var ExplorerFooter = React.createClass({
@@ -9,12 +10,30 @@ var ExplorerFooter = React.createClass({
     const limit = this.props.table.query.limit;
     const page = this.props.table.query.page - 1;
     this.props.store.query({index, limit, page});
+
+    Segment.track({
+      event: 'explorer.paginationClick',
+      properties: {
+        'type': 'prevPage',
+        'page': page,
+        'limit': limit
+      }
+    });
   },
   nextPage: function() {
     const index = this.props.table.query.index;
     const limit = this.props.table.query.limit;
     const page = this.props.table.query.page + 1;
     this.props.store.query({index, limit, page});
+
+    Segment.track({
+      event: 'explorer.paginationClick',
+      properties: {
+        'type': 'nextPage',
+        'page': page,
+        'limit': limit
+      }
+    });
   },
   prevPageBetween: function() {
     const index = this.props.table.query.index;
@@ -33,9 +52,19 @@ var ExplorerFooter = React.createClass({
     // Allows new Date() to be entered on edit view
     // string = string.replace('new Date()', '"' + new Date() + '"');
     this.props.store.saveRow(string);
+
+    Segment.track({
+      event: 'explorer.saveRow',
+      properties: {}
+    });
   },
   cancel: function() {
     this.props.store.cancelEdit();
+
+    Segment.track({
+      event: 'explorer.cancelEdit',
+      properties: {}
+    });
   },
   render: function() {
     let footerBody = (

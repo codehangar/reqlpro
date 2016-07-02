@@ -17,9 +17,21 @@ const ExplorerHeader = React.createClass({
   },
   refreshExplorerBody: function() {
     this.props.store.refreshExplorerBody();
+
+    Segment.track({
+      event: 'explorer.refreshExplorerBody',
+      properties: {}
+    });
   },
   updatePageLimit: function(e) {
     this.props.store.updatePageLimit(e.target.value);
+
+    Segment.track({
+      event: 'explorer.updatePageLimit',
+      properties: {
+        'limit': e.target.value
+      }
+    });
   },
   render: function() {
 

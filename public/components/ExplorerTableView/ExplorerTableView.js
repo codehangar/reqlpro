@@ -65,6 +65,11 @@ var ExplorerTableView = React.createClass({
   rowChanged: function (row) {
     // console.log("rowChanged row", row)
     this.state.store.update(row);
+
+    Segment.track({
+      event: 'tableview.row.inlineEdit',
+      properties: {}
+    });
   },
   startEditRow: function (row) {
     // console.log("startEditRow row", row)
@@ -77,9 +82,17 @@ var ExplorerTableView = React.createClass({
   },
   deleteRow: function (row) {
     this.state.store.toggleConfirmRowDelete(row);
+    Segment.track({
+      event: 'tableview.row.deleteBtn',
+      properties: {}
+    });
   },
   sortTable: function(sort) {
     this.state.store.updateTableSort(sort);
+    Segment.track({
+      event: 'tableview.row.headerSort',
+      properties: {}
+    });
   },
   render: function() {
     // console.log(" --> ExplorerTableView render")

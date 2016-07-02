@@ -5,8 +5,6 @@ function AnonId() {
   this.get = function(cb) {
     var key = 'uuid';
 
-    console.log('localStorage',localStorage);
-
     if(localStorage.getItem(key)){
       cb(localStorage.getItem(key));
     }else{
@@ -14,7 +12,7 @@ function AnonId() {
       localStorage.setItem(key, uuid)
       cb(uuid);
     }
-    
+
 
     // chrome.storage.sync.get(function(result) {
     //   if (result[key]) {

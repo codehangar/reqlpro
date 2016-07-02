@@ -16,7 +16,7 @@ const ConfirmRowDelete = React.createClass({
     e.preventDefault();
     this.state.store.deleteRow(this.state.store.router.ConfirmRowDelete.row);
     Segment.track({
-      event: 'tableview.row.deleteBtn',
+      event: 'tableview.row.deleteConfirm',
       properties: {}
     });
   },
