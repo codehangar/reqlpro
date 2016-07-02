@@ -19,6 +19,20 @@ html, body, .main-content {
 }
 /*https://css-tricks.com/custom-scrollbars-in-webkit/*/
 
+@font-face {
+    font-family: Inconsolata;
+    font-style: normal;
+    font-weight: 400;
+    src: url(../fonts/Inconsolata/Inconsolata-Regular.ttf);
+}
+
+@font-face {
+    font-family: Inconsolata;
+    font-style: bold;
+    font-weight: 700;
+    src: url(../fonts/Inconsolata/Inconsolata-Bold.ttf);
+}
+
 .content-wrapper {
   display: flex;
   height: 100%;
@@ -110,6 +124,7 @@ html, body, .main-content {
 
 
 .table-view-container {
+  font-family: 'Inconsolata';
   /*margin-left: -15px;*/
   position: absolute;
   top: 0;

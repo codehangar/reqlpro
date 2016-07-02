@@ -33,6 +33,8 @@ var ExplorerTableView = React.createClass({
     columnNames.map((fieldName, index) => {
       if (this.props.table.columnWidths  && this.props.table.columnWidths[fieldName]) {
         columnWidths[fieldName] = this.props.table.columnWidths[fieldName];
+      } else if (fieldName === 'id') {
+        columnWidths[fieldName] = 274;
       } else {
         columnWidths[fieldName] = 200;
       }
