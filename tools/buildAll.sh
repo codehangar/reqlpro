@@ -1,10 +1,12 @@
-# Clear build directory
+# Clear build and dist directory
 rm -rf build
-echo 'Remove previous build folder'
+rm -rf dist
+echo 'Remove previous build and dist folders'
 
-# Make _dist directory
+# Make build and dist directory
 mkdir build
-echo 'Create new empty build folder'
+mkdir dist
+echo 'Create new empty build and dist folders'
 
 # Copy over build.json and rename it package.json
 cp build.json ./build/package.json
@@ -46,4 +48,12 @@ echo 'Asar Mac OSX app package'
 npm run build-dmg
 echo 'Build DMG for Mac OSX app package'
 
+# Move Mac OS Package and DMG to dist folder
+cp -R ReQLPro-darwin-x64 ../dist/ReQLPro-darwin-x64
+cp ReQLPro_0.0.3.dmg ../dist/ReQLPro_0.0.3.dmg
+echo 'Moved Darwin package and dmg to dist folder'
 
+# Remove Darwin package and dmg from the build folder
+rm -rf ReQLPro-darwin-x64
+rm -rf ReQLPro_0.0.3.dmg
+echo 'Removed darwin and dmg files from build folder, this is needed to not pollute any other package builds'
