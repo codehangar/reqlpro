@@ -6,7 +6,7 @@
   "description": "A simple desktop client to connect to RethinkDB servers to work with data.",
   "main": "main.js",
   "scripts": {
-    "build-darwin": "electron-packager . ReQLPro --platform=darwin --arch=x64 && cp ../public/reqlpro.icns ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/atom.icns",
+    "build-packages": "electron-packager . ReQLPro --platform=all --arch=x64 && cp ../public/reqlpro.icns ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/atom.icns",
     "archive-darwin": "asar pack ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/app ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/app.asar && rm -rf ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/app/",
     "build-dmg": "node ../tools/build-dmg.js",
     "build-win": "../tools/build-windows.sh"
