@@ -40,7 +40,7 @@ var ee = appdmg({
         "x": 200,
         "y": 344,
         "type": "file",
-        "path": "../ReQLPro-darwin-x64/ReQLPro.app"
+        "path": "../build/ReQLPro-darwin-x64/ReQLPro.app"
       }
 
     ]

@@ -1,0 +1,34 @@
+{
+  "name": "reqlpro",
+  "productName": "ReQLPro",
+  "version": "0.0.3",
+  "engine": "node 5.9.1",
+  "description": "A simple desktop client to connect to RethinkDB servers to work with data.",
+  "main": "main.js",
+  "scripts": {
+    "build-darwin": "rm -rf ReQLPro-darwin-x64/ && electron-packager . ReQLPro --platform=darwin --arch=x64 && cp ../public/reqlpro.icns ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/atom.icns",
+    "archive-darwin": "asar pack ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/app ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/app.asar && rm -rf ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/app/",
+    "build-dmg": "node ../tools/build-dmg.js",
+    "build-win": "../tools/build-windows.sh"
+  },
+  "repository": {},
+  "keywords": [
+    "RethinkDB"
+  ],
+  "author": "CodeHangar, Inc",
+  "license": "",
+  "bugs": {},
+  "homepage": "http://codehangar.io",
+  "dependencies": {
+    "analytics-node": "^2.1.0",
+    "electron-prebuilt": "^0.36.0",
+    "co": "^4.6.0",
+    "fixed-data-table": "^0.6.0",
+    "rethinkdb": "^2.2.2"
+  },
+  "devDependencies": {
+    "electron-packager": "^6.0.0",
+    "appdmg": "^0.4.0",
+    "asar": "^0.10.0"
+  }
+}
