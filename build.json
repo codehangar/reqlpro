@@ -9,7 +9,8 @@
     "build-packages": "electron-packager . ReQLPro --platform=all --arch=x64 && cp ../public/reqlpro.icns ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/atom.icns",
     "archive-darwin": "asar pack ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/app ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/app.asar && rm -rf ReQLPro-darwin-x64/ReQLPro.app/Contents/Resources/app/",
     "build-dmg": "node ../tools/build-dmg.js",
-    "build-win": "../tools/build-windows.sh"
+    "archive-windows": "asar pack ReQLPro-win32-x64/resources/app ReQLPro-win32-x64/resources/app.asar && rm -rf ReQLPro-win32-x64/resources/app/",
+    "build-windows-installer": "node ../tools/build-windows-installer.js"
   },
   "repository": {},
   "keywords": [
@@ -28,6 +29,7 @@
   },
   "devDependencies": {
     "appdmg": "^0.4.0",
-    "asar": "^0.10.0"
+    "asar": "^0.10.0",
+    "electron-winstaller": "^2.3.1"
   }
 }

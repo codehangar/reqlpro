@@ -32,7 +32,7 @@ echo 'npm install production dependencies'
 
 # Build All packages
 npm run build-packages
-echo 'Build Mac OSX app package'
+echo 'Build all app packages'
 
 # Npm install build/dev dependencies
 npm install
@@ -45,4 +45,12 @@ echo 'Asar Mac OSX app package'
 # Build Mac OS DMG
 npm run build-dmg
 echo 'Build DMG for Mac OSX app package'
+
+# Asar archive windows packabe
+npm run archive-windows
+echo 'Asar windows app package'
+
+# Build Windows Installer
+npm run build-windows-installer
+echo 'Build windows installer for windows package'
 

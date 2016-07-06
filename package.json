@@ -11,7 +11,7 @@
     "test-coverage": "npm test && istanbul cover node_modules/mocha/bin/_mocha -- -R spec",
     "electron": "electron main.js",
     "watch": "webpack --colors --watch",
-    "buildAll": "./tools/buildAll.sh"
+    "build-all": "./tools/build-all.sh"
   },
   "repository": {},
   "keywords": [
@@ -34,6 +34,7 @@
     "electron-packager": "^6.0.0",
     "electron-prebuilt": "^0.36.0",
     "electron-rebuild": "^1.1.3",
+    "electron-winstaller": "^2.3.1",
     "file-loader": "^0.8.5",
     "istanbul": "^0.4.4",
     "jdenticon": "^1.3.2",
