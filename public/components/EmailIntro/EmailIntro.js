@@ -88,19 +88,32 @@ const ConnectionForm = React.createClass({
 
     return (
       <div className="EmailIntro" style={containerStyles}>
-         <div className="explorer-full-message">
-          <p className="super-large-text">Welcome!</p>
-          <p className="">Please provide your email below to get started.</p>
-          <div className="row">
-            <form onSubmit={this.handleSubmit}>
-              <div className="col-xs-6 col-xs-offset-3 text-center">
-                <div className={inputValidationClasses.port}>
-                  <input type="text" className="form-control input-lg" id="email" placeholder="Email" onChange={this.handleTextChange.bind(this, 'email')} />
+         <div className="">
+         <div className="email-panel">
+            <div className="panel panel-default">
+              <div className="panel-body text-center">
+                <div><img className="email-logo" src="images/logo.png"/></div>
+                <p className="lead">Thank you for trying ReQLPro.</p>
+                <p> To continue, please register for free by providing your email below.</p>
+                <div className="row">
+                  <form onSubmit={this.handleSubmit}>
+                    <div className="col-xs-10 col-xs-offset-1 text-center">
+                      <div className={inputValidationClasses.port}>
+                        <input type="text" className="form-control" id="email" placeholder="Email" onChange={this.handleTextChange.bind(this, 'email')} />
+                      </div>
+                    </div>
+                  </form>
                 </div>
+                <p className="email-built-by">ReQLPro was built with <i className="fa fa-heart"/> by <a href="http://www.codehangar.io">Code Hangar, Inc.</a></p>
               </div>
-            </form>
-          </div>
-          <p className="small-text">Having trouble? Visit our <a href="http://utils.codehangar.io/rethink/support" target="_blank">Help Center</a> or <a onClick={function() { HS.beacon.open(); }}>send us a message</a>.</p>
+              <div className="panel-footer text-center">
+                Have a question? Visit our <a href="http://utils.codehangar.io/rethink/support" target="_blank">Help Center</a> or <a onClick={function() { HS.beacon.open(); }}>send us a message</a>.
+              </div>
+            </div>
+         </div>
+         
+          
+          
          </div>
       </div>
     );

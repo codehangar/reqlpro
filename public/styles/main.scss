@@ -85,8 +85,31 @@ html, body, .main-content {
   position: fixed;
   top: 0;
   left: 0;
-  background: $lighter-color;
+  background: rgba(7, 54, 66, 0.94);;
   z-index: 1;
+  padding: 100px 0;
+}
+
+.email-panel{
+  width:600px;
+  margin:auto;
+}
+
+.email-logo{
+  max-width:80%;
+  margin:20px 0 20px 0;
+}
+
+.email-built-by{
+  margin-top:20px;
+  color: #ccc;
+  a{
+    color: #ccc;
+    text-decoration:underline;
+    &:hover{
+      color: #bbb;
+    }
+  }
 }
 
 .ConnectionForm {
