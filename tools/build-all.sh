@@ -1,6 +1,11 @@
-# Clear build and dist directory
+# Clear build and dev directory
 rm -rf build
-echo 'Remove previous build and dist folders'
+rm -rm dev
+echo 'Remove previous build and dev folders'
+
+# Run webpack to make sure the newest code is compiled
+webpack
+echo 'Webpack compile code before packaging'
 
 # Make build and dist directory
 mkdir build
