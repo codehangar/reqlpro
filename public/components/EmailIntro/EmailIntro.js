@@ -107,7 +107,7 @@ const ConnectionForm = React.createClass({
                 <p className="email-built-by">ReQLPro was built with <i className="fa fa-heart"/> by <a href="http://www.codehangar.io" target="_blank">Code Hangar, Inc.</a></p>
               </div>
               <div className="panel-footer text-center">
-                Have a question? Visit our <a href="http://utils.codehangar.io/rethink/support" target="_blank">Help Center</a> or <a href onClick={function() { HS.beacon.open(); }}>send us a message</a>.
+                Have a question? Visit our <a href="http://utils.codehangar.io/rethink/support" target="_blank">Help Center</a> or <a className="cursor-pointer" onClick={function() { HS.beacon.open(); }}>send us a message</a>.
               </div>
             </div>
          </div>
