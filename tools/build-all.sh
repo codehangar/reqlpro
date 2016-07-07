@@ -34,6 +34,10 @@ echo 'npm install production dependencies'
 npm run build-packages
 echo 'Build all app packages'
 
+# Move icon into Mac OSX package (Mac Specific extra step)
+npm run icon-darwin
+echo 'Moved mac supported icon into mac package'
+
 # Npm install build/dev dependencies
 npm install
 echo 'npm install build/dev dependencies'
@@ -50,7 +54,7 @@ echo 'Build DMG for Mac OSX app package'
 npm run archive-windows
 echo 'Asar windows app package'
 
-# Build Windows Installer
-npm run build-windows-installer
-echo 'Build windows installer for windows package'
+# # Build Windows Installer
+# npm run build-windows-installer
+# echo 'Build windows installer for windows package'
 
