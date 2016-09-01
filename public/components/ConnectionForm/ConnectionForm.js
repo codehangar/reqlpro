@@ -135,7 +135,7 @@ const ConnectionForm = React.createClass({
             </div>
           </div>
           <div className="panel-footer">
-            <button type="submit" className="btn btn-primary pull-right" onClick={this.handleSubmit}>{this.state.action} Connection</button>
+            <button type="submit" className="btn btn-primary pull-right" onClick={this.handleSubmit}>Save</button>
             <button type="cancel" className="btn btn-default pull-left" onClick={this.handleCancel}>Cancel</button>
             {deleteButton}
             <div className="clearfix"/>
