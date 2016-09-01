@@ -5,6 +5,17 @@ const ConnectionForm = require('../ConnectionForm/ConnectionForm');
 const EntityForm = require('../EntityForm/EntityForm');
 const ConfirmRowDelete = require('../ConfirmRowDelete/ConfirmRowDelete');
 const EmailIntro = require('../EmailIntro/EmailIntro');
+import {createStore} from 'redux';
+import {Provider} from 'react-redux';
+import reducer from '../../reducer';
+
+const store = createStore(reducer);
+
+store.dispatch({
+  type: 'SET_EMAIL',
+  // state: {},
+  email: 'cassie@codehangar.io'
+});
 
 const App = React.createClass({
   getInitialState: function() {
