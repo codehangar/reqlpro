@@ -93,7 +93,7 @@ const ConnectionForm = React.createClass({
             <div className="panel panel-default">
               <div className="panel-body text-center">
                 <div><img className="email-logo" src="images/logo.png"/></div>
-                <p className="lead">Thank you for trying ReQLPro.</p>
+                <p className="lead">Thank you for downloading ReQLPro.</p>
                 <p> To continue, please register for free by providing your email below.</p>
                 <div className="row">
                   <form onSubmit={this.handleSubmit}>
