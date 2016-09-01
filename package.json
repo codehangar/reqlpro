@@ -14,7 +14,9 @@
     "build-all": "./tools/build-all.sh"
   },
   "babel": {
-    "presets": ["es2015"]
+    "presets": [
+      "es2015"
+    ]
   },
   "repository": {},
   "keywords": [
@@ -34,6 +36,7 @@
     "babel-preset-react": "^6.3.13",
     "brace": "^0.8.0",
     "chai": "^3.5.0",
+    "chai-immutable": "^1.6.0",
     "css-loader": "^0.23.1",
     "electron-packager": "^6.0.0",
     "electron-prebuilt": "^0.36.0",
@@ -61,6 +64,7 @@
     "co": "^4.6.0",
     "fixed-data-table": "^0.6.0",
     "font-awesome": "^4.5.0",
+    "immutable": "^3.8.1",
     "node-uuid": "^1.4.7",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
