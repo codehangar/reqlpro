@@ -21,3 +21,14 @@ export function addConnection(state, connection) {
   if(connection) connections.push(connection);
   return Object.assign(state, {connections});
 }
+
+export function showConnectionForm(state, mode) {
+  switch(mode){
+    case 'NEW':
+      let newState = Object.assign(state, {showAddConnectionForm:true})
+      if(state.showEditConnectionForm) delete newState.showEditConnectionForm;
+      return newState;
+  }
+  if(connection) connections.push(connection);
+  return Object.assign(state, {connections});
+}

@@ -1,7 +1,8 @@
 import {
   setConnections,
   setEmail,
-  addConnection
+  addConnection,
+  showConnectionForm
 } from '../public/core';
 
 describe('Aplication Logic', () => {
@@ -57,5 +58,22 @@ describe('Aplication Logic', () => {
       })
     });
   })
+
+  describe('showConnectionForm', () => {
+    it('shows the add connection form if mode is NEW', () =>{
+      const state = {
+        email: 'cassie@codehangar.io'
+      }
+      const mode = 'NEW';
+      const nextState = showConnectionForm(state, mode);
+      expect(nextState).to.deep.equal({
+        email: 'cassie@codehangar.io',
+        showAddConnectionForm: true
+      })
+    })
+    it('shows the edit connection form if mode is EDIT', () =>{
+      
+    })
+  });
 
 })
