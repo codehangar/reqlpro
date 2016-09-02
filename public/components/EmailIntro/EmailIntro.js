@@ -55,7 +55,7 @@ const ConnectionForm = ({
 };
 
 function mapStateToProps(state) {
-  console.log('ConnectionForm', state)
+  // console.log('ConnectionForm', state)
   return {
     email: state.email
   };

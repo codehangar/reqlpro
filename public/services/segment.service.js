@@ -17,7 +17,7 @@ function Segment() {
         }
       });
       analytics.track(payload);
-      console.log('[Segment] track', payload);
+      // console.log('[Segment] track', payload);
     });
   };
 

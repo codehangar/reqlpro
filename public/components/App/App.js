@@ -45,7 +45,6 @@ const App = React.createClass({
     });
   },
   render: function() {
-              // <Sidebar  />
           // <Explorer />
           // <ConnectionForm />
           // <EntityForm />
@@ -53,6 +52,7 @@ const App = React.createClass({
     return (
         <div className="content-wrapper">
           <EmailIntroContainer />
+          <Sidebar />
         </div>
     );
   }

@@ -1,29 +1,44 @@
-var React = require('react');
-var classNames = require('classnames');
-var RethinkDbClient = window.rethinkDbClient;
+const React = require('react');
+const classNames = require('classnames');
+const RethinkDbClient = window.rethinkDbClient;
 
-var Favorite = React.createClass({
-  render: function() {
-    const createMarkup = () => {
+// const Favorite = () => {
+//   render: function() {
+//     console.log('Favorite', this);
+//     // {index, name, indenticon, onClick} = this.props;
+    const createMarkup = (html) => {
       return {
-        __html: this.props.favorite.identicon
+        __html: html
       };
     };
 
     const favoriteClasses = {
       name: classNames({
         'favorite': true,
-        'active': this.props.selectedFavorite.index === this.props.favorite.index,
+        // 'active': this.propsactive,
       })
     };
 
+//     return (
+//       <div>Hi</div>
+//       // <div className={favoriteClasses.name} onClick={onClick}>
+//       //   <div className="favorite-identicon"><div dangerouslySetInnerHTML={createMarkup()} /></div>
+//       //   <p className="text-center">{name}</p>
+//       // </div>
+//     );
+//   }
+// };
+
+var Favorite = React.createClass({
+
+  render: function() {
+    const {onClick, identicon, name} = this.props;
+    // console.log('Favorite', this.props);
     return (
-      <div className={favoriteClasses.name} onClick={() => {
-        this.props.connectFavorite(this.props.favorite)
-      }}>
-        <div className="favorite-identicon"><div dangerouslySetInnerHTML={createMarkup()} /></div>
-        <p className="text-center">{this.props.favorite.name}</p>
-      </div>
+      <div className={favoriteClasses.name} onClick={onClick}>
+         <div className="favorite-identicon"><div dangerouslySetInnerHTML={createMarkup(identicon)} /></div>
+         <p className="text-center">{name}</p>
+       </div>
     );
   }
 });
