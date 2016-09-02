@@ -17,7 +17,7 @@ export function setEmail(state, email) {
 
 export function addConnection(state, connection) {
   let connections = [];
-  if(state.connections) connections.push(state.connections);
-  connections.push(connection);
+  if(state.connections) connections = state.connections;
+  if(connection) connections.push(connection);
   return Object.assign(state, {connections});
 }
