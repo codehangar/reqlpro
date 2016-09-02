@@ -1,12 +1,13 @@
 import {
   setConnections,
-  setEmail
+  setEmail,
+  addConnection
 } from '../public/core';
 
 describe('Aplication Logic', () => {
 
   describe('setConnections', () => {
-    it('adds connections to the state', () => {
+    it('adds saved connections to the state', () => {
       const state = Map();
       const connections = ['connection1', 'connection2'];
       let nextState = setConnections(state, connections);
@@ -26,5 +27,35 @@ describe('Aplication Logic', () => {
       });
     });
   });
+
+  describe('addConnection', () => {
+    it('adds a new connection to the redux store', () =>{
+      const state = {
+        email: 'cassie@codehangar.io'
+      }
+      const connection = {
+        authKey: "",
+        database: "",
+        host: "192.168.99.100",
+        identicon: "",
+        index: 0,
+        name: "rethink-tut",
+        port: "32769"
+      }
+      const nextState = addConnection(state, connection);
+      expect(nextState).to.deep.equal({
+        email: 'cassie@codehangar.io',
+        connections:[{
+          authKey: "",
+          database: "",
+          host: "192.168.99.100",
+          identicon: "",
+          index: 0,
+          name: "rethink-tut",
+          port: "32769"
+        }]
+      })
+    });
+  })
 
 })
