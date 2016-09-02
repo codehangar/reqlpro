@@ -17,14 +17,13 @@ describe('Aplication Logic', () => {
   });
 
   describe('setEmail', () => {
-    it('adds email to userConfig and updates EmailIntro to false on the state', () => {
-      const state = Map();
+    it('adds email to redux store', () => {
+      const state = {};
       const email = 'cassie@codehangar.io';
       let nextState = setEmail(state, email);
-      expect(nextState).to.equal(Map({
-        email: 'cassie@codehangar.io',
-        EmailIntro: false
-      }));
+      expect(nextState).to.deep.equal({
+        email: 'cassie@codehangar.io'
+      });
     });
   });
 
