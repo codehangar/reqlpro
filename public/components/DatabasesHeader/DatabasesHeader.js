@@ -26,18 +26,20 @@ const DatabasesHeader = React.createClass({
     window.document.addEventListener('click', documentClickListener, false);
   },
   render: function() {
+    console.log('DatabasesHeader', this.props)
+    const {selectedFavorite} = this.props;
     var classes = {
       actionMenu: classNames(
         'dropdown-menu',
         {
-          'show': this.props.store.router.ConnectionActionMenu.show,
-          'hidden': !this.props.store.router.ConnectionActionMenu.show
+          'show': true, //this.props.store.router.ConnectionActionMenu.show,
+          'hidden': false //!this.props.store.router.ConnectionActionMenu.show
         }
       )
     }
     return (
       <div className="databases-header">
-        <div><span className="title">{this.props.selectedFavorite.name}</span>
+        <div><span className="title"></span>
           <div className="dropdown pull-right">
             <i onClick={this.toggleConnectionActionMenu} className="fa fa-bars connection-action-menu-button"></i>
             <ul className={classes.actionMenu}>
