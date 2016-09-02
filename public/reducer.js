@@ -2,7 +2,8 @@ import {Map} from 'immutable';
 import {
   setState,
   setConnections,
-  setEmail
+  setEmail,
+  addConnection
 } from './core';
 
 export default function reducer(state = Map(), action) {
@@ -14,6 +15,9 @@ export default function reducer(state = Map(), action) {
       return setConnections(state, action.connections);
     case 'SET_EMAIL':
       return setEmail(state, action.email);
+    case 'ADD_CONNECTION':
+      console.log('ADD_CONNECTION', state, action.connection);
+      return addConnection(state, action.connection);
   }
   return state;
 }
