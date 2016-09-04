@@ -110,7 +110,7 @@ const ConnectionForm = ({
       <div className="ConnectionForm" style={containerStyles}>
         <div className="panel panel-default">
           <div className="panel-heading">
-            <strong>{ () => { if(showAddConnectionForm) return 'Add New' } } RethinkDB Connection</strong>
+            <strong>{ showAddConnectionForm ? 'Add New' : ''} RethinkDB Connection</strong>
           </div>
           <div className="panel-body">
             <div className="row">
