@@ -3,7 +3,8 @@ import {
   setState,
   setConnections,
   setEmail,
-  addConnection
+  addConnection,
+  showConnectionForm
 } from './core';
 
 export default function reducer(state = Map(), action) {
@@ -18,6 +19,9 @@ export default function reducer(state = Map(), action) {
     case 'ADD_CONNECTION':
       console.log('ADD_CONNECTION', state, action.connection);
       return addConnection(state, action.connection);
+    case 'SHOW_CONNECTION_FORM':
+      console.log('SHOW_CONNECTION_FORM', state, action.mode);
+      return showConnectionForm(state, action.mode);
   }
   return state;
 }

@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 const Favorites = ({
   favorites,
   selectedFavorite,
-  onFavoriteClick
+  onClickAddConnection
 }) => ({
   // getInitialState: function() {
   //   return this.context.store;
@@ -29,6 +29,7 @@ const Favorites = ({
   //   this.state.showConnectionForm();
   // },
   render: function() {
+    console.log('Favorites', favorites)
     const favoriteNodes = favorites.map((favorite) => {
       return (
         <Favorite
@@ -42,7 +43,7 @@ const Favorites = ({
     return (
       <div className="fav-content-col">
         {favoriteNodes}
-        <AddFavorite addFavorite={this.addFavorite} />
+        <AddFavorite addFavorite={() => onClickAddConnection()} />
       </div>
     );
     return (
@@ -55,7 +56,7 @@ const Favorites = ({
 // };
 
 function mapStateToProps(state) {
-  // console.log('Favorites', state)
+  console.log('Favorites', state)
   return {
     favorites: state.favorites,
     selectedFavorite: state.selectedFavorite || null
@@ -63,10 +64,10 @@ function mapStateToProps(state) {
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    onFavoriteClick: (favorite) =>{
+    onClickAddConnection: (favorite) =>{
       dispatch({
-        type: "SET_FAVORITE",
-        favorite
+        type: "SHOW_CONNECTION_FORM",
+        mode: 'NEW'
       })
     }
   }
