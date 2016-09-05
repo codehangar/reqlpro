@@ -27,9 +27,16 @@ export function showConnectionForm(state, mode) {
     case 'NEW':
       let newState = Object.assign({}, state, {showAddConnectionForm:true})
       if(state.showEditConnectionForm) delete newState.showEditConnectionForm;
-      console.log('showConnectionForm NEW', newState)
       return newState;
   }
 
   return state;
+}
+
+export function hideConnectionForm(state) {
+      let newState = Object.assign({}, state)
+      if(state.showEditConnectionForm) delete newState.showEditConnectionForm;
+      if(state.showAddConnectionForm) delete newState.showAddConnectionForm;
+      console.log('hideConnectionForm', newState)
+      return newState;
 }
