@@ -63,4 +63,18 @@ describe('reducer', () => {
     });
   });
 
+  it('handles HIDE_CONNECTION_FORM', () => {
+    const initialState = {
+      email: 'cassie@codehangar.io',
+      showAddConnectionForm: []
+    }
+    const action = {
+      type: "HIDE_CONNECTION_FORM"
+    }
+    const nextState = reducer(initialState, action);
+    expect(nextState).to.deep.equal({
+      email: 'cassie@codehangar.io'
+    });
+  });
+
 });
