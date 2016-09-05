@@ -33,39 +33,6 @@ describe('Aplication Logic', () => {
     });
   });
 
-  describe('addConnection', () => {
-    it('adds a new connection to the redux store', () =>{
-      const state = {
-        email: 'cassie@codehangar.io'
-      }
-      const connection = {
-        authKey: "",
-        database: "",
-        host: "192.168.99.100",
-        identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
-        index: 0,
-        name: "rethink-tut",
-        port: "32769"
-      }
-      const nextState = addConnection(state, connection);
-      expect(nextState).to.deep.equal({
-        email: 'cassie@codehangar.io',
-        connections:[{
-          authKey: "",
-          database: "",
-          host: "192.168.99.100",
-          identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
-          index: 0,
-          name: "rethink-tut",
-          port: "32769"
-        }]
-      })
-    });
-    // it('saves connection to user config', () =>{
-      
-    // })
-  })
-
   describe('showConnectionForm', () => {
     it('shows the add connection form if mode is NEW', () =>{
       const state = {
@@ -98,6 +65,50 @@ describe('Aplication Logic', () => {
       const nextState2 = hideConnectionForm(state2);
       expect(nextState2).to.deep.equal({email: 'cassie@codehangar.io'});
     });
-  });
+  });  describe('addConnection', () => {
+    it('adds a new connection to the redux store', () =>{
+      const state = {
+        email: 'cassie@codehangar.io'
+      }
+      const connection = {
+        authKey: "",
+        database: "",
+        host: "192.168.99.100",
+        identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+        index: 0,
+        name: "rethink-tut",
+        port: "32769"
+      }
+      const nextState = addConnection(state, connection);
+      expect(nextState).to.deep.equal({
+        email: 'cassie@codehangar.io',
+        connections:[{
+          authKey: "",
+          database: "",
+          host: "192.168.99.100",
+          identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+          index: 0,
+          name: "rethink-tut",
+          port: "32769"
+        }]
+      })
+    });
+  })
+
+  describe('getConnection', () => {
+    it('returns connection info from RethinkDB', () => {
+      const connection = {
+          authKey: "",
+          database: "",
+          host: "192.168.99.100",
+          identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+          index: 0,
+          name: "rethink-tut",
+          port: "32769"
+      }
+      const nextState = getConnection(state, connection)
+
+    })
+  })
 
 })

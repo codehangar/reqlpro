@@ -163,24 +163,24 @@ store.prototype.toggleEntityForm = function(type, action, toDeleteName) {
 };
 
 // Add favorite
-store.prototype.addFavorite = function(favorite) {
-  this.userConfig.favorites.push({
-    name: favorite.name.value,
-    host: favorite.host.value,
-    port: favorite.port.value,
-    database: favorite.database.value,
-    authKey: favorite.authKey.value,
-    identicon: jdenticon.toSvg(md5(favorite.name.value), 40),
-    index: this.userConfig.favorites.length
-  });
+// store.prototype.addFavorite = function(favorite) {
+//   this.userConfig.favorites.push({
+//     name: favorite.name.value,
+//     host: favorite.host.value,
+//     port: favorite.port.value,
+//     database: favorite.database.value,
+//     authKey: favorite.authKey.value,
+//     identicon: jdenticon.toSvg(md5(favorite.name.value), 40),
+//     index: this.userConfig.favorites.length
+//   });
 
-  if (this.userConfig.favorites.length === 1) {
-    this.updateSelectedFavorite(this.userConfig.favorites[0]);
-  }
+//   if (this.userConfig.favorites.length === 1) {
+//     this.updateSelectedFavorite(this.userConfig.favorites[0]);
+//   }
 
-  this.emit('updateFavorites');
-  ipcRenderer.send('writeConfigFile', this.userConfig);
-};
+//   this.emit('updateFavorites');
+//   ipcRenderer.send('writeConfigFile', this.userConfig);
+// };
 
 // Edit favorite
 store.prototype.editFavorite = function(favorite) {
