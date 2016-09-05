@@ -19,8 +19,8 @@ export default function reducer(state = Map(), action) {
     case 'SET_EMAIL':
       return setEmail(state, action.email);
     case 'ADD_CONNECTION':
-      // ipcRenderer.send('writeConfigFile', this.userConfig);
-      return addConnection(state, action.connection);
+      // ipcRenderer.send('writeConfigFile', state.userConfig);
+      return hideConnectionForm(addConnection(state, action.connection));
     case 'SHOW_CONNECTION_FORM':
       return showConnectionForm(state, action.mode);
     case 'HIDE_CONNECTION_FORM':
