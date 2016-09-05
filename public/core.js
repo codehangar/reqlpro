@@ -1,7 +1,9 @@
 import {List, Map, fromJS} from 'immutable';
+import jdenticon from 'jdenticon';
+import md5 from 'md5';
 
 export function setState(state, newState) {
-  return Object.assign({}, ...state, newState);;
+  return Object.assign({}, state, newState);
 }
 
 export function setConnections(state, connections) {
@@ -16,9 +18,25 @@ export function setEmail(state, email) {
 }
 
 export function addConnection(state, connection) {
+  // console.log('addConnection', state, connection)
+  // const {host, port, authkey} = connection;
+  // const {name, host, port, } = connection;
   let connections = [];
-  if(state.connections) connections = state.connections;
-  if(connection) connections.push(connection);
+  if(state.connections) connections = state.connections.slice();
+  if(connection) connections.push({
+    name: connection.name.value,
+    host: connection.host.value,
+    port: connection.port.value,
+    database: connection.database,
+    database: "",
+    authKey: "",
+    identicon: jdenticon.toSvg(md5(connection.name), 40),
+    index: state.connections?state.connections.length:0
+  });
+
+  // this.emit('updateFavorites');
+  
+  
   return Object.assign({}, state, {connections});
 }
 
@@ -37,6 +55,5 @@ export function hideConnectionForm(state) {
       let newState = Object.assign({}, state)
       if(state.showEditConnectionForm) delete newState.showEditConnectionForm;
       if(state.showAddConnectionForm) delete newState.showAddConnectionForm;
-      console.log('hideConnectionForm', newState)
       return newState;
 }

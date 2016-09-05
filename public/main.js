@@ -65,7 +65,12 @@ function init() {
   console.log('initialState', initialState)
 
   if(initialState){
-     reduxStore.dispatch({type: 'SET_STATE', state: initialState})
+     reduxStore.dispatch({
+        type: 'SET_STATE', 
+        state: {
+          userConfig: initialState
+        }
+      })
   }
 
 

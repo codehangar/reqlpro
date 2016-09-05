@@ -5,8 +5,11 @@ import {connect} from 'react-redux';
 
 const ConnectionForm = ({
   showAddConnectionForm, 
-  showEditConnectionForm
+  showEditConnectionForm,
+  onCancel,
+  onSave
 }) => {
+  let connection = {}
   // getInitialState: function() {
   //   return {
   //     store: this.context.store,
@@ -74,7 +77,6 @@ const ConnectionForm = ({
   // },
   // render: function() {
     // const {showAddConnectionForm, showEditConnectionForm} = this.props;
-    console.log('render showAddConnectionForm props', showAddConnectionForm);
     var containerStyles = {
       display: showAddConnectionForm ? 'block' : 'none'
     };
@@ -118,15 +120,21 @@ const ConnectionForm = ({
                 <form>
                   <div >
                     <label htmlFor="name">Connection Name</label>
-                    <input type="text" className="form-control" id="name" placeholder="i.e. TodoApp-local" />
+                    <input 
+                    ref={node => { connection.name = node; }} 
+                    type="text" className="form-control" id="name" placeholder="i.e. TodoApp-local" />
                   </div>
                   <div>
                     <label htmlFor="host">Host</label>
-                    <input type="text" className="form-control" id="host" placeholder="i.e. localhost" />
+                    <input 
+                    ref={node => { connection.host = node; }} 
+                    type="text" className="form-control" id="host" placeholder="i.e. localhost" />
                   </div>
                   <div >
                     <label htmlFor="port">Port</label>
-                    <input type="text" className="form-control" id="port" placeholder="i.e. 28015" />
+                    <input 
+                    ref={node => { connection.port = node; }} 
+                    type="text" className="form-control" id="port" placeholder="i.e. 28015" />
                   </div>
                   {/*<div className={inputValidationClasses.database}>
                     <label htmlFor="database">Database</label>
@@ -141,8 +149,8 @@ const ConnectionForm = ({
             </div>
           </div>
           <div className="panel-footer">
-            <button type="submit" className="btn btn-primary pull-right">Save</button>
-            <button type="cancel" className="btn btn-default pull-left">Cancel</button>
+            <button type="submit" onClick={()=>onSave(connection)} className="btn btn-primary pull-right">Save</button>
+            <button type="cancel" onClick={onCancel} className="btn btn-default pull-left">Cancel</button>
             {deleteButton}
             <div className="clearfix"/>
           </div>
@@ -161,17 +169,22 @@ function mapStateToProps(state) {
     showAddConnectionForm: state.showAddConnectionForm
   };
 }
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     onEmailSubmit: (email) =>{
-//       dispatch({
-//         type: "SET_EMAIL",
-//         email
-//       })
-//     }
-//   }
-// };
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onCancel: () =>{
+      dispatch({
+        type: "HIDE_CONNECTION_FORM"
+      })
+    },
+    onSave: (connection) =>{
+      dispatch({
+        type: "ADD_CONNECTION",
+        connection: connection
+      })
+    }
+  }
+};
 
-const ConnectionFormContainer = connect(mapStateToProps)(ConnectionForm);
+const ConnectionFormContainer = connect(mapStateToProps, mapDispatchToProps)(ConnectionForm);
 
 module.exports = ConnectionFormContainer;

@@ -1,5 +1,7 @@
 import {List, Map, fromJS} from 'immutable';
 import {expect} from 'chai';
+import jdenticon from 'jdenticon';
+import md5 from 'md5';
 
 import reducer from '../public/reducer';
 
@@ -20,6 +22,11 @@ describe('reducer', () => {
     const nextState = reducer(initialState, action);
 
     expect(nextState).to.deep.equal({
+      __altered: false,
+      __hash: undefined,
+      __ownerID: undefined,
+      _root: undefined,
+      size:0,
       connection: {},
       userConfig: {
         email: 'cassie@codehangar.io',
@@ -39,7 +46,7 @@ describe('reducer', () => {
         authKey: "",
         database: "",
         host: "192.168.99.100",
-        identicon: "",
+        identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
         index: 0,
         name: "rethink-tut",
         port: "32769"
@@ -54,7 +61,7 @@ describe('reducer', () => {
           authKey: "",
           database: "",
           host: "192.168.99.100",
-          identicon: "",
+          identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
           index: 0,
           name: "rethink-tut",
           port: "32769"

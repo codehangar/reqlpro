@@ -1,3 +1,6 @@
+import jdenticon from 'jdenticon';
+import md5 from 'md5';
+
 import {
   setConnections,
   setEmail,
@@ -39,7 +42,7 @@ describe('Aplication Logic', () => {
         authKey: "",
         database: "",
         host: "192.168.99.100",
-        identicon: "",
+        identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
         index: 0,
         name: "rethink-tut",
         port: "32769"
@@ -51,13 +54,16 @@ describe('Aplication Logic', () => {
           authKey: "",
           database: "",
           host: "192.168.99.100",
-          identicon: "",
+          identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
           index: 0,
           name: "rethink-tut",
           port: "32769"
         }]
       })
     });
+    // it('saves connection to user config', () =>{
+      
+    // })
   })
 
   describe('showConnectionForm', () => {

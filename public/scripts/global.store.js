@@ -54,12 +54,12 @@ var store = function(params) {
 
 util.inherits(store, EventEmitter); // Inherit eventemitter prototype
 
-store.prototype.addEmail = function(email) {
-  this.userConfig.email = email;
-  this.router.EmailIntro.show = false;
-  ipcRenderer.send('writeConfigFile', this.userConfig);
-  this.emit('updateRehinkDbClient');
-}
+// store.prototype.addEmail = function(email) {
+//   this.userConfig.email = email;
+//   this.router.EmailIntro.show = false;
+//   ipcRenderer.send('writeConfigFile', this.userConfig);
+//   this.emit('updateRehinkDbClient');
+// }
 
 // Update selected favorite
 store.prototype.updateSelectedFavorite = function(favorite) {

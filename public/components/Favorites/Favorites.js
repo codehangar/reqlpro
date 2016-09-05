@@ -3,11 +3,7 @@ const Favorite = require('../Favorite/Favorite');
 const AddFavorite = require('../AddFavorite/AddFavorite');
 import {connect} from 'react-redux';
 
-const Favorites = ({
-  favorites,
-  selectedFavorite,
-  onClickAddConnection
-}) => ({
+const Favorites = ({}) => ({
   // getInitialState: function() {
   //   return this.context.store;
   // },
@@ -29,14 +25,16 @@ const Favorites = ({
   //   this.state.showConnectionForm();
   // },
   render: function() {
-    console.log('Favorites', favorites)
-    const favoriteNodes = favorites.map((favorite) => {
+    const {connections, onFavoriteClick, onClickAddConnection} = this.props
+    console.log('Connections', connections, this.props)
+    let key = 1
+    const favoriteNodes = connections.map((connection) => {
       return (
         <Favorite
-          key={favorite.index}
-          {...favorite}
-          // active={selectedFavorite.index === favorite.index}
-          onClick={() => {onFavoriteClick(favorite)}}
+          key={key++}
+          {...connection}
+          // active={selectedFavorite.index === connection.index}
+          onClick={() => {onFavoriteClick(connection)}}
         />
       );
     });
@@ -56,9 +54,9 @@ const Favorites = ({
 // };
 
 function mapStateToProps(state) {
-  console.log('Favorites', state)
+  console.log('Favorites', state, state.connections)
   return {
-    favorites: state.favorites,
+    connections: state.connections?state.connections:[],
     selectedFavorite: state.selectedFavorite || null
   };
 }

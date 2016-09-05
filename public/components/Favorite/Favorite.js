@@ -32,6 +32,7 @@ const RethinkDbClient = window.rethinkDbClient;
 var Favorite = React.createClass({
 
   render: function() {
+    console.log('this.props Favorite', this.props)
     const {onClick, identicon, name} = this.props;
     // console.log('Favorite', this.props);
     return (
