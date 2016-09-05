@@ -25,7 +25,7 @@ const Favorites = ({}) => ({
   //   this.state.showConnectionForm();
   // },
   render: function() {
-    const {connections, onFavoriteClick, onClickAddConnection} = this.props
+    const {connections, onConnectionClick, onClickAddConnection} = this.props
     console.log('Connections', connections, this.props)
     let key = 1
     const favoriteNodes = connections.map((connection) => {
@@ -34,7 +34,7 @@ const Favorites = ({}) => ({
           key={key++}
           {...connection}
           // active={selectedFavorite.index === connection.index}
-          onClick={() => {onFavoriteClick(connection)}}
+          onClick={() => {onConnectionClick(connection)}}
         />
       );
     });
@@ -66,6 +66,12 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: "SHOW_CONNECTION_FORM",
         mode: 'NEW'
+      })
+    },
+    onConnectionClick: (connection) =>{
+      dispatch({
+        type: "SET_FAVORITE_CONNECTION",
+        connection
       })
     }
   }
