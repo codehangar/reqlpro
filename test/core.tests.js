@@ -2,7 +2,8 @@ import {
   setConnections,
   setEmail,
   addConnection,
-  showConnectionForm
+  showConnectionForm,
+  hideConnectionForm
 } from '../public/core';
 
 describe('Aplication Logic', () => {
@@ -74,6 +75,17 @@ describe('Aplication Logic', () => {
     it('shows the edit connection form if mode is EDIT', () =>{
       
     })
+  });
+
+  describe('hideConnectionForm', () => {
+    it('removes showAddConnectionForm and/or showEditConnectionForm from Redux store', () => {
+      const state = {
+        email: 'cassie@codehangar.io',
+        showAddConnectionForm: true
+      }
+      const nextState = hideConnectionForm(state);
+      expect(nextState).to.deep.equal({email: 'cassie@codehangar.io'});
+    });
   });
 
 })
