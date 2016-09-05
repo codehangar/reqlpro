@@ -85,6 +85,12 @@ describe('Aplication Logic', () => {
       }
       const nextState = hideConnectionForm(state);
       expect(nextState).to.deep.equal({email: 'cassie@codehangar.io'});
+      const state2 = {
+        email: 'cassie@codehangar.io',
+        showEditConnectionForm: true
+      }
+      const nextState2 = hideConnectionForm(state2);
+      expect(nextState2).to.deep.equal({email: 'cassie@codehangar.io'});
     });
   });
 
