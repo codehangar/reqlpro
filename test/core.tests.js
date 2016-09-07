@@ -1,15 +1,37 @@
 import jdenticon from 'jdenticon';
 import md5 from 'md5';
-
 import {
   setConnections,
   setEmail,
   addConnection,
   showConnectionForm,
   hideConnectionForm
+  // getConnection
 } from '../public/core';
 
+let RethinkDbService;
+
 describe('Aplication Logic', () => {
+
+  beforeEach(function() {
+  console.log('before each =DDD')
+
+    mockery.enable({
+      warnOnReplace: false,
+      warnOnUnregistered: false,
+      useCleanCache: true
+    });
+
+    // Mock the rethinkdb service
+    RethinkDbService = sinon.stub();
+    RethinkDbService.getConnection = sinon.stub().returns(new Promise(function (resolve, reject) {
+      resolve('im a conn')
+    }));
+
+    // replace the require() module `rethinkdb` with a stub object
+    mockery.registerMock('../main/services/rethinkdb.service', RethinkDbService);
+
+  });
 
   describe('setConnections', () => {
     it('adds saved connections to the state', () => {
@@ -65,7 +87,9 @@ describe('Aplication Logic', () => {
       const nextState2 = hideConnectionForm(state2);
       expect(nextState2).to.deep.equal({email: 'cassie@codehangar.io'});
     });
-  });  describe('addConnection', () => {
+  });  
+
+  describe('addConnection', () => {
     it('adds a new connection to the redux store', () =>{
       const state = {
         email: 'cassie@codehangar.io'
@@ -96,6 +120,10 @@ describe('Aplication Logic', () => {
   })
 
   describe('getConnection', () => {
+
+    // import getConnection from '../public/core';
+    var getConnection = require('../public/core').getConnection;
+
     it('returns connection info from RethinkDB', () => {
       const state = {
         email: 'cassie@codehangar.io',
@@ -109,23 +137,28 @@ describe('Aplication Logic', () => {
           port: "32769"
         }]
       }
-      const connection = state.connection
-      const nextState = getConnection(state, connection);
-      expect(nextState).to.deep.equal({
-        email: 'cassie@codehangar.io',
-        connections:[{
-          authKey: "",
-          database: "",
-          host: "192.168.99.100",
-          identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
-          index: 0,
-          name: "rethink-tut",
-          port: "32769"
-        }],
-        selectedConnection: {
-          
-        }
-      })
+      const connection = state.connections[0];
+      
+      const dispatch = sinon.stub();
+      getConnection(dispatch, connection);
+
+      // expect(nextState).to.deep.equal({
+      //   email: 'cassie@codehangar.io',
+      //   connections:[{
+      //     authKey: "",
+      //     database: "",
+      //     host: "192.168.99.100",
+      //     identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+      //     index: 0,
+      //     name: "rethink-tut",
+      //     port: "32769"
+      //   }],
+      //   selectedConnection: {
+
+      //   }
+      // })
+      expect(RethinkDbService.getConnection).to.be.called;
+      expect(dispatch).to.be.called;
 
     })
   })

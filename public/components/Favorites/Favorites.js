@@ -2,6 +2,7 @@ const React = require('react');
 const Favorite = require('../Favorite/Favorite');
 const AddFavorite = require('../AddFavorite/AddFavorite');
 import {connect} from 'react-redux';
+var getConnection = require('../public/core').getConnection;
 
 const Favorites = ({}) => ({
   // getInitialState: function() {
@@ -69,10 +70,7 @@ const mapDispatchToProps = (dispatch) => {
       })
     },
     onConnectionClick: (connection) =>{
-      dispatch({
-        type: "SET_FAVORITE_CONNECTION",
-        connection
-      })
+      getConnection(dispatch, connection);
     }
   }
 };
