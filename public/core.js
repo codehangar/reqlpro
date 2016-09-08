@@ -8,7 +8,7 @@ export function setState(state, newState) {
 }
 
 export function setConnections(state, connections) {
-  return state.set('connections', List(connections));
+  return Object.assign({}, state, {connections});
 }
 
 export function setEmail(state, email) {

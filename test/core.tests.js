@@ -35,12 +35,12 @@ describe('Aplication Logic', () => {
 
   describe('setConnections', () => {
     it('adds saved connections to the state', () => {
-      const state = Map();
+      const state = {};
       const connections = ['connection1', 'connection2'];
       let nextState = setConnections(state, connections);
-      expect(nextState).to.equal(Map({
-        connections: List.of('connection1', 'connection2')
-      }));
+      expect(nextState).to.deep.equal({
+        connections: ['connection1', 'connection2']
+      });
     });
   });
 
