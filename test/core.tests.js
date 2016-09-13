@@ -8,7 +8,8 @@ import {
   showConnectionForm,
   hideConnectionForm,
   getConnection,
-  toggleConnectionActionMenu
+  toggleConnectionActionMenu,
+  hideOpenMenus
 } from '../public/core';
 
 let RethinkDbService;
@@ -244,6 +245,43 @@ describe('Application Logic', () => {
       expect(nextState).to.deep.equal({
         email: 'ian@codehangar.io',
         showConnectionActionMenu: true
+      })
+    });
+
+  });
+
+  describe('hideOpenMenus', () => {
+    it('should return new state with passed in state props set to false', () => {
+      const state = {
+        email: 'ian@codehangar.io',
+        showConnectionActionMenu: true,
+        showAddConnectionForm: false
+      }
+      const statePropsToUpdate = ['showConnectionActionMenu', 'showAddConnectionForm']
+
+      const nextState = hideOpenMenus(state, statePropsToUpdate);
+
+      expect(nextState).to.deep.equal({
+        email: 'ian@codehangar.io',
+        showConnectionActionMenu: false,
+        showAddConnectionForm: false
+      })
+    });
+
+    it('should return current state if no state props passed in', () => {
+      const state = {
+        email: 'ian@codehangar.io',
+        showConnectionActionMenu: true,
+        showAddConnectionForm: false
+      }
+      const statePropsToUpdate = ['showConnectionActionMenu', 'showAddConnectionForm']
+
+      const nextState = hideOpenMenus(state);
+
+      expect(nextState).to.deep.equal({
+        email: 'ian@codehangar.io',
+        showConnectionActionMenu: true,
+        showAddConnectionForm: false
       })
     });
 

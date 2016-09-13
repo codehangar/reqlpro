@@ -88,13 +88,13 @@ export function getConnection(dispatch, connection) {
       });
     });
   });
-}
+};
 
 export function setConnection(state, selectedFavorite) {
   return Object.assign({}, state, {
     selectedFavorite
   });
-}
+};
 
 export function toggleConnectionActionMenu(state, toggle) {
   // Toggle existing value, if nothing is passed in
@@ -105,4 +105,22 @@ export function toggleConnectionActionMenu(state, toggle) {
   return Object.assign({}, state, {
     showConnectionActionMenu: toggle
   });
+};
+
+export function hideOpenMenus(state, propsToSet) {
+
+  //if props passed in, return new state with these props set to false
+  if(propsToSet){
+    let updatedProps = {};
+    propsToSet.forEach(
+      (prop) => {
+        if(state[prop]){
+          updatedProps[prop] = false;
+        }
+      }
+    )
+    return Object.assign({}, state, updatedProps)
+  }
+  //if no props passed in return current state
+  return state;
 };
