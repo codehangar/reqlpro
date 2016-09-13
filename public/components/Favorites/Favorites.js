@@ -2,43 +2,23 @@ const React = require('react');
 const Favorite = require('../Favorite/Favorite');
 const AddFavorite = require('../AddFavorite/AddFavorite');
 import {connect} from 'react-redux';
-var getConnection = require('../public/core').getConnection;
+var getConnection = require('../../core').getConnection;
 
 const Favorites = ({}) => ({
-  // getInitialState: function() {
-  //   return this.context.store;
-  // },
-  // componentDidMount: function() {
-  //   this.setupEvents();
-  // },
-  // setupEvents: function() {
-  //   this.state.on('updateRehinkDbClient', () => {
-  //     this.forceUpdate();
-  //   });
-  //   this.state.on('updateFavorites', () => {
-  //     this.forceUpdate();
-  //   });
-  // },
-  // connectFavorite: function(favorite) {
-  //   this.state.updateSelectedFavorite(favorite);
-  // },
-  // addFavorite: function() {
-  //   this.state.showConnectionForm();
-  // },
   render: function() {
     const {connections, onConnectionClick, onClickAddConnection} = this.props
     console.log('Connections', connections, this.props)
-    let key = 1
-    const favoriteNodes = connections.map((connection) => {
+    const favoriteNodes = connections.map((connection, i) => {
       return (
         <Favorite
-          key={key++}
+          key={i}
           {...connection}
           // active={selectedFavorite.index === connection.index}
           onClick={() => {onConnectionClick(connection)}}
         />
       );
     });
+
     return (
       <div className="fav-content-col">
         {favoriteNodes}
@@ -50,9 +30,6 @@ const Favorites = ({}) => ({
     );
   }
 });
-// Favorites.contextTypes = {
-//   store: React.PropTypes.object
-// };
 
 function mapStateToProps(state) {
   console.log('Favorites', state, state.connections)

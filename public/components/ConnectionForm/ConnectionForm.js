@@ -4,7 +4,7 @@ const Segment = require('../../services/segment.service');
 import {connect} from 'react-redux';
 
 const ConnectionForm = ({
-  showAddConnectionForm, 
+  showAddConnectionForm,
   showEditConnectionForm,
   onCancel,
   onSave
@@ -120,20 +120,20 @@ const ConnectionForm = ({
                 <form>
                   <div >
                     <label htmlFor="name">Connection Name</label>
-                    <input 
-                    ref={node => { connection.name = node; }} 
+                    <input
+                    ref={node => { if (!node) return; node.focus(); connection.name = node; }}
                     type="text" className="form-control" id="name" placeholder="i.e. TodoApp-local" />
                   </div>
                   <div>
                     <label htmlFor="host">Host</label>
-                    <input 
-                    ref={node => { connection.host = node; }} 
+                    <input
+                    ref={node => { connection.host = node; }}
                     type="text" className="form-control" id="host" placeholder="i.e. localhost" />
                   </div>
                   <div >
                     <label htmlFor="port">Port</label>
-                    <input 
-                    ref={node => { connection.port = node; }} 
+                    <input
+                    ref={node => { connection.port = node; }}
                     type="text" className="form-control" id="port" placeholder="i.e. 28015" />
                   </div>
                   {/*<div className={inputValidationClasses.database}>
@@ -179,7 +179,11 @@ const mapDispatchToProps = (dispatch) => {
     onSave: (connection) =>{
       dispatch({
         type: "ADD_CONNECTION",
-        connection: connection
+        connection: {
+          name: connection.name.value,
+          host: connection.host.value,
+          port: connection.port.value
+        }
       })
     }
   }
