@@ -56,17 +56,19 @@ const mapDispatchToProps = (dispatch) => {
       this.props.store.toggleEntityForm('Database', 'Add');
     },
     toggleConnectionActionMenu: function(event) {
+      
       dispatch({
         type: "TOGGLE_CONNECTION_ACTION_MENU"
       });
 
-      const documentClickListener = () => {
-        window.document.removeEventListener('click', documentClickListener, false);
-        dispatch({
-          type: "TOGGLE_CONNECTION_ACTION_MENU"
-        });
-      };
-      window.document.addEventListener('click', documentClickListener, false);
+      // The following should be moved to a different function 
+      // const documentClickListener = () => {
+      //   window.document.removeEventListener('click', documentClickListener, false);
+      //   dispatch({
+      //     type: "TOGGLE_CONNECTION_ACTION_MENU"
+      //   });
+      // };
+      // window.document.addEventListener('click', documentClickListener, false);
     },
   }
 };
