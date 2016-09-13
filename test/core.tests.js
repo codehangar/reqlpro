@@ -4,6 +4,7 @@ import {
   setConnections,
   setEmail,
   addConnection,
+  updateConnection,
   setConnection,
   showConnectionForm,
   hideConnectionForm,
@@ -128,6 +129,64 @@ describe('Application Logic', () => {
           identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
           index: 0,
           name: "rethink-tut",
+          port: "32769"
+        }]
+      })
+    });
+  });
+
+  describe('updateConnection', () => {
+    it('updates modified connection info in the redux store', () => {
+      const state = {
+        email: 'cassie@codehangar.io',
+        connections: [{
+          authKey: "",
+          database: "",
+          host: "192.168.99.100",
+          identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+          index: 0,
+          name: "rethink-tut",
+          port: "32769"
+        },
+        {
+          authKey: "",
+          database: "",
+          host: "192.168.99.100",
+          identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+          index: 1,
+          name: "apple",
+          port: "32769"
+        }
+        ]
+      }
+      const updatedConnection = {
+        authKey: "",
+        database: "",
+        host: "192.168.99.100",
+        identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+        index: 1,
+        name: "banana",
+        port: "32769"
+      }
+      const nextState = updateConnection(state, updatedConnection);
+      expect(nextState).to.deep.equal({
+        email: 'cassie@codehangar.io',
+        connections: [{
+          authKey: "",
+          database: "",
+          host: "192.168.99.100",
+          identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+          index: 0,
+          name: "rethink-tut",
+          port: "32769"
+        },
+        {
+          authKey: "",
+          database: "",
+          host: "192.168.99.100",
+          identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+          index: 1,
+          name: "banana",
           port: "32769"
         }]
       })
