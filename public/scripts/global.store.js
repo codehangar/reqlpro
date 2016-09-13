@@ -100,31 +100,31 @@ store.prototype.clearCodeBodyError = function() {
   this.emit('updateSelectedTable');
 }
 
-store.prototype.hideConnectionForm = function(info) {
-  this.router.ConnectionForm.show = false;
-  this.emit('hideConnectionForm');
-};
+// store.prototype.hideConnectionForm = function(info) {
+//   this.router.ConnectionForm.show = false;
+//   this.emit('hideConnectionForm');
+// };
 
 // Toggle Connection Form
-store.prototype.showConnectionForm = function(info) {
-  this.connection = Connection.create();
-  if (info) {
-    // If we pass info lets set data on connection model
-    this.connection.name.value = info.name;
-    this.connection.port.value = info.port;
-    this.connection.host.value = info.host;
-    this.connection.database.value = info.database;
-    this.connection.authKey.value = info.authKey;
-    this.connection.identicon = info.identicon;
-    this.connection.index = info.index;
-    // Also set form action to edit
-    this.router.ConnectionForm.action = 'Edit';
-  } else {
-    this.router.ConnectionForm.action = 'Add';
-  }
-  this.router.ConnectionForm.show = true;
-  this.emit('showConnectionForm');
-};
+// store.prototype.showConnectionForm = function(info) {
+//   this.connection = Connection.create();
+//   if (info) {
+//     // If we pass info lets set data on connection model
+//     this.connection.name.value = info.name;
+//     this.connection.port.value = info.port;
+//     this.connection.host.value = info.host;
+//     this.connection.database.value = info.database;
+//     this.connection.authKey.value = info.authKey;
+//     this.connection.identicon = info.identicon;
+//     this.connection.index = info.index;
+//     // Also set form action to edit
+//     this.router.ConnectionForm.action = 'Edit';
+//   } else {
+//     this.router.ConnectionForm.action = 'Add';
+//   }
+//   this.router.ConnectionForm.show = true;
+//   this.emit('showConnectionForm');
+// };
 
 store.prototype.toggleConfirmRowDelete = function(row) {
   this.router.ConfirmRowDelete.row = row
