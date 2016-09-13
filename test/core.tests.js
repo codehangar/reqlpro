@@ -7,7 +7,8 @@ import {
   setConnection,
   showConnectionForm,
   hideConnectionForm,
-  getConnection
+  getConnection,
+  toggleConnectionActionMenu
 } from '../public/core';
 
 let RethinkDbService;
@@ -189,6 +190,63 @@ describe('Application Logic', () => {
         }
       })
     });
+  });
+
+  describe('toggleConnectionActionMenu', () => {
+    it('should set state.showConnectionActionMenu to true, if true is passed in', () => {
+      const state = {
+        email: 'ian@codehangar.io'
+      }
+
+      const nextState = toggleConnectionActionMenu(state, true);
+
+      expect(nextState).to.deep.equal({
+        email: 'ian@codehangar.io',
+        showConnectionActionMenu: true
+      })
+    });
+
+    it('should set state.showConnectionActionMenu to false, if false is passed in', () => {
+      const state = {
+        email: 'ian@codehangar.io'
+      }
+
+      const nextState = toggleConnectionActionMenu(state, false);
+
+      expect(nextState).to.deep.equal({
+        email: 'ian@codehangar.io',
+        showConnectionActionMenu: false
+      })
+    });
+
+    it('should set state.showConnectionActionMenu to false, if nothing is passed in, and existing value is true', () => {
+      const state = {
+        email: 'ian@codehangar.io',
+        showConnectionActionMenu: true
+      }
+
+      const nextState = toggleConnectionActionMenu(state);
+
+      expect(nextState).to.deep.equal({
+        email: 'ian@codehangar.io',
+        showConnectionActionMenu: false
+      })
+    });
+
+    it('should set state.showConnectionActionMenu to true, if nothing is passed in, and existing value is false', () => {
+      const state = {
+        email: 'ian@codehangar.io',
+        showConnectionActionMenu: false
+      }
+
+      const nextState = toggleConnectionActionMenu(state);
+
+      expect(nextState).to.deep.equal({
+        email: 'ian@codehangar.io',
+        showConnectionActionMenu: true
+      })
+    });
+
   });
 
 });

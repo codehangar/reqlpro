@@ -6,7 +6,8 @@ import {
   setEmail,
   addConnection,
   showConnectionForm,
-  hideConnectionForm
+  hideConnectionForm,
+  toggleConnectionActionMenu
 } from './core';
 
 export default function reducer(state = {}, action) {
@@ -29,6 +30,8 @@ export default function reducer(state = {}, action) {
       return showConnectionForm(state, action.mode);
     case 'HIDE_CONNECTION_FORM':
       return hideConnectionForm(state);
+    case 'TOGGLE_CONNECTION_ACTION_MENU':
+      return toggleConnectionActionMenu(state, action.toggle);
   }
   return state;
 }

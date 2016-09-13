@@ -95,3 +95,14 @@ export function setConnection(state, selectedFavorite) {
     selectedFavorite
   });
 }
+
+export function toggleConnectionActionMenu(state, toggle) {
+  // Toggle existing value, if nothing is passed in
+  if (toggle !== true && toggle !== false) {
+    toggle = !state.showConnectionActionMenu
+  }
+
+  return Object.assign({}, state, {
+    showConnectionActionMenu: toggle
+  });
+};

@@ -6,7 +6,7 @@ var getConnection = require('../../core').getConnection;
 
 const Favorites = ({}) => ({
   render: function() {
-    const {connections, onConnectionClick, onClickAddConnection} = this.props
+    const {connections, onConnectionClick, onClickAddConnection} = this.props;
     console.log('Connections', connections, this.props)
     const favoriteNodes = connections.map((connection, i) => {
       return (

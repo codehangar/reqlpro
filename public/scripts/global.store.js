@@ -126,11 +126,6 @@ store.prototype.showConnectionForm = function(info) {
   this.emit('showConnectionForm');
 };
 
-store.prototype.toggleConnectionActionMenu = function() {
-  this.router.ConnectionActionMenu.show = !this.router.ConnectionActionMenu.show;
-  this.emit('updateRehinkDbClient');
-};
-
 store.prototype.toggleConfirmRowDelete = function(row) {
   this.router.ConfirmRowDelete.row = row
   this.router.ConfirmRowDelete.show = !this.router.ConfirmRowDelete.show;
