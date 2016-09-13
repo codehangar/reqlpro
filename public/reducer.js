@@ -1,21 +1,25 @@
 // const {ipcRenderer} = require('electron');
-import {Map} from 'immutable';
 import {
   setState,
   setConnections,
+  setConnection,
   setEmail,
   addConnection,
   showConnectionForm,
   hideConnectionForm
 } from './core';
 
-export default function reducer(state = Map(), action) {
+export default function reducer(state = {}, action) {
+  console.log("-----------------------")
+  console.log("REDUCER: action", action)
+  console.log("-----------------------")
   switch (action.type) {
     case 'SET_STATE':
-    console.log('action.state', action.state)
       return setState(state, action.state);
     case 'SET_CONNECTIONS':
       return setConnections(state, action.connections);
+    case 'SET_CONNECTION':
+      return setConnection(state, action.connection);
     case 'SET_EMAIL':
       return setEmail(state, action.email);
     case 'ADD_CONNECTION':

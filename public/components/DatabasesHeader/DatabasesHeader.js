@@ -39,7 +39,7 @@ const DatabasesHeader = React.createClass({
     }
     return (
       <div className="databases-header">
-        <div><span className="title"></span>
+        <div><span className="title">{this.props.selectedFavorite ? this.props.selectedFavorite.name : ''}</span>
           <div className="dropdown pull-right">
             <i onClick={this.toggleConnectionActionMenu} className="fa fa-bars connection-action-menu-button"></i>
             <ul className={classes.actionMenu}>

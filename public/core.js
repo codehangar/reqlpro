@@ -71,7 +71,6 @@ export function addConnection(state, connection) {
 }
 
 export function getConnection(dispatch, connection) {
-
   var RethinkDbService = require('../main/services/rethinkdb.service');
   return new Promise((resolve, reject) => {
     RethinkDbService.getConnection(connection.host, connection.port, connection.authKey).then((conn) => {
@@ -81,7 +80,18 @@ export function getConnection(dispatch, connection) {
         connection: conn
       });
       resolve(conn);
+    }).catch(e => {
+      console.log("e", e)
+      dispatch({
+        type: 'SET_CONNECTION',
+        connection: connection
+      });
     });
   });
+}
 
+export function setConnection(state, selectedFavorite) {
+  return Object.assign({}, state, {
+    selectedFavorite
+  });
 }

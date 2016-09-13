@@ -1,10 +1,10 @@
-var React = require('react');
-var DatabasesHeader = require('../DatabasesHeader/DatabasesHeader');
-var Database = require('../Database/Database');
+import React from 'react';
+import DatabasesHeader from '../DatabasesHeader/DatabasesHeader';
+import Database from '../Database/Database';
 
 import {connect} from 'react-redux';
 
-var Databases = React.createClass({
+const Databases = React.createClass({
   // getInitialState: function() {
   //   return this.context.store;
   // },
@@ -37,7 +37,7 @@ var Databases = React.createClass({
     //     );
     //   });
     // }
-    
+
 
     const content = () => {
       if (connections && connections.length > 0) {
@@ -66,7 +66,7 @@ var Databases = React.createClass({
 function mapStateToProps(state) {
   console.log('Databases', state)
   return {
-    connections: state.userConfig.connections,
+    connections: state.connections,
     selectedFavorite: state.selectedFavorite
   };
 }

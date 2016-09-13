@@ -4,6 +4,7 @@ import {
   setConnections,
   setEmail,
   addConnection,
+  setConnection,
   showConnectionForm,
   hideConnectionForm,
   getConnection
@@ -120,7 +121,7 @@ describe('Application Logic', () => {
         }]
       })
     });
-  })
+  });
 
   describe('getConnection', () => {
 
@@ -157,6 +158,37 @@ describe('Application Logic', () => {
       });
 
     });
-  })
+  });
 
-})
+  describe('setConnection', () => {
+    it('sets a new selectedFavorite to the redux store', () => {
+      const state = {
+        email: 'ian@codehangar.io'
+      }
+      const connection = {
+        authKey: "",
+        database: "",
+        host: "192.168.99.100",
+        identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+        index: 0,
+        name: "rethink-tut",
+        port: "32769"
+      }
+      const nextState = setConnection(state, connection);
+
+      expect(nextState).to.deep.equal({
+        email: 'ian@codehangar.io',
+        selectedFavorite: {
+          authKey: "",
+          database: "",
+          host: "192.168.99.100",
+          identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+          index: 0,
+          name: "rethink-tut",
+          port: "32769"
+        }
+      })
+    });
+  });
+
+});
