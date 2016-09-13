@@ -7,7 +7,8 @@ import {
   addConnection,
   showConnectionForm,
   hideConnectionForm,
-  toggleConnectionActionMenu
+  toggleConnectionActionMenu,
+  hideOpenMenus
 } from './core';
 
 export default function reducer(state = {}, action) {
@@ -32,6 +33,8 @@ export default function reducer(state = {}, action) {
       return hideConnectionForm(state);
     case 'TOGGLE_CONNECTION_ACTION_MENU':
       return toggleConnectionActionMenu(state, action.toggle);
+    case 'HIDE_OPEN_MENUS':
+      return hideOpenMenus(state, action.props)
   }
   return state;
 }
