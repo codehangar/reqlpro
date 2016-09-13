@@ -3,20 +3,6 @@ describe('DateTypeService Tests', function() {
   var dateTypeService;
 
   beforeEach(function() {
-
-    mockery.enable({
-      warnOnReplace: false,
-      warnOnUnregistered: false,
-      useCleanCache: true
-    });
-
-    // Mock the postmark service
-    // postmark = sinon.stub();
-    // postmark.Client = sinon.stub();
-
-    // replace the require() module `postmark` with a stub object
-    // mockery.registerMock('postmark', postmark);
-
     dateTypeService = require('../../../../public/services/date-type.service');
   });
 

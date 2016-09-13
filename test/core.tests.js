@@ -5,16 +5,15 @@ import {
   setEmail,
   addConnection,
   showConnectionForm,
-  hideConnectionForm
-  // getConnection
+  hideConnectionForm,
+  getConnection
 } from '../public/core';
 
 let RethinkDbService;
 
-describe('Aplication Logic', () => {
+describe('Application Logic', () => {
 
   beforeEach(function() {
-  console.log('before each =DDD')
 
     mockery.enable({
       warnOnReplace: false,
@@ -24,7 +23,7 @@ describe('Aplication Logic', () => {
 
     // Mock the rethinkdb service
     RethinkDbService = sinon.stub();
-    RethinkDbService.getConnection = sinon.stub().returns(new Promise(function (resolve, reject) {
+    RethinkDbService.getConnection = sinon.stub().returns(new Promise(function(resolve, reject) {
       resolve('im a conn')
     }));
 
@@ -56,7 +55,7 @@ describe('Aplication Logic', () => {
   });
 
   describe('showConnectionForm', () => {
-    it('shows the add connection form if mode is NEW', () =>{
+    it('shows the add connection form if mode is NEW', () => {
       const state = {
         email: 'cassie@codehangar.io'
       }
@@ -67,8 +66,8 @@ describe('Aplication Logic', () => {
         showAddConnectionForm: true
       })
     })
-    it('shows the edit connection form if mode is EDIT', () =>{
-      
+    it('shows the edit connection form if mode is EDIT', () => {
+
     })
   });
 
@@ -79,18 +78,22 @@ describe('Aplication Logic', () => {
         showAddConnectionForm: true
       }
       const nextState = hideConnectionForm(state);
-      expect(nextState).to.deep.equal({email: 'cassie@codehangar.io'});
+      expect(nextState).to.deep.equal({
+        email: 'cassie@codehangar.io'
+      });
       const state2 = {
         email: 'cassie@codehangar.io',
         showEditConnectionForm: true
       }
       const nextState2 = hideConnectionForm(state2);
-      expect(nextState2).to.deep.equal({email: 'cassie@codehangar.io'});
+      expect(nextState2).to.deep.equal({
+        email: 'cassie@codehangar.io'
+      });
     });
-  });  
+  });
 
   describe('addConnection', () => {
-    it('adds a new connection to the redux store', () =>{
+    it('adds a new connection to the redux store', () => {
       const state = {
         email: 'cassie@codehangar.io'
       }
@@ -106,7 +109,7 @@ describe('Aplication Logic', () => {
       const nextState = addConnection(state, connection);
       expect(nextState).to.deep.equal({
         email: 'cassie@codehangar.io',
-        connections:[{
+        connections: [{
           authKey: "",
           database: "",
           host: "192.168.99.100",
@@ -121,12 +124,10 @@ describe('Aplication Logic', () => {
 
   describe('getConnection', () => {
 
-    var getConnection = require('../public/core').getConnection;
-    
-    it('returns connection info from RethinkDB', () => {
+    it('returns connection info from RethinkDB', (done) => {
       const state = {
         email: 'cassie@codehangar.io',
-        connections:[{
+        connections: [{
           authKey: "",
           database: "",
           host: "192.168.99.100",
@@ -138,14 +139,24 @@ describe('Aplication Logic', () => {
       }
       const connection = state.connections[0];
       const dispatch = sinon.stub();
-      const spy1 = spy(RethinkDbService.getConnection);
-      const spy2 = spy(dispatch);
-      getConnection(dispatch, connection);
 
-      expect(spy1).to.have.been.called();
-      // expect(spy2).to.have.been.called();
+      const promise = getConnection(dispatch, connection);
 
-    })
+      expect(RethinkDbService.getConnection.callCount).to.equal(1);
+      expect(RethinkDbService.getConnection.calledWith("192.168.99.100", "32769", "")).to.equal(true);
+
+      promise.then((conn) => {
+        expect(dispatch.callCount).to.equal(1);
+        expect(dispatch.calledWith({
+          type: 'SET_CONNECTION',
+          connection: 'im a conn'
+        })).to.be.true;
+        done();
+      }).catch(reason => {
+        done(reason)
+      });
+
+    });
   })
 
 })

@@ -37,8 +37,6 @@
     "babel-preset-react": "^6.3.13",
     "brace": "^0.8.0",
     "chai": "^3.5.0",
-    "chai-immutable": "^1.6.0",
-    "chai-spies": "^0.7.1",
     "css-loader": "^0.23.1",
     "electron-packager": "^6.0.0",
     "electron-prebuilt": "^0.36.0",
