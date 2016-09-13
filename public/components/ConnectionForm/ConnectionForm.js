@@ -78,7 +78,7 @@ const ConnectionForm = ({
   // render: function() {
     // const {showAddConnectionForm, showEditConnectionForm} = this.props;
     var containerStyles = {
-      display: showAddConnectionForm ? 'block' : 'none'
+      display: showAddConnectionForm || showEditConnectionForm ? 'block' : 'none'
     };
 
     // Validation Classes
@@ -105,14 +105,14 @@ const ConnectionForm = ({
 
     let deleteButton = '';
     if (showEditConnectionForm) {
-      deleteButton = <button type="delete" className="btn btn-default" onClick={this.handleDelete}>Delete</button>
+      deleteButton = <button type="delete" className="btn btn-default" onClick="">Delete</button>
     }
 
     return (
       <div className="ConnectionForm" style={containerStyles}>
         <div className="panel panel-default">
           <div className="panel-heading">
-            <strong>{ showAddConnectionForm ? 'Add New' : ''} RethinkDB Connection</strong>
+            <strong>{ showAddConnectionForm ? 'Add New' : 'Edit'} RethinkDB Connection</strong>
           </div>
           <div className="panel-body">
             <div className="row">
@@ -166,7 +166,8 @@ const ConnectionForm = ({
 function mapStateToProps(state) {
   console.log('ConnectionForm', state);
   return {
-    showAddConnectionForm: state.showAddConnectionForm
+    showAddConnectionForm: state.showAddConnectionForm,
+    showEditConnectionForm: state.showEditConnectionForm
   };
 }
 const mapDispatchToProps = (dispatch) => {

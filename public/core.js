@@ -31,6 +31,15 @@ export function showConnectionForm(state, mode) {
         delete newState.showEditConnectionForm;
       }
       return newState;
+    case 'EDIT':
+      console.log('EDIT', mode)
+      let newState2 = Object.assign({}, state, {
+        showEditConnectionForm: true
+      })
+      if (state.showAddConnectionForm) {
+        delete newState2.showAddConnectionForm;
+      }
+      return newState2;
   }
 
   return state;

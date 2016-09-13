@@ -42,8 +42,13 @@ function mapStateToProps(state) {
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    editFavorite: function(event) {
-      this.props.store.showConnectionForm(this.props.selectedFavorite);
+    editFavorite: function() {
+      dispatch({
+        type: "SHOW_CONNECTION_FORM",
+        mode: "EDIT"
+      });
+      
+      // this.props.store.showConnectionForm(this.props.selectedFavorite);
 
       // The event is a "SyntheticMouseEvent" from React, so you have call all 3 version below to stop
       // the click from cascading down to the native event listeners. See:
@@ -56,19 +61,9 @@ const mapDispatchToProps = (dispatch) => {
       this.props.store.toggleEntityForm('Database', 'Add');
     },
     toggleConnectionActionMenu: function(event) {
-      
       dispatch({
         type: "TOGGLE_CONNECTION_ACTION_MENU"
       });
-
-      // The following should be moved to a different function 
-      // const documentClickListener = () => {
-      //   window.document.removeEventListener('click', documentClickListener, false);
-      //   dispatch({
-      //     type: "TOGGLE_CONNECTION_ACTION_MENU"
-      //   });
-      // };
-      // window.document.addEventListener('click', documentClickListener, false);
     },
   }
 };

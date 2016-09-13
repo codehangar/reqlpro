@@ -70,7 +70,16 @@ describe('Application Logic', () => {
       })
     })
     it('shows the edit connection form if mode is EDIT', () => {
-
+      const state = {
+        email: 'cassie@codehangar.io',
+        showAddConnectionForm: true
+      }
+      const mode = 'EDIT';
+      const nextState = showConnectionForm(state, mode);
+      expect(nextState).to.deep.equal({
+        email: 'cassie@codehangar.io',
+        showEditConnectionForm: true
+      })
     })
   });
 
