@@ -121,9 +121,8 @@ describe('Aplication Logic', () => {
 
   describe('getConnection', () => {
 
-    // import getConnection from '../public/core';
     var getConnection = require('../public/core').getConnection;
-
+    
     it('returns connection info from RethinkDB', () => {
       const state = {
         email: 'cassie@codehangar.io',
@@ -138,27 +137,13 @@ describe('Aplication Logic', () => {
         }]
       }
       const connection = state.connections[0];
-      
       const dispatch = sinon.stub();
+      const spy1 = spy(RethinkDbService.getConnection);
+      const spy2 = spy(dispatch);
       getConnection(dispatch, connection);
 
-      // expect(nextState).to.deep.equal({
-      //   email: 'cassie@codehangar.io',
-      //   connections:[{
-      //     authKey: "",
-      //     database: "",
-      //     host: "192.168.99.100",
-      //     identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
-      //     index: 0,
-      //     name: "rethink-tut",
-      //     port: "32769"
-      //   }],
-      //   selectedConnection: {
-
-      //   }
-      // })
-      expect(RethinkDbService.getConnection).to.be.called;
-      expect(dispatch).to.be.called;
+      expect(spy1).to.have.been.called();
+      // expect(spy2).to.have.been.called();
 
     })
   })
