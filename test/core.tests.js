@@ -136,29 +136,32 @@ describe('Application Logic', () => {
   });
 
   describe('updateConnection', () => {
-    it('updates modified connection info in the redux store', () => {
+    
+    it('updates modified connection info in application state', () => {
       const state = {
         email: 'cassie@codehangar.io',
-        connections: [{
-          authKey: "",
-          database: "",
-          host: "192.168.99.100",
-          identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
-          index: 0,
-          name: "rethink-tut",
-          port: "32769"
-        },
-        {
-          authKey: "",
-          database: "",
-          host: "192.168.99.100",
-          identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
-          index: 1,
-          name: "apple",
-          port: "32769"
-        }
+        connections: [
+          {
+            authKey: "",
+            database: "",
+            host: "192.168.99.100",
+            identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+            index: 0,
+            name: "rethink-tut",
+            port: "32769"
+          },
+          {
+            authKey: "",
+            database: "",
+            host: "192.168.99.100",
+            identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+            index: 1,
+            name: "apple",
+            port: "32769"
+          }
         ]
       }
+      
       const updatedConnection = {
         authKey: "",
         database: "",
@@ -168,7 +171,11 @@ describe('Application Logic', () => {
         name: "banana",
         port: "32769"
       }
+
       const nextState = updateConnection(state, updatedConnection);
+
+      // console.log('UPDATE CONNECTION TEST nextState',nextState)
+      
       expect(nextState).to.deep.equal({
         email: 'cassie@codehangar.io',
         connections: [{

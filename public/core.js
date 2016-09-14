@@ -79,22 +79,16 @@ export function addConnection(state, connection) {
   });
 }
 
-export function updateConnection(state, updatedConnection){
-  //check updated connection index
-  //remove connection from state with matching index
-  //return new state with updated connection
-  const updatedIndex = updatedConnection.index;
-  state.connections.forEach( (connection, i) => {
-    if (connection.index === updatedIndex){
-      delete state.connections[i];
+export function updateConnection(state, connection){
+  
+  const connectionsCopy = state.connections.slice(0);
+  connectionsCopy.forEach( (c, i) => {
+    if (c.index === connection.index){
+      connectionsCopy[i] = connection
     }
   })
-  console.log('UPDATE CONNECTION state.connections', state.connections)
-  const newConnections = state.connections.slice(0);
-  newConnections.push(updatedConnection)
-  console.log('UPDATE CONNECTION newConnections', newConnections)
-  const newState = Object.assign({}, state, {connections: newConnections})
-  
+
+  const newState = Object.assign({}, state, {connections: connectionsCopy})
   return newState;
 
 
