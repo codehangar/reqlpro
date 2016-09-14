@@ -12,9 +12,9 @@ import {
 } from './core';
 
 export default function reducer(state = {}, action) {
-  console.log("-----------------------")
-  console.log("REDUCER: action", action)
-  console.log("-----------------------")
+  // console.log("-----------------------")
+  // console.log("REDUCER: action", action)
+  // console.log("-----------------------")
   switch (action.type) {
     case 'SET_STATE':
       return setState(state, action.state);
