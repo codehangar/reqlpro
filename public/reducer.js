@@ -5,6 +5,7 @@ import {
   setConnection,
   setEmail,
   addConnection,
+  updateConnection,
   showConnectionForm,
   hideConnectionForm,
   toggleConnectionActionMenu,
@@ -27,6 +28,8 @@ export default function reducer(state = {}, action) {
     case 'ADD_CONNECTION':
       // ipcRenderer.send('writeConfigFile', state.userConfig);
       return hideConnectionForm(addConnection(state, action.connection));
+    case 'UPDATE_CONNECTION':
+      return updateConnection(state, action.connection);
     case 'SHOW_CONNECTION_FORM':
       return showConnectionForm(state, action.mode);
     case 'HIDE_CONNECTION_FORM':

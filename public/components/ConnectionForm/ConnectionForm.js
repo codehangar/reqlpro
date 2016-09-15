@@ -6,10 +6,22 @@ import {connect} from 'react-redux';
 const ConnectionForm = ({
   showAddConnectionForm,
   showEditConnectionForm,
+  selectedConnection,
   onCancel,
-  onSave
+  onSave,
+  onUpdate
 }) => {
-  let connection = {}
+  let connection = {};
+
+  console.log('lasdjkfakfdskhjfashjksfakjhsafhjk selectedConnection',selectedConnection)
+
+  if(showEditConnectionForm){
+    connection = selectedConnection;
+  }
+
+  //if creating connection should be empty object
+  //if editing should be selectedConnection
+
   // getInitialState: function() {
   //   return {
   //     store: this.context.store,
@@ -112,7 +124,7 @@ const ConnectionForm = ({
       <div className="ConnectionForm" style={containerStyles}>
         <div className="panel panel-default">
           <div className="panel-heading">
-            <strong>{ showAddConnectionForm ? 'Add New' : 'Edit'} RethinkDB Connection</strong>
+            <strong>{ showAddConnectionForm ? 'Add New' : 'Edit' } RethinkDB Connection</strong>
           </div>
           <div className="panel-body">
             <div className="row">
@@ -127,13 +139,13 @@ const ConnectionForm = ({
                   <div>
                     <label htmlFor="host">Host</label>
                     <input
-                    ref={node => { connection.host = node; }}
+                    ref={node => { if (!node) return; connection.host = node; }}
                     type="text" className="form-control" id="host" placeholder="i.e. localhost" />
                   </div>
                   <div >
                     <label htmlFor="port">Port</label>
                     <input
-                    ref={node => { connection.port = node; }}
+                    ref={node => { if (!node) return; connection.port = node; }}
                     type="text" className="form-control" id="port" placeholder="i.e. 28015" />
                   </div>
                   {/*<div className={inputValidationClasses.database}>
@@ -149,7 +161,7 @@ const ConnectionForm = ({
             </div>
           </div>
           <div className="panel-footer">
-            <button type="submit" onClick={()=>onSave(connection)} className="btn btn-primary pull-right">Save</button>
+            <button type="submit" onClick={ showAddConnectionForm ? ()=>onSave(connection) : ()=>onUpdate(connection) } className="btn btn-primary pull-right">Save</button>
             <button type="cancel" onClick={onCancel} className="btn btn-default pull-left">Cancel</button>
             {deleteButton}
             <div className="clearfix"/>
@@ -164,12 +176,17 @@ const ConnectionForm = ({
 // };
 
 function mapStateToProps(state) {
-  console.log('ConnectionForm', state);
+  console.log('ConnectionForm ConnectionForm ConnectionForm', state.selectedConnection);
   return {
     showAddConnectionForm: state.showAddConnectionForm,
-    showEditConnectionForm: state.showEditConnectionForm
+    showEditConnectionForm: state.showEditConnectionForm,
+    selectedConnection: state.selectedConnection
   };
 }
+
+() => params()
+
+
 const mapDispatchToProps = (dispatch) => {
   return {
     onCancel: () =>{
@@ -180,6 +197,16 @@ const mapDispatchToProps = (dispatch) => {
     onSave: (connection) =>{
       dispatch({
         type: "ADD_CONNECTION",
+        connection: {
+          name: connection.name.value,
+          host: connection.host.value,
+          port: connection.port.value
+        }
+      })
+    },
+    onUpdate: (connection) =>{
+      dispatch({
+        type: "UPDATE_CONNECTION",
         connection: {
           name: connection.name.value,
           host: connection.host.value,
