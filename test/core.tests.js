@@ -62,24 +62,35 @@ describe('Application Logic', () => {
     it('shows the add connection form if mode is NEW', () => {
       const state = {
         email: 'cassie@codehangar.io'
-      }
+      };
       const mode = 'NEW';
       const nextState = showConnectionForm(state, mode);
       expect(nextState).to.deep.equal({
         email: 'cassie@codehangar.io',
         showAddConnectionForm: true
-      })
+      });
     })
+
     it('shows the edit connection form if mode is EDIT', () => {
       const state = {
         email: 'cassie@codehangar.io',
         showAddConnectionForm: true
-      }
+      };
+      const selectedConnection = {
+        name: 'localhost',
+        host: 'localhost',
+        port: 1234
+      };
       const mode = 'EDIT';
-      const nextState = showConnectionForm(state, mode);
+      const nextState = showConnectionForm(state, mode, selectedConnection);
       expect(nextState).to.deep.equal({
         email: 'cassie@codehangar.io',
-        showEditConnectionForm: true
+        showEditConnectionForm: true,
+        selectedConnection: {
+          name: 'localhost',
+          host: 'localhost',
+          port: 1234
+        }
       })
     })
   });
@@ -136,32 +147,29 @@ describe('Application Logic', () => {
   });
 
   describe('updateConnection', () => {
-    
+
     it('updates modified connection info in application state', () => {
       const state = {
         email: 'cassie@codehangar.io',
-        connections: [
-          {
-            authKey: "",
-            database: "",
-            host: "192.168.99.100",
-            identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
-            index: 0,
-            name: "rethink-tut",
-            port: "32769"
-          },
-          {
-            authKey: "",
-            database: "",
-            host: "192.168.99.100",
-            identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
-            index: 1,
-            name: "apple",
-            port: "32769"
-          }
-        ]
+        connections: [{
+          authKey: "",
+          database: "",
+          host: "192.168.99.100",
+          identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+          index: 0,
+          name: "rethink-tut",
+          port: "32769"
+        }, {
+          authKey: "",
+          database: "",
+          host: "192.168.99.100",
+          identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+          index: 1,
+          name: "apple",
+          port: "32769"
+        }]
       }
-      
+
       const updatedConnection = {
         authKey: "",
         database: "",
@@ -175,7 +183,7 @@ describe('Application Logic', () => {
       const nextState = updateConnection(state, updatedConnection);
 
       // console.log('UPDATE CONNECTION TEST nextState',nextState)
-      
+
       expect(nextState).to.deep.equal({
         email: 'cassie@codehangar.io',
         connections: [{
@@ -186,8 +194,7 @@ describe('Application Logic', () => {
           index: 0,
           name: "rethink-tut",
           port: "32769"
-        },
-        {
+        }, {
           authKey: "",
           database: "",
           host: "192.168.99.100",

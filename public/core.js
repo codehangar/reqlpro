@@ -21,7 +21,7 @@ export function setEmail(state, email) {
   return state;
 }
 
-export function showConnectionForm(state, mode) {
+export function showConnectionForm(state, mode, selectedConnection) {
   switch (mode) {
     case 'NEW':
       let newState = Object.assign({}, state, {
@@ -29,12 +29,14 @@ export function showConnectionForm(state, mode) {
       })
       if (state.showEditConnectionForm) {
         delete newState.showEditConnectionForm;
+        delete newState.selectedConnection;
       }
       return newState;
     case 'EDIT':
       console.log('EDIT', mode)
       let newState2 = Object.assign({}, state, {
-        showEditConnectionForm: true
+        showEditConnectionForm: true,
+        selectedConnection: selectedConnection
       })
       if (state.showAddConnectionForm) {
         delete newState2.showAddConnectionForm;
@@ -80,7 +82,7 @@ export function addConnection(state, connection) {
 }
 
 export function updateConnection(state, connection){
-  
+
   const connectionsCopy = state.connections.slice(0);
   connectionsCopy.forEach( (c, i) => {
     if (c.index === connection.index){

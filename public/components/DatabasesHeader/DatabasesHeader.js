@@ -42,12 +42,13 @@ function mapStateToProps(state) {
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    editFavorite: function() {
+    editFavorite: function(selectedFavorite) {
       dispatch({
         type: "SHOW_CONNECTION_FORM",
-        mode: "EDIT"
+        mode: "EDIT",
+        selectedConnection: selectedFavorite
       });
-      
+
       // this.props.store.showConnectionForm(this.props.selectedFavorite);
 
       // The event is a "SyntheticMouseEvent" from React, so you have call all 3 version below to stop

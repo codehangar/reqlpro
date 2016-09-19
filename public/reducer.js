@@ -31,7 +31,7 @@ export default function reducer(state = {}, action) {
     case 'UPDATE_CONNECTION':
       return updateConnection(state, action.connection);
     case 'SHOW_CONNECTION_FORM':
-      return showConnectionForm(state, action.mode);
+      return showConnectionForm(state, action.mode, action.selectedConnection);
     case 'HIDE_CONNECTION_FORM':
       return hideConnectionForm(state);
     case 'TOGGLE_CONNECTION_ACTION_MENU':
