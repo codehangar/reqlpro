@@ -1,6 +1,7 @@
-const React = require('react');
-const classNames = require('classnames');
-const RethinkDbClient = window.rethinkDbClient;
+import React from 'react';
+import classNames from 'classnames';
+import {connect} from 'react-redux';
+
 
 // const Favorite = () => {
 //   render: function() {
@@ -12,11 +13,13 @@ const RethinkDbClient = window.rethinkDbClient;
       };
     };
 
-    const favoriteClasses = {
-      name: classNames({
-        'favorite': true,
-        // 'active': this.propsactive,
-      })
+    const favoriteClasses = (active) => {
+      return {
+        name: classNames({
+          'favorite': true,
+          'active': active,
+        })
+      }
     };
 
 //     return (
@@ -29,14 +32,19 @@ const RethinkDbClient = window.rethinkDbClient;
 //   }
 // };
 
-var Favorite = React.createClass({
 
+const Favorite = ({
+  onClick,
+  identicon,
+  name
+}) => ({
   render: function() {
-    console.log('this.props Favorite', this.props)
-    const {onClick, identicon, name} = this.props;
+    console.log(' ********* this.props Favorite', this.props)
+    // const {} = this.props;
     // console.log('Favorite', this.props);
+    const classes = favoriteClasses(this.props.active).name;
     return (
-      <div className={favoriteClasses.name} onClick={onClick}>
+      <div className={classes} onClick={onClick}>
          <div className="favorite-identicon"><div dangerouslySetInnerHTML={createMarkup(identicon)} /></div>
          <p className="text-center">{name}</p>
        </div>
@@ -44,4 +52,28 @@ var Favorite = React.createClass({
   }
 });
 
-module.exports = Favorite;
+
+const mapStateToProps = (state) => {
+  console.log('Favorite', state)
+  return {
+
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onClickAddConnection: (favorite) =>{
+      dispatch({
+        type: "SHOW_CONNECTION_FORM",
+        mode: 'NEW'
+      });
+    },
+    onConnectionClick: (connection) =>{
+      getConnection(dispatch, connection);
+    }
+  }
+};
+
+const FavoriteContainer = connect(mapStateToProps, mapDispatchToProps)(Favorite);
+
+module.exports = FavoriteContainer;

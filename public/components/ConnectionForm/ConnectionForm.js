@@ -11,13 +11,19 @@ const ConnectionForm = ({
   onSave,
   onUpdate
 }) => {
-  let connection = {};
+  let form = {};
+  let connection = {
+    name: '',
+    host: '',
+    port: ''
+  };
 
-  console.log('lasdjkfakfdskhjfashjksfakjhsafhjk selectedConnection',selectedConnection)
 
   if(showEditConnectionForm){
     connection = selectedConnection;
   }
+  console.log('lasdjkfakfdskhjfashjksfakjhsafhjk selectedConnection',selectedConnection)
+  console.log("    --->>>>>   connection", connection)
 
   //if creating connection should be empty object
   //if editing should be selectedConnection
@@ -120,6 +126,8 @@ const ConnectionForm = ({
       deleteButton = <button type="delete" className="btn btn-default" onClick="">Delete</button>
     }
 
+    console.log("connection.name", connection.name)
+
     return (
       <div className="ConnectionForm" style={containerStyles}>
         <div className="panel panel-default">
@@ -133,19 +141,19 @@ const ConnectionForm = ({
                   <div >
                     <label htmlFor="name">Connection Name</label>
                     <input
-                    ref={node => { if (!node) return; node.focus(); connection.name = node; }}
+                    ref={node => { if (!node) return; node.focus(); form.name = node; }}
                     type="text" className="form-control" id="name" placeholder="i.e. TodoApp-local" />
                   </div>
                   <div>
                     <label htmlFor="host">Host</label>
                     <input
-                    ref={node => { if (!node) return; connection.host = node; }}
+                    ref={node => { if (!node) return; form.host = node; }}
                     type="text" className="form-control" id="host" placeholder="i.e. localhost" />
                   </div>
                   <div >
                     <label htmlFor="port">Port</label>
                     <input
-                    ref={node => { if (!node) return; connection.port = node; }}
+                    ref={node => { if (!node) return; form.port = node; }}
                     type="text" className="form-control" id="port" placeholder="i.e. 28015" />
                   </div>
                   {/*<div className={inputValidationClasses.database}>
@@ -161,7 +169,7 @@ const ConnectionForm = ({
             </div>
           </div>
           <div className="panel-footer">
-            <button type="submit" onClick={ showAddConnectionForm ? ()=>onSave(connection) : ()=>onUpdate(connection) } className="btn btn-primary pull-right">Save</button>
+            <button type="submit" onClick={ showAddConnectionForm ? ()=>onSave(form) : ()=>onUpdate(form) } className="btn btn-primary pull-right">Save</button>
             <button type="cancel" onClick={onCancel} className="btn btn-default pull-left">Cancel</button>
             {deleteButton}
             <div className="clearfix"/>
@@ -171,6 +179,7 @@ const ConnectionForm = ({
     );
   // }
 };
+
 // ConnectionForm.contextTypes = {
 //   store: React.PropTypes.object
 // };
@@ -202,9 +211,14 @@ const mapDispatchToProps = (dispatch) => {
           host: connection.host.value,
           port: connection.port.value
         }
-      })
+      });
+
+      connection.name.value = null;
+      connection.host.value = null;
+      connection.port.value = null;
     },
     onUpdate: (connection) =>{
+      console.log("    --------> onUpdate connection", connection)
       dispatch({
         type: "UPDATE_CONNECTION",
         connection: {
@@ -212,7 +226,11 @@ const mapDispatchToProps = (dispatch) => {
           host: connection.host.value,
           port: connection.port.value
         }
-      })
+      });
+
+      connection.name.value = null;
+      connection.host.value = null;
+      connection.port.value = null;
     }
   }
 };

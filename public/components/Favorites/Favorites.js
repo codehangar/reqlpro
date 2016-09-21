@@ -1,56 +1,65 @@
-const React = require('react');
-const Favorite = require('../Favorite/Favorite');
-const AddFavorite = require('../AddFavorite/AddFavorite');
+import React from 'react';
+import Favorite from '../Favorite/Favorite';
+import AddFavorite from '../AddFavorite/AddFavorite';
 import {connect} from 'react-redux';
-var getConnection = require('../../core').getConnection;
+import {getConnection} from '../../core';
 
-const Favorites = ({}) => ({
-  render: function() {
-    const {connections, onConnectionClick, onClickAddConnection} = this.props;
-    console.log('Connections', connections, this.props)
-    const favoriteNodes = connections.map((connection, i) => {
-      return (
-        <Favorite
-          key={i}
-          {...connection}
-          // active={selectedFavorite.index === connection.index}
-          onClick={() => {onConnectionClick(connection)}}
-        />
-      );
-    });
 
+const Favorites = ({
+  connections,
+  selectedFavorite,
+  onConnectionClick,
+  onClickAddConnection
+}) => {
+
+  selectedFavorite = selectedFavorite || {};
+
+  console.log("selectedFavorite", selectedFavorite)
+
+  const favoriteNodes = connections.map((connection, i) => {
     return (
-      <div className="fav-content-col">
-        {favoriteNodes}
-        <AddFavorite addFavorite={() => onClickAddConnection()} />
-      </div>
+      <Favorite
+        key={i}
+        {...connection}
+        active={selectedFavorite.index === connection.index}
+        onClick={() => {onConnectionClick(connection)}}
+      />
     );
-    return (
-      <div className="fav-content-col"></div>
-    );
-  }
-});
+  });
 
-function mapStateToProps(state) {
-  console.log('Favorites', state, state.connections)
+  return (
+    <div className="fav-content-col">
+      {favoriteNodes}
+      <AddFavorite addFavorite={() => onClickAddConnection()} />
+    </div>
+  );
+
+};
+
+function mapStateToProps (state) {
+  console.log('Favorites state', state)
+  console.log("state.connections", state.connections)
   return {
-    connections: state.connections?state.connections:[],
+    connections: state.connections || [],
+    // connections: state.connections ? state.connections : [],
     selectedFavorite: state.selectedFavorite || null
   };
-}
+};
+
 const mapDispatchToProps = (dispatch) => {
   return {
-    onClickAddConnection: (favorite) =>{
+    onClickAddConnection: (favorite) => {
       dispatch({
         type: "SHOW_CONNECTION_FORM",
         mode: 'NEW'
-      })
+      });
     },
-    onConnectionClick: (connection) =>{
+    onConnectionClick: (connection) => {
       getConnection(dispatch, connection);
     }
   }
 };
+
 const FavoritesContainer = connect(mapStateToProps, mapDispatchToProps)(Favorites);
 
 module.exports = FavoritesContainer;
