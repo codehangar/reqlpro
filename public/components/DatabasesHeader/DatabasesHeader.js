@@ -34,10 +34,10 @@ const DatabasesHeader = React.createClass({
 
 
 function mapStateToProps(state) {
-  console.log('DatabasesHeader state', state)
+  console.log('DatabasesHeader state.main', state.main)
   return {
-    selectedFavorite: state.selectedFavorite,
-    showConnectionActionMenu: state.showConnectionActionMenu
+    selectedFavorite: state.main.selectedFavorite,
+    showConnectionActionMenu: state.main.showConnectionActionMenu
   };
 }
 const mapDispatchToProps = (dispatch) => {

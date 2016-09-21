@@ -66,8 +66,8 @@ const Databases = React.createClass({
 function mapStateToProps(state) {
   console.log('Databases', state)
   return {
-    connections: state.connections,
-    selectedFavorite: state.selectedFavorite
+    connections: state.main.connections,
+    selectedFavorite: state.main.selectedFavorite
   };
 }
 const mapDispatchToProps = (dispatch) => {

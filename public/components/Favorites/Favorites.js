@@ -37,12 +37,12 @@ const Favorites = ({
 };
 
 function mapStateToProps (state) {
-  console.log('Favorites state', state)
-  console.log("state.connections", state.connections)
+  console.log('Favorites state', state.main)
+  console.log("state.main.connections", state.main.connections)
   return {
-    connections: state.connections || [],
-    // connections: state.connections ? state.connections : [],
-    selectedFavorite: state.selectedFavorite || null
+    connections: state.main.connections || [],
+    // connections: state.main.connections ? state.main.connections : [],
+    selectedFavorite: state.main.selectedFavorite || null
   };
 };
 

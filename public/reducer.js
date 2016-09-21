@@ -1,4 +1,5 @@
 // const {ipcRenderer} = require('electron');
+import { modeled } from 'react-redux-form';
 import {
   setState,
   setConnections,
@@ -12,7 +13,7 @@ import {
   hideOpenMenus
 } from './core';
 
-export default function reducer(state = {}, action) {
+function reducer(state = {}, action) {
   // console.log("-----------------------")
   // console.log("REDUCER: action", action)
   // console.log("-----------------------")
@@ -41,3 +42,7 @@ export default function reducer(state = {}, action) {
   }
   return state;
 }
+
+const myModeledReducer = modeled(reducer, 'main');
+
+export default myModeledReducer;

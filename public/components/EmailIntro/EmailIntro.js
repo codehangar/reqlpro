@@ -55,9 +55,9 @@ const ConnectionForm = ({
 };
 
 function mapStateToProps(state) {
-  // console.log('ConnectionForm', state)
+  console.log('EmailIntro', state)
   return {
-    email: state.userConfig.email
+    email: state.main.userConfig.email
   };
 }
 const mapDispatchToProps = (dispatch) => {

@@ -1,6 +1,7 @@
 const React = require('react');
 const classNames = require('classnames');
 const Segment = require('../../services/segment.service');
+import { Field, actions } from 'react-redux-form';
 import {connect} from 'react-redux';
 
 const ConnectionForm = ({
@@ -9,21 +10,22 @@ const ConnectionForm = ({
   selectedConnection,
   onCancel,
   onSave,
-  onUpdate
+  onUpdate,
+  connection
 }) => {
-  let form = {};
-  let connection = {
-    name: '',
-    host: '',
-    port: ''
-  };
+  // let form = {};
+  // let connection = {
+  //   name: '',
+  //   host: '',
+  //   port: ''
+  // };
 
 
-  if(showEditConnectionForm){
-    connection = selectedConnection;
-  }
-  console.log('lasdjkfakfdskhjfashjksfakjhsafhjk selectedConnection',selectedConnection)
-  console.log("    --->>>>>   connection", connection)
+  // if(showEditConnectionForm){
+  //   connection = selectedConnection;
+  // }
+  // console.log('lasdjkfakfdskhjfashjksfakjhsafhjk selectedConnection',selectedConnection)
+  // console.log("    --->>>>>   connection", connection)
 
   //if creating connection should be empty object
   //if editing should be selectedConnection
@@ -126,7 +128,7 @@ const ConnectionForm = ({
       deleteButton = <button type="delete" className="btn btn-default" onClick="">Delete</button>
     }
 
-    console.log("connection.name", connection.name)
+    console.log("connection from props", connection)
 
     return (
       <div className="ConnectionForm" style={containerStyles}>
@@ -139,12 +141,28 @@ const ConnectionForm = ({
               <div className="col-sm-12">
                 <form>
                   <div >
-                    <label htmlFor="name">Connection Name</label>
+                    <Field model="main.userConfig.connection.name">
+                      <label>Connection Name</label>
+                      <input className="form-control" id="name" placeholder="i.e. TodoApp-local" type="text" />
+                    </Field>
+                    {/*<<label htmlFor="name">Connection Name</label>
                     <input
                     ref={node => { if (!node) return; node.focus(); form.name = node; }}
-                    type="text" className="form-control" id="name" placeholder="i.e. TodoApp-local" />
+                    type="text" className="form-control" id="name" placeholder="i.e. TodoApp-local" />*/}
                   </div>
-                  <div>
+                  <div >
+                    <Field model="main.userConfig.connection.host">
+                      <label>Host</label>
+                      <input className="form-control" id="host" placeholder="i.e. localhost"type="text" />
+                    </Field>
+                  </div>
+                  <div >
+                    <Field model="main.userConfig.connection.port">
+                      <label>Port</label>
+                      <input className="form-control" id="port" placeholder="i.e. 28015"type="text" />
+                    </Field>
+                  </div>
+                  {/*<div>
                     <label htmlFor="host">Host</label>
                     <input
                     ref={node => { if (!node) return; form.host = node; }}
@@ -156,7 +174,7 @@ const ConnectionForm = ({
                     ref={node => { if (!node) return; form.port = node; }}
                     type="text" className="form-control" id="port" placeholder="i.e. 28015" />
                   </div>
-                  {/*<div className={inputValidationClasses.database}>
+                  <div className={inputValidationClasses.database}>
                     <label htmlFor="database">Database</label>
                     <input type="text" className="form-control" id="database" placeholder="Database" value={this.state.connection.database.value} onChange={this.handleTextChange.bind(this, 'database')} />
                   </div>
@@ -169,7 +187,7 @@ const ConnectionForm = ({
             </div>
           </div>
           <div className="panel-footer">
-            <button type="submit" onClick={ showAddConnectionForm ? ()=>onSave(form) : ()=>onUpdate(form) } className="btn btn-primary pull-right">Save</button>
+            <button type="submit" onClick={ showAddConnectionForm ? ()=>onSave(connection) : ()=>onUpdate(connection) } className="btn btn-primary pull-right">Save</button>
             <button type="cancel" onClick={onCancel} className="btn btn-default pull-left">Cancel</button>
             {deleteButton}
             <div className="clearfix"/>
@@ -185,11 +203,12 @@ const ConnectionForm = ({
 // };
 
 function mapStateToProps(state) {
-  console.log('ConnectionForm ConnectionForm ConnectionForm', state.selectedConnection);
+  console.log('ConnectionForm ConnectionForm ConnectionForm', state.main);
   return {
-    showAddConnectionForm: state.showAddConnectionForm,
-    showEditConnectionForm: state.showEditConnectionForm,
-    selectedConnection: state.selectedConnection
+    showAddConnectionForm: state.main.showAddConnectionForm,
+    showEditConnectionForm: state.main.showEditConnectionForm,
+    selectedConnection: state.main.selectedConnection,
+    connection: state.main.userConfig.connection
   };
 }
 
@@ -204,33 +223,38 @@ const mapDispatchToProps = (dispatch) => {
       })
     },
     onSave: (connection) =>{
+      console.log('connection form', connection);
       dispatch({
         type: "ADD_CONNECTION",
         connection: {
-          name: connection.name.value,
-          host: connection.host.value,
-          port: connection.port.value
+          name: connection.name,
+          host: connection.host,
+          port: connection.port
         }
       });
 
-      connection.name.value = null;
-      connection.host.value = null;
-      connection.port.value = null;
+      // connection.name.value = null;
+      // connection.host.value = null;
+      // connection.port.value = null;
     },
     onUpdate: (connection) =>{
       console.log("    --------> onUpdate connection", connection)
+      // actions.change('main.userConfig.connection.name', connection.name)
+      // let newState = myModeledReducer(state, actions.change('my.firstName', 'Johnnie'));
       dispatch({
         type: "UPDATE_CONNECTION",
         connection: {
-          name: connection.name.value,
-          host: connection.host.value,
-          port: connection.port.value
+          name: connection.name,
+          host: connection.host,
+          port: connection.port
         }
       });
 
-      connection.name.value = null;
-      connection.host.value = null;
-      connection.port.value = null;
+
+
+      // connection.name.value = null;
+      // connection.host.value = null;
+      // connection.port.value = null;
     }
   }
 };

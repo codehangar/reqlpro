@@ -8,7 +8,7 @@ export function setState(state, newState) {
 
 export function setConnections(state, connections) {
   return Object.assign({}, state, {
-    connections
+    main: {connections}
   });
 }
 

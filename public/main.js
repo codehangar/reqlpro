@@ -26,12 +26,21 @@ var ReactDOM = require('react-dom');
 var App = require('./components/App/App');
 // Segment
 var Segment = require('./services/segment.service');
-import {createStore} from 'redux';
+import {combineReducers, createStore} from 'redux';
 import {Provider} from 'react-redux';
-import reducer from './reducer';
+import { modelReducer, formReducer, modeled } from 'react-redux-form';
+import myModeledReducer from './reducer';
 import {List, Map, fromJS} from 'immutable';
 
-const reduxStore = createStore(reducer);
+// const reduxStore = createStore();
+
+const reduxStore = createStore(combineReducers({
+  // connection: modelReducer('connection'),
+  connectionForm: formReducer('main'),
+  main: myModeledReducer
+}));
+
+
 
 // reduxStore.dispatch({
 //   type: 'SET_EMAIL',
