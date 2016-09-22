@@ -76,9 +76,10 @@ export function addConnection(state, connection) {
     });
   }
 
-  return Object.assign({}, state, {
-    connections
-  });
+  const selectedConnectionState = setConnection(state, connection)
+  console.log('selectedConnectionState',selectedConnectionState)
+
+  return Object.assign({}, state, selectedConnectionState, {connections});
 }
 
 export function updateConnection(state, connection){
