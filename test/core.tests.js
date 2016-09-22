@@ -37,12 +37,12 @@ describe('Application Logic', () => {
   });
 
   describe('setConnections', () => {
-    it('adds saved connections to the state', () => {
+    it('adds saved connections to the main app state', () => {
       const state = {};
       const connections = ['connection1', 'connection2'];
       let nextState = setConnections(state, connections);
       expect(nextState).to.deep.equal({
-        connections: ['connection1', 'connection2']
+        main: { connections: ['connection1', 'connection2'] }
       });
     });
   });
@@ -245,7 +245,7 @@ describe('Application Logic', () => {
   });
 
   describe('setConnection', () => {
-    it('sets a new selectedFavorite to the redux store', () => {
+    it('sets a new selectedConnection to the redux store', () => {
       const state = {
         email: 'ian@codehangar.io'
       }
@@ -262,7 +262,7 @@ describe('Application Logic', () => {
 
       expect(nextState).to.deep.equal({
         email: 'ian@codehangar.io',
-        selectedFavorite: {
+        selectedConnection: {
           authKey: "",
           database: "",
           host: "192.168.99.100",
