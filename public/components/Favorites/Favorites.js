@@ -22,7 +22,7 @@ const Favorites = ({
         key={i}
         {...connection}
         active={selectedConnection.index === connection.index}
-        onClick={() => {onConnectionClick(connection)}}
+        onConnectionClick={() => {onConnectionClick(connection)}}
       />
     );
   });
