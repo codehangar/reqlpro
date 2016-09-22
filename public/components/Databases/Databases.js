@@ -22,7 +22,7 @@ const Databases = React.createClass({
 
   render: function() {
     const {connections, selectedFavorite} = this.props;
-    console.log('Databases props', selectedFavorite);
+    // console.log('Databases props', selectedFavorite);
     // const databaseNodes;
 
     // if(selectedFavorite){
@@ -64,7 +64,7 @@ const Databases = React.createClass({
 // };
 
 function mapStateToProps(state) {
-  console.log('Databases', state)
+  // console.log('Databases', state)
   return {
     connections: state.main.connections,
     selectedFavorite: state.main.selectedFavorite

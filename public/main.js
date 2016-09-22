@@ -71,7 +71,7 @@ function init() {
   // const initialState = JSON.parse(remote.getGlobal('userConfig'))
   const initialState = JSON.parse(remote.getGlobal('userConfig'))
 
-  console.log('initialState', initialState)
+  // console.log('initialState', initialState)
 
   if(initialState){
      reduxStore.dispatch({

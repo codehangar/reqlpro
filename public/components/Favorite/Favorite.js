@@ -39,7 +39,7 @@ const Favorite = ({
   name
 }) => ({
   render: function() {
-    console.log(' ********* this.props Favorite', this.props)
+    // console.log(' ********* this.props Favorite', this.props)
     // const {} = this.props;
     // console.log('Favorite', this.props);
     const classes = favoriteClasses(this.props.active).name;
@@ -54,7 +54,7 @@ const Favorite = ({
 
 
 const mapStateToProps = (state) => {
-  console.log('Favorite', state)
+  // console.log('Favorite', state)
   return {
 
   };
