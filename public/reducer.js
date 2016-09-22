@@ -30,7 +30,7 @@ function reducer(state = {}, action) {
       // ipcRenderer.send('writeConfigFile', state.userConfig);
       return hideConnectionForm(addConnection(state, action.connection));
     case 'UPDATE_CONNECTION':
-      return updateConnection(state, action.connection);
+      return hideConnectionForm(updateConnection(state, action.connection));
     case 'SHOW_CONNECTION_FORM':
       return showConnectionForm(state, action.mode, action.selectedConnection);
     case 'HIDE_CONNECTION_FORM':

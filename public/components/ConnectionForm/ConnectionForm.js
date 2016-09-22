@@ -159,7 +159,6 @@ const ConnectionForm = ({
         </div>
       </div>
     );
-  // }
 };
 
 function mapStateToProps(state) {
