@@ -13,42 +13,6 @@ const ConnectionForm = ({
   onUpdate,
   connection
 }) => {
-  // let form = {};
-  // let connection = {
-  //   name: '',
-  //   host: '',
-  //   port: ''
-  // };
-
-
-  // if(showEditConnectionForm){
-  //   connection = selectedConnection;
-  // }
-  // console.log('lasdjkfakfdskhjfashjksfakjhsafhjk selectedConnection',selectedConnection)
-  // console.log("    --->>>>>   connection", connection)
-
-  //if creating connection should be empty object
-  //if editing should be selectedConnection
-
-  // getInitialState: function() {
-  //   return {
-  //     store: this.context.store,
-  //     connection: this.context.store.connection,
-  //     show: this.context.store.router.ConnectionForm.show,
-  //     action: this.context.store.router.ConnectionForm.action
-  //   };
-  // },
-  // componentDidMount: function() {
-  //   this.setupEvents();
-  // },
-  // setupEvents: function() {
-  //   const updateState = () => {
-  //     this.setState({
-  //       connection: this.context.store.connection,
-  //       show: this.context.store.router.ConnectionForm.show,
-  //       action: this.context.store.router.ConnectionForm.action
-  //     });
-  //   }
 
   //   this.state.store.on('updateRehinkDbClient', () => {
   //     updateState();
@@ -198,22 +162,14 @@ const ConnectionForm = ({
   // }
 };
 
-// ConnectionForm.contextTypes = {
-//   store: React.PropTypes.object
-// };
-
 function mapStateToProps(state) {
   console.log('ConnectionForm  mapStateToProps', state.main);
   return {
     showAddConnectionForm: state.main.showAddConnectionForm,
     showEditConnectionForm: state.main.showEditConnectionForm,
     selectedConnection: state.main.selectedConnection
-    // connection: state.main.selectedConnection
   };
 }
-
-() => params()
-
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -228,25 +184,13 @@ const mapDispatchToProps = (dispatch) => {
         type: "ADD_CONNECTION",
         connection
       });
-
-      // connection.name.value = null;
-      // connection.host.value = null;
-      // connection.port.value = null;
     },
     onUpdate: (connection) =>{
       console.log("    --------> onUpdate connection", connection)
-      // actions.change('main.selectedConnection.name', connection.name)
-      // let newState = myModeledReducer(state, actions.change('my.firstName', 'Johnnie'));
       dispatch({
         type: "UPDATE_CONNECTION",
         connection
       });
-
-
-
-      // connection.name.value = null;
-      // connection.host.value = null;
-      // connection.port.value = null;
     }
   }
 };
