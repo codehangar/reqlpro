@@ -34,13 +34,11 @@ import {connect} from 'react-redux';
 
 
 const Favorite = ({
-  onClick,
-  identicon,
-  name
+  onClick
 }) => ({
   render: function() {
-    // console.log(' ********* this.props Favorite', this.props)
-    // const {} = this.props;
+    console.log(' ********* this.props Favorite', this.props)
+    const {name, identicon} = this.props;
     // console.log('Favorite', this.props);
     const classes = favoriteClasses(this.props.active).name;
     return (

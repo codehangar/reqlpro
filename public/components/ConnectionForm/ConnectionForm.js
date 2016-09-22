@@ -226,11 +226,7 @@ const mapDispatchToProps = (dispatch) => {
       console.log('connection form', connection);
       dispatch({
         type: "ADD_CONNECTION",
-        connection: {
-          name: connection.name,
-          host: connection.host,
-          port: connection.port
-        }
+        connection
       });
 
       // connection.name.value = null;
@@ -243,11 +239,7 @@ const mapDispatchToProps = (dispatch) => {
       // let newState = myModeledReducer(state, actions.change('my.firstName', 'Johnnie'));
       dispatch({
         type: "UPDATE_CONNECTION",
-        connection: {
-          name: connection.name,
-          host: connection.host,
-          port: connection.port
-        }
+        connection
       });
 
 

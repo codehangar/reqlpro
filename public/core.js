@@ -63,8 +63,9 @@ export function addConnection(state, connection) {
   if (state.connections) {
     connections = state.connections.slice();
   }
+  let newConnection;
   if (connection) {
-    connections.push({
+    newConnection = {
       name: connection.name,
       host: connection.host,
       port: connection.port,
@@ -73,10 +74,11 @@ export function addConnection(state, connection) {
       authKey: "",
       identicon: jdenticon.toSvg(md5(connection.name), 40),
       index: state.connections ? state.connections.length : 0
-    });
+    }
+    connections.push(newConnection);
   }
 
-  const selectedConnectionState = setConnection(state, connection)
+  const selectedConnectionState = setConnection(state, newConnection)
   console.log('selectedConnectionState',selectedConnectionState)
 
   return Object.assign({}, state, selectedConnectionState, {connections});
