@@ -117,7 +117,7 @@ describe('Application Logic', () => {
   });
 
   describe('addConnection', () => {
-    it('adds a new connection to the redux store', () => {
+    it('adds a new connection to the redux store and sets selectedConnection', () => {
       const state = {
         email: 'cassie@codehangar.io'
       }
@@ -141,7 +141,16 @@ describe('Application Logic', () => {
           index: 0,
           name: "rethink-tut",
           port: "32769"
-        }]
+        }],
+        selectedConnection: {
+          authKey: "",
+          database: "",
+          host: "192.168.99.100",
+          identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+          index: 0,
+          name: "rethink-tut",
+          port: "32769"
+        }
       })
     });
   });

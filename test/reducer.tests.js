@@ -66,7 +66,16 @@ describe('reducer', () => {
           name: "rethink-tut",
           port: "32769"
         }
-      ]
+      ],
+      selectedConnection: {
+        authKey: "",
+        database: "",
+        host: "192.168.99.100",
+        identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+        index: 0,
+        name: "rethink-tut",
+        port: "32769"
+      }
     });
   });
 
