@@ -71,6 +71,23 @@ describe('Application Logic', () => {
       });
     })
 
+    it('clears the selectedConnection if mode is NEW', () => {
+      const state = {
+        email: 'cassie@codehangar.io',
+        selectedConnection: {
+          name: 'localhost',
+          host: 'localhost',
+          port: 1234
+        }
+      };
+      const mode = 'NEW';
+      const nextState = showConnectionForm(state, mode);
+      expect(nextState).to.deep.equal({
+        email: 'cassie@codehangar.io',
+        showAddConnectionForm: true
+      });
+    })
+
     it('shows the edit connection form if mode is EDIT', () => {
       const state = {
         email: 'cassie@codehangar.io',
