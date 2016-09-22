@@ -29,6 +29,8 @@ export function showConnectionForm(state, mode, selectedConnection) {
       })
       if (state.showEditConnectionForm) {
         delete newState.showEditConnectionForm;
+      }
+      if (state.selectedConnection) {
         delete newState.selectedConnection;
       }
       return newState;
