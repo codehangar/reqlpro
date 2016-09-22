@@ -5,8 +5,8 @@ import {connect} from 'react-redux';
 const DatabasesHeader = React.createClass({
   render: function() {
     const {editFavorite, addDatabase, toggleConnectionActionMenu} = this.props;
-    console.log('DatabasesHeader', this.props)
-    const {selectedFavorite} = this.props;
+    // console.log('DatabasesHeader', this.props)
+    const {selectedConnection} = this.props;
     var classes = {
       actionMenu: classNames(
         'dropdown-menu',
@@ -18,11 +18,11 @@ const DatabasesHeader = React.createClass({
     }
     return (
       <div className="databases-header">
-        <div><span className="title">{this.props.selectedFavorite ? this.props.selectedFavorite.name : ''}</span>
+        <div><span className="title">{this.props.selectedConnection ? this.props.selectedConnection.name : ''}</span>
           <div className="dropdown pull-right">
             <i onClick={toggleConnectionActionMenu} className="fa fa-bars connection-action-menu-button"></i>
             <ul className={classes.actionMenu}>
-              <li onClick={() => {editFavorite(selectedFavorite)}}><a href="#">Edit Connection</a></li>
+              <li onClick={() => {editFavorite(selectedConnection)}}><a href="#">Edit Connection</a></li>
               <li onClick={addDatabase}><a href="#">Add database</a></li>
             </ul>
           </div>
@@ -34,22 +34,22 @@ const DatabasesHeader = React.createClass({
 
 
 function mapStateToProps(state) {
-  console.log('DatabasesHeader state.main', state.main)
+  // console.log('DatabasesHeader state.main', state.main)
   return {
-    selectedFavorite: state.main.selectedFavorite,
+    selectedConnection: state.main.selectedConnection,
     showConnectionActionMenu: state.main.showConnectionActionMenu
   };
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    editFavorite: function(selectedFavorite) {
+    editFavorite: function(selectedConnection) {
       dispatch({
         type: "SHOW_CONNECTION_FORM",
         mode: "EDIT",
-        selectedConnection: selectedFavorite
+        selectedConnection: selectedConnection
       });
 
-      // this.props.store.showConnectionForm(this.props.selectedFavorite);
+      // this.props.store.showConnectionForm(this.props.selectedConnection);
 
       // The event is a "SyntheticMouseEvent" from React, so you have call all 3 version below to stop
       // the click from cascading down to the native event listeners. See:

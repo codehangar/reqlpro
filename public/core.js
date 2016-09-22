@@ -82,7 +82,7 @@ export function addConnection(state, connection) {
 }
 
 export function updateConnection(state, connection){
-
+  console.log('core updateConnection', connection);
   const connectionsCopy = state.connections.slice(0);
   connectionsCopy.forEach( (c, i) => {
     if (c.index === connection.index){
@@ -116,9 +116,9 @@ export function getConnection(dispatch, connection) {
   });
 };
 
-export function setConnection(state, selectedFavorite) {
+export function setConnection(state, selectedConnection) {
   return Object.assign({}, state, {
-    selectedFavorite
+    selectedConnection
   });
 };
 

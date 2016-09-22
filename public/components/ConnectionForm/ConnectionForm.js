@@ -128,7 +128,7 @@ const ConnectionForm = ({
       deleteButton = <button type="delete" className="btn btn-default" onClick="">Delete</button>
     }
 
-    console.log("connection from props", connection)
+    console.log("selectedConnection from props", selectedConnection)
 
     return (
       <div className="ConnectionForm" style={containerStyles}>
@@ -141,7 +141,7 @@ const ConnectionForm = ({
               <div className="col-sm-12">
                 <form>
                   <div >
-                    <Field model="main.userConfig.connection.name">
+                    <Field model="main.selectedConnection.name">
                       <label>Connection Name</label>
                       <input className="form-control" id="name" placeholder="i.e. TodoApp-local" type="text" />
                     </Field>
@@ -151,13 +151,13 @@ const ConnectionForm = ({
                     type="text" className="form-control" id="name" placeholder="i.e. TodoApp-local" />*/}
                   </div>
                   <div >
-                    <Field model="main.userConfig.connection.host">
+                    <Field model="main.selectedConnection.host">
                       <label>Host</label>
                       <input className="form-control" id="host" placeholder="i.e. localhost"type="text" />
                     </Field>
                   </div>
                   <div >
-                    <Field model="main.userConfig.connection.port">
+                    <Field model="main.selectedConnection.port">
                       <label>Port</label>
                       <input className="form-control" id="port" placeholder="i.e. 28015"type="text" />
                     </Field>
@@ -187,7 +187,7 @@ const ConnectionForm = ({
             </div>
           </div>
           <div className="panel-footer">
-            <button type="submit" onClick={ showAddConnectionForm ? ()=>onSave(connection) : ()=>onUpdate(connection) } className="btn btn-primary pull-right">Save</button>
+            <button type="submit" onClick={ showAddConnectionForm ? ()=>onSave(selectedConnection) : ()=>onUpdate(selectedConnection) } className="btn btn-primary pull-right">Save</button>
             <button type="cancel" onClick={onCancel} className="btn btn-default pull-left">Cancel</button>
             {deleteButton}
             <div className="clearfix"/>
@@ -203,12 +203,12 @@ const ConnectionForm = ({
 // };
 
 function mapStateToProps(state) {
-  console.log('ConnectionForm ConnectionForm ConnectionForm', state.main);
+  console.log('ConnectionForm  mapStateToProps', state.main);
   return {
     showAddConnectionForm: state.main.showAddConnectionForm,
     showEditConnectionForm: state.main.showEditConnectionForm,
-    selectedConnection: state.main.selectedConnection,
-    connection: state.main.userConfig.connection
+    selectedConnection: state.main.selectedConnection
+    // connection: state.main.selectedConnection
   };
 }
 
@@ -239,7 +239,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     onUpdate: (connection) =>{
       console.log("    --------> onUpdate connection", connection)
-      // actions.change('main.userConfig.connection.name', connection.name)
+      // actions.change('main.selectedConnection.name', connection.name)
       // let newState = myModeledReducer(state, actions.change('my.firstName', 'Johnnie'));
       dispatch({
         type: "UPDATE_CONNECTION",

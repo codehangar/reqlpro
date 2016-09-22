@@ -7,21 +7,21 @@ import {getConnection} from '../../core';
 
 const Favorites = ({
   connections,
-  selectedFavorite,
+  selectedConnection,
   onConnectionClick,
   onClickAddConnection
 }) => {
 
-  selectedFavorite = selectedFavorite || {};
+  selectedConnection = selectedConnection || {};
 
-  console.log("selectedFavorite", selectedFavorite)
+  // console.log("selectedConnection", selectedConnection)
 
   const favoriteNodes = connections.map((connection, i) => {
     return (
       <Favorite
         key={i}
         {...connection}
-        active={selectedFavorite.index === connection.index}
+        active={selectedConnection.index === connection.index}
         onClick={() => {onConnectionClick(connection)}}
       />
     );
@@ -37,12 +37,12 @@ const Favorites = ({
 };
 
 function mapStateToProps (state) {
-  console.log('Favorites state', state.main)
-  console.log("state.main.connections", state.main.connections)
+  // console.log('Favorites state', state.main)
+  // console.log("state.main.connections", state.main.connections)
   return {
     connections: state.main.connections || [],
     // connections: state.main.connections ? state.main.connections : [],
-    selectedFavorite: state.main.selectedFavorite || null
+    selectedConnection: state.main.selectedConnection || null
   };
 };
 
