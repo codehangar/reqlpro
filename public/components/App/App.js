@@ -1,6 +1,6 @@
 const React = require('react');
 const Sidebar = require('../Sidebar/Sidebar');
-const Explorer = require('../Explorer/Explorer');
+const ExplorerContainer = require('../Explorer/Explorer');
 const ConnectionFormContainer = require('../ConnectionForm/ConnectionForm');
 const EntityForm = require('../EntityForm/EntityForm');
 const ConfirmRowDelete = require('../ConfirmRowDelete/ConfirmRowDelete');
@@ -45,7 +45,7 @@ const App = React.createClass({
     });
   },
   render: function() {
-          // <Explorer />
+          
           // 
           // <EntityForm />
           // <ConfirmRowDelete />
@@ -54,6 +54,7 @@ const App = React.createClass({
           <EmailIntroContainer />
           <Sidebar />
           <ConnectionFormContainer />
+          <ExplorerContainer />
         </div>
     );
   }
