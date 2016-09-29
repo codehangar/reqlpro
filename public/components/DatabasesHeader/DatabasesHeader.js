@@ -2,35 +2,36 @@ import React from 'react';
 import classNames from 'classnames';
 import {connect} from 'react-redux';
 
-const DatabasesHeader = React.createClass({
-  render: function() {
-    const {editFavorite, addDatabase, toggleConnectionActionMenu} = this.props;
-    // console.log('DatabasesHeader', this.props)
-    const {selectedConnection} = this.props;
-    var classes = {
-      actionMenu: classNames(
-        'dropdown-menu',
-        {
-          'show': this.props.showConnectionActionMenu,
-          'hidden': !this.props.showConnectionActionMenu
-        }
-      )
-    }
-    return (
-      <div className="databases-header">
-        <div><span className="title">{this.props.selectedConnection ? this.props.selectedConnection.name : ''}</span>
-          <div className="dropdown pull-right">
-            <i onClick={toggleConnectionActionMenu} className="fa fa-bars connection-action-menu-button"></i>
-            <ul className={classes.actionMenu}>
-              <li onClick={() => {editFavorite(selectedConnection)}}><a href="#">Edit Connection</a></li>
-              <li onClick={addDatabase}><a href="#">Add database</a></li>
-            </ul>
-          </div>
+const DatabasesHeader = ({
+  editFavorite,
+  addDatabase,
+  toggleConnectionActionMenu,
+  showConnectionActionMenu,
+  selectedConnection
+}) => {
+  var classes = {
+    actionMenu: classNames(
+      'dropdown-menu',
+      {
+        'show': showConnectionActionMenu,
+        'hidden': !showConnectionActionMenu
+      }
+    )
+  }
+  return (
+    <div className="databases-header">
+      <div><span className="title">{selectedConnection ? selectedConnection.name : ''}</span>
+        <div className="dropdown pull-right">
+          <i onClick={toggleConnectionActionMenu} className="fa fa-bars connection-action-menu-button"></i>
+          <ul className={classes.actionMenu}>
+            <li onClick={() => {editFavorite(selectedConnection)}}><a href="#">Edit Connection</a></li>
+            <li onClick={addDatabase}><a href="#">Add database</a></li>
+          </ul>
         </div>
       </div>
-    );
-  }
-});
+    </div>
+  );
+};
 
 
 function mapStateToProps(state) {

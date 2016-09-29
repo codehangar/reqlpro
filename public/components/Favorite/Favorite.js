@@ -16,17 +16,19 @@ const favoriteClasses = (active) => {
   }
 };
 
-const Favorite = () => ({
-  render: function() {
-    const {name, identicon, onConnectionClick} = this.props;
-    const classes = favoriteClasses(this.props.active).name;
-    return (
-      <div className={classes} onClick={onConnectionClick}>
-         <div className="favorite-identicon"><div dangerouslySetInnerHTML={createMarkup(identicon)} /></div>
-         <p className="text-center">{name}</p>
-       </div>
-    );
-  }
-});
+const Favorite = ({
+  name,
+  identicon,
+  onConnectionClick,
+  active
+}) => {
+  const classes = favoriteClasses(active).name;
+  return (
+    <div className={classes} onClick={onConnectionClick}>
+       <div className="favorite-identicon"><div dangerouslySetInnerHTML={createMarkup(identicon)} /></div>
+       <p className="text-center">{name}</p>
+     </div>
+  );
+};
 
 module.exports = Favorite;
