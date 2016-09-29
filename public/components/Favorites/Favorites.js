@@ -55,6 +55,7 @@ const mapDispatchToProps = (dispatch) => {
       });
     },
     onConnectionClick: (connection) => {
+      console.log("    $%^&*&^% onConnectionClick connection", connection)
       getConnection(dispatch, connection);
     }
   }

@@ -112,7 +112,7 @@ export function getConnection(dispatch, connection) {
       });
       resolve(conn);
     }).catch(e => {
-      console.log("e", e)
+      console.error("getConnection e", e)
       dispatch({
         type: 'SET_CONNECTION',
         connection: connection
