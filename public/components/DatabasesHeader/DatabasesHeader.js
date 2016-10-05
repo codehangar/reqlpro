@@ -1,33 +1,27 @@
 import React from 'react';
 import classNames from 'classnames';
 import {connect} from 'react-redux';
+import {Dropdown, MenuItem} from 'react-bootstrap';
+
 
 const DatabasesHeader = ({
   editFavorite,
   addDatabase,
-  toggleConnectionActionMenu,
-  showConnectionActionMenu,
   selectedConnection
 }) => {
-  var classes = {
-    actionMenu: classNames(
-      'dropdown-menu',
-      {
-        'show': showConnectionActionMenu,
-        'hidden': !showConnectionActionMenu
-      }
-    )
-  }
   return (
     <div className="databases-header">
-      <div><span className="title">{selectedConnection ? selectedConnection.name : ''}</span>
-        <div className="dropdown pull-right">
-          <i onClick={toggleConnectionActionMenu} className="fa fa-bars connection-action-menu-button"></i>
-          <ul className={classes.actionMenu}>
-            <li onClick={() => {editFavorite(selectedConnection)}}><a href="#">Edit Connection</a></li>
-            <li onClick={addDatabase}><a href="#">Add database</a></li>
-          </ul>
-        </div>
+      <div>
+        <span className="title">{selectedConnection ? selectedConnection.name : ''}</span>
+        <Dropdown id="connection-dropdown" className="pull-right">
+          <i bsRole="toggle" className="fa fa-bars connection-action-menu-button" />
+          <Dropdown.Menu className="super-colors">
+            <MenuItem onClick={addDatabase}>Add database</MenuItem>
+            <MenuItem divider />
+            <MenuItem onClick={() => {editFavorite(selectedConnection)}}>Edit Connection</MenuItem>
+            <MenuItem eventKey="3">Delete Connection</MenuItem>
+          </Dropdown.Menu>
+        </Dropdown>
       </div>
     </div>
   );
@@ -61,12 +55,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     addDatabase: function(e) {
       this.props.store.toggleEntityForm('Database', 'Add');
-    },
-    toggleConnectionActionMenu: function(event) {
-      dispatch({
-        type: "TOGGLE_CONNECTION_ACTION_MENU"
-      });
-    },
+    }
   }
 };
 

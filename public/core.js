@@ -127,17 +127,6 @@ export function setConnection(state, selectedConnection) {
   });
 };
 
-export function toggleConnectionActionMenu(state, toggle) {
-  // Toggle existing value, if nothing is passed in
-  if (toggle !== true && toggle !== false) {
-    toggle = !state.showConnectionActionMenu
-  }
-
-  return Object.assign({}, state, {
-    showConnectionActionMenu: toggle
-  });
-};
-
 export function hideOpenMenus(state, propsToSet) {
 
   //if props passed in, return new state with these props set to false
