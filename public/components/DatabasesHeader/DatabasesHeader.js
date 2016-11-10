@@ -7,6 +7,7 @@ import {Dropdown, MenuItem} from 'react-bootstrap';
 const DatabasesHeader = ({
   editFavorite,
   addDatabase,
+  onDeleteConnection,
   selectedConnection
 }) => {
   return (
@@ -19,7 +20,7 @@ const DatabasesHeader = ({
             <MenuItem onClick={addDatabase}>Add database</MenuItem>
             <MenuItem divider />
             <MenuItem onClick={() => {editFavorite(selectedConnection)}}>Edit Connection</MenuItem>
-            <MenuItem eventKey="3">Delete Connection</MenuItem>
+            <MenuItem eventKey="3" onClick={() => {onDeleteConnection(selectedConnection)}}>Delete Connection</MenuItem>
           </Dropdown.Menu>
         </Dropdown>
       </div>
@@ -52,6 +53,17 @@ const mapDispatchToProps = (dispatch) => {
       // event.stopPropagation();
       // event.nativeEvent.stopPropagation();
       // event.nativeEvent.stopImmediatePropagation();
+    },
+    onDeleteConnection: function(selectedConnection) {
+      if(confirm("Are you sure you want to delete the connection named " + selectedConnection.name)){
+        dispatch({
+          type: "DELETE_CONNECTION",
+          id: selectedConnection.index
+        });
+      }else{
+        return
+      }
+      
     },
     addDatabase: function(e) {
       this.props.store.toggleEntityForm('Database', 'Add');

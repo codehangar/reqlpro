@@ -193,10 +193,14 @@ const mapDispatchToProps = (dispatch) => {
     },
     onDelete: (connection) =>{
       console.log("    --------> onDelete connection", connection)
-      dispatch({
-        type: "DELETE_CONNECTION",
-        id: connection.index
-      });
+      if(confirm("Are you sure you want to delete the connection named " + connection.name)){
+        dispatch({
+          type: "DELETE_CONNECTION",
+          id: connection.index
+        });
+      }else{
+        return
+      }
     }
   }
 };
