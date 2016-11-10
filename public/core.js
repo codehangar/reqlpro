@@ -35,7 +35,7 @@ export function showConnectionForm(state, mode, selectedConnection) {
       }
       return newState;
     case 'EDIT':
-      console.log('EDIT', mode)
+      // console.log('EDIT', mode)
       let newState2 = Object.assign({}, state, {
         showEditConnectionForm: true,
         selectedConnection: selectedConnection
@@ -81,13 +81,12 @@ export function addConnection(state, connection) {
   }
 
   const selectedConnectionState = setConnection(state, newConnection)
-  console.log('selectedConnectionState',selectedConnectionState)
 
   return Object.assign({}, state, selectedConnectionState, {connections});
 }
 
 export function updateConnection(state, connection){
-  console.log('core updateConnection', connection);
+  // console.log('core updateConnection', connection);
   const connectionsCopy = state.connections.slice(0);
   connectionsCopy.forEach( (c, i) => {
     if (c.index === connection.index){
@@ -103,20 +102,32 @@ export function updateConnection(state, connection){
 
 export function deleteConnection(state, id){
   console.log('core deleteConnection', id);
+
+  const connectionsCopy = state.connections.slice(0);
+
+  connectionsCopy.forEach( (c, i) => {
+    if (c.index === id){
+      connectionsCopy.splice(i, 1);
+    }
+  })
+
+  const newState = Object.assign({}, state, {connections: connectionsCopy})
+
+  return newState;
 }
 
 export function getConnection(dispatch, connection) {
   var RethinkDbService = require('../main/services/rethinkdb.service');
   return new Promise((resolve, reject) => {
     RethinkDbService.getConnection(connection.host, connection.port, connection.authKey).then((conn) => {
-      console.log('getConnection conn', conn);
+      // console.log('getConnection conn', conn);
       dispatch({
         type: 'SET_DB_CONNECTION',
         dbConnection: conn
       });
       resolve(conn);
     }).catch(error => {
-      console.error("getConnection error", error)
+      // console.error("getConnection error", error)
       dispatch({
         type: 'SET_DB_CONNECTION',
         dbConnection: error
@@ -132,7 +143,7 @@ export function setConnection(state, selectedConnection) {
 };
 
 export function setDbConnection(state, dbConnection) {
-  console.log('<3<3<3 setDbConnection dbConnection', dbConnection);
+  // console.log('<3<3<3 setDbConnection dbConnection', dbConnection);
   return Object.assign({}, state, {
     dbConnection
   });
