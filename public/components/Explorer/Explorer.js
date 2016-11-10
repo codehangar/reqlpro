@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 const Explorer = ({
   connections,
   selectedConnection,
+  dbConnection,
   selectedTable
 }) => {
 
@@ -18,10 +19,12 @@ const Explorer = ({
         <p className="super-large-text">Connected!</p>
         <p className="">Start browsing your data by clicking on a database.</p>
         <p className="small-text">Having trouble? Visit our <a href="http://utils.codehangar.io/rethink/support" target="_blank">Help Center</a> or <a onClick={function() { HS.beacon.open(); }}>send us a message</a>.</p>
-        {/* <p className="text-danger small-text">{selectedConnection.dbConnection.msg}</p> */}
+        {/* <p className="text-danger small-text">{dbConnection.msg}</p> */}
       </div>
     </div>
   );
+
+  const connectionErrors = ['ReqlAuthError', 'ReqlDriverError'];
 
   if (connections.length === 0) {
     content = (
@@ -33,6 +36,23 @@ const Explorer = ({
         </div>
       </div>
     );
+  } else if (dbConnection) {
+    try {
+      if (dbConnection && connectionErrors.indexOf(dbConnection.name) !== -1) {
+        content = (
+          <div className="explorer-container">
+            <div className="explorer-full-message">
+              <p className="super-large-text">Woops!</p>
+              <p className="">Something isn't right. Check your connection details.</p>
+              <p className="small-text">Still having trouble? Visit our <a href="http://utils.codehangar.io/rethink/support" target="_blank">Help Center</a> or <a onClick={function() { HS.beacon.open(); }}>send us a message</a>.</p>
+              <p className="text-danger small-text">{dbConnection.msg}</p>
+            </div>
+          </div>
+        );
+      }
+    } catch (e) {
+      console.error(e);
+    }
   } else if (selectedTable) {
     // console.log("selectedTable", selectedTable)
     content = (
@@ -42,23 +62,6 @@ const Explorer = ({
         <ExplorerFooter table={selectedTable} />
       </div>
     );
-  } else if (selectedConnection.dbConnection) {
-    try {
-      if (selectedConnection.dbConnection && selectedConnection.dbConnection.name === 'ReqlDriverError') {
-        content = (
-          <div className="explorer-container">
-            <div className="explorer-full-message">
-              <p className="super-large-text">Woops!</p>
-              <p className="">Something isn't right. Check your connection details.</p>
-              <p className="small-text">Still having trouble? Visit our <a href="http://utils.codehangar.io/rethink/support" target="_blank">Help Center</a> or <a onClick={function() { HS.beacon.open(); }}>send us a message</a>.</p>
-              <p className="text-danger small-text">{selectedConnection.dbConnection.msg}</p>
-            </div>
-          </div>
-        );
-      }
-    } catch (e) {
-      console.error(e);
-    }
   }
 
   return (
@@ -73,6 +76,7 @@ const mapStateToProps = (state) => {
   return {
     connections: state.main.connections || [],
     selectedConnection: state.main.selectedConnection,
+    dbConnection: state.main.dbConnection,
     selectedTable: state.main.selectedTable
   };
 };

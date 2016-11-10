@@ -107,15 +107,15 @@ export function getConnection(dispatch, connection) {
     RethinkDbService.getConnection(connection.host, connection.port, connection.authKey).then((conn) => {
       console.log('getConnection conn', conn);
       dispatch({
-        type: 'SET_CONNECTION',
-        connection: conn
+        type: 'SET_DB_CONNECTION',
+        dbConnection: conn
       });
       resolve(conn);
-    }).catch(e => {
-      console.error("getConnection e", e)
+    }).catch(error => {
+      console.error("getConnection error", error)
       dispatch({
-        type: 'SET_CONNECTION',
-        connection: connection
+        type: 'SET_DB_CONNECTION',
+        dbConnection: error
       });
     });
   });
@@ -124,6 +124,13 @@ export function getConnection(dispatch, connection) {
 export function setConnection(state, selectedConnection) {
   return Object.assign({}, state, {
     selectedConnection
+  });
+};
+
+export function setDbConnection(state, dbConnection) {
+  console.log('<3<3<3 setDbConnection dbConnection', dbConnection);
+  return Object.assign({}, state, {
+    dbConnection
   });
 };
 

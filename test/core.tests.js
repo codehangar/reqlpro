@@ -258,8 +258,8 @@ describe('Application Logic', () => {
       promise.then((conn) => {
         expect(dispatch.callCount).to.equal(1);
         expect(dispatch.calledWith({
-          type: 'SET_CONNECTION',
-          connection: 'im a conn'
+          type: 'SET_DB_CONNECTION',
+          dbConnection: 'im a conn'
         })).to.be.true;
         done();
       }).catch(reason => {
