@@ -9,6 +9,7 @@ const ConnectionForm = ({
   showEditConnectionForm,
   selectedConnection,
   onCancel,
+  onDelete,
   onSave,
   onUpdate,
   connection
@@ -87,10 +88,8 @@ const ConnectionForm = ({
     //   })
     // };
 
-    let deleteButton = '';
-    if (showEditConnectionForm) {
-      deleteButton = <button type="delete" className="btn btn-default" onClick="">Delete</button>
-    }
+    // let deleteButton = '';
+    
 
     console.log("selectedConnection from props", selectedConnection)
 
@@ -153,7 +152,8 @@ const ConnectionForm = ({
           <div className="panel-footer">
             <button type="submit" onClick={ showAddConnectionForm ? ()=>onSave(selectedConnection) : ()=>onUpdate(selectedConnection) } className="btn btn-primary pull-right">Save</button>
             <button type="cancel" onClick={onCancel} className="btn btn-default pull-left">Cancel</button>
-            {deleteButton}
+            {showEditConnectionForm ? <button type="delete" className="btn btn-default" onClick={() => onDelete(selectedConnection)}>Delete</button> : ''}
+
             <div className="clearfix"/>
           </div>
         </div>
@@ -178,17 +178,24 @@ const mapDispatchToProps = (dispatch) => {
       })
     },
     onSave: (connection) =>{
-      console.log('connection form', connection);
+      // console.log('connection form', connection);
       dispatch({
         type: "ADD_CONNECTION",
         connection
       });
     },
     onUpdate: (connection) =>{
-      console.log("    --------> onUpdate connection", connection)
+      // console.log("    --------> onUpdate connection", connection)
       dispatch({
         type: "UPDATE_CONNECTION",
         connection
+      });
+    },
+    onDelete: (connection) =>{
+      console.log("    --------> onDelete connection", connection)
+      dispatch({
+        type: "DELETE_CONNECTION",
+        id: connection.index
       });
     }
   }

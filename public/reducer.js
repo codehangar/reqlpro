@@ -7,6 +7,7 @@ import {
   setEmail,
   addConnection,
   updateConnection,
+  deleteConnection,
   showConnectionForm,
   hideConnectionForm,
   setDbConnection,
@@ -31,6 +32,8 @@ function reducer(state = {}, action) {
       return hideConnectionForm(addConnection(state, action.connection));
     case 'UPDATE_CONNECTION':
       return hideConnectionForm(updateConnection(state, action.connection));
+    case 'DELETE_CONNECTION':
+      return hideConnectionForm(deleteConnection(state, action.id));
     case 'SHOW_CONNECTION_FORM':
       return showConnectionForm(state, action.mode, action.selectedConnection);
     case 'HIDE_CONNECTION_FORM':
