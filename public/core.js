@@ -101,6 +101,10 @@ export function updateConnection(state, connection){
 
 }
 
+export function deleteConnection(state, id){
+  console.log('core deleteConnection', id);
+}
+
 export function getConnection(dispatch, connection) {
   var RethinkDbService = require('../main/services/rethinkdb.service');
   return new Promise((resolve, reject) => {

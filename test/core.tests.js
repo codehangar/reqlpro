@@ -5,6 +5,7 @@ import {
   setEmail,
   addConnection,
   updateConnection,
+  deleteConnection,
   setConnection,
   showConnectionForm,
   hideConnectionForm,
@@ -231,6 +232,49 @@ describe('Application Logic', () => {
       })
     });
   });
+
+  describe('deleteConnection', () => {
+    it('removes connection from application state', () => {
+      const state = {
+        email: 'cassie@codehangar.io',
+        connections: [{
+          authKey: "",
+          database: "",
+          host: "192.168.99.100",
+          identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+          index: 0,
+          name: "rethink-tut",
+          port: "32769"
+        }, {
+          authKey: "",
+          database: "",
+          host: "192.168.99.100",
+          identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+          index: 1,
+          name: "apple",
+          port: "32769"
+        }]
+      }
+      
+      const connectionIndex = 0;
+
+      const nextState = deleteConnection(state, connectionIndex);
+
+      expect(nextState).to.deep.equal({
+        email: 'cassie@codehangar.io',
+        connections: [{
+          authKey: "",
+          database: "",
+          host: "192.168.99.100",
+          identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+          index: 1,
+          name: "apple",
+          port: "32769"
+        }]
+      })
+
+    })
+  })
 
   describe('getConnection', () => {
 
