@@ -9,7 +9,7 @@ import {
   setConnection,
   showConnectionForm,
   hideConnectionForm,
-  getConnection,
+  getDbConnection,
   hideOpenMenus
 } from '../public/core';
 
@@ -276,7 +276,7 @@ describe('Application Logic', () => {
     })
   })
 
-  describe('getConnection', () => {
+  describe('getDbConnection', () => {
 
     it('returns connection info from RethinkDB', (done) => {
       const state = {
@@ -294,7 +294,7 @@ describe('Application Logic', () => {
       const connection = state.connections[0];
       const dispatch = sinon.stub();
 
-      const promise = getConnection(dispatch, connection);
+      const promise = getDbConnection(dispatch, connection);
 
       expect(RethinkDbService.getConnection.callCount).to.equal(1);
       expect(RethinkDbService.getConnection.calledWith("192.168.99.100", "32769", "")).to.equal(true);

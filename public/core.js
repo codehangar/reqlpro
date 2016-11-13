@@ -78,6 +78,7 @@ export function addConnection(state, connection) {
       index: state.connections ? state.connections.length : 0
     }
     connections.push(newConnection);
+    //TODO: Auto-connect to DB
   }
 
   const selectedConnectionState = setConnection(state, newConnection)
@@ -96,8 +97,6 @@ export function updateConnection(state, connection){
 
   const newState = Object.assign({}, state, {connections: connectionsCopy})
   return newState;
-
-
 }
 
 export function deleteConnection(state, id){
@@ -116,11 +115,11 @@ export function deleteConnection(state, id){
   return newState;
 }
 
-export function getConnection(dispatch, connection) {
+export function getDbConnection(dispatch, connection) {
   var RethinkDbService = require('../main/services/rethinkdb.service');
   return new Promise((resolve, reject) => {
     RethinkDbService.getConnection(connection.host, connection.port, connection.authKey).then((conn) => {
-      // console.log('getConnection conn', conn);
+      console.log('getConnection conn', conn);
       dispatch({
         type: 'SET_DB_CONNECTION',
         dbConnection: conn

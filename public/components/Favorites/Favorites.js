@@ -2,7 +2,7 @@ import React from 'react';
 import Favorite from '../Favorite/Favorite';
 import AddFavorite from '../AddFavorite/AddFavorite';
 import {connect} from 'react-redux';
-import {getConnection} from '../../core';
+import {getDbConnection} from '../../core';
 
 
 const Favorites = ({
@@ -54,9 +54,15 @@ const mapDispatchToProps = (dispatch) => {
         mode: 'NEW'
       });
     },
+    // onConnectionClick: (connection) => {
+    //   console.log("    $%^&*&^% onConnectionClick connection", connection)
+    //   getConnection(dispatch, connection);
+    // },
     onConnectionClick: (connection) => {
-      console.log("    $%^&*&^% onConnectionClick connection", connection)
-      getConnection(dispatch, connection);
+      dispatch({
+        type: "CONNECT_TO_DB",
+        connection
+      });
     }
   }
 };
