@@ -20,26 +20,17 @@ var remote = window.nodeRequire('remote');
 //   userConfig: JSON.parse(remote.getGlobal('userConfig')), // Setup userConfig from config file
 //   connection: Connection.create() // Setup default connection for ConnectionForm
 // });
+
 // React Specific libs/components
 var React = require('react');
 var ReactDOM = require('react-dom');
 var App = require('./components/App/App');
 // Segment
+
 var Segment = require('./services/segment.service');
-import {combineReducers, createStore} from 'redux';
+
 import {Provider} from 'react-redux';
-import { modelReducer, formReducer, modeled } from 'react-redux-form';
-import myModeledReducer from './reducer';
-import {List, Map, fromJS} from 'immutable';
-
-// const reduxStore = createStore();
-
-const reduxStore = createStore(combineReducers({
-  // connection: modelReducer('connection'),
-  connectionForm: formReducer('main'),
-  main: myModeledReducer
-}));
-
+import reduxStore from './store';
 
 
 // reduxStore.dispatch({
@@ -73,13 +64,13 @@ function init() {
 
   // console.log('initialState', initialState)
 
-  if(initialState){
-     reduxStore.dispatch({
-        type: 'SET_STATE', 
-        state: {
-          userConfig: initialState
-        }
-      })
+  if (initialState) {
+    reduxStore.dispatch({
+      type: 'SET_STATE',
+      state: {
+        userConfig: initialState
+      }
+    })
   }
 
 

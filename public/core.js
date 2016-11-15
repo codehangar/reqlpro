@@ -72,7 +72,6 @@ export function addConnection(state, connection) {
       host: connection.host,
       port: connection.port,
       database: connection.database,
-      database: "",
       authKey: "",
       identicon: jdenticon.toSvg(md5(connection.name), 40),
       index: state.connections ? state.connections.length : 0
@@ -114,26 +113,6 @@ export function deleteConnection(state, id){
 
   return newState;
 }
-
-export function getDbConnection(dispatch, connection) {
-  var RethinkDbService = require('../main/services/rethinkdb.service');
-  return new Promise((resolve, reject) => {
-    RethinkDbService.getConnection(connection.host, connection.port, connection.authKey).then((conn) => {
-      console.log('getConnection conn', conn);
-      dispatch({
-        type: 'SET_DB_CONNECTION',
-        dbConnection: conn
-      });
-      resolve(conn);
-    }).catch(error => {
-      // console.error("getConnection error", error)
-      dispatch({
-        type: 'SET_DB_CONNECTION',
-        dbConnection: error
-      });
-    });
-  });
-};
 
 export function setConnection(state, selectedConnection) {
   return Object.assign({}, state, {
