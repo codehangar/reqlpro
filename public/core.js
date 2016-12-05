@@ -132,6 +132,11 @@ export function setDbList(state, databases) {
   return Object.assign({}, state, {selectedConnection: selectedConnectionCopy});
 };
 
+export function setDbTables(state, tables) {
+  const selectedDatabaseCopy = Object.assign({}, state.selectedDatabase, {tables})
+  return Object.assign({}, state, {selectedDatabase: selectedDatabaseCopy});
+};
+
 export function hideOpenMenus(state, propsToSet) {
 
   //if props passed in, return new state with these props set to false
