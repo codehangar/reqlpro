@@ -12,26 +12,7 @@ export function getDbConnection(connection) {
           dbConnection: conn
         });
 
-        RethinkDbService.getDbList(conn).then(function(dblist) {
-          var databases = [];
-          for (var i = 0; i < dblist.length; i++) {
-            databases.push({
-              name: dblist[i],
-              tables: []
-            });
-          }
-          console.log('getDbList success, databases', databases)
-          dispatch({
-            type: 'SET_DB_LIST',
-            databases: databases
-          });
-        }).catch(function(err) {
-          console.log('getDbList error', err)
-          dispatch({
-            type: 'SET_DB_LIST',
-            databases: err
-          });
-        });
+        dispatch(getDbList(conn));
 
         resolve(conn);
       }).catch(error => {
@@ -43,3 +24,31 @@ export function getDbConnection(connection) {
     });
   }
 };
+
+export function getDbList(dbConnection) {
+  return dispatch => {
+    new Promise((resolve, reject) => {
+      RethinkDbService.getDbList(dbConnection).then(function(dblist) {
+        var databases = [];
+        for (var i = 0; i < dblist.length; i++) {
+          databases.push({
+            name: dblist[i],
+            tables: []
+          });
+        }
+        console.log('getDbList success, databases', databases)
+        dispatch({
+          type: 'SET_DB_LIST',
+          databases: databases
+        });
+        resolve(dblist);
+      }).catch(function(err) {
+        console.log('getDbList error', err)
+        dispatch({
+          type: 'SET_DB_LIST',
+          databases: err
+        });
+      });
+    });
+  }
+}
