@@ -1,5 +1,4 @@
 import {List, Map, fromJS} from 'immutable';
-import {expect} from 'chai';
 import jdenticon from 'jdenticon';
 import md5 from 'md5';
 
