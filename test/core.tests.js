@@ -8,13 +8,11 @@ import {
   deleteConnection,
   setConnection,
   setDbList,
+  setDbTables,
   showConnectionForm,
   hideConnectionForm,
   hideOpenMenus
 } from '../public/core';
-// import {
-//   getDbConnection
-// } from '../public/actions';
 
 let RethinkDbService;
 
@@ -281,47 +279,6 @@ describe('Application Logic', () => {
     })
   })
 
-  // Looks like this function has been moved to actions.js
-  // Not sure how to best fix this broken test but 
-  // I am focused on something else right now -Cassie
-
-  // describe('getDbConnection', () => {
-
-  //   it('returns connection info from RethinkDB', (done) => {
-  //     const state = {
-  //       email: 'cassie@codehangar.io',
-  //       connections: [{
-  //         authKey: "",
-  //         database: "",
-  //         host: "192.168.99.100",
-  //         identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
-  //         index: 0,
-  //         name: "rethink-tut",
-  //         port: "32769"
-  //       }]
-  //     }
-  //     const connection = state.connections[0];
-  //     const dispatch = sinon.stub();
-
-  //     const promise = getDbConnection(dispatch, connection);
-
-  //     expect(RethinkDbService.getConnection.callCount).to.equal(1);
-  //     expect(RethinkDbService.getConnection.calledWith("192.168.99.100", "32769", "")).to.equal(true);
-
-  //     promise.then((conn) => {
-  //       expect(dispatch.callCount).to.equal(1);
-  //       expect(dispatch.calledWith({
-  //         type: 'SET_DB_CONNECTION',
-  //         dbConnection: 'im a conn'
-  //       })).to.be.true;
-  //       done();
-  //     }).catch(reason => {
-  //       done(reason)
-  //     });
-
-  //   });
-  // });
-
   describe('setConnection', () => {
     it('sets a new selectedConnection to the redux store', () => {
       const state = {
@@ -353,6 +310,7 @@ describe('Application Logic', () => {
     });
   });
 
+  //Todo: remove tables array from databases
   describe('setDbList', () => {
     it('setDbList should add databases array to selectedConnection object', () => {
       const state = {
@@ -392,6 +350,44 @@ describe('Application Logic', () => {
             name: 'Test2',
             tables: []
           }]
+        }
+      });
+    });
+  });
+
+  describe('setDbTables', () => {
+    it('should add tables array to selectedDatabase object', () => {
+      const state = {
+        email: 'cassie@codehangar.io',
+        selectedConnection: {
+          authKey: "",
+          database: "",
+          host: "192.168.99.100",
+          identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+          index: 0,
+          name: "rethink-tut",
+          port: "32769"
+        },
+        selectedDatabase: {
+          name: 'Test'
+        }
+      };
+      const tables = ['Test', 'Test2'];
+      let nextState = setDbTables(state, tables);
+      expect(nextState).to.deep.equal({
+        email: 'cassie@codehangar.io',
+        selectedConnection: {
+          authKey: "",
+          database: "",
+          host: "192.168.99.100",
+          identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+          index: 0,
+          name: "rethink-tut",
+          port: "32769"
+        },
+        selectedDatabase: {
+          name: 'Test',
+          tables: ['Test', 'Test2']
         }
       });
     });
