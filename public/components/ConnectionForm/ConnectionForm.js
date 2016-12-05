@@ -3,6 +3,7 @@ const classNames = require('classnames');
 const Segment = require('../../services/segment.service');
 import { Field, actions } from 'react-redux-form';
 import {connect} from 'react-redux';
+import {getDbConnection} from '../../actions';
 
 const ConnectionForm = ({
   showAddConnectionForm,
@@ -91,7 +92,7 @@ const ConnectionForm = ({
     // let deleteButton = '';
     
 
-    console.log("selectedConnection from props", selectedConnection)
+    // console.log("selectedConnection from props", selectedConnection)
 
     return (
       <div className="ConnectionForm" style={containerStyles}>
@@ -162,7 +163,7 @@ const ConnectionForm = ({
 };
 
 function mapStateToProps(state) {
-  console.log('ConnectionForm  mapStateToProps', state.main);
+  // console.log('ConnectionForm  mapStateToProps', state.main);
   return {
     showAddConnectionForm: state.main.showAddConnectionForm,
     showEditConnectionForm: state.main.showEditConnectionForm,
@@ -183,6 +184,7 @@ const mapDispatchToProps = (dispatch) => {
         type: "ADD_CONNECTION",
         connection
       });
+      dispatch(getDbConnection(connection));
     },
     onUpdate: (connection) =>{
       // console.log("    --------> onUpdate connection", connection)
@@ -192,7 +194,7 @@ const mapDispatchToProps = (dispatch) => {
       });
     },
     onDelete: (connection) =>{
-      console.log("    --------> onDelete connection", connection)
+      // console.log("    --------> onDelete connection", connection)
       if(confirm("Are you sure you want to delete the connection named " + connection.name)){
         dispatch({
           type: "DELETE_CONNECTION",
