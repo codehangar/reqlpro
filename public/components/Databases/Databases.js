@@ -21,29 +21,29 @@ const Databases = React.createClass({
   },
 
   render: function() {
-    const {connections, selectedFavorite} = this.props;
-    // console.log('Databases props', selectedFavorite);
-    // const databaseNodes;
+    const {connections, selectedConnection} = this.props;
+    console.log('Databases props', selectedConnection);
+    let databaseNodes;
 
-    // if(selectedFavorite){
-    //   databaseNodes = selectedFavorite.databases.map((database) => {
-    //     return (
-    //       <Database
-    //         key={database.name}
-    //         database={database}
-    //         selectedDatabase={this.state.selectedDatabase}
-    //         selectDatabase={this.selectDatabase}
-    //       />
-    //     );
-    //   });
-    // }
+    if(selectedConnection && selectedConnection.databases){
+      databaseNodes = selectedConnection.databases.map((database) => {
+        return (
+          <Database
+            key={database.name}
+            database={database}
+            selectedDatabase={selectedConnection.databases[0]}
+            selectDatabase={this.selectDatabase}
+          />
+        );
+      });
+    }
 
 
     const content = () => {
       if (connections && connections.length > 0) {
         return (
           <div>
-            <DatabasesHeader selectedFavorite={selectedFavorite} store={this.state} />
+            <DatabasesHeader selectedFavorite={selectedConnection} store={this.state} />
           </div>
         );
       } else {
@@ -54,6 +54,7 @@ const Databases = React.createClass({
     return (
       <div className="db-content-col">
         {content()}
+        {databaseNodes}
       </div>
     );
 
@@ -64,10 +65,10 @@ const Databases = React.createClass({
 // };
 
 function mapStateToProps(state) {
-  // console.log('Databases', state)
+  console.log('Databases', state)
   return {
     connections: state.main.connections,
-    selectedFavorite: state.main.selectedFavorite
+    selectedConnection: state.main.selectedConnection
   };
 }
 const mapDispatchToProps = (dispatch) => {
