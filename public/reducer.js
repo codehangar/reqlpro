@@ -11,6 +11,7 @@ import {
   showConnectionForm,
   hideConnectionForm,
   setDbConnection,
+  setDbList,
   hideOpenMenus
 } from './core';
 
@@ -42,6 +43,8 @@ function reducer(state = {}, action) {
       return hideOpenMenus(state, action.props)
     case 'SET_DB_CONNECTION':
       return setDbConnection(state, action.dbConnection);
+    case 'SET_DB_LIST':
+      return setDbList(state, action.databases);
   }
   return state;
 }
