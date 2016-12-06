@@ -1,4 +1,5 @@
-import RethinkDbService from '../main/services/rethinkdb.service';
+// import RethinkDbService from '../main/services/rethinkdb.service';
+const RethinkDbService = require('../main/services/rethinkdb.service');
 
 export function getDbConnection(connection) {
   return dispatch => {
@@ -47,6 +48,32 @@ export function getDbList(dbConnection) {
         dispatch({
           type: 'SET_DB_LIST',
           databases: err
+        });
+      });
+    });
+  }
+}
+
+export function getDbTables(dbConnection, database) {
+  console.log("getDbTables database", database)
+  return dispatch => {
+    new Promise((resolve, reject) => {
+      RethinkDbService.getTableList(dbConnection, database.name).then(function(tables) {
+        
+        console.log("DISPACTING! database", database)
+        console.log("DISPACTING! tables", tables)
+        dispatch({
+          type: 'SET_DB_TABLES',
+          database,
+          tables
+        });
+
+        resolve(tables);
+      }).catch(function(err) {
+        console.log('getTableList error', err)
+        dispatch({
+          type: 'SET_DB_TABLES',
+          tables: err
         });
       });
     });
