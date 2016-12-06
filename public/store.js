@@ -5,6 +5,7 @@ import thunk from 'redux-thunk';
 
 export default createStore(combineReducers({
   // connection: modelReducer('connection'),
-  connectionForm: formReducer('main'),
+  connectionForm: formReducer('connectionForm'),
+  databaseForm: formReducer('databaseForm'),
   main: myModeledReducer
 }), applyMiddleware(thunk));

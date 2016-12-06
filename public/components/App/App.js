@@ -5,12 +5,14 @@ const ConnectionFormContainer = require('../ConnectionForm/ConnectionForm');
 const EntityForm = require('../EntityForm/EntityForm');
 const ConfirmRowDelete = require('../ConfirmRowDelete/ConfirmRowDelete');
 const EmailIntroContainer = require('../EmailIntro/EmailIntro');
+import DatabaseForm from '../modals/DatabaseForm';
+import TableForm from '../modals/TableForm';
 
 const App = React.createClass({
-  getInitialState: function() {
+  getInitialState: function () {
     return this.context.store;
   },
-  componentDidMount: function() {
+  componentDidMount: function () {
     // this.setupEvents();
     this.resizeTimeoutFunction = () => {
       this.resizeTimeout = setTimeout(() => {
@@ -22,10 +24,10 @@ const App = React.createClass({
       this.resizeTimeoutFunction();
     }
   },
-  componentWillUnmount: function() {
+  componentWillUnmount: function () {
     window.onresize = null;
   },
-  setupEvents: function() {
+  setupEvents: function () {
 
     // Event for toggling connection form
     this.state.on('showConnectionForm', () => {
@@ -44,18 +46,20 @@ const App = React.createClass({
       this.forceUpdate();
     });
   },
-  render: function() {
-          
-          // 
-          // <EntityForm />
-          // <ConfirmRowDelete />
+  render: function () {
+
+    // 
+    // <EntityForm />
+    // <ConfirmRowDelete />
     return (
-        <div className="content-wrapper">
-          <EmailIntroContainer />
-          <Sidebar />
-          <ConnectionFormContainer />
-          <ExplorerContainer />
-        </div>
+      <div className="content-wrapper">
+        <EmailIntroContainer />
+        <Sidebar />
+        <ConnectionFormContainer />
+        <DatabaseForm />
+        <TableForm />
+        <ExplorerContainer />
+      </div>
     );
   }
 });

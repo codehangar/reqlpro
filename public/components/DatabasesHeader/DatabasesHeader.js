@@ -55,18 +55,21 @@ const mapDispatchToProps = (dispatch) => {
       // event.nativeEvent.stopImmediatePropagation();
     },
     onDeleteConnection: function(selectedConnection) {
-      if(confirm("Are you sure you want to delete the connection named " + selectedConnection.name)){
+      if (confirm("Are you sure you want to delete the connection named " + selectedConnection.name)){
         dispatch({
           type: "DELETE_CONNECTION",
           id: selectedConnection.index
         });
-      }else{
-        return
+      } else {
+        return;
       }
       
     },
-    addDatabase: function(e) {
-      this.props.store.toggleEntityForm('Database', 'Add');
+    addDatabase: function() {
+      dispatch({
+        type: "TOGGLE_DATABASE_FORM",
+        showDatabaseForm: true
+      });
     }
   }
 };

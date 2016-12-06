@@ -132,30 +132,30 @@ store.prototype.toggleConfirmRowDelete = function(row) {
   this.emit('updateRehinkDbClient');
 };
 
-store.prototype.toggleEntityForm = function(type, action, toDeleteName) {
-  this.router.EntityForm.show = !this.router.EntityForm.show;
-  // If turning off EntityForm lets result defaults
-  if (!this.router.EntityForm.show) {
-    this.router.EntityForm = {
-      show: false,
-      action: 'Add',
-      type: 'Database',
-      toDeleteName: '',
-      errMessage: '',
-      formElems: {
-        name: {
-          valid: true,
-          value: ''
-        }
-      }
-    };
-  } else {
-    this.router.EntityForm.type = type;
-    this.router.EntityForm.action = action;
-    this.router.EntityForm.toDeleteName = toDeleteName;
-  }
-  this.emit('updateRehinkDbClient');
-};
+// store.prototype.toggleEntityForm = function(type, action, toDeleteName) {
+//   this.router.EntityForm.show = !this.router.EntityForm.show;
+//   // If turning off EntityForm lets result defaults
+//   if (!this.router.EntityForm.show) {
+//     this.router.EntityForm = {
+//       show: false,
+//       action: 'Add',
+//       type: 'Database',
+//       toDeleteName: '',
+//       errMessage: '',
+//       formElems: {
+//         name: {
+//           valid: true,
+//           value: ''
+//         }
+//       }
+//     };
+//   } else {
+//     this.router.EntityForm.type = type;
+//     this.router.EntityForm.action = action;
+//     this.router.EntityForm.toDeleteName = toDeleteName;
+//   }
+//   this.emit('updateRehinkDbClient');
+// };
 
 // Add favorite
 // store.prototype.addFavorite = function(favorite) {
