@@ -7,7 +7,7 @@ var DbTables = React.createClass({
 
     const dbTableNodes = this.props.database.tables.map((table) => {
       return (
-        <DbTable key={table.name} table={table} database={this.props.database} />
+        <DbTable key={table} table={table} database={this.props.database} />
       );
     });
 

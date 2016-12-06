@@ -132,9 +132,27 @@ export function setDbList(state, databases) {
   return Object.assign({}, state, {selectedConnection: selectedConnectionCopy});
 };
 
-export function setDbTables(state, tables) {
-  const selectedDatabaseCopy = Object.assign({}, state.selectedDatabase, {tables})
-  return Object.assign({}, state, {selectedDatabase: selectedDatabaseCopy});
+export function setDbTables(state, databaseName, tables) {
+
+  console.log('setDbTables tables',tables)
+  console.log("databaseName", databaseName)
+
+  let newDatabase, index;
+  for (var i = 0; i < state.selectedConnection.databases.length; i++) {
+    const database = state.selectedConnection.databases[i];
+    if (database.name === databaseName) {
+      index = i;
+       newDatabase = Object.assign({}, state.selectedConnection.databases[i], {tables})
+    };
+  }
+
+  const head = state.selectedConnection.databases.slice(0, index)
+  const tail = state.selectedConnection.databases.slice(index+1)
+  const databases = head.concat([newDatabase]).concat(tail);
+
+  const selectedConnectionCopy = Object.assign({}, state.selectedConnection, {databases});
+
+  return Object.assign({}, state, {selectedConnection: selectedConnectionCopy});
 };
 
 export function hideOpenMenus(state, propsToSet) {

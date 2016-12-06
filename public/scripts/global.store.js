@@ -222,23 +222,23 @@ store.prototype.deleteFavorite = function(favorite) {
 };
 
 // Show Tables
-store.prototype.updateDbTables = function(database) {
-  // Get table list from rethink service
-  RethinkDbService.getTableList(this.selectedFavorite.dbConnection, database.name).then((tableList) => {
-    // Wipe out previous tables
-    database.tables = [];
+// store.prototype.updateDbTables = function(database) {
+//   // Get table list from rethink service
+//   RethinkDbService.getTableList(this.selectedFavorite.dbConnection, database.name).then((tableList) => {
+//     // Wipe out previous tables
+//     database.tables = [];
 
-    // Build up a table object and push to tables array on database
-    for (var i = 0; i < tableList.length; i++) {
-      database.tables.push({
-        name: tableList[i]
-      });
-    }
+//     // Build up a table object and push to tables array on database
+//     for (var i = 0; i < tableList.length; i++) {
+//       database.tables.push({
+//         name: tableList[i]
+//       });
+//     }
 
-    this.selectedDatabase = database;
-    this.emit('updateRehinkDbClient');
-  });
-};
+//     this.selectedDatabase = database;
+//     this.emit('updateRehinkDbClient');
+//   });
+// };
 
 // Update Selected Table
 store.prototype.updateSelectedTable = function(databaseName, tableName) {

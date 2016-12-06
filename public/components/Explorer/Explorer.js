@@ -11,7 +11,7 @@ const Explorer = ({
   selectedTable
 }) => {
 
-  console.log('connections',connections);
+  // console.log('connections',connections);
 
   let content = (
     <div className="explorer-container">
@@ -72,7 +72,7 @@ const Explorer = ({
 };
 
 const mapStateToProps = (state) => {
-  console.log('Explorer  mapStateToProps', state.main);
+  // console.log('Explorer  mapStateToProps', state.main);
   return {
     connections: state.main.connections || [],
     selectedConnection: state.main.selectedConnection,

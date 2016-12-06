@@ -12,7 +12,8 @@ import {
   hideConnectionForm,
   setDbConnection,
   setDbList,
-  hideOpenMenus
+  hideOpenMenus,
+  setDbTables
 } from './core';
 
 function reducer(state = {}, action) {
@@ -45,6 +46,11 @@ function reducer(state = {}, action) {
       return setDbConnection(state, action.dbConnection);
     case 'SET_DB_LIST':
       return setDbList(state, action.databases);
+    // case 'SET_SELECTED_DB':
+    //   return setSelectedDb(state, action.database);
+    case 'SET_DB_TABLES':
+      console.log("action.database.name", action.database.name)
+      return setDbTables(state, action.database.name, action.tables);
   }
   return state;
 }
