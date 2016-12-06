@@ -310,7 +310,6 @@ describe('Application Logic', () => {
     });
   });
 
-  //Todo: remove tables array from databases
   describe('setDbList', () => {
     it('setDbList should add databases array to selectedConnection object', () => {
       const state = {
@@ -356,7 +355,7 @@ describe('Application Logic', () => {
   });
 
   describe('setDbTables', () => {
-    it('should add tables array to selectedDatabase object', () => {
+    it('should add tables array to appropriate database object', () => {
       const state = {
         email: 'cassie@codehangar.io',
         selectedConnection: {
@@ -366,14 +365,18 @@ describe('Application Logic', () => {
           identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
           index: 0,
           name: "rethink-tut",
-          port: "32769"
-        },
-        selectedDatabase: {
-          name: 'Test'
+          port: "32769",
+          databases: [{
+            name: 'DB1',
+            tables: []
+          }, {
+            name: 'DB2',
+            tables: []
+          }]
         }
       };
-      const tables = ['Test', 'Test2'];
-      let nextState = setDbTables(state, tables);
+      const tables = ['Table1', 'Table2'];
+      let nextState = setDbTables(state, state.selectedConnection.databases[0].name, tables);
       expect(nextState).to.deep.equal({
         email: 'cassie@codehangar.io',
         selectedConnection: {
@@ -383,11 +386,57 @@ describe('Application Logic', () => {
           identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
           index: 0,
           name: "rethink-tut",
-          port: "32769"
-        },
-        selectedDatabase: {
-          name: 'Test',
-          tables: ['Test', 'Test2']
+          port: "32769",
+          databases: [{
+            name: 'DB1',
+            tables: ['Table1', 'Table2']
+          }, {
+            name: 'DB2',
+            tables: []
+          }]
+        }
+      });
+    });
+
+    it('should not die when there are no tables in dat base', () => {
+      const state = {
+        email: 'cassie@codehangar.io',
+        selectedConnection: {
+          authKey: "",
+          database: "",
+          host: "192.168.99.100",
+          identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+          index: 0,
+          name: "rethink-tut",
+          port: "32769",
+          databases: [{
+            name: 'DB1',
+            tables: []
+          }, {
+            name: 'DB2',
+            tables: []
+          }]
+        }
+      };
+      const tables = [];
+      let nextState = setDbTables(state, state.selectedConnection.databases[1].name, tables);
+      expect(nextState).to.deep.equal({
+        email: 'cassie@codehangar.io',
+        selectedConnection: {
+          authKey: "",
+          database: "",
+          host: "192.168.99.100",
+          identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+          index: 0,
+          name: "rethink-tut",
+          port: "32769",
+          databases: [{
+            name: 'DB1',
+            tables: []
+          }, {
+            name: 'DB2',
+            tables: []
+          }]
         }
       });
     });
