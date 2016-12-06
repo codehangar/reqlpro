@@ -11,7 +11,9 @@ import {
   setDbTables,
   showConnectionForm,
   hideConnectionForm,
-  hideOpenMenus
+  hideOpenMenus,
+  toggleDatabaseForm,
+  toggleTableForm
 } from '../public/core';
 
 let RethinkDbService;
@@ -477,6 +479,66 @@ describe('Application Logic', () => {
       })
     });
 
+  });
+
+  describe('toggleDatabaseForm', () => {
+    it('should return new state with showDatabaseForm set to true', () => {
+      const state = {
+        email: 'ian@codehangar.io',
+        showDatabaseForm: false
+      };
+
+      const nextState = toggleDatabaseForm(state, true);
+
+      expect(nextState).to.deep.equal({
+        email: 'ian@codehangar.io',
+        showDatabaseForm: true
+      });
+    });
+
+    it('should return new state with showDatabaseForm set to false', () => {
+      const state = {
+        email: 'ian@codehangar.io',
+        showDatabaseForm: true
+      };
+
+      const nextState = toggleDatabaseForm(state, false);
+
+      expect(nextState).to.deep.equal({
+        email: 'ian@codehangar.io',
+        showDatabaseForm: false
+      });
+    });
+  });
+
+  describe('toggleTableForm', () => {
+    it('should return new state with showTableForm set to true', () => {
+      const state = {
+        email: 'ian@codehangar.io',
+        showTableForm: false
+      };
+
+      const nextState = toggleTableForm(state, true);
+
+      expect(nextState).to.deep.equal({
+        email: 'ian@codehangar.io',
+        showTableForm: true
+      });
+    });
+
+    it('should return new state with showTableForm set to false', () => {
+      const state = {
+        email: 'ian@codehangar.io',
+        showTableForm: true
+      };
+
+      const nextState = toggleTableForm(state, false);
+
+      expect(nextState).to.deep.equal({
+        email: 'ian@codehangar.io',
+        showTableForm: false
+      });
+    });
   });
 
 });

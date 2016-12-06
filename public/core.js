@@ -172,3 +172,11 @@ export function hideOpenMenus(state, propsToSet) {
   //if no props passed in return current state
   return state;
 };
+
+export function toggleDatabaseForm (state, showDatabaseForm) {
+  return Object.assign({}, state, {showDatabaseForm});
+};
+
+export function toggleTableForm (state, showTableForm) {
+  return Object.assign({}, state, {showTableForm});
+};
