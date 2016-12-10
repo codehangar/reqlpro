@@ -279,6 +279,43 @@ describe('Application Logic', () => {
       })
 
     })
+
+    it('deletes the selectedConnection if no other connections exist', () => {
+      const state = {
+        email: 'cassie@codehangar.io',
+        selectedConnection: {
+          authKey: "",
+          database: "",
+          host: "192.168.99.100",
+          identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+          index: 0,
+          name: "apple",
+          port: "32769"
+        },
+        connections: [{
+          authKey: "",
+          database: "",
+          host: "192.168.99.100",
+          identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+          index: 0,
+          name: "apple",
+          port: "32769"
+        }]
+      }
+
+      const connectionIndex = 0;
+
+      const nextState = deleteConnection(state, connectionIndex);
+
+      expect(nextState).to.deep.equal({
+        email: 'cassie@codehangar.io',
+        connections:[]
+      })
+    })
+
+    it('sets a new selectedConnection if another connections exist', () => {
+      
+    })
   })
 
   describe('setConnection', () => {
