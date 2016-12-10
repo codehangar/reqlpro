@@ -16,7 +16,7 @@ const Databases = ({
   //   this.state.updateDbTables(database);
   // }
 
-  // console.log('Databases props', selectedConnection);
+  console.log('Databases props selectedConnection', selectedConnection);
   let databaseNodes;
 
   if(selectedConnection && selectedConnection.databases){
@@ -59,7 +59,7 @@ const Databases = ({
 // };
 
 function mapStateToProps(state) {
-  console.log('Databases', state)
+  console.log('Databases', state.main.selectedConnection)
   return {
     connections: state.main.connections,
     selectedConnection: state.main.selectedConnection,
@@ -79,12 +79,6 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(getDbTables(dbConnection, database));
       
     }
-    // onSelectDatabase: (database) => {
-    //   dispatch({
-    //     type: "SET_DB_TABLES",
-    //     database
-    //   })
-    // }
   }
 };
 

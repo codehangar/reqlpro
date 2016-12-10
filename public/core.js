@@ -186,3 +186,24 @@ export function toggleDatabaseForm (state, showDatabaseForm) {
 export function toggleTableForm (state, showTableForm) {
   return Object.assign({}, state, {showTableForm});
 };
+
+export function addDatabase (state, database) {
+
+  let newState = Object.assign({}, state);
+  let databasesCopy;
+  
+  if(state.selectedConnection.databases)
+    databasesCopy = state.selectedConnection.databases.slice(0);
+
+  if(!databasesCopy){
+    databasesCopy = [database];
+  }else{
+    databasesCopy.push(database);
+  }
+
+  newState.selectedConnection.databases = databasesCopy;
+
+  console.log('addDatabase newState', newState);
+
+  return newState;
+};

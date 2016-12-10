@@ -37,7 +37,6 @@ export function getDbList(dbConnection) {
             tables: []
           });
         }
-        console.log('getDbList success, databases', databases)
         dispatch({
           type: 'SET_DB_LIST',
           databases: databases
@@ -59,9 +58,7 @@ export function getDbTables(dbConnection, database) {
   return dispatch => {
     new Promise((resolve, reject) => {
       RethinkDbService.getTableList(dbConnection, database.name).then(function(tables) {
-        
-        console.log("DISPACTING! database", database)
-        console.log("DISPACTING! tables", tables)
+
         dispatch({
           type: 'SET_DB_TABLES',
           database,
@@ -74,6 +71,34 @@ export function getDbTables(dbConnection, database) {
         dispatch({
           type: 'SET_DB_TABLES',
           tables: err
+        });
+      });
+    });
+  }
+}
+
+export function createDatabase(dbConnection, database) {
+  console.log("createDatabase", database)
+  return dispatch => {
+    new Promise((resolve, reject) => {
+      RethinkDbService.createDb(dbConnection, database.name).then(function(results) {
+
+        const newDb = {
+          name: database.name,
+          tables: []
+        }
+
+        dispatch({
+          type: 'ADD_TO_DB_LIST',
+          database: newDb,
+        });
+
+        resolve(results);
+      }).catch(function(err) {
+        console.log('createDb error', err)
+        dispatch({
+          type: 'ADD_TO_DB_LIST',
+          database: err,
         });
       });
     });

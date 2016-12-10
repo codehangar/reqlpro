@@ -2,10 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Field } from 'react-redux-form';
 import { Modal, Button } from 'react-bootstrap';
+import {createDatabase} from '../../actions';
 
 const DatabaseForm = ({
   showDatabaseForm,
   selectedDatabase,
+  dbConnection,
   onClose,
   onSave
 }) => {
@@ -15,12 +17,10 @@ const DatabaseForm = ({
         <Modal.Title>Add Database</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <h4>Text in a modal</h4>
-        <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
         <form>
           <div>
             <Field model="main.selectedDatabase.name">
-              <label>Name</label>
+              <label>Database Name</label>
               <input className="form-control" id="name" type="text" />
             </Field>
           </div>
@@ -28,7 +28,7 @@ const DatabaseForm = ({
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={onClose} bsStyle="default" className="pull-left">Cancel</Button>
-        <Button onClick={() => onSave(selectedDatabase)} bsStyle="primary" className="pull-right">Save</Button>
+        <Button onClick={() => onSave(dbConnection, selectedDatabase)} bsStyle="primary" className="pull-right">Save</Button>
       </Modal.Footer>
     </Modal>
   );
@@ -39,7 +39,8 @@ function mapStateToProps(state) {
   console.log('DatabaseForm  mapStateToProps', state.main);
   return {
     showDatabaseForm: state.main.showDatabaseForm,
-    selectedDatabase: state.main.selectedDatabase
+    selectedDatabase: state.main.selectedDatabase,
+    dbConnection: state.main.dbConnection,
   };
 }
 
@@ -51,12 +52,13 @@ const mapDispatchToProps = (dispatch) => {
         showDatabaseForm: false
       });
     },
-    onSave: (database) => {
+    onSave: (dbConnection, database) => {
       console.log('database form', database);
-      dispatch({
-        type: "ADD_DATABASE",
-        database
-      });
+      dispatch(createDatabase(dbConnection, database));
+      // dispatch({
+      //   type: "ADD_DATABASE",
+      //   database
+      // });
     }
   }
 };

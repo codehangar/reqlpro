@@ -13,7 +13,8 @@ import {
   hideConnectionForm,
   hideOpenMenus,
   toggleDatabaseForm,
-  toggleTableForm
+  toggleTableForm,
+  addDatabase
 } from '../public/core';
 
 let RethinkDbService;
@@ -403,6 +404,12 @@ describe('Application Logic', () => {
     });
   });
 
+  describe('createDatabase', () => {
+    it('createDatabase', () => {
+
+    })
+  })
+
   describe('setDbList', () => {
     it('setDbList should add databases array to selectedConnection object', () => {
       const state = {
@@ -629,6 +636,48 @@ describe('Application Logic', () => {
         email: 'ian@codehangar.io',
         showTableForm: false
       });
+    });
+  });
+
+  describe('addDatabase', () => {
+    it('add database object to selectedConnection databases array', () => {
+      const state = {
+        email: 'cassie@codehangar.io',
+        selectedConnection: {
+          authKey: "",
+          database: "",
+          host: "192.168.99.100",
+          identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+          index: 0,
+          name: "apple",
+          port: "32769"
+        }
+      }
+
+      const database = {
+        name: 'new',
+        tables:[]
+      }
+
+      let nextState = addDatabase(state, database);
+
+      expect(nextState).to.deep.equal({
+        email: 'cassie@codehangar.io',
+        selectedConnection: {
+          authKey: "",
+          database: "",
+          host: "192.168.99.100",
+          identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+          index: 0,
+          name: "apple",
+          port: "32769",
+          databases:[{
+            name: 'new',
+            tables:[]
+          }]
+        }
+      });
+
     });
   });
 

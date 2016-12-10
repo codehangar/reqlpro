@@ -15,7 +15,8 @@ import {
   hideOpenMenus,
   setDbTables,
   toggleDatabaseForm,
-  toggleTableForm
+  toggleTableForm,
+  addDatabase
 } from './core';
 
 function reducer(state = {}, action) {
@@ -52,6 +53,8 @@ function reducer(state = {}, action) {
       return setDbTables(state, action.database.name, action.tables);
     case 'TOGGLE_DATABASE_FORM':
       return toggleDatabaseForm(state, action.showDatabaseForm);
+    case 'ADD_TO_DB_LIST':
+      return toggleDatabaseForm(addDatabase(state, action.database), false);
     case 'TOGGLE_TABLE_FORM':
       return toggleTableForm(state, action.showTableForm);
   }
