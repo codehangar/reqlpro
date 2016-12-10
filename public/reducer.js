@@ -51,7 +51,7 @@ function reducer(state = {}, action) {
     case 'SET_DB_TABLES':
       return setDbTables(state, action.database.name, action.tables);
     case 'TOGGLE_DATABASE_FORM':
-      return toggleDatabaseForm,(state, action.showDatabaseForm);
+      return toggleDatabaseForm(state, action.showDatabaseForm);
     case 'TOGGLE_TABLE_FORM':
       return toggleTableForm(state, action.showTableForm);
   }
