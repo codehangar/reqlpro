@@ -99,18 +99,27 @@ export function updateConnection(state, connection){
 }
 
 export function deleteConnection(state, id){
-  console.log('core deleteConnection', id);
-
+  //copy state
+  let newState = Object.assign({}, state);
+  //copy connections
   const connectionsCopy = state.connections.slice(0);
-
+  
+  //remove connection with appropriate id from connections copy
   connectionsCopy.forEach( (c, i) => {
     if (c.index === id){
       connectionsCopy.splice(i, 1);
     }
   })
 
-  const newState = Object.assign({}, state, {connections: connectionsCopy})
+  //remove or set new selectedConnection
+  if(state.selectedConnection && connectionsCopy.length == 0){
+    newState.selectedConnection = Object.assign({}, state.selectedConnection);
+    delete newState.selectedConnection;
+  }else if(state.selectedConnection){
+    newState = setConnection(newState, connectionsCopy[0]);
+  }
 
+  newState = Object.assign({}, newState, {connections: connectionsCopy})
   return newState;
 }
 
@@ -133,9 +142,6 @@ export function setDbList(state, databases) {
 };
 
 export function setDbTables(state, databaseName, tables) {
-
-  console.log('setDbTables tables',tables)
-  console.log("databaseName", databaseName)
 
   let newDatabase, index;
   for (var i = 0; i < state.selectedConnection.databases.length; i++) {
