@@ -18,7 +18,8 @@ import {
   toggleTableForm,
   addDatabase,
   setDbToEdit,
-  addTable
+  addTable,
+  setSelectedTable
 } from './core';
 
 function reducer(state = {}, action) {
@@ -63,6 +64,8 @@ function reducer(state = {}, action) {
       return toggleTableForm(state, action.showTableForm);
     case 'SET_DB_TO_EDIT':
       return setDbToEdit(state, action.database);
+    case 'SET_SELECTED_TABLE':
+      return setSelectedTable(state, action.databaseName, action.tableName);
   }
   return state;
 }
