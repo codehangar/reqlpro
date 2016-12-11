@@ -201,8 +201,6 @@ export function addDatabase (state, database) {
     databasesCopy.push(database);
   }
 
-  // newState.selectedConnection.databases = databasesCopy;
-
   const newSelectedConnection = Object.assign({}, state.selectedConnection, { databases: databasesCopy});
 
   const newState = Object.assign({}, state, { selectedConnection: newSelectedConnection});

@@ -46,9 +46,6 @@ const Database = React.createClass({
 
 function mapStateToProps(state) {
   return {
-    // connections: state.main.connections,
-    // selectedConnection: state.main.selectedConnection,
-    // selectedTable: state.main.selectedDatabase,
     dbConnection: state.main.dbConnection
   };
 }

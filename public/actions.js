@@ -108,7 +108,6 @@ export function createTable(dbConnection, database, table) {
 
         // Add table to selectedDatabase list
         const newTable = { name: table.name };
-        // this.toggleEntityForm();
 
         dispatch({
           type: 'ADD_TO_TABLE_LIST',
