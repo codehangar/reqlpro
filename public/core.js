@@ -8,7 +8,9 @@ export function setState(state, newState) {
 
 export function setConnections(state, connections) {
   return Object.assign({}, state, {
-    main: {connections}
+    main: {
+      connections
+    }
   });
 }
 
@@ -82,44 +84,50 @@ export function addConnection(state, connection) {
 
   const selectedConnectionState = setConnection(state, newConnection)
 
-  return Object.assign({}, state, selectedConnectionState, {connections});
+  return Object.assign({}, state, selectedConnectionState, {
+    connections
+  });
 }
 
-export function updateConnection(state, connection){
+export function updateConnection(state, connection) {
   // console.log('core updateConnection', connection);
   const connectionsCopy = state.connections.slice(0);
-  connectionsCopy.forEach( (c, i) => {
-    if (c.index === connection.index){
+  connectionsCopy.forEach((c, i) => {
+    if (c.index === connection.index) {
       connectionsCopy[i] = connection
     }
   })
 
-  const newState = Object.assign({}, state, {connections: connectionsCopy})
+  const newState = Object.assign({}, state, {
+    connections: connectionsCopy
+  })
   return newState;
 }
 
-export function deleteConnection(state, id){
+export function deleteConnection(state, id) {
   //copy state
   let newState = Object.assign({}, state);
   //copy connections
   const connectionsCopy = state.connections.slice(0);
-  
+
   //remove connection with appropriate id from connections copy
-  connectionsCopy.forEach( (c, i) => {
-    if (c.index === id){
+  connectionsCopy.forEach((c, i) => {
+    if (c.index === id) {
       connectionsCopy.splice(i, 1);
     }
   })
 
   //remove or set new selectedConnection
-  if(state.selectedConnection && connectionsCopy.length == 0){
+  if (state.selectedConnection && connectionsCopy.length == 0) {
     newState.selectedConnection = Object.assign({}, state.selectedConnection);
     delete newState.selectedConnection;
-  }else if(state.selectedConnection){
+  } else if (state.selectedConnection) {
     newState = setConnection(newState, connectionsCopy[0]);
   }
 
-  newState = Object.assign({}, newState, {connections: connectionsCopy})
+  newState = Object.assign({}, newState, {
+    connections: connectionsCopy
+  })
   return newState;
 }
 
@@ -137,8 +145,12 @@ export function setDbConnection(state, dbConnection) {
 };
 
 export function setDbList(state, databases) {
-  const selectedConnectionCopy = Object.assign({}, state.selectedConnection, {databases})
-  return Object.assign({}, state, {selectedConnection: selectedConnectionCopy});
+  const selectedConnectionCopy = Object.assign({}, state.selectedConnection, {
+    databases
+  })
+  return Object.assign({}, state, {
+    selectedConnection: selectedConnectionCopy
+  });
 };
 
 export function setDbTables(state, databaseName, tables) {
@@ -148,27 +160,33 @@ export function setDbTables(state, databaseName, tables) {
     const database = state.selectedConnection.databases[i];
     if (database.name === databaseName) {
       index = i;
-       newDatabase = Object.assign({}, state.selectedConnection.databases[i], {tables})
+      newDatabase = Object.assign({}, state.selectedConnection.databases[i], {
+        tables
+      })
     };
   }
 
   const head = state.selectedConnection.databases.slice(0, index)
-  const tail = state.selectedConnection.databases.slice(index+1)
+  const tail = state.selectedConnection.databases.slice(index + 1)
   const databases = head.concat([newDatabase]).concat(tail);
 
-  const selectedConnectionCopy = Object.assign({}, state.selectedConnection, {databases});
+  const selectedConnectionCopy = Object.assign({}, state.selectedConnection, {
+    databases
+  });
 
-  return Object.assign({}, state, {selectedConnection: selectedConnectionCopy});
+  return Object.assign({}, state, {
+    selectedConnection: selectedConnectionCopy
+  });
 };
 
 export function hideOpenMenus(state, propsToSet) {
 
   //if props passed in, return new state with these props set to false
-  if(propsToSet){
+  if (propsToSet) {
     let updatedProps = {};
     propsToSet.forEach(
       (prop) => {
-        if(state[prop]){
+        if (state[prop]) {
           updatedProps[prop] = false;
         }
       }
@@ -179,57 +197,96 @@ export function hideOpenMenus(state, propsToSet) {
   return state;
 };
 
-export function toggleDatabaseForm (state, showDatabaseForm) {
-  return Object.assign({}, state, {showDatabaseForm});
+export function toggleDatabaseForm(state, showDatabaseForm) {
+  return Object.assign({}, state, {
+    showDatabaseForm
+  });
 };
 
-export function toggleTableForm (state, showTableForm) {
-  return Object.assign({}, state, {showTableForm});
+export function toggleTableForm(state, showTableForm) {
+  return Object.assign({}, state, {
+    showTableForm
+  });
 };
 
-export function addDatabase (state, database) {
+export function addDatabase(state, database) {
 
   // let newState = Object.assign({}, state);
   let databasesCopy;
-  
-  if(state.selectedConnection.databases)
+
+  if (state.selectedConnection.databases)
     databasesCopy = state.selectedConnection.databases.slice(0);
 
-  if(!databasesCopy){
+  if (!databasesCopy) {
     databasesCopy = [database];
-  }else{
+  } else {
     databasesCopy.push(database);
   }
 
-  const newSelectedConnection = Object.assign({}, state.selectedConnection, { databases: databasesCopy});
+  const newSelectedConnection = Object.assign({}, state.selectedConnection, {
+    databases: databasesCopy
+  });
 
-  const newState = Object.assign({}, state, { selectedConnection: newSelectedConnection});
+  const newState = Object.assign({}, state, {
+    selectedConnection: newSelectedConnection
+  });
 
   return newState;
 };
 
-export function addTable (state, database, table) {
+export function addTable(state, database, table) {
 
   let databasesCopy = state.selectedConnection.databases.slice(0);
   let newDatabase;
-  
+
   databasesCopy.forEach(db => {
     console.log(db.name, database.name, db.name == database.name);
-    if(db.name == database.name)
-        newDatabase = db;
+    if (db.name == database.name)
+      newDatabase = db;
   });
 
-  console.log("addTable newDatabase, databasesCopy",newDatabase, databasesCopy);
+  console.log("addTable newDatabase, databasesCopy", newDatabase, databasesCopy);
   newDatabase.tables.push(table.name);
 
-  const newSelectedConnection = Object.assign({}, state.selectedConnection, { databases: databasesCopy});
+  const newSelectedConnection = Object.assign({}, state.selectedConnection, {
+    databases: databasesCopy
+  });
 
-  const newState = Object.assign({}, state, { selectedConnection: newSelectedConnection});
+  const newState = Object.assign({}, state, {
+    selectedConnection: newSelectedConnection
+  });
 
   return newState;
 };
 
-export function setDbToEdit(state, database){
-  let newState = Object.assign({}, state, {dbToEdit: database});
+export function setDbToEdit(state, database) {
+  let newState = Object.assign({}, state, {
+    dbToEdit: database
+  });
+  return newState;
+}
+
+export function setSelectedTable(state, databaseName, tableName) {
+  let selectedTable = {
+    databaseName: databaseName,
+    name: tableName,
+    // type: this.selectedTable ? this.selectedTable.type !== 'code' ? this.selectedTable.type : 'table' : 'table',
+    // Todo: maintain type from previous selectedTable
+    type:'table',
+    data: [],
+    loading: true,
+    codeBody: "{\n  \n}",
+    codeAction: 'add',
+    codeBodyError: null,
+    query: {
+      page: 1,
+      // limit: this.selectedTable ? this.selectedTable.query.limit : 5,
+      // Todo: maintain limit from previous selectedTable
+      limit: 5,
+      sort: 'id',
+      direction: 1 // ASC = 1, DESC = 0
+    }
+  };
+  let newState = Object.assign({}, state, {selectedTable});
   return newState;
 }

@@ -16,7 +16,8 @@ import {
   toggleTableForm,
   addDatabase,
   addTable,
-  setDbToEdit
+  setDbToEdit,
+  setSelectedTable
 } from '../public/core';
 
 let RethinkDbService;
@@ -738,6 +739,49 @@ describe('Application Logic', () => {
       expect(nextState).to.deep.equal({
         dbToEdit: {
           name: 'ReQL'
+        }
+      });
+    });
+  });
+
+  describe('setSelectedTable', () => {
+    it('sets selectedTable from database name and table name', () => {
+      const state = {}
+      const table = {
+        databaseName: 'databaseName',
+        name: 'tableName',
+        type: 'table',
+        data: [],
+        loading: true,
+        codeBody: "{\n  \n}",
+        codeAction: 'add',
+        codeBodyError: null,
+        query: {
+          page: 1,
+          limit: 5,
+          sort: 'id',
+          direction: 1 // ASC = 1, DESC = 0
+        }
+      };
+
+      const nextState = setSelectedTable(state, 'databaseName', 'tableName');
+
+      expect(nextState).to.deep.equal({
+        selectedTable: {
+          databaseName: 'databaseName',
+          name: 'tableName',
+          type: 'table',
+          data: [],
+          loading: true,
+          codeBody: "{\n  \n}",
+          codeAction: 'add',
+          codeBodyError: null,
+          query: {
+            page: 1,
+            limit: 5,
+            sort: 'id',
+            direction: 1 // ASC = 1, DESC = 0
+          }
         }
       });
     });

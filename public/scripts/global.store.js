@@ -62,32 +62,32 @@ util.inherits(store, EventEmitter); // Inherit eventemitter prototype
 // }
 
 // Update selected favorite
-store.prototype.updateSelectedFavorite = function(favorite) {
-  var _this = this;
-  _this.selectedFavorite = JSON.parse(JSON.stringify(favorite));
-  _this.selectedFavorite.databases = [];
-  _this.selectedTable = null;
-  RethinkDbService.getConnection(favorite.host, favorite.port, favorite.authKey).then(function(conn) {
-    _this.selectedFavorite.dbConnection = conn;
-    RethinkDbService.getDbList(conn).then(function(dblist) {
-      var databases = [];
-      for (var i = 0; i < dblist.length; i++) {
-        databases.push({
-          name: dblist[i],
-          tables: []
-        });
-      }
-      _this.selectedFavorite.databases = databases;
-      _this.emit('updateRehinkDbClient');
-    }).catch(function(err) {
-      _this.selectedFavorite.dbConnection = err;
-      _this.emit('updateRehinkDbClient');
-    });
-  }).catch(function(err) {
-    _this.selectedFavorite.dbConnection = err;
-    _this.emit('updateRehinkDbClient');
-  });
-};
+// store.prototype.updateSelectedFavorite = function(favorite) {
+//   var _this = this;
+//   _this.selectedFavorite = JSON.parse(JSON.stringify(favorite));
+//   _this.selectedFavorite.databases = [];
+//   _this.selectedTable = null;
+//   RethinkDbService.getConnection(favorite.host, favorite.port, favorite.authKey).then(function(conn) {
+//     _this.selectedFavorite.dbConnection = conn;
+//     RethinkDbService.getDbList(conn).then(function(dblist) {
+//       var databases = [];
+//       for (var i = 0; i < dblist.length; i++) {
+//         databases.push({
+//           name: dblist[i],
+//           tables: []
+//         });
+//       }
+//       _this.selectedFavorite.databases = databases;
+//       _this.emit('updateRehinkDbClient');
+//     }).catch(function(err) {
+//       _this.selectedFavorite.dbConnection = err;
+//       _this.emit('updateRehinkDbClient');
+//     });
+//   }).catch(function(err) {
+//     _this.selectedFavorite.dbConnection = err;
+//     _this.emit('updateRehinkDbClient');
+//   });
+// };
 
 // Update CodeBody for Code view
 store.prototype.updateCodeBody = function(body) {
@@ -178,48 +178,48 @@ store.prototype.toggleConfirmRowDelete = function(row) {
 // };
 
 // Edit favorite
-store.prototype.editFavorite = function(favorite) {
-  this.userConfig.favorites[favorite.index] = {
-    name: favorite.name.value,
-    host: favorite.host.value,
-    port: favorite.port.value,
-    database: favorite.database.value,
-    authKey: favorite.authKey.value,
-    identicon: jdenticon.toSvg(md5(favorite.name.value), 40),
-    index: favorite.index
-  };
-  // Lets run update selected favorite since thats what we are editing
-  if (this.selectedFavorite.index === favorite.index) {
-    this.updateSelectedFavorite(this.userConfig.favorites[favorite.index]);
-  }
-  this.emit('updateFavorites');
-  ipcRenderer.send('writeConfigFile', this.userConfig);
-};
+// store.prototype.editFavorite = function(favorite) {
+//   this.userConfig.favorites[favorite.index] = {
+//     name: favorite.name.value,
+//     host: favorite.host.value,
+//     port: favorite.port.value,
+//     database: favorite.database.value,
+//     authKey: favorite.authKey.value,
+//     identicon: jdenticon.toSvg(md5(favorite.name.value), 40),
+//     index: favorite.index
+//   };
+//   // Lets run update selected favorite since thats what we are editing
+//   if (this.selectedFavorite.index === favorite.index) {
+//     this.updateSelectedFavorite(this.userConfig.favorites[favorite.index]);
+//   }
+//   this.emit('updateFavorites');
+//   ipcRenderer.send('writeConfigFile', this.userConfig);
+// };
 
 // Edit favorite
-store.prototype.deleteFavorite = function(favorite) {
-  this.userConfig.favorites.splice(favorite.index, 1);
-  // Lets update selected favorite since we just deleted our selected favorite
-  if (this.selectedFavorite.index === favorite.index) {
-    // If there are any favorites left lets do the first item in array
-    if (this.userConfig.favorites.length) {
-      this.updateSelectedFavorite(this.userConfig.favorites[0]);
-    } else {
-      // If no favorites lets set to default selectedFavorite object
-      this.selectedFavorite = {
-        databases: [],
-        dbConnection: null
-      };
-      this.selectedTable = null;
-    }
-  }
-  // We need to loop through and update the index field on all the favorites after a delete
-  for (var i = 0; i < this.userConfig.favorites.length; i++) {
-    this.userConfig.favorites[i].index = i;
-  }
-  this.emit('updateFavorites');
-  ipcRenderer.send('writeConfigFile', this.userConfig);
-};
+// store.prototype.deleteFavorite = function(favorite) {
+//   this.userConfig.favorites.splice(favorite.index, 1);
+//   // Lets update selected favorite since we just deleted our selected favorite
+//   if (this.selectedFavorite.index === favorite.index) {
+//     // If there are any favorites left lets do the first item in array
+//     if (this.userConfig.favorites.length) {
+//       this.updateSelectedFavorite(this.userConfig.favorites[0]);
+//     } else {
+//       // If no favorites lets set to default selectedFavorite object
+//       this.selectedFavorite = {
+//         databases: [],
+//         dbConnection: null
+//       };
+//       this.selectedTable = null;
+//     }
+//   }
+//   // We need to loop through and update the index field on all the favorites after a delete
+//   for (var i = 0; i < this.userConfig.favorites.length; i++) {
+//     this.userConfig.favorites[i].index = i;
+//   }
+//   this.emit('updateFavorites');
+//   ipcRenderer.send('writeConfigFile', this.userConfig);
+// };
 
 // Show Tables
 // store.prototype.updateDbTables = function(database) {
@@ -241,25 +241,25 @@ store.prototype.deleteFavorite = function(favorite) {
 // };
 
 // Update Selected Table
-store.prototype.updateSelectedTable = function(databaseName, tableName) {
-  this.selectedTable = {
-    databaseName: databaseName,
-    name: tableName,
-    type: this.selectedTable ? this.selectedTable.type !== 'code' ? this.selectedTable.type : 'table' : 'table',
-    data: [],
-    loading: true,
-    codeBody: "{\n  \n}",
-    codeAction: 'add',
-    codeBodyError: null,
-    query: {
-      page: 1,
-      limit: this.selectedTable ? this.selectedTable.query.limit : 5,
-      sort: 'id',
-      direction: 1 // ASC = 1, DESC = 0
-    }
-  };
-  this.emit('updateRehinkDbClient');
-};
+// store.prototype.updateSelectedTable = function(databaseName, tableName) {
+//   this.selectedTable = {
+//     databaseName: databaseName,
+//     name: tableName,
+//     type: this.selectedTable ? this.selectedTable.type !== 'code' ? this.selectedTable.type : 'table' : 'table',
+//     data: [],
+//     loading: true,
+//     codeBody: "{\n  \n}",
+//     codeAction: 'add',
+//     codeBodyError: null,
+//     query: {
+//       page: 1,
+//       limit: this.selectedTable ? this.selectedTable.query.limit : 5,
+//       sort: 'id',
+//       direction: 1 // ASC = 1, DESC = 0
+//     }
+//   };
+//   this.emit('updateRehinkDbClient');
+// };
 
 // Update Page Limit
 store.prototype.updatePageLimit = function(limit) {
@@ -546,39 +546,39 @@ store.prototype.refreshExplorerBody = function() {
 };
 
 // Save Database
-store.prototype.saveDatabase = function(dbName) {
-  const conn = this.selectedFavorite.dbConnection;
-  return new Promise((resolve, reject) => {
-    RethinkDbService.createDb(conn, dbName).then((results) => {
-      // Add database to selectedfavorite list
-      this.selectedFavorite.databases.push({
-        name: dbName,
-        tables: []
-      });
-      this.toggleEntityForm();
-      resolve();
-    }).catch((err) => {
-      reject(err);
-    });
-  });
-};
+// store.prototype.saveDatabase = function(dbName) {
+//   const conn = this.selectedFavorite.dbConnection;
+//   return new Promise((resolve, reject) => {
+//     RethinkDbService.createDb(conn, dbName).then((results) => {
+//       // Add database to selectedfavorite list
+//       this.selectedFavorite.databases.push({
+//         name: dbName,
+//         tables: []
+//       });
+//       this.toggleEntityForm();
+//       resolve();
+//     }).catch((err) => {
+//       reject(err);
+//     });
+//   });
+// };
 
 // Save Table
-store.prototype.saveTable = function(tableName) {
-  const conn = this.selectedFavorite.dbConnection;
-  return new Promise((resolve, reject) => {
-    RethinkDbService.createTable(conn, this.selectedDatabase.name, tableName, 'id').then((results) => {
-      // Add table to selectedDatabase list
-      this.selectedDatabase.tables.push({
-        name: tableName
-      });
-      this.toggleEntityForm();
-      resolve();
-    }).catch((err) => {
-      reject(err);
-    });
-  });
-};
+// store.prototype.saveTable = function(tableName) {
+//   const conn = this.selectedFavorite.dbConnection;
+//   return new Promise((resolve, reject) => {
+//     RethinkDbService.createTable(conn, this.selectedDatabase.name, tableName, 'id').then((results) => {
+//       // Add table to selectedDatabase list
+//       this.selectedDatabase.tables.push({
+//         name: tableName
+//       });
+//       this.toggleEntityForm();
+//       resolve();
+//     }).catch((err) => {
+//       reject(err);
+//     });
+//   });
+// };
 
 // Delete Database
 store.prototype.deleteDatabase = function(dbName) {
