@@ -11,10 +11,6 @@ const Databases = ({
   dbConnection,
   onDatabaseClick
 }) => {
-  
-  // function selectDatabase(database) {
-  //   this.state.updateDbTables(database);
-  // }
 
   console.log('Databases props selectedConnection', selectedConnection);
   let databaseNodes;
@@ -54,9 +50,6 @@ const Databases = ({
 
 
 };
-// Databases.contextTypes = {
-//   store: React.PropTypes.object
-// };
 
 function mapStateToProps(state) {
   console.log('Databases', state.main.selectedConnection)

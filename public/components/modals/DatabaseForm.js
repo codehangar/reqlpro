@@ -53,12 +53,7 @@ const mapDispatchToProps = (dispatch) => {
       });
     },
     onSave: (dbConnection, database) => {
-      console.log('database form', database);
       dispatch(createDatabase(dbConnection, database));
-      // dispatch({
-      //   type: "ADD_DATABASE",
-      //   database
-      // });
     }
   }
 };

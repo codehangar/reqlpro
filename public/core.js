@@ -189,7 +189,7 @@ export function toggleTableForm (state, showTableForm) {
 
 export function addDatabase (state, database) {
 
-  let newState = Object.assign({}, state);
+  // let newState = Object.assign({}, state);
   let databasesCopy;
   
   if(state.selectedConnection.databases)
@@ -201,9 +201,31 @@ export function addDatabase (state, database) {
     databasesCopy.push(database);
   }
 
-  newState.selectedConnection.databases = databasesCopy;
+  // newState.selectedConnection.databases = databasesCopy;
 
-  console.log('addDatabase newState', newState);
+  const newSelectedConnection = Object.assign({}, state.selectedConnection, { databases: databasesCopy});
+
+  const newState = Object.assign({}, state, { selectedConnection: newSelectedConnection});
+
+  return newState;
+};
+
+export function addTable (state, databaseName, table) {
+
+  let databasesCopy = state.selectedConnection.databases.slice(0);
+  let newDatabase;
+  
+  databasesCopy.forEach(db => {
+    console.log(db.name == databaseName);
+    if(db.name == databaseName)
+        newDatabase = db;
+  });
+
+  newDatabase.tables.push(table);
+
+  const newSelectedConnection = Object.assign({}, state.selectedConnection, { databases: databasesCopy});
+
+  const newState = Object.assign({}, state, { selectedConnection: newSelectedConnection});
 
   return newState;
 };

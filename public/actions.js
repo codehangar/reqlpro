@@ -104,3 +104,30 @@ export function createDatabase(dbConnection, database) {
     });
   }
 }
+
+export function createTable(dbConnection, selectedDatabase, table) {
+  console.log("createTable", table)
+  return dispatch => {
+    new Promise((resolve, reject) => {
+      RethinkDbService.createTable(dbConnection, selectedDatabase.name, table.name, 'id').then((results) => {
+
+        // Add table to selectedDatabase list
+        const newTable = { name: tableName };
+        // this.toggleEntityForm();
+
+        dispatch({
+          type: 'ADD_TO_TABLE_LIST',
+          table: newTable,
+        });
+
+        resolve(results);
+      }).catch(function(err) {
+        console.log('createDb error', err)
+        dispatch({
+          type: 'ADD_TO_DB_LIST',
+          database: err,
+        });
+      });
+    });
+  }
+}

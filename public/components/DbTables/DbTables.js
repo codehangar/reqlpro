@@ -14,7 +14,7 @@ var DbTables = React.createClass({
     return (
       <div className="db-tables noselect">
         {dbTableNodes}
-        <AddDbTable />
+        <AddDbTable onAddTable={()=>this.props.onAddTable(this.props.database)}/>
       </div>
     );
   }

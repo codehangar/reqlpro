@@ -2,12 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Field } from 'react-redux-form';
 import { Modal, Button } from 'react-bootstrap';
+import {createTable} from '../../actions';
 
 const TableForm = ({
   showTableForm,
   selectedTable,
   onClose,
-  onSave
+  onSave,
+  selectedDatabase,
+  dbConnection
 }) => {
   return (
     <Modal show={showTableForm} onHide={onClose}>
@@ -26,7 +29,7 @@ const TableForm = ({
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={onClose} bsStyle="default" className="pull-left">Cancel</Button>
-        <Button onClick={() => onSave(selectedTable)} bsStyle="primary" className="pull-right">Save</Button>
+        <Button onClick={() => onSave(dbConnection, selectedDatabase, selectedTable)} bsStyle="primary" className="pull-right">Save</Button>
       </Modal.Footer>
     </Modal>
   );
@@ -37,7 +40,9 @@ function mapStateToProps(state) {
   console.log('TableForm  mapStateToProps', state.main);
   return {
     showTableForm: state.main.showTableForm,
-    selectedTable: state.main.selectedTable
+    selectedDatabase: state.main.selectedDatabase,
+    selectedTable: state.main.selectedTable,
+    dbConnection: state.main.dbConnection,
   };
 }
 
@@ -49,11 +54,12 @@ const mapDispatchToProps = (dispatch) => {
         showTableForm: false
       });
     },
-    onSave: (table) => {
-      console.log('table form', table);
+    onSave: (dbConnection, selectedDatabase, table) => {
+      console.log('save table selectedDatabase ------>',selectedDatabase)
+      dispatch(createTable(dbConnection, selectedDatabase, table));
       dispatch({
-        type: "ADD_TABLE",
-        table
+        type: "TOGGLE_TABLE_FORM",
+        showTableForm: false
       });
     }
   }

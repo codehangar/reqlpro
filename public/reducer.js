@@ -55,7 +55,10 @@ function reducer(state = {}, action) {
       return toggleDatabaseForm(state, action.showDatabaseForm);
     case 'ADD_TO_DB_LIST':
       return toggleDatabaseForm(addDatabase(state, action.database), false);
+    case 'ADD_TO_TABLE_LIST':
+      return addTable(state, action.table);
     case 'TOGGLE_TABLE_FORM':
+      console.log('TOGGLE_TABLE_FORM',action.database);
       return toggleTableForm(state, action.showTableForm);
   }
   return state;
