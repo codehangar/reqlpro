@@ -18,7 +18,8 @@ import {
   addTable,
   setDbToEdit,
   setSelectedTable,
-  updateSelectedTable
+  updateSelectedTable,
+  updateSelectedTablePageLimit
 } from '../public/core';
 
 let RethinkDbService;
@@ -731,7 +732,7 @@ describe('Application Logic', () => {
   });
 
   describe('setDbToEdit', () => {
-    it('addTable', () => {
+    it('sets dbToEdit to main state', () => {
       const state = {}
       const database = {
         name: 'ReQL'
@@ -825,6 +826,49 @@ describe('Application Logic', () => {
           query: {
             page: 1,
             limit: 5,
+            sort: 'id',
+            direction: 1 // ASC = 1, DESC = 0
+          }
+        }
+      });
+    });
+  });
+
+  describe('updateSelectedTablePageLimit', () => {
+    it('updates selectedTable.query.limit to new value', () => {
+      const state = {
+        selectedTable: {
+          databaseName: 'databaseName',
+          name: 'tableName',
+          type: 'table',
+          data: ['stuff'],
+          loading: false,
+          codeBody: "{\n  \n}",
+          codeAction: 'add',
+          codeBodyError: null,
+          query: {
+            page: 1,
+            limit: 5,
+            sort: 'id',
+            direction: 1 // ASC = 1, DESC = 0
+          }
+        }
+      }
+      const limit = '10'
+      const nextState = updateSelectedTablePageLimit(state, limit);
+      expect(nextState).to.deep.equal({
+        selectedTable: {
+          databaseName: 'databaseName',
+          name: 'tableName',
+          type: 'table',
+          data: ['stuff'],
+          loading: false,
+          codeBody: "{\n  \n}",
+          codeAction: 'add',
+          codeBodyError: null,
+          query: {
+            page: 1,
+            limit: 10,
             sort: 'id',
             direction: 1 // ASC = 1, DESC = 0
           }

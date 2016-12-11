@@ -298,4 +298,13 @@ export function updateSelectedTable(state, data) {
   return newState;
 }
 
+export function updateSelectedTablePageLimit(state, limit) {
+  let queryCopy = Object.assign({}, state.selectedTable.query)
+  queryCopy.limit = parseInt(limit);
+  let newSelectedTable = Object.assign({}, state.selectedTable, {query:queryCopy});
+  return Object.assign({}, state, {selectedTable: newSelectedTable});
+}
+
+
+
 
