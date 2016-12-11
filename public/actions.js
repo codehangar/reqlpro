@@ -196,7 +196,7 @@ function getTableData(sort, direction, limit, page, dbConnection, databaseName, 
   }
 }
 
-function getTableData(index, start, end, dbConnection, databaseName, tableName) {
+function getTableDataBetween(index, start, end, dbConnection, databaseName, tableName) {
   console.log('getTableData')
   return dispatch => {
     new Promise((resolve, reject) => {

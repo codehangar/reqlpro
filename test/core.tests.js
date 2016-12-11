@@ -17,7 +17,8 @@ import {
   addDatabase,
   addTable,
   setDbToEdit,
-  setSelectedTable
+  setSelectedTable,
+  updateSelectedTable
 } from '../public/core';
 
 let RethinkDbService;
@@ -773,6 +774,51 @@ describe('Application Logic', () => {
           type: 'table',
           data: [],
           loading: true,
+          codeBody: "{\n  \n}",
+          codeAction: 'add',
+          codeBodyError: null,
+          query: {
+            page: 1,
+            limit: 5,
+            sort: 'id',
+            direction: 1 // ASC = 1, DESC = 0
+          }
+        }
+      });
+    });
+  });
+
+    describe('updateSelectedTable', () => {
+    it('adds table data to selectedTable and sets loading to false', () => {
+      const state = {
+        selectedTable: {
+          databaseName: 'databaseName',
+          name: 'tableName',
+          type: 'table',
+          data: [],
+          loading: true,
+          codeBody: "{\n  \n}",
+          codeAction: 'add',
+          codeBodyError: null,
+          query: {
+            page: 1,
+            limit: 5,
+            sort: 'id',
+            direction: 1 // ASC = 1, DESC = 0
+          }
+        }
+      }
+      const data = ['stuff'];
+
+      const nextState = updateSelectedTable(state, data);
+
+      expect(nextState).to.deep.equal({
+        selectedTable: {
+          databaseName: 'databaseName',
+          name: 'tableName',
+          type: 'table',
+          data: ['stuff'],
+          loading: false,
           codeBody: "{\n  \n}",
           codeAction: 'add',
           codeBodyError: null,

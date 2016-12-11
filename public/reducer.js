@@ -19,7 +19,8 @@ import {
   addDatabase,
   setDbToEdit,
   addTable,
-  setSelectedTable
+  setSelectedTable,
+  updateSelectedTable
 } from './core';
 
 function reducer(state = {}, action) {
@@ -66,6 +67,8 @@ function reducer(state = {}, action) {
       return setDbToEdit(state, action.database);
     case 'SET_SELECTED_TABLE':
       return setSelectedTable(state, action.databaseName, action.tableName);
+    case 'UPDATE_SELECTED_TABLE':
+      return updateSelectedTable(state, action.data);
   }
   return state;
 }

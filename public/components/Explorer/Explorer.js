@@ -11,8 +11,6 @@ const Explorer = ({
   selectedTable
 }) => {
 
-  // console.log('connections',connections);
-
   let content = (
     <div className="explorer-container">
       <div className="explorer-full-message">
@@ -50,11 +48,7 @@ const Explorer = ({
           </div>
         );
       }
-    } catch (e) {
-      console.error(e);
-    }
-  } else if (selectedTable) {
-    // console.log("selectedTable", selectedTable)
+      else if (selectedTable) {
     content = (
       <div className="explorer-container">
         <ExplorerHeader table={selectedTable} />
@@ -63,6 +57,10 @@ const Explorer = ({
       </div>
     );
   }
+    } catch (e) {
+      console.error(e);
+    }
+  } 
 
   return (
     <div className="body-content-col">

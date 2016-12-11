@@ -295,58 +295,58 @@ store.prototype.updateTableSort = function(sort) {
 // };
 
 // Get initial table data
-store.prototype.getTableData = function(sort, direction, limit = 25, page = 1) {
-  const conn = this.selectedFavorite.dbConnection;
-  const db = this.selectedTable.databaseName;
-  const table = this.selectedTable.name;
+// store.prototype.getTableData = function(sort, direction, limit = 25, page = 1) {
+//   const conn = this.selectedFavorite.dbConnection;
+//   const db = this.selectedTable.databaseName;
+//   const table = this.selectedTable.name;
 
-  if (page < 1) {
-    page = 1;
-  }
+//   if (page < 1) {
+//     page = 1;
+//   }
 
-  RethinkDbService.getTableData(conn, db, table, sort, direction, limit, page).then((result) => {
-    console.log("result.profile", result.profile)
+//   RethinkDbService.getTableData(conn, db, table, sort, direction, limit, page).then((result) => {
+//     console.log("result.profile", result.profile)
 
-    this.selectedTable.lastResult = result;
-    const tableData = result.value;
+//     this.selectedTable.lastResult = result;
+//     const tableData = result.value;
 
-    tableData.toArray().then((tableData) => {
-      this.selectedTable.data = tableData;
-      setTimeout(() => {
-        this.selectedTable.loading = false;
-        this.emit('updateSelectedTable');
-      }, 200);
-    }).catch(function(err) {
-      console.error(err);
-    });
-  }).catch(function(err) {
-    console.error(err);
-  });
-};
+//     tableData.toArray().then((tableData) => {
+//       this.selectedTable.data = tableData;
+//       setTimeout(() => {
+//         this.selectedTable.loading = false;
+//         this.emit('updateSelectedTable');
+//       }, 200);
+//     }).catch(function(err) {
+//       console.error(err);
+//     });
+//   }).catch(function(err) {
+//     console.error(err);
+//   });
+// };
 
 // Get initial table data
-store.prototype.getTableDataBetween = function(index, start, end) {
-  const conn = this.selectedFavorite.dbConnection;
-  const db = this.selectedTable.databaseName;
-  const table = this.selectedTable.name;
-  RethinkDbService.getTableDataBetween(conn, db, table, index, start, end).then((tableData) => {
-    tableData.toArray().then((tableData) => {
-      if (end) {
-        tableData.reverse();
-      }
-      console.log(tableData);
-      this.selectedTable.data = tableData;
-      setTimeout(() => {
-        this.selectedTable.loading = false;
-        this.emit('updateSelectedTable');
-      }, 200);
-    }).catch(function(err) {
-      console.error(err);
-    });
-  }).catch(function(err) {
-    console.error(err);
-  });
-};
+// store.prototype.getTableDataBetween = function(index, start, end) {
+//   const conn = this.selectedFavorite.dbConnection;
+//   const db = this.selectedTable.databaseName;
+//   const table = this.selectedTable.name;
+//   RethinkDbService.getTableDataBetween(conn, db, table, index, start, end).then((tableData) => {
+//     tableData.toArray().then((tableData) => {
+//       if (end) {
+//         tableData.reverse();
+//       }
+//       console.log(tableData);
+//       this.selectedTable.data = tableData;
+//       setTimeout(() => {
+//         this.selectedTable.loading = false;
+//         this.emit('updateSelectedTable');
+//       }, 200);
+//     }).catch(function(err) {
+//       console.error(err);
+//     });
+//   }).catch(function(err) {
+//     console.error(err);
+//   });
+// };
 
 store.prototype.setColumnWidths = function(columnWidths) {
   this.selectedTable.columnWidths = columnWidths;
