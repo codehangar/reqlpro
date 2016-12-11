@@ -4,9 +4,7 @@ const RethinkDbService = require('../main/services/rethinkdb.service');
 export function getDbConnection(connection) {
   return dispatch => {
     new Promise((resolve, reject) => {
-      // console.log('connection', connection);
       RethinkDbService.getConnection(connection.host, connection.port, connection.authKey).then((conn) => {
-        console.log('getConnection conn', conn);
 
         dispatch({
           type: 'SET_DB_CONNECTION',
@@ -54,7 +52,6 @@ export function getDbList(dbConnection) {
 }
 
 export function getDbTables(dbConnection, database) {
-  console.log("getDbTables database", database)
   return dispatch => {
     new Promise((resolve, reject) => {
       RethinkDbService.getTableList(dbConnection, database.name).then(function(tables) {
@@ -78,7 +75,6 @@ export function getDbTables(dbConnection, database) {
 }
 
 export function createDatabase(dbConnection, database) {
-  console.log("createDatabase", database)
   return dispatch => {
     new Promise((resolve, reject) => {
       RethinkDbService.createDb(dbConnection, database.name).then(function(results) {
@@ -106,7 +102,6 @@ export function createDatabase(dbConnection, database) {
 }
 
 export function createTable(dbConnection, selectedDatabase, table) {
-  console.log("createTable", table)
   return dispatch => {
     new Promise((resolve, reject) => {
       RethinkDbService.createTable(dbConnection, selectedDatabase.name, table.name, 'id').then((results) => {

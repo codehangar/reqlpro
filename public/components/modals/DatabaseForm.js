@@ -36,7 +36,6 @@ const DatabaseForm = ({
 
 
 function mapStateToProps(state) {
-  console.log('DatabaseForm  mapStateToProps', state.main);
   return {
     showDatabaseForm: state.main.showDatabaseForm,
     selectedDatabase: state.main.selectedDatabase,

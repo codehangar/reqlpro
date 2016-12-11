@@ -14,8 +14,6 @@ const Favorites = ({
 
   selectedConnection = selectedConnection || {};
 
-  // console.log("selectedConnection", selectedConnection)
-
   const favoriteNodes = connections.map((connection, i) => {
     return (
       <Favorite

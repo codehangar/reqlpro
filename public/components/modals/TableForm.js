@@ -37,7 +37,6 @@ const TableForm = ({
 
 
 function mapStateToProps(state) {
-  console.log('TableForm  mapStateToProps', state.main);
   return {
     showTableForm: state.main.showTableForm,
     selectedDatabase: state.main.selectedDatabase,
@@ -55,7 +54,6 @@ const mapDispatchToProps = (dispatch) => {
       });
     },
     onSave: (dbConnection, selectedDatabase, table) => {
-      console.log('save table selectedDatabase ------>',selectedDatabase)
       dispatch(createTable(dbConnection, selectedDatabase, table));
       dispatch({
         type: "TOGGLE_TABLE_FORM",
