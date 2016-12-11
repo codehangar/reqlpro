@@ -145,7 +145,7 @@ export function queryTable(dbConnection, databaseName, tableName, queryParams = 
 }
 
 function getTableData(sort, direction, limit, page, dbConnection, databaseName, tableName) {
-  console.log('getTableData')
+  console.log('getTableData limit', limit)
   return dispatch => {
     new Promise((resolve, reject) => {
       const conn = dbConnection;

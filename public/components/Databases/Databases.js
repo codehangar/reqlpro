@@ -11,8 +11,6 @@ const Databases = ({
   dbConnection,
   onDatabaseClick
 }) => {
-
-  console.log('Databases props selectedConnection', selectedConnection);
   let databaseNodes;
 
   if(selectedConnection && selectedConnection.databases){

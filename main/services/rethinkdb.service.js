@@ -294,7 +294,7 @@ RethinkDbService.prototype.getTableData = function(conn, db, table, sort, direct
         tableData = yield r.db(db).table(table).orderBy(r.desc(sort || 'id')).slice(minval, maxval).run(conn, {profile: true});
       }
 
-      console.log("tableData", tableData)
+      // console.log("tableData", tableData)
       resolve(tableData);
     }).catch(function(err) {
       reject(err);

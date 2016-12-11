@@ -20,7 +20,8 @@ import {
   setDbToEdit,
   addTable,
   setSelectedTable,
-  updateSelectedTable
+  updateSelectedTable,
+  updateSelectedTablePageLimit
 } from './core';
 
 function reducer(state = {}, action) {
@@ -69,6 +70,9 @@ function reducer(state = {}, action) {
       return setSelectedTable(state, action.databaseName, action.tableName);
     case 'UPDATE_SELECTED_TABLE':
       return updateSelectedTable(state, action.data);
+    case 'SET_TABLE_PAGE_LIMIT':
+      return updateSelectedTablePageLimit(state, action.limit);
+      
   }
   return state;
 }

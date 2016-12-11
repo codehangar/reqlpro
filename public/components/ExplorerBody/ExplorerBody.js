@@ -6,7 +6,7 @@ const ExplorerCodeView = require('../ExplorerCodeView/ExplorerCodeView');
 const ExplorerBody = React.createClass({
   render: function() {
     let explorerBody;
-    console.log(" **** ExplorerBody this.props", this.props)
+    // console.log(" **** ExplorerBody this.props", this.props)
     if (this.props.table.loading) {
       explorerBody = (
         <div className="explorer-loading">
