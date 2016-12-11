@@ -279,17 +279,20 @@ store.prototype.updateTableSort = function(sort) {
 };
 
 // Get initial table data
-store.prototype.query = function(queryParams = this.selectedTable.query) {
-  this.selectedTable.query = queryParams;
-  this.selectedTable.loading = true;
-  this.emit('updateSelectedTable');
-  console.log("QUERY this.selectedTable.query", this.selectedTable.query)
-  if (queryParams.page) {
-    this.getTableData(queryParams.sort, queryParams.direction, queryParams.limit, queryParams.page);
-  } else if (queryParams.index) {
-    this.getTableDataBetween(queryParams.index, queryParams.start, queryParams.end);
-  }
-};
+// store.prototype.query = function(queryParams = this.selectedTable.query) {
+//   // set query of selectedTable
+//   this.selectedTable.query = queryParams;
+//   // set loading of selectedTable to true
+//   this.selectedTable.loading = true;
+//   this.emit('updateSelectedTable');
+//   console.log("QUERY this.selectedTable.query", this.selectedTable.query)
+//   //get first page of table data, or indexed page of table data
+//   if (queryParams.page) {
+//     this.getTableData(queryParams.sort, queryParams.direction, queryParams.limit, queryParams.page);
+//   } else if (queryParams.index) {
+//     this.getTableDataBetween(queryParams.index, queryParams.start, queryParams.end);
+//   }
+// };
 
 // Get initial table data
 store.prototype.getTableData = function(sort, direction, limit = 25, page = 1) {

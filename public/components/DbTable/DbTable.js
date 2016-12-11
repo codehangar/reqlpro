@@ -1,5 +1,6 @@
 var React = require('react');
 import {connect} from 'react-redux';
+import {queryTable} from '../../actions';
 
 const DbTable = ({
   selectedTable,
@@ -7,9 +8,8 @@ const DbTable = ({
   database,
   onTableClick
 }) => {
-  // console.log('DbTable database.name', database.name, database);
   return(
-      <div onClick={()=>onTableClick(database.name, table)} className={"db-table "+ (selectedTable && (selectedTable.name === table) ? 'selected' : '')}>
+      <div onClick={()=>onTableClick(database.name, table, selectedTable)} className={"db-table "+ (selectedTable && (selectedTable.name === table) ? 'selected' : '')}>
         <div>
           <i className="fa fa-table"></i> {table}
           <div className="delete-table btn-group" role="group">
@@ -23,21 +23,26 @@ const DbTable = ({
 
 function mapStateToProps (state) {
   return {
-    // connections: state.main.connections || [],
-    // connections: state.main.connections ? state.main.connections : [],
     selectedTable: state.main.selectedTable || null
   };
 };
 
 function mapDispatchToProps (dispatch) {
   return {
-    onTableClick: (databaseName, tableName) => {
+    onTableClick: (databaseName, tableName, selectedTable) => {
       console.log('on table click', databaseName, tableName)
       dispatch({
         type: "SET_SELECTED_TABLE",
         databaseName,
         tableName
       });
+      selectedTable ? dispatch(queryTable(selectedTable.query)):dispatch(queryTable())
+      // ;
+      // dispatch({
+      //   type: "GET_TABLE_DATA",
+      //   databaseName,
+      //   tableName
+      // });
     }
   }
 };

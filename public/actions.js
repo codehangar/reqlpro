@@ -126,3 +126,43 @@ export function createTable(dbConnection, database, table) {
     });
   }
 }
+
+// export function queryTable(queryParams = this.selectedTable.query) {
+// Todo: pull from passed in queryParams or default to selectedTable on state (or leave as is, not sure)
+export function queryTable(queryParams = {
+      page: 1,
+      limit: 5,
+      sort: 'id',
+      direction: 0 // ASC = 1, DESC = 0
+    }) {
+  return dispatch => {
+    new Promise((resolve, reject) => {
+
+      console.log('queryTable(queryParams) selectedTable.query', queryParams)
+
+      if (queryParams.page) {
+        getTableData(queryParams.sort, queryParams.direction, queryParams.limit, queryParams.page);
+      } else if (queryParams.index) {
+        getTableDataBetween(queryParams.index, queryParams.start, queryParams.end);
+      }
+    });
+  }
+}
+
+function getTableData(sort, direction, limit, page) {
+  console.log('getTableData')
+  return dispatch => {
+    new Promise((resolve, reject) => {
+      
+    });
+  }
+}
+
+function getTableDataBetween(index, start, end) {
+  console.log('getTableDataBetween')
+  return dispatch => {
+    new Promise((resolve, reject) => {
+      
+    });
+  }
+}
