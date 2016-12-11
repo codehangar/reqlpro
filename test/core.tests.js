@@ -15,7 +15,8 @@ import {
   toggleDatabaseForm,
   toggleTableForm,
   addDatabase,
-  addTable
+  addTable,
+  setDbToEdit
 } from '../public/core';
 
 let RethinkDbService;
@@ -683,7 +684,7 @@ describe('Application Logic', () => {
   });
 
   describe('addTable', () => {
-    it('add table object to tables array of the appropriate database object', () => {
+    it('add table name to tables array of the appropriate database object', () => {
       const state = {
         email: 'cassie@codehangar.io',
         selectedConnection: {
@@ -705,9 +706,7 @@ describe('Application Logic', () => {
         name: 'users'
       }
 
-      console.log('in test', state.selectedConnection.databases[0].name)
-
-      let nextState = addTable(state, state.selectedConnection.databases[0].name, table);
+      let nextState = addTable(state, state.selectedConnection.databases[0], table);
 
       expect(nextState).to.deep.equal({
         email: 'cassie@codehangar.io',
@@ -721,13 +720,26 @@ describe('Application Logic', () => {
           port: "32769",
           databases: [{
             name: 'ReQL',
-            tables: [{
-              name: 'users'
-            }]
+            tables: ['users']
           }]
         }
       });
 
+    });
+  });
+
+  describe('setDbToEdit', () => {
+    it('addTable', () => {
+      const state = {}
+      const database = {
+        name: 'ReQL'
+      }
+      const nextState = setDbToEdit(state, database);
+      expect(nextState).to.deep.equal({
+        dbToEdit: {
+          name: 'ReQL'
+        }
+      });
     });
   });
 

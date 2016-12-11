@@ -1,49 +1,72 @@
-const React = require('react');
-const DbTables = require('../DbTables/DbTables');
+import React from 'react';
+import DbTables from '../DbTables/DbTables';
+import AddDbTable from '../AddDbTable/AddDbTable';
+import {connect} from 'react-redux';
 
 const Database = React.createClass({
-  showDbTables: false,
   getInitialState: function() {
     return {
-      store: this.context.store
+      showDbTables: false
     }
   },
-  deleteDatabase: function(dbName, e) {
-    e.stopPropagation();
-    this.state.store.toggleEntityForm('Database', 'Delete', dbName);
-  },
-  editDatabase: function(dbName, e) {
-    e.stopPropagation();
-  },
+//   deleteDatabase: function(dbName, e) {
+//     e.stopPropagation();
+//     this.state.store.toggleEntityForm('Database', 'Delete', dbName);
+//   },
+//   editDatabase: function(dbName, e) {
+//     e.stopPropagation();
+//   },
   render: function() {
-    let dbTables = '';
-    if(this.showDbTables){
-      dbTables = <DbTables database={this.props.database}/>;
-    }else{
-      dbTables = ''
-    }
-
+    const {database, onDatabaseClick, onAddTable, dbConnection} = this.props;
     return (
       <div className="database">
+
         <div className="db noselect" onClick={() => {
-          this.props.onDatabaseClick(this.props.database)
-          this.showDbTables = !this.showDbTables;
-        }}>
-          <i className="fa fa-database"></i>
-            &nbsp;&nbsp;<span className="database-name">{this.props.database.name}</span>
-            <div className="delete-db btn-group" role="group">
-              <button onClick={this.deleteDatabase.bind(this, this.props.database.name)} className="btn btn-default fa fa-trash"></button>
-              {/*<button onClick={this.editDatabase.bind(this, this.props.database.name)} className="btn btn-default fa fa-pencil"></button>*/}
-            </div>
+            onDatabaseClick(database)
+            this.setState({
+              showDbTables: !this.state.showDbTables
+            })
+          }}>
+          <i className="fa fa-database"></i>&nbsp;&nbsp;<span className="database-name">{database.name}</span>
+          <div className="delete-db btn-group" role="group">
+            {/*<button onClick={this.deleteDatabase.bind(this, this.props.database.name)} className="btn btn-default fa fa-trash"></button>
+            <button onClick={this.editDatabase.bind(this, this.props.database.name)} className="btn btn-default fa fa-pencil"></button>*/}
           </div>
-        {dbTables}
+        </div>
+        {this.state.showDbTables ? 
+          (<div className="db-tables noselect">
+            <DbTables database={database}/>
+            <AddDbTable onAddTable={()=>onAddTable(database)} />
+          </div>) : ''}
+        
       </div>
     );
   }
 });
 
-Database.contextTypes = {
-  store: React.PropTypes.object
-};
+function mapStateToProps(state) {
+  return {
+    // connections: state.main.connections,
+    // selectedConnection: state.main.selectedConnection,
+    // selectedTable: state.main.selectedDatabase,
+    dbConnection: state.main.dbConnection
+  };
+}
+function mapDispatchToProps (dispatch) {
+  return {
+    onAddTable: (database) => {
+      dispatch({
+        type: 'TOGGLE_TABLE_FORM',
+        showTableForm: true,
+      })
+      dispatch({
+        type:'SET_DB_TO_EDIT',
+        database
+      })
+    }
+  }
+}
 
-module.exports = Database;
+const DatabaseContainer = connect(mapStateToProps, mapDispatchToProps)(Database);
+
+module.exports = DatabaseContainer;

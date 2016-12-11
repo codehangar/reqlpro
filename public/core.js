@@ -210,18 +210,19 @@ export function addDatabase (state, database) {
   return newState;
 };
 
-export function addTable (state, databaseName, table) {
+export function addTable (state, database, table) {
 
   let databasesCopy = state.selectedConnection.databases.slice(0);
   let newDatabase;
   
   databasesCopy.forEach(db => {
-    console.log(db.name == databaseName);
-    if(db.name == databaseName)
+    console.log(db.name, database.name, db.name == database.name);
+    if(db.name == database.name)
         newDatabase = db;
   });
 
-  newDatabase.tables.push(table);
+  console.log("addTable newDatabase, databasesCopy",newDatabase, databasesCopy);
+  newDatabase.tables.push(table.name);
 
   const newSelectedConnection = Object.assign({}, state.selectedConnection, { databases: databasesCopy});
 
@@ -229,3 +230,8 @@ export function addTable (state, databaseName, table) {
 
   return newState;
 };
+
+export function setDbToEdit(state, database){
+  let newState = Object.assign({}, state, {dbToEdit: database});
+  return newState;
+}

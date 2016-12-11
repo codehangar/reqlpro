@@ -10,7 +10,8 @@ const TableForm = ({
   onClose,
   onSave,
   selectedDatabase,
-  dbConnection
+  dbConnection,
+  dbToEdit
 }) => {
   return (
     <Modal show={showTableForm} onHide={onClose}>
@@ -29,7 +30,7 @@ const TableForm = ({
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={onClose} bsStyle="default" className="pull-left">Cancel</Button>
-        <Button onClick={() => onSave(dbConnection, selectedDatabase, selectedTable)} bsStyle="primary" className="pull-right">Save</Button>
+        <Button onClick={() => onSave(dbConnection, dbToEdit, selectedTable)} bsStyle="primary" className="pull-right">Save</Button>
       </Modal.Footer>
     </Modal>
   );
@@ -39,8 +40,8 @@ const TableForm = ({
 function mapStateToProps(state) {
   return {
     showTableForm: state.main.showTableForm,
-    selectedDatabase: state.main.selectedDatabase,
     selectedTable: state.main.selectedTable,
+    dbToEdit: state.main.dbToEdit,
     dbConnection: state.main.dbConnection,
   };
 }
@@ -53,8 +54,9 @@ const mapDispatchToProps = (dispatch) => {
         showTableForm: false
       });
     },
-    onSave: (dbConnection, selectedDatabase, table) => {
-      dispatch(createTable(dbConnection, selectedDatabase, table));
+    onSave: (dbConnection, database, table) => {
+      console.log('onSave ADDING TABLE dbConnection, database, table',dbConnection, database, table)
+      dispatch(createTable(dbConnection, database, table));
       dispatch({
         type: "TOGGLE_TABLE_FORM",
         showTableForm: false

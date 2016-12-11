@@ -101,18 +101,19 @@ export function createDatabase(dbConnection, database) {
   }
 }
 
-export function createTable(dbConnection, selectedDatabase, table) {
+export function createTable(dbConnection, database, table) {
   return dispatch => {
     new Promise((resolve, reject) => {
-      RethinkDbService.createTable(dbConnection, selectedDatabase.name, table.name, 'id').then((results) => {
+      RethinkDbService.createTable(dbConnection, database.name, table.name, 'id').then((results) => {
 
         // Add table to selectedDatabase list
-        const newTable = { name: tableName };
+        const newTable = { name: table.name };
         // this.toggleEntityForm();
 
         dispatch({
           type: 'ADD_TO_TABLE_LIST',
           table: newTable,
+          database
         });
 
         resolve(results);
