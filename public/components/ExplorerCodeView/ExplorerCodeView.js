@@ -1,12 +1,14 @@
-const React = require('react');
-const classNames = require('classnames');
-const ace = require('brace');
+import React from 'react';
+import classNames from 'classnames';
+import ace from 'brace';
+import {connect} from "react-redux";
+
+// Looks weird, but this is necessary to apply the theme to ace editor
 require('brace/mode/json');
 
 const ExplorerCodeView = React.createClass({
   getInitialState: function() {
     return {
-      store: this.context.store,
       topShadowStyle: {
         top: '0',
         display: 'none'
@@ -18,7 +20,6 @@ const ExplorerCodeView = React.createClass({
     }
   },
   componentDidMount: function() {
-    console.log(this.state.store.selectedTable);
     this.editor = ace.edit("editor");
     this.editor.$blockScrolling = Infinity;
     this.editor.getSession().setMode("ace/mode/json");
@@ -31,13 +32,13 @@ const ExplorerCodeView = React.createClass({
 
     this.editor.setShowInvisibles(true);
     this.editor.setHighlightActiveLine(false);
-    this.editor.setValue(this.state.store.selectedTable.codeBody, -1);
+    this.editor.setValue(this.props.selectedTable.codeBody, -1);
     this.editor.gotoLine(2, 2);
     this.editor.focus();
 
     this.editor.getSession().on('change', () => {
       const string = ace.edit("editor").getValue();
-      this.state.store.updateCodeBody(string);
+      this.props.updateCodeBody(string);
     });
 
     this.editor.getSession().on('changeScrollTop', this.handleScroll);
@@ -94,14 +95,14 @@ const ExplorerCodeView = React.createClass({
     }
   },
   componentWillReceiveProps: function() {
-    this.editor.setValue(this.state.store.selectedTable.codeBody, -1);
+    this.editor.setValue(this.props.selectedTable.codeBody, -1);
     this.editor.focus();
   },
   render: function() {
     const toastClasses = classNames({
       'toast-container': true,
       'bg-danger': true,
-      'hide': this.state.store.selectedTable.codeBodyError === null
+      'hide': this.props.selectedTable.codeBodyError === null
     });
 
     return (
@@ -111,8 +112,8 @@ const ExplorerCodeView = React.createClass({
       }}>
         <div className={toastClasses}>
           <div className="row">
-            <i className="btn fa fa-close pull-right" onClick={() => this.state.store.clearCodeBodyError()}></i>
-            <pre style={{margin: '5px'}}>{this.state.store.selectedTable.codeBodyError}</pre>
+            <i className="btn fa fa-close pull-right" onClick={this.props.clearCodeBodyError}/>
+            <pre style={{margin: '5px'}}>{this.props.selectedTable.codeBodyError}</pre>
           </div>
         </div>
         <div id="editor"></div>
@@ -122,8 +123,24 @@ const ExplorerCodeView = React.createClass({
     );
   }
 });
-ExplorerCodeView.contextTypes = {
-  store: React.PropTypes.object
+
+const mapStateToProps = (state) => {
+  return {
+    selectedTable: state.main.selectedTable
+  };
 };
 
-module.exports = ExplorerCodeView;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    clearCodeBodyError: (row) => {
+
+    },
+    updateCodeBody: (row) => {
+      // this.state.store.updateCodeBody(string);
+    }
+  };
+};
+
+const ExplorerCodeViewContainer = connect(mapStateToProps, mapDispatchToProps)(ExplorerCodeView);
+
+module.exports = ExplorerCodeViewContainer;

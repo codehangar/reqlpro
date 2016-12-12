@@ -14,12 +14,14 @@ const ExplorerTableView = ({
   columnNames,
   dbConnection,
   selectedTable,
-  onUpdateTableSort
+  onUpdateTableSort,
+  onEditClick,
+  onDeleteClick
 }) => {
 
-  console.log('selectedTable----->',selectedTable.query.sort, selectedTable.query.direction);
+  console.log('selectedTable----->', selectedTable.query.sort, selectedTable.query.direction);
   const onColumnResizeEndCallback = (newColumnWidth, columnKey) => {
-    var width= {};
+    var width = {};
     width[columnKey] = newColumnWidth;
 
     // Update local state
@@ -40,9 +42,26 @@ const ExplorerTableView = ({
     //   properties: {}
     // });
   }
-  columnNames = ['id','level','message', 'server'];
-  var columnNodes = columnNames.map((fieldName, index) => {
-    // console.log("  --> ExplorerTableView columnNodes", fieldName);
+  columnNames = ['id', 'level', 'message', 'server'];
+
+  const actionColumn = (
+    <Column
+      key="actions"
+      header={<Cell>Action</Cell>}
+      columnKey="action"
+      cell={(props) => {
+        const row = selectedTable.data[props.rowIndex];
+        return (
+          <Cell className="action-buttons">
+            <span className="btn btn-sm btn-primary fa fa-pencil" onClick={() => onEditClick(row)}/>
+            <span className="btn btn-sm btn-danger fa fa-trash" onClick={() => onDeleteClick(row)}/>
+          </Cell>
+        );
+      }}
+      width={100}/>
+  );
+
+  const dynamicColumns = columnNames.map((fieldName, index) => {
     const iconClasses = classNames({
       'fa': true,
       'fa-sort-asc': selectedTable.query.direction,
@@ -50,22 +69,22 @@ const ExplorerTableView = ({
       'pull-right': true
     });
     let iconBody = '';
-    if(selectedTable.query.sort === fieldName) {
+    if (selectedTable.query.sort === fieldName) {
       iconBody = <i className={iconClasses}></i>;
     }
     return (
       <Column
         key={index}
-        header={<Cell className="tableview-header" onClick={()=>onUpdateTableSort(fieldName, dbConnection, selectedTable)}>{fieldName}{iconBody}</Cell>}
+        header={<Cell className="tableview-header" onClick={() => onUpdateTableSort(fieldName, dbConnection, selectedTable)}>{fieldName}{iconBody}</Cell>}
         isResizable={true}
         columnKey={fieldName}
         cell={(props) => {
               if (selectedTable.data[props.rowIndex].id === '11698a1f-f9db-4f9c-9fb8-4c27d75e1990' && fieldName === 'name') {
                 // console.log("   --> ExplorerTableView cell render", this.props.table.data[props.rowIndex][fieldName])
               }
-              return(
+              return (
                 <Cell>
-                  <ExplorerTableCell row={selectedTable.data[props.rowIndex]} fieldName={fieldName} rowChanged={rowChanged} />
+                  <ExplorerTableCell row={selectedTable.data[props.rowIndex]} fieldName={fieldName} rowChanged={rowChanged}/>
                 </Cell>
               );
             }
@@ -76,8 +95,9 @@ const ExplorerTableView = ({
     );
   });
 
+  const columnNodes = [actionColumn].concat(dynamicColumns);
 
-  return(
+  return (
     <Table
       rowsCount={selectedTable.data.length}
       rowHeight={50}
@@ -102,15 +122,24 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onUpdateTableSort: (field, dbConnection, selectedTable) =>{
-      console.log('onUpdateTableSort',field, dbConnection, selectedTable)
+    onUpdateTableSort: (field, dbConnection, selectedTable) => {
+      console.log('onUpdateTableSort', field, dbConnection, selectedTable)
       dispatch({
         type: "SET_TABLE_SORT",
         field
-      })
-      let params = Object.assign({},selectedTable.query)
+      });
+      let params = Object.assign({}, selectedTable.query);
       params.sort = field;
       dispatch(queryTable(dbConnection, selectedTable.databaseName, selectedTable.name, params));
+    },
+    onEditClick: (row) => {
+      dispatch({
+        type: "SET_ROW_EDIT",
+        row
+      })
+    },
+    onDeleteClick: (row) => {
+
     }
   };
 };
