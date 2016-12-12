@@ -338,3 +338,17 @@ export function cancelRowEdit(state) {
   const newSelectedTable = Object.assign({}, state.selectedTable, newFields);
   return Object.assign({}, state, {selectedTable: newSelectedTable});
 }
+
+export function toggleExplorerBody(state, type) {
+  const newFields = {
+    previousType: state.selectedTable.type,
+    type: type
+  };
+  if (type === 'code') {
+    newFields.codeAction = 'add';
+    newFields.codeBody = "{\n  \n}";
+    newFields.codeBodyError = null;
+  }
+  const newSelectedTable = Object.assign({}, state.selectedTable, newFields);
+  return Object.assign({}, state, {selectedTable: newSelectedTable});
+}

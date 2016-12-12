@@ -22,7 +22,8 @@ import {
   updateSelectedTablePageLimit,
   updateSelectedTableSort,
   startRowEdit,
-  cancelRowEdit
+  cancelRowEdit,
+  toggleExplorerBody
 } from '../public/core';
 
 let RethinkDbService;
@@ -921,10 +922,51 @@ describe('Application Logic', () => {
         }
       });
     });
+
+    it('updates selectedTable.query.sort to new value and reverses selectedTable.query.direction back', () => {
+      const state = {
+        selectedTable: {
+          databaseName: 'databaseName',
+          name: 'tableName',
+          type: 'table',
+          data: ['stuff'],
+          loading: false,
+          codeBody: "{\n  \n}",
+          codeAction: 'add',
+          codeBodyError: null,
+          query: {
+            page: 1,
+            limit: 5,
+            sort: 'id',
+            direction: 0 // ASC = 1, DESC = 0
+          }
+        }
+      }
+      const sort = 'name'
+      const nextState = updateSelectedTableSort(state, sort);
+      expect(nextState).to.deep.equal({
+        selectedTable: {
+          databaseName: 'databaseName',
+          name: 'tableName',
+          type: 'table',
+          data: ['stuff'],
+          loading: false,
+          codeBody: "{\n  \n}",
+          codeAction: 'add',
+          codeBodyError: null,
+          query: {
+            page: 1,
+            limit: 5,
+            sort: 'name',
+            direction: 1 // ASC = 1, DESC = 0
+          }
+        }
+      });
+    });
   });
 
   describe('startRowEdit', () => {
-    it('updates selectedTable fields: type, codeBody, codeAction, editingRecord, previousType, codeBodyError', () => {
+    it('updates selectedTable fields: type, previousType, codeBody, codeAction, codeBodyError, editingRecord', () => {
       const state = {
         selectedTable: {
           databaseName: 'databaseName',
@@ -974,7 +1016,7 @@ describe('Application Logic', () => {
   });
 
   describe('cancelRowEdit', () => {
-    it('updates selectedTable fields: type, codeBody, codeAction, editingRecord, previousType, codeBodyError', () => {
+    it('updates selectedTable fields: type, previousType, codeBody, codeAction, codeBodyError, editingRecord', () => {
       const state = {
         selectedTable: {
           databaseName: 'databaseName',
@@ -1023,6 +1065,59 @@ describe('Application Logic', () => {
           },
           editingRecord: null,
           previousType: null,
+        }
+      });
+    });
+  });
+
+  describe('toggleExplorerBody', () => {
+    it('switches selectedTable type to tree', () => {
+      const state = {
+        selectedTable: {
+          type: 'table',
+        }
+      };
+
+      const nextState = toggleExplorerBody(state, 'tree');
+      expect(nextState).to.deep.equal({
+        selectedTable: {
+          type: 'tree',
+          previousType: 'table'
+        }
+      });
+    });
+
+    it('switches selectedTable type to table', () => {
+      const state = {
+        selectedTable: {
+          type: 'tree',
+        }
+      };
+
+      const nextState = toggleExplorerBody(state, 'table');
+      expect(nextState).to.deep.equal({
+        selectedTable: {
+          type: 'table',
+          previousType: 'tree'
+        }
+      });
+    });
+
+    it('switches selectedTable type to code and sets codeAction to add, codeBody to some JSON, and codeBodyError to null', () => {
+      const state = {
+        selectedTable: {
+          type: 'tree',
+        }
+      };
+
+      const nextState = toggleExplorerBody(state, 'code');
+      expect(nextState).to.deep.equal({
+        selectedTable: {
+          type: 'code',
+          previousType: 'tree',
+          codeAction: 'add',
+          codeBody: "{\n  \n}",
+          codeBodyError: null
         }
       });
     });
