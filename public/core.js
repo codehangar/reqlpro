@@ -305,6 +305,15 @@ export function updateSelectedTablePageLimit(state, limit) {
   return Object.assign({}, state, {selectedTable: newSelectedTable});
 }
 
+export function updateSelectedTableSort(state, sort) {
+  let queryCopy = Object.assign({}, state.selectedTable.query)
+  queryCopy.sort = sort;
+  queryCopy.direction = queryCopy.direction === 1 ? 0 : 1;
+  let newSelectedTable = Object.assign({}, state.selectedTable, {query:queryCopy});
+  return Object.assign({}, state, {selectedTable: newSelectedTable});
+}
+
+
 
 
 

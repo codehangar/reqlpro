@@ -19,7 +19,8 @@ import {
   setDbToEdit,
   setSelectedTable,
   updateSelectedTable,
-  updateSelectedTablePageLimit
+  updateSelectedTablePageLimit,
+  updateSelectedTableSort
 } from '../public/core';
 
 let RethinkDbService;
@@ -871,6 +872,49 @@ describe('Application Logic', () => {
             limit: 10,
             sort: 'id',
             direction: 1 // ASC = 1, DESC = 0
+          }
+        }
+      });
+    });
+  });
+
+    describe('updateSelectedTableSort', () => {
+    it('updates selectedTable.query.sort to new value and reverses selectedTable.query.direction', () => {
+      const state = {
+        selectedTable: {
+          databaseName: 'databaseName',
+          name: 'tableName',
+          type: 'table',
+          data: ['stuff'],
+          loading: false,
+          codeBody: "{\n  \n}",
+          codeAction: 'add',
+          codeBodyError: null,
+          query: {
+            page: 1,
+            limit: 5,
+            sort: 'id',
+            direction: 1 // ASC = 1, DESC = 0
+          }
+        }
+      }
+      const sort = 'name'
+      const nextState = updateSelectedTableSort(state, sort);
+      expect(nextState).to.deep.equal({
+        selectedTable: {
+          databaseName: 'databaseName',
+          name: 'tableName',
+          type: 'table',
+          data: ['stuff'],
+          loading: false,
+          codeBody: "{\n  \n}",
+          codeAction: 'add',
+          codeBodyError: null,
+          query: {
+            page: 1,
+            limit: 5,
+            sort: 'name',
+            direction: 0 // ASC = 1, DESC = 0
           }
         }
       });
