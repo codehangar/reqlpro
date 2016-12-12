@@ -24,7 +24,8 @@ import {
   updateSelectedTablePageLimit,
   updateSelectedTableSort,
   startRowEdit,
-  cancelRowEdit
+  cancelRowEdit,
+  toggleExplorerBody
 } from './core';
 
 function reducer(state = {}, action) {
@@ -81,6 +82,8 @@ function reducer(state = {}, action) {
       return startRowEdit(state, action.row);
     case 'CANCEL_ROW_EDIT':
       return cancelRowEdit(state, action.row);
+    case 'TOGGLE_EXPLORER_BODY':
+      return toggleExplorerBody(state, action.key);
   }
   return state;
 }
