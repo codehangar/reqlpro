@@ -20,7 +20,8 @@ import {
   setSelectedTable,
   updateSelectedTable,
   updateSelectedTablePageLimit,
-  updateSelectedTableSort
+  updateSelectedTableSort,
+  startRowEdit
 } from '../public/core';
 
 let RethinkDbService;
@@ -790,7 +791,7 @@ describe('Application Logic', () => {
     });
   });
 
-    describe('updateSelectedTable', () => {
+  describe('updateSelectedTable', () => {
     it('adds table data to selectedTable and sets loading to false', () => {
       const state = {
         selectedTable: {
@@ -878,7 +879,7 @@ describe('Application Logic', () => {
     });
   });
 
-    describe('updateSelectedTableSort', () => {
+  describe('updateSelectedTableSort', () => {
     it('updates selectedTable.query.sort to new value and reverses selectedTable.query.direction', () => {
       const state = {
         selectedTable: {
@@ -916,6 +917,56 @@ describe('Application Logic', () => {
             sort: 'name',
             direction: 0 // ASC = 1, DESC = 0
           }
+        }
+      });
+    });
+  });
+
+  describe('startRowEdit', () => {
+    it('updates selectedTable fields: type, codeBody, codeAction, editingRecord, previousType, codeBodyError', () => {
+      const state = {
+        selectedTable: {
+          databaseName: 'databaseName',
+          name: 'tableName',
+          type: 'table',
+          data: ['stuff'],
+          loading: false,
+          codeBody: "{\n  \n}",
+          codeAction: 'add',
+          codeBodyError: null,
+          query: {
+            page: 1,
+            limit: 5,
+            sort: 'id',
+            direction: 1
+          }
+        }
+      };
+
+      const record = {
+        id: 'some-id',
+        fieldA: 'some field',
+      };
+
+      const nextState = startRowEdit(state, record);
+      expect(nextState).to.deep.equal({
+        selectedTable: {
+          databaseName: 'databaseName',
+          name: 'tableName',
+          type: 'code',
+          data: ['stuff'],
+          loading: false,
+          codeBody: JSON.stringify(record, null, '  '),
+          codeAction: 'update',
+          codeBodyError: null,
+          query: {
+            page: 1,
+            limit: 5,
+            sort: 'id',
+            direction: 1
+          },
+          editingRecord: record,
+          previousType: 'table',
         }
       });
     });

@@ -163,7 +163,7 @@ export function setDbTables(state, databaseName, tables) {
       newDatabase = Object.assign({}, state.selectedConnection.databases[i], {
         tables
       })
-    };
+    }
   }
 
   const head = state.selectedConnection.databases.slice(0, index)
@@ -272,7 +272,7 @@ export function setSelectedTable(state, databaseName, tableName) {
     name: tableName,
     // type: this.selectedTable ? this.selectedTable.type !== 'code' ? this.selectedTable.type : 'table' : 'table',
     // Todo: maintain type from previous selectedTable
-    type:'table',
+    type: 'table',
     data: [],
     loading: true,
     codeBody: "{\n  \n}",
@@ -292,7 +292,7 @@ export function setSelectedTable(state, databaseName, tableName) {
 }
 
 export function updateSelectedTable(state, data) {
-  let newSelectedTable = Object.assign({}, state.selectedTable, {data:data});
+  let newSelectedTable = Object.assign({}, state.selectedTable, {data: data});
   newSelectedTable.loading = false;
   let newState = Object.assign({}, state, {selectedTable: newSelectedTable})
   return newState;
@@ -301,7 +301,7 @@ export function updateSelectedTable(state, data) {
 export function updateSelectedTablePageLimit(state, limit) {
   let queryCopy = Object.assign({}, state.selectedTable.query)
   queryCopy.limit = parseInt(limit);
-  let newSelectedTable = Object.assign({}, state.selectedTable, {query:queryCopy});
+  let newSelectedTable = Object.assign({}, state.selectedTable, {query: queryCopy});
   return Object.assign({}, state, {selectedTable: newSelectedTable});
 }
 
@@ -309,7 +309,20 @@ export function updateSelectedTableSort(state, sort) {
   let queryCopy = Object.assign({}, state.selectedTable.query)
   queryCopy.sort = sort;
   queryCopy.direction = queryCopy.direction === 1 ? 0 : 1;
-  let newSelectedTable = Object.assign({}, state.selectedTable, {query:queryCopy});
+  let newSelectedTable = Object.assign({}, state.selectedTable, {query: queryCopy});
+  return Object.assign({}, state, {selectedTable: newSelectedTable});
+}
+
+export function startRowEdit(state, record) {
+  const newFields = {
+    codeAction: 'update',
+    editingRecord: record,
+    codeBody: JSON.stringify(record, null, '  '),
+    codeBodyError: null,
+    previousType: state.selectedTable.type,
+    type: 'code',
+  };
+  const newSelectedTable = Object.assign({}, state.selectedTable, newFields);
   return Object.assign({}, state, {selectedTable: newSelectedTable});
 }
 
