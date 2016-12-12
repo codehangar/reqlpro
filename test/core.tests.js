@@ -21,7 +21,8 @@ import {
   updateSelectedTable,
   updateSelectedTablePageLimit,
   updateSelectedTableSort,
-  startRowEdit
+  startRowEdit,
+  cancelRowEdit
 } from '../public/core';
 
 let RethinkDbService;
@@ -967,6 +968,61 @@ describe('Application Logic', () => {
           },
           editingRecord: record,
           previousType: 'table',
+        }
+      });
+    });
+  });
+
+  describe('cancelRowEdit', () => {
+    it('updates selectedTable fields: type, codeBody, codeAction, editingRecord, previousType, codeBodyError', () => {
+      const state = {
+        selectedTable: {
+          databaseName: 'databaseName',
+          name: 'tableName',
+          type: 'code',
+          data: ['stuff'],
+          loading: false,
+          codeAction: 'update',
+          codeBody: JSON.stringify(record, null, '  '),
+          codeBodyError: 'Some Error',
+          query: {
+            page: 1,
+            limit: 5,
+            sort: 'id',
+            direction: 1
+          },
+          editingRecord: {
+            id: 'some-id',
+            fieldA: 'some field',
+          },
+          previousType: 'table',
+        }
+      };
+
+      const record = {
+        id: 'some-id',
+        fieldA: 'some field',
+      };
+
+      const nextState = cancelRowEdit(state, record);
+      expect(nextState).to.deep.equal({
+        selectedTable: {
+          databaseName: 'databaseName',
+          name: 'tableName',
+          type: 'table',
+          data: ['stuff'],
+          loading: false,
+          codeAction: 'add',
+          codeBody: "{\n  \n}",
+          codeBodyError: null,
+          query: {
+            page: 1,
+            limit: 5,
+            sort: 'id',
+            direction: 1
+          },
+          editingRecord: null,
+          previousType: null,
         }
       });
     });

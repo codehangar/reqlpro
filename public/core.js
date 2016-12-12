@@ -326,7 +326,15 @@ export function startRowEdit(state, record) {
   return Object.assign({}, state, {selectedTable: newSelectedTable});
 }
 
-
-
-
-
+export function cancelRowEdit(state) {
+  const newFields = {
+    codeAction: 'add',
+    editingRecord: null,
+    codeBody: "{\n  \n}",
+    codeBodyError: null,
+    previousType: null,
+    type: state.selectedTable.previousType,
+  };
+  const newSelectedTable = Object.assign({}, state.selectedTable, newFields);
+  return Object.assign({}, state, {selectedTable: newSelectedTable});
+}
