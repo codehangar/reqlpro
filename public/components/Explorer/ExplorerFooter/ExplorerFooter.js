@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import ExplorerPagination from '../ExplorerPagination/ExplorerPagination';
-import Segment from '../../services/segment.service';
+import ExplorerPagination from './ExplorerPagination';
+import Segment from '../../../services/segment.service';
 import ace from 'brace';
 import {connect} from "react-redux";
 
@@ -121,4 +121,4 @@ const mapDispatchToProps = (dispatch) => {
 
 const ExplorerFooterContainer = connect(mapStateToProps, mapDispatchToProps)(ExplorerFooter);
 
-module.exports = ExplorerFooterContainer;
+export default ExplorerFooterContainer;

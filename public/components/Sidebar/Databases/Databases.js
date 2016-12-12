@@ -1,8 +1,8 @@
 import React from 'react';
-import DatabasesHeader from '../DatabasesHeader/DatabasesHeader';
-import Database from '../Database/Database';
 import {connect} from 'react-redux';
-import {getDbTables} from '../../actions';
+import DatabasesHeader from './DatabasesHeader';
+import Database from './Database/Database';
+import {getDbTables} from '../../../actions';
 
 const Databases = ({
   connections, 
@@ -75,4 +75,4 @@ const mapDispatchToProps = (dispatch) => {
 
 const DatabasesContainer = connect(mapStateToProps, mapDispatchToProps)(Databases);
 
-module.exports = DatabasesContainer;
+export default DatabasesContainer;

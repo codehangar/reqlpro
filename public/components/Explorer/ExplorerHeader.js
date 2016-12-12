@@ -184,7 +184,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const ExplorerHeaderContainer = connect(mapStateToProps, mapDispatchToProps)(ExplorerHeader);
 
-module.exports = ExplorerHeaderContainer;
+export default ExplorerHeaderContainer;
 
 // const ExplorerHeader = React.createClass({
 //   toggleExplorerBody: function(key, e) {

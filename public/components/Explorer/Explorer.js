@@ -1,7 +1,7 @@
-const React = require('react');
-const ExplorerHeader = require('../ExplorerHeader/ExplorerHeader');
-const ExplorerBody = require('../ExplorerBody/ExplorerBody');
-const ExplorerFooter = require('../ExplorerFooter/ExplorerFooter');
+import React from 'react';
+import ExplorerHeader from'./ExplorerHeader';
+import ExplorerBody from'./ExplorerBody/ExplorerBody';
+import ExplorerFooter from'./ExplorerFooter/ExplorerFooter';
 import {connect} from 'react-redux';
 
 const Explorer = ({
@@ -85,4 +85,4 @@ const mapDispatchToProps = (dispatch) => {
 
 const ExplorerContainer = connect(mapStateToProps, mapDispatchToProps)(Explorer);
 
-module.exports = ExplorerContainer;
+export default ExplorerContainer;

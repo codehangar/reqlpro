@@ -4,9 +4,9 @@ import JSONTree from 'react-json-tree';
 import ExplorerTableCell from './ExplorerTableCell.js';
 import _ from 'lodash';
 import classNames from 'classnames';
-import Segment from '../../services/segment.service';
+import Segment from '../../../../../services/segment.service';
 import {connect} from 'react-redux';
-import {queryTable} from '../../actions';
+import {queryTable} from '../../../../../actions';
 
 const ExplorerTableView = ({
   width,
@@ -32,7 +32,7 @@ const ExplorerTableView = ({
     // Also back up in the store to maintain across paging
     var cWs = _.extend({}, selectedTable.columnWidths, width)
     // this.state.store.setColumnWidths(cWs);
-  }
+  };
   const rowChanged = (row) => {
     // console.log("rowChanged row", row)
     // this.state.store.update(row);
@@ -41,7 +41,7 @@ const ExplorerTableView = ({
     //   event: 'selectedTableview.row.inlineEdit',
     //   properties: {}
     // });
-  }
+  };
   columnNames = ['id', 'level', 'message', 'server'];
 
   const actionColumn = (
@@ -70,7 +70,7 @@ const ExplorerTableView = ({
     });
     let iconBody = '';
     if (selectedTable.query.sort === fieldName) {
-      iconBody = <i className={iconClasses}></i>;
+      iconBody = <i className={iconClasses}/>;
     }
     return (
       <Column
@@ -79,19 +79,18 @@ const ExplorerTableView = ({
         isResizable={true}
         columnKey={fieldName}
         cell={(props) => {
-              if (selectedTable.data[props.rowIndex].id === '11698a1f-f9db-4f9c-9fb8-4c27d75e1990' && fieldName === 'name') {
-                // console.log("   --> ExplorerTableView cell render", this.props.table.data[props.rowIndex][fieldName])
-              }
-              return (
-                <Cell>
-                  <ExplorerTableCell row={selectedTable.data[props.rowIndex]} fieldName={fieldName} rowChanged={rowChanged}/>
-                </Cell>
-              );
-            }
-        }
+          if (selectedTable.data[props.rowIndex].id === '11698a1f-f9db-4f9c-9fb8-4c27d75e1990' && fieldName === 'name') {
+            // console.log("   --> ExplorerTableView cell render", this.props.table.data[props.rowIndex][fieldName])
+          }
+          return (
+            <Cell>
+              <ExplorerTableCell row={selectedTable.data[props.rowIndex]} fieldName={fieldName} rowChanged={rowChanged}/>
+            </Cell>
+          );
+        }}
         // width={this.state.columnWidths[fieldName]}
         width={100}
-        />
+      />
     );
   });
 
@@ -111,16 +110,16 @@ const ExplorerTableView = ({
   );
 };
 
-const mapStateToProps = (state) => {
+function mapStateToProps(state) {
   return {
     // connections: state.main.connections || [],
     // selectedConnection: state.main.selectedConnection,
     dbConnection: state.main.dbConnection,
     selectedTable: state.main.selectedTable
   };
-};
+}
 
-const mapDispatchToProps = (dispatch) => {
+function mapDispatchToProps(dispatch) {
   return {
     onUpdateTableSort: (field, dbConnection, selectedTable) => {
       console.log('onUpdateTableSort', field, dbConnection, selectedTable)
@@ -142,11 +141,11 @@ const mapDispatchToProps = (dispatch) => {
 
     }
   };
-};
+}
 
 const ExplorerTableViewContainer = connect(mapStateToProps, mapDispatchToProps)(ExplorerTableView);
 
-module.exports = ExplorerTableViewContainer;
+export default ExplorerTableViewContainer;
 
 // var ExplorerTableView = React.createClass({
 //   getInitialState: function() {

@@ -25,10 +25,12 @@ const Favorite = ({
   const classes = favoriteClasses(active).name;
   return (
     <div className={classes} onClick={onConnectionClick}>
-       <div className="favorite-identicon"><div dangerouslySetInnerHTML={createMarkup(identicon)} /></div>
-       <p className="text-center">{name}</p>
-     </div>
+      <div className="favorite-identicon">
+        <div dangerouslySetInnerHTML={createMarkup(identicon)}/>
+      </div>
+      <p className="text-center">{name}</p>
+    </div>
   );
 };
 
-module.exports = Favorite;
+export default Favorite;

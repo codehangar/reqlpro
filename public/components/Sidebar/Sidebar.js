@@ -1,16 +1,14 @@
-var React = require('react');
-var Favorites = require('../Favorites/Favorites');
-var Databases = require('../Databases/Databases');
+import React from 'react';
+import Favorites from './Favorites/Favorites';
+import Databases from './Databases/Databases';
 
-var Sidebar = React.createClass({
-  render: function() {
-    return (
-      <div className="sidebar">
-        <Favorites />
-        <Databases />
-      </div>
-    );
-  }
-});
+const Sidebar = ({}) => {
+  return (
+    <div className="sidebar">
+      <Favorites />
+      <Databases />
+    </div>
+  );
+};
 
-module.exports = Sidebar;
+export default Sidebar;

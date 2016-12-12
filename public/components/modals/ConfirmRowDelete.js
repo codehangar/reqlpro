@@ -1,6 +1,6 @@
 const React = require('react');
 const classNames = require('classnames');
-const Segment = require('../../services/segment.service');
+const Segment = require('../../services/segment.service.js');
 
 const ConfirmRowDelete = React.createClass({
   getInitialState: function() {

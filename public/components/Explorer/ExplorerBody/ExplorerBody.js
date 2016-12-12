@@ -1,7 +1,7 @@
 import React from 'react';
-import ExplorerTreeView from '../ExplorerTreeView/ExplorerTreeView';
-import ExplorerTableView from '../ExplorerTableView/ExplorerTableView';
-import ExplorerCodeView from '../ExplorerCodeView/ExplorerCodeView';
+import ExplorerTreeView from './Views/ExplorerTreeView';
+import ExplorerTableView from './Views/ExplorerTableView/ExplorerTableView';
+import ExplorerCodeView from './Views/ExplorerCodeView';
 
 const ExplorerBody = ({
   width,
@@ -55,4 +55,4 @@ const ExplorerBody = ({
   );
 };
 
-module.exports = ExplorerBody;
+export default ExplorerBody;

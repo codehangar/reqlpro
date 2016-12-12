@@ -1,10 +1,10 @@
-const React = require('react');
-const Sidebar = require('../Sidebar/Sidebar');
-const ExplorerContainer = require('../Explorer/Explorer');
-const ConnectionFormContainer = require('../ConnectionForm/ConnectionForm');
-const EntityForm = require('../EntityForm/EntityForm');
-const ConfirmRowDelete = require('../ConfirmRowDelete/ConfirmRowDelete');
-const EmailIntroContainer = require('../EmailIntro/EmailIntro');
+import React from 'react';
+import Sidebar from '../Sidebar/Sidebar';
+import ExplorerContainer from '../Explorer/Explorer';
+import ConnectionFormContainer from '../modals/ConnectionForm';
+import EntityForm from '../modals/EntityForm';
+import ConfirmRowDelete from '../modals/ConfirmRowDelete';
+import EmailIntroContainer from '../modals/EmailIntro';
 import DatabaseForm from '../modals/DatabaseForm';
 import TableForm from '../modals/TableForm';
 

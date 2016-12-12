@@ -1,6 +1,6 @@
-var React = require('react');
+import React from'react';
 import {connect} from 'react-redux';
-import {queryTable} from '../../actions';
+import {queryTable} from '../../../../../actions';
 
 const DbTable = ({
   dbConnection,
@@ -9,27 +9,27 @@ const DbTable = ({
   database,
   onTableClick
 }) => {
-  return(
-      <div onClick={()=>onTableClick(dbConnection, database.name, table, selectedTable)} className={"db-table "+ (selectedTable && (selectedTable.name === table) ? 'selected' : '')}>
-        <div>
-          <i className="fa fa-table"></i> {table}
-          <div className="delete-table btn-group" role="group">
-            {/*<button onClick={this.deleteTable.bind(this, this.props.table)} className="btn btn-default fa fa-trash"></button>
-            <button onClick={this.editDatabase.bind(this, this.props.database.name)} className="btn btn-default fa fa-pencil"></button>*/}
-          </div>
+  return (
+    <div onClick={() => onTableClick(dbConnection, database.name, table, selectedTable)} className={"db-table " + (selectedTable && (selectedTable.name === table) ? 'selected' : '')}>
+      <div>
+        <i className="fa fa-table"/> {table}
+        <div className="delete-table btn-group" role="group">
+          {/*<button onClick={this.deleteTable.bind(this, this.props.table)} className="btn btn-default fa fa-trash"></button>
+           <button onClick={this.editDatabase.bind(this, this.props.database.name)} className="btn btn-default fa fa-pencil"></button>*/}
         </div>
       </div>
-    );
-}
+    </div>
+  );
+};
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     dbConnection: state.main.dbConnection,
     selectedTable: state.main.selectedTable || null
   };
-};
+}
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     onTableClick: (dbConnection, databaseName, tableName, selectedTable) => {
       console.log('on table click', databaseName, tableName)
@@ -38,8 +38,8 @@ function mapDispatchToProps (dispatch) {
         databaseName,
         tableName
       });
-      selectedTable ? dispatch(queryTable(dbConnection, databaseName, tableName, selectedTable.query)) : 
-      dispatch(queryTable(dbConnection, databaseName, tableName))
+      selectedTable ? dispatch(queryTable(dbConnection, databaseName, tableName, selectedTable.query)) :
+        dispatch(queryTable(dbConnection, databaseName, tableName))
       // ;
       // dispatch({
       //   type: "GET_TABLE_DATA",
@@ -48,11 +48,11 @@ function mapDispatchToProps (dispatch) {
       // });
     }
   }
-};
+}
 
 const DbTableContainer = connect(mapStateToProps, mapDispatchToProps)(DbTable);
 
-module.exports = DbTableContainer;
+export default DbTableContainer;
 
 // var DbTable = React.createClass({
 //   // isSelected: false,

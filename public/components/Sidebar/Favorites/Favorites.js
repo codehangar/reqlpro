@@ -1,8 +1,8 @@
 import React from 'react';
-import Favorite from '../Favorite/Favorite';
-import AddFavorite from '../AddFavorite/AddFavorite';
 import {connect} from 'react-redux';
-import {getDbConnection} from '../../actions';
+import Favorite from './Favorite';
+import AddFavorite from './AddFavorite';
+import {getDbConnection} from '../../../actions';
 
 
 const Favorites = ({
@@ -20,7 +20,9 @@ const Favorites = ({
         key={i}
         {...connection}
         active={selectedConnection.index === connection.index}
-        onConnectionClick={() => {onConnectionClick(connection)}}
+        onConnectionClick={() => {
+          onConnectionClick(connection)
+        }}
       />
     );
   });
@@ -28,13 +30,13 @@ const Favorites = ({
   return (
     <div className="fav-content-col">
       {favoriteNodes}
-      <AddFavorite addFavorite={() => onClickAddConnection()} />
+      <AddFavorite addFavorite={() => onClickAddConnection()}/>
     </div>
   );
 
 };
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   // console.log('Favorites state', state.main)
   // console.log("state.main.connections", state.main.connections)
   return {
@@ -60,4 +62,4 @@ const mapDispatchToProps = (dispatch) => {
 
 const FavoritesContainer = connect(mapStateToProps, mapDispatchToProps)(Favorites);
 
-module.exports = FavoritesContainer;
+export default FavoritesContainer;
