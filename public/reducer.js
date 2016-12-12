@@ -23,7 +23,8 @@ import {
   updateSelectedTable,
   updateSelectedTablePageLimit,
   updateSelectedTableSort,
-  startRowEdit
+  startRowEdit,
+  cancelRowEdit
 } from './core';
 
 function reducer(state = {}, action) {
@@ -78,6 +79,8 @@ function reducer(state = {}, action) {
       return updateSelectedTableSort(state, action.field);
     case 'SET_ROW_EDIT':
       return startRowEdit(state, action.row);
+    case 'CANCEL_ROW_EDIT':
+      return cancelRowEdit(state, action.row);
   }
   return state;
 }
