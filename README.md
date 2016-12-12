@@ -25,3 +25,9 @@ The rethinkdb.client.js file is the the source of the truth for all the applicat
 
 ## Installing Wine for building Windows distributions on Mac
 https://www.davidbaumgold.com/tutorials/wine-mac/#part-2:-install-homebrew-cask
+
+## Testing and Code Coverage
+- npm test
+- npm run test-coverage
+
+To see the results of the test coverage, view the `coverage/lcov-report/index.html` file in your browser
