@@ -262,10 +262,10 @@ store.prototype.toggleConfirmRowDelete = function(row) {
 // };
 
 // Update Page Limit
-store.prototype.updatePageLimit = function(limit) {
-  this.selectedTable.query.limit = parseInt(limit);
-  this.query();
-};
+// store.prototype.updatePageLimit = function(limit) {
+//   this.selectedTable.query.limit = parseInt(limit);
+//   this.query();
+// };
 
 // Update Table Sort
 store.prototype.updateTableSort = function(sort) {

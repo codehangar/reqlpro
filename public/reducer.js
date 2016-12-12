@@ -21,7 +21,8 @@ import {
   addTable,
   setSelectedTable,
   updateSelectedTable,
-  updateSelectedTablePageLimit
+  updateSelectedTablePageLimit,
+  updateSelectedTableSort
 } from './core';
 
 function reducer(state = {}, action) {
@@ -72,6 +73,9 @@ function reducer(state = {}, action) {
       return updateSelectedTable(state, action.data);
     case 'SET_TABLE_PAGE_LIMIT':
       return updateSelectedTablePageLimit(state, action.limit);
+    case 'SET_TABLE_SORT':
+      return updateSelectedTableSort(state, action.field);
+      
       
   }
   return state;
