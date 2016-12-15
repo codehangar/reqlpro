@@ -1,5 +1,6 @@
 import jdenticon from 'jdenticon';
 import md5 from 'md5';
+import freeze from 'deep-freeze-node';
 import {
   setConnections,
   setEmail,
@@ -621,17 +622,18 @@ describe('Application Logic', () => {
   });
 
   describe('toggleDeleteDatabaseForm', () => {
-    it('should return new state with showDeleteDatabaseForm set to true', () => {
+    it('should return new state with showDeleteDatabaseForm set to true, and dbToDelete set', () => {
       const state = {
         email: 'ian@codehangar.io',
         showDeleteDatabaseForm: false
       };
 
-      const nextState = toggleDeleteDatabaseForm(state, true);
+      const nextState = toggleDeleteDatabaseForm(state, true, 'test');
 
       expect(nextState).to.deep.equal({
         email: 'ian@codehangar.io',
-        showDeleteDatabaseForm: true
+        showDeleteDatabaseForm: true,
+        dbToDelete: 'test'
       });
     });
 
@@ -1157,7 +1159,7 @@ describe('Application Logic', () => {
 
   describe('deleteDatabase', () => {
     it('removes database from selectedConnection', () => {
-      const state = {
+      let state = {
         selectedConnection: {
           authKey: "",
           database: "",
@@ -1176,6 +1178,8 @@ describe('Application Logic', () => {
           }]
         }
       }
+
+      state = freeze(state);
       const dbName = "Test";
 
       const nextState = deleteDatabase(state, dbName);

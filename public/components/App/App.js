@@ -6,6 +6,7 @@ import EntityForm from '../modals/EntityForm';
 import ConfirmRowDelete from '../modals/ConfirmRowDelete';
 import EmailIntroContainer from '../modals/EmailIntro';
 import DatabaseForm from '../modals/DatabaseForm';
+import DeleteDatabaseForm from '../modals/DeleteDatabaseForm';
 import TableForm from '../modals/TableForm';
 
 const App = React.createClass({
@@ -57,6 +58,7 @@ const App = React.createClass({
         <Sidebar />
         <ConnectionFormContainer />
         <DatabaseForm />
+        <DeleteDatabaseForm />
         <TableForm />
         <ExplorerContainer />
       </div>

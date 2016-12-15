@@ -57,17 +57,18 @@ function mapDispatchToProps(dispatch) {
     },
     deleteDatabase: function(e, dbName, connection) {
       e.stopPropagation();
-      let confirmDelete = () =>{
-        return confirm(`Are you sure you want to permanently delete the database called "${dbName}"?`)
-      }
-      if(confirmDelete()){
-        console.log('delete confirmed');
-        dispatch(deleteDatabase(dbName, connection));
-        // dispatch({
-        //   type:"DELETE_DATABASE",
-        //   databaseName:dbName
-        // })
-      }
+      // let confirmDelete = () =>{
+      //   return confirm(`Are you sure you want to permanently delete the database called "${dbName}"?`)
+      // }
+      // if(confirmDelete()){
+        // console.log('delete confirmed');
+        // dispatch(deleteDatabase(dbName, connection));
+        dispatch({
+          type:"TOGGLE_DELETE_DATABASE_FORM",
+          dbToDelete: dbName,
+          showDeleteDatabaseForm:true
+        })
+      // }
       
       // this.state.store.toggleEntityForm('Database', 'Delete', dbName);
     },

@@ -234,8 +234,8 @@ function getTableDataBetween(index, start, end, dbConnection, databaseName, tabl
   }
 }
 
-export function deleteDatabase(dbName, conn){
-  console.log('deleting database');
+export function deleteDatabase(conn, dbName){
+  console.log('deleting database', conn, dbName);
   return dispatch => {
     new Promise((resolve, reject) => {
       RethinkDbService.deleteDb(conn, dbName).then((results) => {
