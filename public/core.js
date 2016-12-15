@@ -203,6 +203,12 @@ export function toggleDatabaseForm(state, showDatabaseForm) {
   });
 };
 
+export function toggleDeleteDatabaseForm(state, showDeleteDatabaseForm) {
+  return Object.assign({}, state, {
+    showDeleteDatabaseForm
+  });
+};
+
 export function toggleTableForm(state, showTableForm) {
   return Object.assign({}, state, {
     showTableForm

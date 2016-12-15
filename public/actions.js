@@ -239,17 +239,10 @@ export function deleteDatabase(dbName, conn){
   return dispatch => {
     new Promise((resolve, reject) => {
       RethinkDbService.deleteDb(conn, dbName).then((results) => {
-        // Remove database from selectedfavorite list
         dispatch({
           type:"DELETE_DATABASE",
           dbName
         });
-        // this.selectedFavorite.databases.forEach((db, index) => {
-        //   if (db.name === dbName) {
-        //     this.selectedFavorite.databases.splice(index, 1);
-        //   }
-        // });
-        // this.toggleEntityForm();
         resolve();
       }).catch((err) => {
         reject(err);

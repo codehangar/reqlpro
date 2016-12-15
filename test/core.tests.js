@@ -13,6 +13,7 @@ import {
   hideConnectionForm,
   hideOpenMenus,
   toggleDatabaseForm,
+  toggleDeleteDatabaseForm,
   toggleTableForm,
   addDatabase,
   addTable,
@@ -589,7 +590,7 @@ describe('Application Logic', () => {
 
   });
 
-  describe('toggleDatabaseForm', () => {
+    describe('toggleDatabaseForm', () => {
     it('should return new state with showDatabaseForm set to true', () => {
       const state = {
         email: 'ian@codehangar.io',
@@ -615,6 +616,36 @@ describe('Application Logic', () => {
       expect(nextState).to.deep.equal({
         email: 'ian@codehangar.io',
         showDatabaseForm: false
+      });
+    });
+  });
+
+  describe('toggleDeleteDatabaseForm', () => {
+    it('should return new state with showDeleteDatabaseForm set to true', () => {
+      const state = {
+        email: 'ian@codehangar.io',
+        showDeleteDatabaseForm: false
+      };
+
+      const nextState = toggleDeleteDatabaseForm(state, true);
+
+      expect(nextState).to.deep.equal({
+        email: 'ian@codehangar.io',
+        showDeleteDatabaseForm: true
+      });
+    });
+
+    it('should return new state with showDatabaseForm set to false', () => {
+      const state = {
+        email: 'ian@codehangar.io',
+        showDeleteDatabaseForm: true
+      };
+
+      const nextState = toggleDeleteDatabaseForm(state, false);
+
+      expect(nextState).to.deep.equal({
+        email: 'ian@codehangar.io',
+        showDeleteDatabaseForm: false
       });
     });
   });
