@@ -2,6 +2,7 @@ import React from 'react';
 import DbTables from './DbTables/DbTables';
 import AddDbTable from './DbTables/AddDbTable';
 import {connect} from 'react-redux';
+import {deleteDatabase} from '../../../../actions';
 
 const Database = React.createClass({
   getInitialState: function() {
@@ -10,7 +11,7 @@ const Database = React.createClass({
     }
   },
   render: function() {
-    const {database, onDatabaseClick, onAddTable, dbConnection, deleteDatabase, editDatabase} = this.props;
+    const {database, onDatabaseClick, onAddTable, deleteDatabase, editDatabase, dbConnection} = this.props;
     return (
       <div className="database">
 
@@ -22,8 +23,8 @@ const Database = React.createClass({
         }}>
           <i className="fa fa-database"/>&nbsp;&nbsp;<span className="database-name">{database.name}</span>
           <div className="delete-db btn-group" role="group">
-            <button onClick={deleteDatabase.bind(this, this.props.database.name)} className="btn btn-default fa fa-trash"/>
-            {/*<button onClick={editDatabase.bind(this, this.props.database.name)} className="btn btn-default fa fa-pencil"/>*/}
+            <button onClick={(e)=>deleteDatabase(e, database.name, dbConnection)} className="btn btn-default fa fa-trash"/>
+            <button onClick={(e)=>editDatabase(e, database.name)} className="btn btn-default fa fa-pencil"/>
           </div>
         </div>
         {this.state.showDbTables ?
@@ -54,9 +55,21 @@ function mapDispatchToProps(dispatch) {
         database
       });
     },
-    deleteDatabase: function(dbName, e) {
+    deleteDatabase: function(e, dbName, connection) {
       e.stopPropagation();
-      this.state.store.toggleEntityForm('Database', 'Delete', dbName);
+      let confirmDelete = () =>{
+        return confirm(`Are you sure you want to permanently delete the database called "${dbName}"?`)
+      }
+      if(confirmDelete()){
+        console.log('delete confirmed');
+        dispatch(deleteDatabase(dbName, connection));
+        // dispatch({
+        //   type:"DELETE_DATABASE",
+        //   databaseName:dbName
+        // })
+      }
+      
+      // this.state.store.toggleEntityForm('Database', 'Delete', dbName);
     },
     editDatabase: function(dbName, e) {
       e.stopPropagation();

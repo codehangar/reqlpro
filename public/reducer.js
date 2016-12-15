@@ -25,7 +25,8 @@ import {
   updateSelectedTableSort,
   startRowEdit,
   cancelRowEdit,
-  toggleExplorerBody
+  toggleExplorerBody,
+  deleteDatabase
 } from './core';
 
 function reducer(state = {}, action) {
@@ -84,6 +85,8 @@ function reducer(state = {}, action) {
       return cancelRowEdit(state, action.row);
     case 'TOGGLE_EXPLORER_BODY':
       return toggleExplorerBody(state, action.key);
+    case 'DELETE_DATABASE':
+      return deleteDatabase(state, action.dbName);
   }
   return state;
 }

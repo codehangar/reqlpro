@@ -23,7 +23,8 @@ import {
   updateSelectedTableSort,
   startRowEdit,
   cancelRowEdit,
-  toggleExplorerBody
+  toggleExplorerBody,
+  deleteDatabase
 } from '../public/core';
 
 let RethinkDbService;
@@ -1118,6 +1119,48 @@ describe('Application Logic', () => {
           codeAction: 'add',
           codeBody: "{\n  \n}",
           codeBodyError: null
+        }
+      });
+    });
+  });
+
+  describe('deleteDatabase', () => {
+    it('removes database from selectedConnection', () => {
+      const state = {
+        selectedConnection: {
+          authKey: "",
+          database: "",
+          host: "192.168.99.100",
+          identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+          index: 0,
+          name: "apple",
+          port: "32769",
+          databases: [{
+            name: 'ReQL',
+            tables: ['users']
+          },
+          {
+            name: 'Test',
+            tables: ['users']
+          }]
+        }
+      }
+      const dbName = "Test";
+
+      const nextState = deleteDatabase(state, dbName);
+      expect(nextState).to.deep.equal({
+        selectedConnection: {
+          authKey: "",
+          database: "",
+          host: "192.168.99.100",
+          identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+          index: 0,
+          name: "apple",
+          port: "32769",
+          databases: [{
+            name: 'ReQL',
+            tables: ['users']
+          }]
         }
       });
     });

@@ -352,3 +352,23 @@ export function toggleExplorerBody(state, type) {
   const newSelectedTable = Object.assign({}, state.selectedTable, newFields);
   return Object.assign({}, state, {selectedTable: newSelectedTable});
 }
+
+export function deleteDatabase(state, dbName){
+    // let newState = Object.assign({}, state);
+  let databasesCopy;
+
+  if (state.selectedConnection.databases)
+    databasesCopy = state.selectedConnection.databases.slice(0);
+
+  databasesCopy = databasesCopy.filter(db => { if(db.name != dbName) return db; });
+
+  const newSelectedConnection = Object.assign({}, state.selectedConnection, {
+    databases: databasesCopy
+  });
+
+  const newState = Object.assign({}, state, {
+    selectedConnection: newSelectedConnection
+  });
+
+  return newState;
+}
