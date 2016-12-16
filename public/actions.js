@@ -3,7 +3,7 @@ const RethinkDbService = require('../main/services/rethinkdb.service');
 
 export function getDbConnection(connection) {
   return dispatch => {
-    new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       RethinkDbService.getConnection(connection.host, connection.port, connection.authKey).then((conn) => {
 
         dispatch({
@@ -19,10 +19,11 @@ export function getDbConnection(connection) {
           type: 'SET_DB_CONNECTION',
           dbConnection: error
         });
+        reject(error);
       });
     });
   }
-};
+}
 
 export function getDbList(dbConnection) {
   return dispatch => {
