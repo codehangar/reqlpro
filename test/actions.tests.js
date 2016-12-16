@@ -185,5 +185,70 @@ describe('Action Creators', () => {
     });
   });
 
+  describe('getDbTables', () => {
+
+    const dbConnection = {stuff: 'stuff'};
+    const database = {name: 'dbName1', tables: []};
+
+    describe('success', () => {
+      beforeEach(function() {
+        RethinkDbService.getTableList = sinon.stub().returns(new Promise(function(resolve, reject) {
+          resolve(['table1', 'table2']);
+        }));
+      });
+
+      it('should get a list of tables from a database', (done) => {
+        const {getDbTables} = require('../public/actions');
+        const promise = getDbTables(dbConnection, database)(dispatch);
+        promise
+          .then(function() {
+            expect(RethinkDbService.getTableList.callCount).to.equal(1);
+            expect(RethinkDbService.getTableList.calledWith(dbConnection, database.name)).to.equal(true);
+            expect(dispatch.callCount).to.equal(1);
+            expect(dispatch.calledWith({
+              type: 'SET_DB_TABLES',
+              database,
+              tables: ['table1', 'table2']
+            })).to.equal(true);
+            done();
+          })
+          .catch(done);
+      });
+
+    });
+
+    describe('failure', () => {
+
+      beforeEach(function() {
+        RethinkDbService.getTableList = sinon.stub().returns(new Promise(function(resolve, reject) {
+          reject('im a db tables fetching error');
+        }));
+      });
+
+      it('handles failed connection info from RethinkDB', (done) => {
+        const {getDbTables} = require('../public/actions');
+        const promise = getDbTables(dbConnection, database)(dispatch);
+        promise
+          .then(function() {
+            done(FALSE_SUCCESS_ERROR);
+          })
+          .catch(function(er) {
+            expect(RethinkDbService.getTableList.callCount).to.equal(1);
+            expect(RethinkDbService.getTableList.calledWith(dbConnection, database.name)).to.equal(true);
+            expect(dispatch.callCount).to.equal(1);
+            const dCall = dispatch.getCall(0);
+            console.log('dCall.args[0]', dCall.args[0]);
+            expect(dispatch.calledWith({
+              type: 'SET_DB_TABLES',
+              tables: 'im a db tables fetching error'
+            })).to.equal(true);
+            done();
+          })
+          .catch(done);
+      });
+
+    });
+  });
+
 
 });

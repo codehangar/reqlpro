@@ -54,22 +54,20 @@ export function getDbList(dbConnection) {
 
 export function getDbTables(dbConnection, database) {
   return dispatch => {
-    new Promise((resolve, reject) => {
-      RethinkDbService.getTableList(dbConnection, database.name).then(function(tables) {
-
+    return new Promise((resolve, reject) => {
+      RethinkDbService.getTableList(dbConnection, database.name).then(tables => {
         dispatch({
           type: 'SET_DB_TABLES',
           database,
           tables
         });
-
         resolve(tables);
-      }).catch(function(err) {
-        console.log('getTableList error', err)
+      }).catch(error => {
         dispatch({
           type: 'SET_DB_TABLES',
-          tables: err
+          tables: error
         });
+        reject(error);
       });
     });
   }
