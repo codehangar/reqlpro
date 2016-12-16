@@ -317,5 +317,69 @@ describe('Action Creators', () => {
     });
   });
 
+  describe('createTable', () => {
+
+    const dbConnection = {stuff: 'stuff'};
+    const database = {name: 'dbName1', tables: []};
+    const table = {name: 'table1'};
+
+    describe('success', () => {
+      beforeEach(function() {
+        RethinkDbService.createTable = sinon.stub().returns(new Promise(function(resolve, reject) {
+          resolve('ok was successfully created.');
+        }));
+      });
+
+      it('should get a list of tables from a database', (done) => {
+        const {createTable} = require('../public/actions');
+        const promise = createTable(dbConnection, database, table)(dispatch);
+        promise
+          .then(function() {
+            expect(RethinkDbService.createTable.callCount).to.equal(1);
+            expect(RethinkDbService.createTable.calledWith(dbConnection, database.name, table.name)).to.equal(true);
+            expect(dispatch.callCount).to.equal(1);
+            expect(dispatch.calledWith({
+              type: 'ADD_TO_TABLE_LIST',
+              table,
+              database
+            })).to.equal(true);
+            done();
+          })
+          .catch(done);
+      });
+
+    });
+
+    describe('failure', () => {
+
+      beforeEach(function() {
+        RethinkDbService.createTable = sinon.stub().returns(new Promise(function(resolve, reject) {
+          reject('im a create table error');
+        }));
+      });
+
+      it('handles failed creation info from RethinkDB', (done) => {
+        const {createTable} = require('../public/actions');
+        const promise = createTable(dbConnection, database, table)(dispatch);
+        promise
+          .then(function() {
+            done(FALSE_SUCCESS_ERROR);
+          })
+          .catch(function(er) {
+            expect(RethinkDbService.createTable.callCount).to.equal(1);
+            expect(RethinkDbService.createTable.calledWith(dbConnection, database.name, table.name)).to.equal(true);
+            expect(dispatch.callCount).to.equal(1);
+            expect(dispatch.calledWith({
+              type: 'ADD_TO_TABLE_LIST',
+              table: 'im a create table error'
+            })).to.equal(true);
+            done();
+          })
+          .catch(done);
+      });
+
+    });
+  });
+
 
 });

@@ -98,27 +98,23 @@ export function createDatabase(dbConnection, database) {
 
 export function createTable(dbConnection, database, table) {
   return dispatch => {
-    new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       RethinkDbService.createTable(dbConnection, database.name, table.name, 'id').then((results) => {
-
         // Add table to selectedDatabase list
-        const newTable = {
-          name: table.name
-        };
-
         dispatch({
           type: 'ADD_TO_TABLE_LIST',
-          table: newTable,
+          table: {
+            name: table.name
+          },
           database
         });
-
         resolve(results);
-      }).catch(function(err) {
-        console.log('createDb error', err)
+      }).catch(error => {
         dispatch({
-          type: 'ADD_TO_DB_LIST',
-          database: err,
+          type: 'ADD_TO_TABLE_LIST',
+          table: error,
         });
+        reject(error);
       });
     });
   }
