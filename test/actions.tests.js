@@ -503,5 +503,61 @@ describe('Action Creators', () => {
     });
   });
 
+  describe('deleteDatabase', () => {
 
+    const dbConnection = {stuff: 'stuff'};
+    const database = {name: 'dbName1', tables: []};
+    const table = {name: 'table1'};
+
+    describe('success', () => {
+      beforeEach(function() {
+        RethinkDbService.deleteDb = sinon.stub().returns(new Promise(function(resolve, reject) {
+          resolve('ok was successfully created.');
+        }));
+      });
+
+      it('should delete a database', (done) => {
+        const {deleteDatabase} = require('../public/actions');
+        const promise = deleteDatabase(dbConnection, database.name)(dispatch);
+        promise
+          .then(function() {
+            expect(RethinkDbService.deleteDb.callCount).to.equal(1);
+            expect(RethinkDbService.deleteDb.calledWith(dbConnection, database.name)).to.equal(true);
+            expect(dispatch.callCount).to.equal(1);
+            expect(dispatch.calledWith({
+              type: 'DELETE_DATABASE',
+              dbName: database.name
+            })).to.equal(true);
+            done();
+          })
+          .catch(done);
+      });
+
+    });
+
+    describe('failure', () => {
+
+      beforeEach(function() {
+        RethinkDbService.deleteDb = sinon.stub().returns(new Promise(function(resolve, reject) {
+          reject('im a create table error');
+        }));
+      });
+
+      it('handles failed creation info from RethinkDB', (done) => {
+        const {deleteDatabase} = require('../public/actions');
+        const promise = deleteDatabase(dbConnection, database.name)(dispatch);
+        promise
+          .then(function() {
+            done(FALSE_SUCCESS_ERROR);
+          })
+          .catch(function(er) {
+            expect(RethinkDbService.deleteDb.callCount).to.equal(1);
+            expect(RethinkDbService.deleteDb.calledWith(dbConnection, database.name)).to.equal(true);
+            done();
+          })
+          .catch(done);
+      });
+
+    });
+  });
 });
