@@ -27,12 +27,12 @@ export function getDbConnection(connection) {
 
 export function getDbList(dbConnection) {
   return dispatch => {
-    new Promise((resolve, reject) => {
-      RethinkDbService.getDbList(dbConnection).then(function(dblist) {
+    return new Promise((resolve, reject) => {
+      RethinkDbService.getDbList(dbConnection).then(dbList => {
         var databases = [];
-        for (var i = 0; i < dblist.length; i++) {
+        for (var i = 0; i < dbList.length; i++) {
           databases.push({
-            name: dblist[i],
+            name: dbList[i],
             tables: []
           });
         }
@@ -40,13 +40,13 @@ export function getDbList(dbConnection) {
           type: 'SET_DB_LIST',
           databases: databases
         });
-        resolve(dblist);
-      }).catch(function(err) {
-        console.log('getDbList error', err)
+        resolve(dbList);
+      }).catch(error => {
         dispatch({
           type: 'SET_DB_LIST',
-          databases: err
+          databases: error
         });
+        reject(error);
       });
     });
   }

@@ -7,8 +7,6 @@ import md5 from 'md5';
 // } from '../public/actions';
 
 let RethinkDbService;
-let getConnectionSuccess;
-let getConnectionFailure;
 let dispatch;
 const FALSE_SUCCESS_ERROR = new Error('This promise should have failed');
 
@@ -24,16 +22,6 @@ describe('Action Creators', () => {
     });
 
     dispatch = sinon.stub();
-
-    getConnectionSuccess = sinon.stub().returns(new Promise(function(resolve, reject) {
-      resolve('im a connection');
-    }));
-
-    getConnectionFailure = sinon.stub().returns(new Promise(function(resolve, reject) {
-      reject('im a connection error');
-      // resolve('im a connection error');
-    }));
-
 
     // Mock the rethinkdb service
     RethinkDbService = sinon.stub();
@@ -62,7 +50,9 @@ describe('Action Creators', () => {
     describe('success', () => {
 
       beforeEach(function() {
-        RethinkDbService.getConnection = getConnectionSuccess;
+        RethinkDbService.getConnection = sinon.stub().returns(new Promise(function(resolve, reject) {
+          resolve('im a connection');
+        }));
       });
 
       it('returns successful connection info from RethinkDB', (done) => {
@@ -91,7 +81,9 @@ describe('Action Creators', () => {
     describe('failure', () => {
 
       beforeEach(function() {
-        RethinkDbService.getConnection = getConnectionFailure;
+        RethinkDbService.getConnection = sinon.stub().returns(new Promise(function(resolve, reject) {
+          reject('im a connection error');
+        }));
       });
 
       it('handles failed connection info from RethinkDB', (done) => {
@@ -109,6 +101,81 @@ describe('Action Creators', () => {
             expect(dispatch.calledWith({
               type: 'SET_DB_CONNECTION',
               dbConnection: 'im a connection error'
+            })).to.equal(true);
+            done();
+          })
+          .catch(done);
+      });
+
+    });
+  });
+
+  describe('getDbList', () => {
+
+    const state = {
+      email: 'cassie@codehangar.io',
+      dbConnection: {stuff: 'stuff'}
+    };
+    const databases = ['dbName1', 'dbName2'];
+
+    describe('success', () => {
+      beforeEach(function() {
+        RethinkDbService.getDbList = sinon.stub().returns(new Promise(function(resolve, reject) {
+          resolve(databases);
+        }));
+      });
+
+      it('get list of databases from dbConnection', (done) => {
+        const {getDbList} = require('../public/actions');
+        const promise = getDbList(state.dbConnection)(dispatch);
+        promise
+          .then(function() {
+            expect(RethinkDbService.getDbList.callCount).to.equal(1);
+            expect(RethinkDbService.getDbList.calledWith(state.dbConnection)).to.equal(true);
+            expect(dispatch.callCount).to.equal(1);
+            const dCall = dispatch.getCall(0);
+            console.log('dCall.args[0].databases', dCall.args[0].databases);
+            expect(dispatch.calledWith({
+              type: 'SET_DB_LIST',
+              databases: [
+                {name: 'dbName1', tables: []},
+                {name: 'dbName2', tables: []}
+              ]
+            })).to.equal(true);
+            done();
+          })
+          .catch(done);
+      });
+
+    });
+
+    describe('failure', () => {
+
+      beforeEach(function() {
+        RethinkDbService.getDbList = sinon.stub().returns(new Promise(function(resolve, reject) {
+          reject('im a dbList fetching error');
+        }));
+      });
+
+      it('handles failed connection info from RethinkDB', (done) => {
+        const {getDbList} = require('../public/actions');
+        const promise = getDbList(state.dbConnection)(dispatch);
+        console.log('promise', promise);
+        promise
+          .then(function() {
+            console.log('yes', yes);
+            done(FALSE_SUCCESS_ERROR);
+          })
+          .catch(function(er) {
+            console.log('er', er);
+            expect(RethinkDbService.getDbList.callCount).to.equal(1);
+            expect(RethinkDbService.getDbList.calledWith(state.dbConnection)).to.equal(true);
+            expect(dispatch.callCount).to.equal(1);
+            const dCall = dispatch.getCall(0);
+            console.log('dCall.args[0]', dCall.args[0]);
+            expect(dispatch.calledWith({
+              type: 'SET_DB_LIST',
+              databases: 'im a dbList fetching error'
             })).to.equal(true);
             done();
           })
