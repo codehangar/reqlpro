@@ -250,5 +250,72 @@ describe('Action Creators', () => {
     });
   });
 
+  describe('createDatabase', () => {
+
+    const dbConnection = {stuff: 'stuff'};
+    const database = {name: 'dbName1', tables: []};
+
+    describe('success', () => {
+      beforeEach(function() {
+        RethinkDbService.createDb = sinon.stub().returns(new Promise(function(resolve, reject) {
+          resolve('ok was successfully created.');
+        }));
+      });
+
+      it('should get a list of tables from a database', (done) => {
+        const {createDatabase} = require('../public/actions');
+        const promise = createDatabase(dbConnection, database)(dispatch);
+        promise
+          .then(function() {
+            expect(RethinkDbService.createDb.callCount).to.equal(1);
+            expect(RethinkDbService.createDb.calledWith(dbConnection, database.name)).to.equal(true);
+            expect(dispatch.callCount).to.equal(1);
+            expect(dispatch.calledWith({
+              type: 'ADD_TO_DB_LIST',
+              database: {
+                name: database.name,
+                tables: []
+              }
+            })).to.equal(true);
+            done();
+          })
+          .catch(done);
+      });
+
+    });
+
+    describe('failure', () => {
+
+      beforeEach(function() {
+        RethinkDbService.createDb = sinon.stub().returns(new Promise(function(resolve, reject) {
+          reject('im a db create error');
+        }));
+      });
+
+      it('handles failed connection info from RethinkDB', (done) => {
+        const {createDatabase} = require('../public/actions');
+        const promise = createDatabase(dbConnection, database)(dispatch);
+        promise
+          .then(function() {
+            done(FALSE_SUCCESS_ERROR);
+          })
+          .catch(function(er) {
+            expect(RethinkDbService.createDb.callCount).to.equal(1);
+            expect(RethinkDbService.createDb.calledWith(dbConnection, database.name)).to.equal(true);
+            expect(dispatch.callCount).to.equal(1);
+            const dCall = dispatch.getCall(0);
+            console.log('dCall.args[0]', dCall.args[0]);
+            expect(dispatch.calledWith({
+              type: 'ADD_TO_DB_LIST',
+              database: 'im a db create error'
+            })).to.equal(true);
+            done();
+          })
+          .catch(done);
+      });
+
+    });
+  });
+
 
 });
