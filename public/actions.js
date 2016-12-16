@@ -131,19 +131,21 @@ export function queryTable(dbConnection, databaseName, tableName, queryParams = 
   if (queryParams.page) {
     return getTableData(queryParams.sort, queryParams.direction, queryParams.limit, queryParams.page, dbConnection, databaseName, tableName);
   } else if (queryParams.index) {
-    return getTableDataBetween(queryParams.index, queryParams.start, queryParams.end);
+    return getTableDataBetween(queryParams.index, queryParams.start, queryParams.end, dbConnection, databaseName, tableName);
   }
 }
 
 function getTableData(sort, direction, limit, page, dbConnection, databaseName, tableName) {
   console.log('getTableData limit', limit)
   return dispatch => {
-    new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       const conn = dbConnection;
       const db = databaseName;
       const table = tableName;
 
-      if (page < 1) { page = 1; };
+      if (page < 1) {
+        page = 1;
+      }
 
       RethinkDbService.getTableData(conn, db, table, sort, direction, limit, page).then((result) => {
         console.log("result.value", result.value)
@@ -174,33 +176,31 @@ function getTableData(sort, direction, limit, page, dbConnection, databaseName, 
         // });
         resolve(result);
 
-      }).catch(function(err) {
-        console.error(err);
+      }).catch(error => {
         dispatch({
           type: 'UPDATE_SELECTED_TABLE',
-          lastResult: err,
-          data: err,
+          lastResult: error,
+          data: error,
           loading: false
         });
+        reject(error);
       });
     });
   }
 }
 
 function getTableDataBetween(index, start, end, dbConnection, databaseName, tableName) {
-  console.log('getTableData')
+  console.log('-----> getTableDataBetween', start, end)
   return dispatch => {
-    new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       const conn = dbConnection;
       const db = databaseName;
       const table = tableName;
 
-      if (page < 1) { page = 1; }
-
-      RethinkDbService.getTableData(conn, db, table, sort, direction, limit, page).then((result) => {
+      RethinkDbService.getTableDataBetween(conn, db, table, index, start, end).then((result) => {
         // this was in the old function before refactor, not sure what its for -Cassie
         if (end) {
-          result.reverse();
+          result.value.reverse();
         }
 
         dispatch({
@@ -212,14 +212,14 @@ function getTableDataBetween(index, start, end, dbConnection, databaseName, tabl
         });
         resolve(result);
 
-      }).catch(function(err) {
-        console.error(err);
+      }).catch(function(error) {
         dispatch({
           type: 'UPDATE_SELECTED_TABLE',
-          lastResult: err,
-          data: err,
+          lastResult: error,
+          data: error,
           loading: false
         });
+        reject(error);
       });
     });
   }

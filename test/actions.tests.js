@@ -381,5 +381,127 @@ describe('Action Creators', () => {
     });
   });
 
+  describe('queryTable', () => {
+
+    const dbConnection = {stuff: 'stuff'};
+    const databaseName = 'dbName1';
+    const tableName = 'table1';
+    const queryParams = {
+      page: null,
+      limit: 10,
+      sort: 'name',
+      direction: 1 // ASC = 1, DESC = 0
+    };
+
+    describe('success', () => {
+      beforeEach(function() {
+        RethinkDbService.getTableData = sinon.stub().returns(new Promise(function(resolve, reject) {
+          resolve({value: [{name: 'Bob'}, {name: 'Jim'}]});
+        }));
+        RethinkDbService.getTableDataBetween = sinon.stub().returns(new Promise(function(resolve, reject) {
+          resolve({value: [{name: 'Bob'}, {name: 'Jim'}]});
+        }));
+      });
+
+      it('should query the table for data with default params', (done) => {
+        const {queryTable} = require('../public/actions');
+        const promise = queryTable(dbConnection, databaseName, tableName)(dispatch);
+        promise
+          .then(function() {
+            expect(RethinkDbService.getTableData.callCount).to.equal(1);
+            expect(RethinkDbService.getTableData.calledWithExactly(dbConnection, databaseName, tableName, 'id', 0, 5, 1)).to.equal(true);
+            expect(dispatch.callCount).to.equal(1);
+            expect(dispatch.calledWith({
+              type: 'UPDATE_SELECTED_TABLE',
+              lastResult: {value: [{name: 'Bob'}, {name: 'Jim'}]},
+              data: [{name: 'Bob'}, {name: 'Jim'}],
+              loading: false
+            })).to.equal(true);
+            done();
+          })
+          .catch(done);
+      });
+
+      it('should query the table for data with given params', (done) => {
+        const {queryTable} = require('../public/actions');
+        const params = Object.assign({}, queryParams, {index: 'name', start: 7, end: 8});
+        const promise = queryTable(dbConnection, databaseName, tableName, params)(dispatch);
+        promise
+          .then(function() {
+            expect(RethinkDbService.getTableDataBetween.callCount).to.equal(1);
+            expect(RethinkDbService.getTableDataBetween.calledWithExactly(dbConnection, databaseName, tableName, 'name', 7, 8)).to.equal(true);
+            expect(dispatch.callCount).to.equal(1);
+            expect(dispatch.calledWith({
+              type: 'UPDATE_SELECTED_TABLE',
+              lastResult: {value: [{name: 'Jim'}, {name: 'Bob'}]},
+              data: [{name: 'Jim'}, {name: 'Bob'}],
+              loading: false
+            })).to.equal(true);
+            done();
+          })
+          .catch(done);
+      });
+
+    });
+
+    describe('failure', () => {
+
+      beforeEach(function() {
+        RethinkDbService.getTableData = sinon.stub().returns(new Promise(function(resolve, reject) {
+          reject('im a query table error');
+        }));
+        RethinkDbService.getTableDataBetween = sinon.stub().returns(new Promise(function(resolve, reject) {
+          reject('im a query table error');
+        }));
+      });
+
+      it('should handle failed query info from RethinkDB', (done) => {
+        const {queryTable} = require('../public/actions');
+        const promise = queryTable(dbConnection, databaseName, tableName)(dispatch);
+        promise
+          .then(function() {
+            done(FALSE_SUCCESS_ERROR);
+          })
+          .catch(function() {
+            expect(RethinkDbService.getTableData.callCount).to.equal(1);
+            expect(RethinkDbService.getTableData.calledWithExactly(dbConnection, databaseName, tableName, 'id', 0, 5, 1)).to.equal(true);
+            expect(dispatch.callCount).to.equal(1);
+            expect(dispatch.calledWith({
+              type: 'UPDATE_SELECTED_TABLE',
+              lastResult: 'im a query table error',
+              data: 'im a query table error',
+              loading: false
+            })).to.equal(true);
+            done();
+          })
+          .catch(done);
+      });
+
+      it('should handle failed query info from RethinkDB', (done) => {
+        const {queryTable} = require('../public/actions');
+        const params = Object.assign({}, queryParams, {index: 'name', start: 7, end: 8});
+        const promise = queryTable(dbConnection, databaseName, tableName, params)(dispatch);
+        promise
+          .then(function() {
+            done(FALSE_SUCCESS_ERROR);
+          })
+          .catch(function() {
+            expect(RethinkDbService.getTableDataBetween.callCount).to.equal(1);
+            expect(RethinkDbService.getTableDataBetween.calledWithExactly(dbConnection, databaseName, tableName, 'name', 7, 8)).to.equal(true);
+            expect(dispatch.callCount).to.equal(1);
+            expect(dispatch.calledWith({
+              type: 'UPDATE_SELECTED_TABLE',
+              lastResult: 'im a query table error',
+              data: 'im a query table error',
+              loading: false
+            })).to.equal(true);
+            done();
+          })
+          .catch(done);
+      });
+
+    });
+  });
+
 
 });
