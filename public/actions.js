@@ -15,10 +15,10 @@ export function getDbConnection(connection) {
 
         resolve(conn);
       }).catch(error => {
-        dispatch({
-          type: 'SET_DB_CONNECTION',
-          dbConnection: error
-        });
+        // dispatch({
+        //   type: 'SET_DB_CONNECTION',
+        //   dbConnection: error
+        // });
         reject(error);
       });
     });
@@ -42,10 +42,10 @@ export function getDbList(dbConnection) {
         });
         resolve(dbList);
       }).catch(error => {
-        dispatch({
-          type: 'SET_DB_LIST',
-          databases: error
-        });
+        // dispatch({
+        //   type: 'SET_DB_LIST',
+        //   databases: error
+        // });
         reject(error);
       });
     });
@@ -56,6 +56,7 @@ export function getDbTables(dbConnection, database) {
   return dispatch => {
     return new Promise((resolve, reject) => {
       RethinkDbService.getTableList(dbConnection, database.name).then(tables => {
+        console.log('getDbTables',database)
         dispatch({
           type: 'SET_DB_TABLES',
           database,
@@ -63,10 +64,10 @@ export function getDbTables(dbConnection, database) {
         });
         resolve(tables);
       }).catch(error => {
-        dispatch({
-          type: 'SET_DB_TABLES',
-          tables: error
-        });
+        // dispatch({
+        //   type: 'SET_DB_TABLES',
+        //   tables: error
+        // });
         reject(error);
       });
     });
@@ -86,10 +87,10 @@ export function createDatabase(dbConnection, database) {
         });
         resolve(results);
       }).catch(error => {
-        dispatch({
-          type: 'ADD_TO_DB_LIST',
-          database: error,
-        });
+        // dispatch({
+        //   type: 'ADD_TO_DB_LIST',
+        //   database: error,
+        // });
         reject(error);
       });
     });
@@ -110,10 +111,10 @@ export function createTable(dbConnection, database, table) {
         });
         resolve(results);
       }).catch(error => {
-        dispatch({
-          type: 'ADD_TO_TABLE_LIST',
-          table: error,
-        });
+        // dispatch({
+        //   type: 'ADD_TO_TABLE_LIST',
+        //   table: error,
+        // });
         reject(error);
       });
     });
@@ -177,12 +178,12 @@ function getTableData(sort, direction, limit, page, dbConnection, databaseName, 
         resolve(result);
 
       }).catch(error => {
-        dispatch({
-          type: 'UPDATE_SELECTED_TABLE',
-          lastResult: error,
-          data: error,
-          loading: false
-        });
+        // dispatch({
+        //   type: 'UPDATE_SELECTED_TABLE',
+        //   lastResult: error,
+        //   data: error,
+        //   loading: false
+        // });
         reject(error);
       });
     });
@@ -213,12 +214,12 @@ function getTableDataBetween(index, start, end, dbConnection, databaseName, tabl
         resolve(result);
 
       }).catch(function(error) {
-        dispatch({
-          type: 'UPDATE_SELECTED_TABLE',
-          lastResult: error,
-          data: error,
-          loading: false
-        });
+        // dispatch({
+        //   type: 'UPDATE_SELECTED_TABLE',
+        //   lastResult: error,
+        //   data: error,
+        //   loading: false
+        // });
         reject(error);
       });
     });
