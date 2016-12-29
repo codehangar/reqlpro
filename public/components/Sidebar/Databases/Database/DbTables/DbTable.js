@@ -15,7 +15,7 @@ const DbTable = ({
       <div>
         <i className="fa fa-table"/> {table}
         <div className="delete-table btn-group" role="group">
-          <button onClick={(e) => deleteTable(e, table)} className="btn btn-default fa fa-trash"/>
+          <button onClick={(e) => deleteTable(e, database, table)} className="btn btn-default fa fa-trash"/>
            {/*<button onClick={this.editDatabase.bind(this, this.props.database.name)} className="btn btn-default fa fa-pencil"></button>*!/*/}
         </div>
       </div>
@@ -48,13 +48,14 @@ function mapDispatchToProps(dispatch) {
       //   tableName
       // });
     },
-    deleteTable: (e, table) =>{
+    deleteTable: (e, database, table) =>{
       console.log('deleteTable',table)
       e.stopPropagation();
 
       dispatch({
         type:"TOGGLE_DELETE_TABLE_FORM",
         tableToDelete: table,
+        database,
         showDeleteTableForm:true
       })
 

@@ -1,5 +1,6 @@
 import jdenticon from 'jdenticon';
 import md5 from 'md5';
+import update from 'immutability-helper';
 // import RethinkDbService from '../main/services/rethinkdb.service';
 
 export function setState(state, newState) {
@@ -218,11 +219,12 @@ export function toggleTableForm(state, showTableForm) {
   });
 }
 
-export function toggleDeleteTableForm(state, showDeleteTableForm, tableToDelete) {
+export function toggleDeleteTableForm(state, showDeleteTableForm, database, tableToDelete) {
   // state.showDeleteDatabaseForm = showDeleteDatabaseForm;
   // if (dbToDelete) state.dbToDelete = dbToDelete;
   let newState = Object.assign({}, state, {showDeleteTableForm});
   if (tableToDelete) newState.tableToDelete = tableToDelete;
+  if (database) newState.selectedDatabase = database;
   return newState;
   // return state;
 }
@@ -382,6 +384,48 @@ export function deleteDatabase(state, dbName){
 
   const newSelectedConnection = Object.assign({}, state.selectedConnection, {
     databases: databasesCopy
+  });
+
+  const newState = Object.assign({}, state, {
+    selectedConnection: newSelectedConnection
+  });
+
+  return newState;
+}
+
+export function deleteTable(state, databaseName, tableName){
+
+  let databasesCopy = state.selectedConnection.databases.slice(0);
+  let databaseCopy;
+  let tablesCopy;
+
+  //remove affected db and copy it
+  databasesCopy = databasesCopy.filter(db => {
+    console.log(db.name, databaseName, db.name !== databaseName)
+    if(db.name !== databaseName) {
+      return true;
+    }else{
+    databaseCopy = db;
+    }
+  });
+
+  console.log({databasesCopy});
+  console.log({databaseCopy});
+
+  //copy table with removed unwanted table
+  tablesCopy = databaseCopy.tables.filter(table => {
+    return table !== tableName
+  });
+
+  let newDatabaseCopy = update(databaseCopy, { tables: {$set: tablesCopy} });
+
+  let newDatabasesCopy = update(databasesCopy, {$push: [newDatabaseCopy] });
+
+  console.log({newDatabasesCopy});
+
+
+  const newSelectedConnection = Object.assign({}, state.selectedConnection, {
+    databases: newDatabasesCopy
   });
 
   const newState = Object.assign({}, state, {

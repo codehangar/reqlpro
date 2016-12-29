@@ -28,7 +28,8 @@ import {
   startRowEdit,
   cancelRowEdit,
   toggleExplorerBody,
-  deleteDatabase
+  deleteDatabase,
+  deleteTable
 } from './core';
 
 function reducer(state = {}, action) {
@@ -69,8 +70,8 @@ function reducer(state = {}, action) {
     case 'TOGGLE_DELETE_DATABASE_FORM':
       return toggleDeleteDatabaseForm(state, action.showDeleteDatabaseForm, action.dbToDelete);
     case 'TOGGLE_DELETE_TABLE_FORM':
-      console.log('TOGGLE_DELETE_TABLE_FORM',action.tableToDelete)
-      return toggleDeleteTableForm(state, action.showDeleteTableForm, action.tableToDelete);
+      console.log('TOGGLE_DELETE_TABLE_FORM', action.tableToDelete)
+      return toggleDeleteTableForm(state, action.showDeleteTableForm, action.database, action.tableToDelete);
     case 'ADD_TO_DB_LIST':
       return toggleDatabaseForm(addDatabase(state, action.database), false);
     case 'ADD_TO_TABLE_LIST':
@@ -95,6 +96,8 @@ function reducer(state = {}, action) {
       return toggleExplorerBody(state, action.key);
     case 'DELETE_DATABASE':
       return deleteDatabase(state, action.dbName);
+    case 'DELETE_TABLE':
+      return deleteTable(state, action.dbName, action.tableName);
   }
   return state;
 }

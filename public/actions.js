@@ -242,3 +242,23 @@ export function deleteDatabase(conn, dbName) {
     });
   }
 }
+
+export function deleteTable(conn, dbName, tableName) {
+  console.log('deleting table', conn, dbName, tableName);
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+
+      RethinkDbService.deleteTable(conn, dbName, tableName).then((results) => {
+        console.log('dispatching from delete table action');
+        dispatch({
+          type: "DELETE_TABLE",
+          dbName,
+          tableName
+        });
+        resolve();
+      }).catch((err) => {
+        reject(err);
+      });
+    });
+  }
+}

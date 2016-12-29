@@ -27,7 +27,8 @@ import {
   startRowEdit,
   cancelRowEdit,
   toggleExplorerBody,
-  deleteDatabase
+  deleteDatabase,
+  deleteTable
 } from '../public/core';
 
 let RethinkDbService;
@@ -654,18 +655,19 @@ describe('Application Logic', () => {
   });
 
   describe('toggleDeleteTableForm', () => {
-    it('should return new state with showDeleteTableForm set to true, and tableToDelete set', () => {
+    it('should return new state with showDeleteTableForm set to true, and tableToDelete and selectedDatabase set', () => {
       const state = {
         email: 'cassie@codehangar.io',
         showDeleteTableForm: false
       };
 
-      const nextState = toggleDeleteTableForm(state, true, 'test');
+      const nextState = toggleDeleteTableForm(state, true, {database:'database'}, 'test');
 
       expect(nextState).to.deep.equal({
         email: 'cassie@codehangar.io',
         showDeleteTableForm: true,
-        tableToDelete: 'test'
+        tableToDelete: 'test',
+        selectedDatabase: {database:'database'}
       });
     });
 
@@ -1228,6 +1230,55 @@ describe('Application Logic', () => {
             name: 'ReQL',
             tables: ['users']
           }]
+        }
+      });
+    });
+  });
+
+  describe('deleteTable', () => {
+    it('removes table from selectedConnection', () => {
+      let state = {
+        selectedConnection: {
+          authKey: "",
+          database: "",
+          host: "192.168.99.100",
+          identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+          index: 0,
+          name: "apple",
+          port: "32769",
+          databases: [{
+            name: 'ReQL',
+            tables: ['users1', 'kittens']
+          },
+            {
+              name: 'Test',
+              tables: ['users2']
+            }]
+        }
+      }
+
+      state = freeze(state);
+      const tableName = "kittens";
+      const databaseName = 'ReQL';
+
+      const nextState = deleteTable(state, databaseName, tableName);
+      expect(nextState).to.deep.equal({
+        selectedConnection: {
+          authKey: "",
+          database: "",
+          host: "192.168.99.100",
+          identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+          index: 0,
+          name: "apple",
+          port: "32769",
+          databases: [{
+            name: 'ReQL',
+            tables: ['users1']
+          },
+            {
+              name: 'Test',
+              tables: ['users2']
+            }]
         }
       });
     });

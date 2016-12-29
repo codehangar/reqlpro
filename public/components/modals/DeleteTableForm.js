@@ -2,18 +2,21 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Field } from 'react-redux-form';
 import { Modal, Button } from 'react-bootstrap';
-import {deleteDatabase} from '../../actions';
+import {deleteTable} from '../../actions';
 
 const DeleteTableForm = ({
   showDeleteTableForm,
+  selectedDatabase,
   selectedTable,
   dbConnection,
   tableToDelete,
   onClose,
   onDelete
 }) => {
-  if(selectedTable)
-    console.log('the same?',tableToDelete === selectedTable.name, tableToDelete, selectedTable.name)
+  if(selectedTable) {
+    console.log({selectedDatabase})
+    console.log('the same?', tableToDelete === selectedTable.name, tableToDelete, selectedTable.name)
+  }
   return (
     <Modal show={showDeleteTableForm} onHide={onClose}>
       <Modal.Header closeButton>
@@ -31,7 +34,7 @@ const DeleteTableForm = ({
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={onClose} bsStyle="default" className="pull-left">Cancel</Button>
-        <Button onClick={() => onDelete(dbConnection, tableToDelete, selectedTable.name)} bsStyle="primary" className="pull-right">Delete</Button>
+        <Button onClick={() => onDelete(dbConnection, selectedDatabase, tableToDelete, selectedTable.name)} bsStyle="primary" className="pull-right">Delete</Button>
       </Modal.Footer>
     </Modal>
   );
@@ -41,6 +44,7 @@ const DeleteTableForm = ({
 function mapStateToProps(state) {
   return {
     showDeleteTableForm: state.main.showDeleteTableForm,
+    selectedDatabase: state.main.selectedDatabase,
     selectedTable: state.main.selectedTable,
     dbConnection: state.main.dbConnection,
     tableToDelete: state.main.tableToDelete
@@ -55,13 +59,15 @@ const mapDispatchToProps = (dispatch) => {
         showDeleteTableForm: false
       });
     },
-    onDelete: (dbConnection, tableName, confirmName) => {
+    onDelete: (dbConnection, selectedDatabase, tableName, confirmName) => {
       if (tableName == confirmName){
-        console.log('deleeeeeeting',dbConnection, tableName, confirmName)
-        dispatch(deleteTable(dbConnection, tableName));
+        console.log('deleeeeeeting',dbConnection, selectedDatabase, tableName, confirmName)
+        dispatch(deleteTable(dbConnection, selectedDatabase.name, tableName));
         dispatch({
           type: "TOGGLE_DELETE_TABLE_FORM",
-          showDeleteTableForm: false
+          showDeleteTableForm: false,
+          database: selectedDatabase,
+          tableToDelete: tableName
         });
       }else{
         //show error
