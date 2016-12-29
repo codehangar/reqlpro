@@ -210,13 +210,22 @@ export function toggleDeleteDatabaseForm(state, showDeleteDatabaseForm, dbToDele
   if (dbToDelete) newState.dbToDelete = dbToDelete;
   return newState;
   // return state;
-};
+}
 
 export function toggleTableForm(state, showTableForm) {
   return Object.assign({}, state, {
     showTableForm
   });
-};
+}
+
+export function toggleDeleteTableForm(state, showDeleteTableForm, tableToDelete) {
+  // state.showDeleteDatabaseForm = showDeleteDatabaseForm;
+  // if (dbToDelete) state.dbToDelete = dbToDelete;
+  let newState = Object.assign({}, state, {showDeleteTableForm});
+  if (tableToDelete) newState.tableToDelete = tableToDelete;
+  return newState;
+  // return state;
+}
 
 export function addDatabase(state, database) {
 
@@ -241,7 +250,7 @@ export function addDatabase(state, database) {
   });
 
   return newState;
-};
+}
 
 export function addTable(state, database, table) {
 

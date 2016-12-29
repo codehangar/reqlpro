@@ -16,6 +16,7 @@ import {
   toggleDatabaseForm,
   toggleDeleteDatabaseForm,
   toggleTableForm,
+  toggleDeleteTableForm,
   addDatabase,
   addTable,
   setDbToEdit,
@@ -648,6 +649,37 @@ describe('Application Logic', () => {
       expect(nextState).to.deep.equal({
         email: 'ian@codehangar.io',
         showDeleteDatabaseForm: false
+      });
+    });
+  });
+
+  describe('toggleDeleteTableForm', () => {
+    it('should return new state with showDeleteTableForm set to true, and tableToDelete set', () => {
+      const state = {
+        email: 'cassie@codehangar.io',
+        showDeleteTableForm: false
+      };
+
+      const nextState = toggleDeleteTableForm(state, true, 'test');
+
+      expect(nextState).to.deep.equal({
+        email: 'cassie@codehangar.io',
+        showDeleteTableForm: true,
+        tableToDelete: 'test'
+      });
+    });
+
+    it('should return new state with showDatabaseForm set to false', () => {
+      const state = {
+        email: 'cassie@codehangar.io',
+        showDeleteTableForm: true
+      };
+
+      const nextState = toggleDeleteTableForm(state, false);
+
+      expect(nextState).to.deep.equal({
+        email: 'cassie@codehangar.io',
+        showDeleteTableForm: false
       });
     });
   });
