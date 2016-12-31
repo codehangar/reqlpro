@@ -90,15 +90,15 @@ util.inherits(store, EventEmitter); // Inherit eventemitter prototype
 // };
 
 // Update CodeBody for Code view
-store.prototype.updateCodeBody = function(body) {
-  this.selectedTable.codeBody = body;
-};
+// store.prototype.updateCodeBody = function(body) {
+//   this.selectedTable.codeBody = body;
+// };
 
 // Clear CodeBody error
-store.prototype.clearCodeBodyError = function() {
-  this.selectedTable.codeBodyError = null;
-  this.emit('updateSelectedTable');
-}
+// store.prototype.clearCodeBodyError = function() {
+//   this.selectedTable.codeBodyError = null;
+//   this.emit('updateSelectedTable');
+// }
 
 // store.prototype.hideConnectionForm = function(info) {
 //   this.router.ConnectionForm.show = false;
@@ -396,15 +396,15 @@ store.prototype.setColumnWidths = function(columnWidths) {
 // };
 
 // Switch to edit mode
-store.prototype.startEdit = function(record) {
-  this.selectedTable.codeAction = 'update';
-  this.selectedTable.editingRecord = record;
-  this.selectedTable.codeBody = JSON.stringify(record, null, '  ');
-  this.selectedTable.codeBodyError = null;
-  this.selectedTable.previousType = this.selectedTable.type;
-  this.selectedTable.type = 'code';
-  this.emit('updateRehinkDbClient');
-};
+// store.prototype.startEdit = function(record) {
+//   this.selectedTable.codeAction = 'update';
+//   this.selectedTable.editingRecord = record;
+//   this.selectedTable.codeBody = JSON.stringify(record, null, '  ');
+//   this.selectedTable.codeBodyError = null;
+//   this.selectedTable.previousType = this.selectedTable.type;
+//   this.selectedTable.type = 'code';
+//   this.emit('updateRehinkDbClient');
+// };
 
 // // Update row
 // store.prototype.update = function(record) {
@@ -463,9 +463,9 @@ store.prototype.startEdit = function(record) {
 //   });
 // };
 
-store.prototype.cancelEdit = function() {
-  this.toggleExplorerBody(this.selectedTable.previousType);
-};
+// store.prototype.cancelEdit = function() {
+//   this.toggleExplorerBody(this.selectedTable.previousType);
+// };
 
 // Save Row from code view
 // store.prototype.saveRow = function(row) {
@@ -532,16 +532,16 @@ store.prototype.deleteRow = function(row) {
 };
 
 // Toggle Selected Table Type
-store.prototype.toggleExplorerBody = function(type) {
-  this.selectedTable.previousType = this.selectedTable.type;
-  this.selectedTable.type = type;
-  if (type === 'code') {
-    this.selectedTable.codeAction = 'add';
-    this.selectedTable.codeBodyError = null;
-    this.selectedTable.codeBody = "{\n  \n}";
-  }
-  this.emit('updateRehinkDbClient');
-};
+// store.prototype.toggleExplorerBody = function(type) {
+//   this.selectedTable.previousType = this.selectedTable.type;
+//   this.selectedTable.type = type;
+//   if (type === 'code') {
+//     this.selectedTable.codeAction = 'add';
+//     this.selectedTable.codeBodyError = null;
+//     this.selectedTable.codeBody = "{\n  \n}";
+//   }
+//   this.emit('updateRehinkDbClient');
+// };
 
 // Refresh Explorer Body
 store.prototype.refreshExplorerBody = function() {
@@ -584,41 +584,41 @@ store.prototype.refreshExplorerBody = function() {
 // };
 
 // Delete Database
-store.prototype.deleteDatabase = function(dbName) {
-  const conn = this.selectedFavorite.dbConnection;
-  return new Promise((resolve, reject) => {
-    RethinkDbService.deleteDb(conn, dbName).then((results) => {
-      // Remove database from selectedfavorite list
-      this.selectedFavorite.databases.forEach((db, index) => {
-        if (db.name === dbName) {
-          this.selectedFavorite.databases.splice(index, 1);
-        }
-      });
-      this.toggleEntityForm();
-      resolve();
-    }).catch((err) => {
-      reject(err);
-    });
-  });
-};
+// store.prototype.deleteDatabase = function(dbName) {
+//   const conn = this.selectedFavorite.dbConnection;
+//   return new Promise((resolve, reject) => {
+//     RethinkDbService.deleteDb(conn, dbName).then((results) => {
+//       // Remove database from selectedfavorite list
+//       this.selectedFavorite.databases.forEach((db, index) => {
+//         if (db.name === dbName) {
+//           this.selectedFavorite.databases.splice(index, 1);
+//         }
+//       });
+//       this.toggleEntityForm();
+//       resolve();
+//     }).catch((err) => {
+//       reject(err);
+//     });
+//   });
+// };
 
 // Delete Database
-store.prototype.deleteTable = function(tableName) {
-  const conn = this.selectedFavorite.dbConnection;
-  return new Promise((resolve, reject) => {
-    RethinkDbService.deleteTable(conn, this.selectedDatabase.name, tableName).then((results) => {
-      // Remove database from selectedfavorite list
-      this.selectedDatabase.tables.forEach((table, index) => {
-        if (table.name === tableName) {
-          this.selectedDatabase.tables.splice(index, 1);
-        }
-      });
-      this.toggleEntityForm();
-      resolve();
-    }).catch((err) => {
-      reject(err);
-    });
-  });
-};
+// store.prototype.deleteTable = function(tableName) {
+//   const conn = this.selectedFavorite.dbConnection;
+//   return new Promise((resolve, reject) => {
+//     RethinkDbService.deleteTable(conn, this.selectedDatabase.name, tableName).then((results) => {
+//       // Remove database from selectedfavorite list
+//       this.selectedDatabase.tables.forEach((table, index) => {
+//         if (table.name === tableName) {
+//           this.selectedDatabase.tables.splice(index, 1);
+//         }
+//       });
+//       this.toggleEntityForm();
+//       resolve();
+//     }).catch((err) => {
+//       reject(err);
+//     });
+//   });
+// };
 
 module.exports = store;
