@@ -21,6 +21,7 @@ import {
   addDatabase,
   setDbToEdit,
   addTable,
+  toggleTableVisibility,
   setSelectedTable,
   updateSelectedTable,
   updateSelectedTablePageLimit,
@@ -57,7 +58,7 @@ function reducer(state = {}, action) {
     case 'HIDE_CONNECTION_FORM':
       return hideConnectionForm(state);
     case 'HIDE_OPEN_MENUS':
-      return hideOpenMenus(state, action.props)
+      return hideOpenMenus(state, action.props);
     case 'SET_DB_CONNECTION':
       return setDbConnection(state, action.dbConnection);
     case 'SET_DB_LIST':
@@ -76,6 +77,8 @@ function reducer(state = {}, action) {
       return toggleDatabaseForm(addDatabase(state, action.database), false);
     case 'ADD_TO_TABLE_LIST':
       return addTable(state, action.database, action.table);
+    case 'TOGGLE_TABLE_VISIBILITY':
+      return toggleTableVisibility(state, action.database, action.showTables);
     case 'TOGGLE_TABLE_FORM':
       return toggleTableForm(state, action.showTableForm);
     case 'SET_DB_TO_EDIT':

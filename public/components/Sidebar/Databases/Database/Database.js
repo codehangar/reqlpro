@@ -11,23 +11,24 @@ const Database = React.createClass({
     }
   },
   render: function() {
-    const {database, onDatabaseClick, onAddTable, deleteDatabase, editDatabase, dbConnection} = this.props;
+    const {database, onDatabaseClick, onAddTable, toggleTableVisibility, deleteDatabase, editDatabase, dbConnection} = this.props;
+
+    const onClick = () => {
+      onDatabaseClick(database);
+      toggleTableVisibility(database);
+    };
+
     return (
       <div className="database">
 
-        <div className="db noselect" onClick={() => {
-          onDatabaseClick(database);
-          this.setState({
-            showDbTables: !this.state.showDbTables
-          })
-        }}>
+        <div className="db noselect" onClick={onClick}>
           <i className="fa fa-database"/>&nbsp;&nbsp;<span className="database-name">{database.name}</span>
           <div className="delete-db btn-group" role="group">
-            <button onClick={(e)=>deleteDatabase(e, database.name, dbConnection)} className="btn btn-default fa fa-trash"/>
-            <button onClick={(e)=>editDatabase(e, database.name)} className="btn btn-default fa fa-pencil"/>
+            <button onClick={(e) => deleteDatabase(e, database.name, dbConnection)} className="btn btn-default fa fa-trash"/>
+            <button onClick={(e) => editDatabase(e, database.name)} className="btn btn-default fa fa-pencil"/>
           </div>
         </div>
-        {this.state.showDbTables ?
+        {database.showTables ?
           (<div className="db-tables noselect">
             <DbTables database={database}/>
             <AddDbTable onAddTable={() => onAddTable(database)}/>
@@ -53,6 +54,13 @@ function mapDispatchToProps(dispatch) {
       dispatch({
         type: 'SET_DB_TO_EDIT',
         database
+      });
+    },
+    toggleTableVisibility: (database) => {
+      dispatch({
+        type: 'TOGGLE_TABLE_VISIBILITY',
+        database,
+        showTables: !database.showTables
       });
     },
     deleteDatabase: function(e, dbName, connection) {
