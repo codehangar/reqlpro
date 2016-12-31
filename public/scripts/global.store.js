@@ -508,28 +508,28 @@ store.prototype.setColumnWidths = function(columnWidths) {
 // };
 
 // Delete Row
-store.prototype.deleteRow = function(row) {
-  const conn = this.selectedFavorite.dbConnection;
-  const db = this.selectedTable.databaseName;
-  const table = this.selectedTable.name;
-
-  RethinkDbService.delete(conn, db, table, row).then((result) => {
-    console.log("--------> delete result", result)
-
-    this.selectedTable.lastResult = result;
-
-    // Toggle ConfirmRowDelete popup
-    this.toggleConfirmRowDelete(null);
-
-    // Run last query to update view
-    this.query();
-    this.getTableSize();
-  }).catch((err) => {
-    console.error(err);
-    // Run last query to update view
-    this.query();
-  });
-};
+// store.prototype.deleteRow = function(row) {
+//   const conn = this.selectedFavorite.dbConnection;
+//   const db = this.selectedTable.databaseName;
+//   const table = this.selectedTable.name;
+//
+//   RethinkDbService.delete(conn, db, table, row).then((result) => {
+//     console.log("--------> delete result", result)
+//
+//     this.selectedTable.lastResult = result;
+//
+//     // Toggle ConfirmRowDelete popup
+//     this.toggleConfirmRowDelete(null);
+//
+//     // Run last query to update view
+//     this.query();
+//     this.getTableSize();
+//   }).catch((err) => {
+//     console.error(err);
+//     // Run last query to update view
+//     this.query();
+//   });
+// };
 
 // Toggle Selected Table Type
 // store.prototype.toggleExplorerBody = function(type) {

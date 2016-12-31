@@ -35,7 +35,8 @@ import {
   setCodeBodyError,
   setCodeBody,
   setLastDbResult,
-  toggleConfirmRowDelete
+  toggleConfirmRowDelete,
+  setRowDeleteError
 } from './core';
 
 function reducer(state = {}, action) {
@@ -116,6 +117,8 @@ function reducer(state = {}, action) {
       return setLastDbResult(state, action.lastResult);
     case 'TOGGLE_CONFIRM_ROW_DELETE':
       return toggleConfirmRowDelete(state, action.rowToDelete);
+    case 'SET_ROW_DELETE_ERROR':
+      return setRowDeleteError(state, action.rowDeleteError);
   }
   return state;
 }

@@ -34,7 +34,8 @@ import {
   setCodeBodyError,
   setCodeBody,
   setLastDbResult,
-  toggleConfirmRowDelete
+  toggleConfirmRowDelete,
+  setRowDeleteError
 } from '../public/core';
 
 let RethinkDbService;
@@ -1624,6 +1625,34 @@ describe('Application Logic', () => {
       const nextState = toggleConfirmRowDelete(state);
       expect(nextState).to.deep.equal({
         showConfirmRowDelete: false
+      });
+    });
+
+    it('should remove rowDeleteError from the main state', () => {
+      let state = {
+        showConfirmRowDelete: true,
+        rowToDelete: {
+          id: '1a12c625-de63-44af-88a7-1a59030ec757',
+          name: 'bob'
+        },
+        rowDeleteError: "It's illegal to delete rows from the `rethinkdb.cluster_config` table."
+      };
+      state = freeze(state);
+      const nextState = toggleConfirmRowDelete(state);
+      expect(nextState).to.deep.equal({
+        showConfirmRowDelete: false
+      });
+    });
+  });
+
+  describe('setRowDeleteError', () => {
+    it('should set rowDeleteError to ton the main state', () => {
+      let state = {};
+      state = freeze(state);
+      const rowDeleteError = "It's illegal to delete rows from the `rethinkdb.cluster_config` table."
+      const nextState = setRowDeleteError(state, rowDeleteError);
+      expect(nextState).to.deep.equal({
+        rowDeleteError: "It's illegal to delete rows from the `rethinkdb.cluster_config` table."
       });
     });
   });

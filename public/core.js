@@ -452,6 +452,7 @@ export function setLastDbResult(state, lastResult) {
 
 export function toggleConfirmRowDelete(state, rowToDelete) {
   let newState = Object.assign({}, state);
+  delete newState.rowDeleteError;
   if (rowToDelete) {
     newState.showConfirmRowDelete = true;
     newState = Object.assign({}, newState, {rowToDelete});
@@ -460,4 +461,8 @@ export function toggleConfirmRowDelete(state, rowToDelete) {
     delete newState.rowToDelete;
   }
   return newState;
+}
+
+export function setRowDeleteError(state, rowDeleteError) {
+  return Object.assign({}, state, {rowDeleteError})
 }

@@ -194,7 +194,7 @@ function getTableData(sort, direction, limit, page, dbConnection, databaseName, 
 }
 
 function getTableDataBetween(index, start, end, dbConnection, databaseName, tableName) {
-  console.log('-----> getTableDataBetween', start, end)
+  console.log('-----> getTableDataBetween', index, start, end, dbConnection, databaseName, tableName)
   return dispatch => {
     return new Promise((resolve, reject) => {
       const conn = dbConnection;
@@ -349,6 +349,41 @@ export function refreshExplorerBody() {
     const conn = getState().main.dbConnection;
     const dbName = getState().main.selectedTable.databaseName;
     const tableName = getState().main.selectedTable.name;
-    dispatch(queryTable(conn, dbName, tableName, getState().main.selectedTable.query));
+    // Run last query to update view
+
+    return dispatch(queryTable(conn, dbName, tableName, getState().main.selectedTable.query));
+  }
+}
+
+export function deleteRow(row) {
+  return (dispatch, getState) => {
+    const conn = getState().main.dbConnection;
+    const dbName = getState().main.selectedTable.databaseName;
+    const tableName = getState().main.selectedTable.name;
+    return RethinkDbService.delete(conn, dbName, tableName, row).then((result) => {
+      console.log('------------------------');
+      console.log('result', result);
+
+
+      if (result.value.errors) {
+        throw(result.value)
+      } else {
+        // Toggle ConfirmRowDelete popup
+        dispatch({
+          type: "TOGGLE_CONFIRM_ROW_DELETE"
+        });
+        // Run last query to update view
+        dispatch(refreshExplorerBody());
+      }
+
+    }).catch((err) => {
+      console.error('err', err);
+      const rowDeleteError = err.first_error || err + '' || 'There was an error. You can only save valid json to your table';
+      console.log('rowDeleteError', rowDeleteError);
+      dispatch({
+        type: "SET_ROW_DELETE_ERROR",
+        rowDeleteError
+      });
+    });
   }
 }
