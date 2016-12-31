@@ -33,7 +33,8 @@ import {
   deleteTable,
   setCodeBodyError,
   setCodeBody,
-  setLastDbResult
+  setLastDbResult,
+  toggleConfirmRowDelete
 } from '../public/core';
 
 let RethinkDbService;
@@ -1589,6 +1590,40 @@ describe('Application Logic', () => {
             direction: 1 // ASC = 1, DESC = 0
           }
         }
+      });
+    });
+  });
+
+  describe.only('toggleConfirmRowDelete', () => {
+    it('should set showConfirmRowDelete to true and rowToDelete on the main state', () => {
+      let state = {};
+      state = freeze(state);
+      const rowToDelete = {
+        id: '1a12c625-de63-44af-88a7-1a59030ec757',
+        name: 'bob'
+      };
+      const nextState = toggleConfirmRowDelete(state, rowToDelete);
+      expect(nextState).to.deep.equal({
+        showConfirmRowDelete: true,
+        rowToDelete: {
+          id: '1a12c625-de63-44af-88a7-1a59030ec757',
+          name: 'bob'
+        }
+      });
+    });
+
+    it('should set showConfirmRowDelete to false and remove rowToDelete from the main state', () => {
+      let state = {
+        showConfirmRowDelete: true,
+        rowToDelete: {
+          id: '1a12c625-de63-44af-88a7-1a59030ec757',
+          name: 'bob'
+        }
+      };
+      state = freeze(state);
+      const nextState = toggleConfirmRowDelete(state);
+      expect(nextState).to.deep.equal({
+        showConfirmRowDelete: false
       });
     });
   });

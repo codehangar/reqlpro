@@ -449,3 +449,15 @@ export function setLastDbResult(state, lastResult) {
   const newState = Object.assign({}, state, {selectedTable});
   return newState;
 }
+
+export function toggleConfirmRowDelete(state, rowToDelete) {
+  let newState = Object.assign({}, state);
+  if (rowToDelete) {
+    newState.showConfirmRowDelete = true;
+    newState = Object.assign({}, newState, {rowToDelete});
+  } else {
+    newState.showConfirmRowDelete = false;
+    delete newState.rowToDelete;
+  }
+  return newState;
+}

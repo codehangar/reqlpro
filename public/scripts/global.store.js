@@ -126,11 +126,11 @@ util.inherits(store, EventEmitter); // Inherit eventemitter prototype
 //   this.emit('showConnectionForm');
 // };
 
-store.prototype.toggleConfirmRowDelete = function(row) {
-  this.router.ConfirmRowDelete.row = row
-  this.router.ConfirmRowDelete.show = !this.router.ConfirmRowDelete.show;
-  this.emit('updateRehinkDbClient');
-};
+// store.prototype.toggleConfirmRowDelete = function(row) {
+//   this.router.ConfirmRowDelete.row = row
+//   this.router.ConfirmRowDelete.show = !this.router.ConfirmRowDelete.show;
+//   this.emit('updateRehinkDbClient');
+// };
 
 // store.prototype.toggleEntityForm = function(type, action, toDeleteName) {
 //   this.router.EntityForm.show = !this.router.EntityForm.show;
@@ -268,15 +268,15 @@ store.prototype.toggleConfirmRowDelete = function(row) {
 // };
 
 // Update Table Sort
-store.prototype.updateTableSort = function(sort) {
-  if (sort === this.selectedTable.query.sort) {
-    this.selectedTable.query.direction = !this.selectedTable.query.direction
-  } else {
-    this.selectedTable.query.direction = 1;
-  }
-  this.selectedTable.query.sort = sort;
-  this.query();
-};
+// store.prototype.updateTableSort = function(sort) {
+//   if (sort === this.selectedTable.query.sort) {
+//     this.selectedTable.query.direction = !this.selectedTable.query.direction
+//   } else {
+//     this.selectedTable.query.direction = 1;
+//   }
+//   this.selectedTable.query.sort = sort;
+//   this.query();
+// };
 
 // Get initial table data
 // store.prototype.query = function(queryParams = this.selectedTable.query) {
