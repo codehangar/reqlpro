@@ -1,5 +1,5 @@
 // const {ipcRenderer} = require('electron');
-import { modeled } from 'react-redux-form';
+import {modeled} from 'react-redux-form';
 import {
   setState,
   setConnections,
@@ -34,7 +34,8 @@ import {
   deleteTable,
   setCodeBodyError,
   setCodeBody,
-  setLastDbResult
+  setLastDbResult,
+  toggleConfirmRowDelete
 } from './core';
 
 function reducer(state = {}, action) {
@@ -113,6 +114,8 @@ function reducer(state = {}, action) {
       return setCodeBody(state, action.codeBody);
     case 'SET_LAST_DB_RESULT':
       return setLastDbResult(state, action.lastResult);
+    case 'TOGGLE_CONFIRM_ROW_DELETE':
+      return toggleConfirmRowDelete(state, action.rowToDelete);
   }
   return state;
 }

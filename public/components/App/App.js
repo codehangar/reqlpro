@@ -12,10 +12,10 @@ import TableForm from '../modals/TableForm';
 import DevTools from '../DevTools';
 
 const App = React.createClass({
-  getInitialState: function () {
+  getInitialState: function() {
     return this.context.store;
   },
-  componentDidMount: function () {
+  componentDidMount: function() {
     // this.setupEvents();
     this.resizeTimeoutFunction = () => {
       this.resizeTimeout = setTimeout(() => {
@@ -27,10 +27,10 @@ const App = React.createClass({
       this.resizeTimeoutFunction();
     }
   },
-  componentWillUnmount: function () {
+  componentWillUnmount: function() {
     window.onresize = null;
   },
-  setupEvents: function () {
+  setupEvents: function() {
 
     // Event for toggling connection form
     this.state.on('showConnectionForm', () => {
@@ -49,7 +49,7 @@ const App = React.createClass({
       this.forceUpdate();
     });
   },
-  render: function () {
+  render: function() {
 
     // 
     // <EntityForm />
@@ -63,6 +63,7 @@ const App = React.createClass({
         <DeleteDatabaseForm />
         <TableForm />
         <DeleteTableForm />
+        <ConfirmRowDelete />
         <ExplorerContainer />
         <DevTools />
       </div>

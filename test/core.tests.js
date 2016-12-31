@@ -1594,7 +1594,7 @@ describe('Application Logic', () => {
     });
   });
 
-  describe.only('toggleConfirmRowDelete', () => {
+  describe('toggleConfirmRowDelete', () => {
     it('should set showConfirmRowDelete to true and rowToDelete on the main state', () => {
       let state = {};
       state = freeze(state);

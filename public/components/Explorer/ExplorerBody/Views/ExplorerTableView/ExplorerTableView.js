@@ -137,8 +137,16 @@ function mapDispatchToProps(dispatch) {
         row
       })
     },
-    onDeleteClick: (row) => {
+    onDeleteClick: (rowToDelete) => {
+      dispatch({
+        type: 'TOGGLE_CONFIRM_ROW_DELETE',
+        rowToDelete
+      });
 
+      Segment.track({
+        event: 'tableview.row.deleteBtn',
+        properties: {}
+      });
     }
   };
 }

@@ -1,64 +1,80 @@
-const React = require('react');
-const classNames = require('classnames');
-const Segment = require('../../services/segment.service.js');
+import React from'react';
+import {connect} from "react-redux";
+import classNames from'classnames';
+import Segment from'../../services/segment.service.js';
+import {Modal, Button} from 'react-bootstrap';
 
-const ConfirmRowDelete = React.createClass({
-  getInitialState: function() {
-    return {
-      store: this.context.store
-    };
-  },
-  handleCancel: function(e) {
-    e.preventDefault();
-    this.state.store.toggleConfirmRowDelete(null);
-  },
-  handleDelete: function(e) {
-    e.preventDefault();
-    this.state.store.deleteRow(this.state.store.router.ConfirmRowDelete.row);
-    Segment.track({
-      event: 'tableview.row.deleteConfirm',
-      properties: {}
-    });
-  },
-  render: function() {
-    const classes = {
-      confirmRowDelete: classNames(
-        'ConfirmRowDelete',
-        {
-          'show': this.state.store.router.ConfirmRowDelete.show,
-          'hidden': !this.state.store.router.ConfirmRowDelete.show
-        }
-      )
-    };
-    var recordId = this.state.store.router.ConfirmRowDelete.row ? this.state.store.router.ConfirmRowDelete.row.id : '';
-    return (
-      <div className={classes.confirmRowDelete}>
-        <div className="panel panel-danger">
-          <div className="panel-heading">
-            <strong>Delete Record - {recordId}</strong>
-          </div>
-          <div className="panel-body">
-            <div className="row">
-              <div className="col-sm-12">
-                <form>
-                  <p>Are you sure you want to delete this record?</p>
-                </form>
-              </div>
-            </div>
-          </div>
-          <div className="panel-footer">
-            <button type="delete" className="btn btn-danger pull-right" onClick={this.handleDelete}>Delete</button>
-            <button type="cancel" className="btn btn-default pull-left" onClick={this.handleCancel}>Cancel</button>
-            <div className="clearfix"/>
-          </div>
-        </div>
-      </div>
-    );
-  }
-});
+// import {deleteRow} from '../../../actions';
 
-ConfirmRowDelete.contextTypes = {
-  store: React.PropTypes.object
+
+const ConfirmRowDelete = ({
+  showConfirmRowDelete,
+  rowToDelete,
+  handleCancel,
+  handleDelete
+}) => {
+
+  const classes = {
+    confirmRowDelete: classNames(
+      'ConfirmRowDelete',
+      {
+        'show': showConfirmRowDelete,
+        'hidden': !showConfirmRowDelete
+      }
+    )
+  };
+
+  const recordId = rowToDelete ? rowToDelete.id : '';
+
+  return (
+    <Modal show={showConfirmRowDelete} onHide={handleCancel}>
+      <Modal.Header closeButton>
+        <Modal.Title>Delete Record - {recordId}</Modal.Title>
+      </Modal.Header>
+
+      <Modal.Body>
+        <p>Are you sure you want to delete this record?</p>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={handleCancel} bsStyle="default" className="pull-left">Cancel</Button>
+        <Button onClick={handleDelete} bsStyle="primary" className="pull-right">Delete</Button>
+      </Modal.Footer>
+    </Modal>
+  );
+
 };
 
-module.exports = ConfirmRowDelete;
+const mapStateToProps = (state) => {
+  console.log('state.main.showConfirmRowDelete', state.main.showConfirmRowDelete);
+  return {
+    showConfirmRowDelete: state.main.showConfirmRowDelete,
+    rowToDelete: state.main.rowToDelete
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    handleCancel: function() {
+      dispatch({
+        type: 'TOGGLE_CONFIRM_ROW_DELETE'
+      });
+
+      Segment.track({
+        event: 'tableview.row.deleteCancel',
+        properties: {}
+      });
+    },
+    handleDelete: function() {
+      dispatch(deleteRow(this.props.rowToDelete));
+
+      Segment.track({
+        event: 'tableview.row.deleteConfirm',
+        properties: {}
+      });
+    }
+  };
+};
+
+const ConfirmRowDeleteContainer = connect(mapStateToProps, mapDispatchToProps)(ConfirmRowDelete);
+
+export default ConfirmRowDeleteContainer;
