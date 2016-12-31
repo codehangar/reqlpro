@@ -1,5 +1,8 @@
 // import RethinkDbService from '../main/services/rethinkdb.service';
 const RethinkDbService = require('../main/services/rethinkdb.service');
+// const ReQLEval = require('../main/services/reql-eval.service');
+import ReQLEval from '../main/services/reql-eval.service';
+import {convertStringsToDates} from './services/date-type.service'
 
 export function getDbConnection(connection) {
   return dispatch => {
@@ -56,7 +59,7 @@ export function getDbTables(dbConnection, database) {
   return dispatch => {
     return new Promise((resolve, reject) => {
       RethinkDbService.getTableList(dbConnection, database.name).then(tables => {
-        console.log('getDbTables',database)
+        console.log('getDbTables', database)
         dispatch({
           type: 'SET_DB_TABLES',
           database,
@@ -121,7 +124,7 @@ export function createTable(dbConnection, database, table) {
   }
 }
 
-// export function queryTable(queryParams = this.selectedTable.query) {
+// export function queryTable(queryParams = selectedTable.query) {
 // Todo: pull from passed in queryParams or default to selectedTable on state (or leave as is, not sure)
 export function queryTable(dbConnection, databaseName, tableName, queryParams = {
   page: 1,
@@ -259,6 +262,64 @@ export function deleteTable(conn, dbName, tableName) {
       }).catch((err) => {
         reject(err);
       });
+    });
+  }
+}
+
+export function saveRow(conn, selectedTable, row) {
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      ReQLEval(row).then(async(rowObj) => {
+        console.log("EVAL RESULT:", rowObj)
+
+        row = convertStringsToDates(selectedTable.editingRecord, rowObj);
+        selectedTable.codeBodyError = null;
+
+        if (selectedTable.codeAction === 'update') {
+          // Extra protection here if people alter the id when updating
+          // Using replace will insert a new record
+          // I'm assuming replace is less performant than update so lets use update when possible
+          const matched = selectedTable.data.filter((item) => item.id === row.id).length === 1;
+
+          if (matched) {
+            const result = await RethinkDbService.update(conn, selectedTable.databaseName, selectedTable.name, row);
+            handleResult(dispatch, result);
+          } else {
+            // The difference here is that it will create a new record if an id is not found
+            const result = await RethinkDbService.replace(conn, selectedTable.databaseName, selectedTable.name, row);
+            handleResult(dispatch, result);
+          }
+        } else if (selectedTable.codeAction === 'add') {
+          const result = await RethinkDbService.insert(conn, selectedTable.databaseName, selectedTable.name, row);
+          handleResult(dispatch, result);
+        }
+      }).catch((err) => {
+        console.error(err);
+        const codeBodyError = err.first_error || err + '' || 'There was an error. You can only save valid json to your table';
+        dispatch({
+          type: 'SET_CODE_BODY_ERROR',
+          codeBodyError
+        });
+
+      });
+    });
+  }
+}
+
+function handleResult(dispatch, result) {
+  console.log('*** result', result);
+
+  dispatch({
+    type: 'SET_LAST_DB_RESULT',
+    lastResult: result
+  });
+
+  if (result.value.errors) {
+    throw(result.value)
+  } else {
+    dispatch({
+      type: "TOGGLE_EXPLORER_BODY",
+      key: 'table'
     });
   }
 }

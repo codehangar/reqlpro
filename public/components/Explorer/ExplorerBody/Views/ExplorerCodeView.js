@@ -94,10 +94,6 @@ const ExplorerCodeView = React.createClass({
       })
     }
   },
-  componentWillReceiveProps: function() {
-    this.editor.setValue(this.props.selectedTable.codeBody, -1);
-    this.editor.focus();
-  },
   render: function() {
     const toastClasses = classNames({
       'toast-container': true,
@@ -132,11 +128,17 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    clearCodeBodyError: (row) => {
-
+    clearCodeBodyError: () => {
+      dispatch({
+        type: 'SET_CODE_BODY_ERROR',
+        codeBodyError: null
+      });
     },
-    updateCodeBody: (row) => {
-      // this.state.store.updateCodeBody(string);
+    updateCodeBody: (codeBody) => {
+      dispatch({
+        type: 'SET_CODE_BODY',
+        codeBody
+      });
     }
   };
 };

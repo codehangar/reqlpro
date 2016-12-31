@@ -29,7 +29,10 @@ import {
   cancelRowEdit,
   toggleExplorerBody,
   deleteDatabase,
-  deleteTable
+  deleteTable,
+  setCodeBodyError,
+  setCodeBody,
+  setLastDbResult
 } from '../public/core';
 
 let RethinkDbService;
@@ -1362,6 +1365,173 @@ describe('Application Logic', () => {
               name: 'Test',
               tables: ['users2']
             }]
+        }
+      });
+    });
+  });
+
+  describe('setCodeBodyError', () => {
+    it('should set the codeBodyError on the selectedTable', () => {
+      let state = {
+        selectedTable: {
+          databaseName: 'databaseName',
+          name: 'tableName',
+          type: 'table',
+          data: [],
+          loading: true,
+          codeBody: "{\n  \n}",
+          codeAction: 'add',
+          codeBodyError: null,
+          query: {
+            page: 1,
+            limit: 5,
+            sort: 'id',
+            direction: 1 // ASC = 1, DESC = 0
+          }
+        }
+      };
+
+      state = freeze(state);
+      const codeBodyError = "It's illegal to insert new rows into the `rethinkdb.cluster_config` table.";
+
+      const nextState = setCodeBodyError(state, codeBodyError);
+      expect(nextState).to.deep.equal({
+        selectedTable: {
+          databaseName: 'databaseName',
+          name: 'tableName',
+          type: 'table',
+          data: [],
+          loading: true,
+          codeBody: "{\n  \n}",
+          codeAction: 'add',
+          codeBodyError: "It's illegal to insert new rows into the `rethinkdb.cluster_config` table.",
+          query: {
+            page: 1,
+            limit: 5,
+            sort: 'id',
+            direction: 1 // ASC = 1, DESC = 0
+          }
+        }
+      });
+    });
+  });
+
+  describe('setCodeBody', () => {
+    it('should set the codeBody on the selectedTable', () => {
+      let state = {
+        selectedTable: {
+          databaseName: 'databaseName',
+          name: 'tableName',
+          type: 'table',
+          data: [],
+          loading: true,
+          codeBody: "{\n  \n}",
+          codeAction: 'add',
+          codeBodyError: null,
+          query: {
+            page: 1,
+            limit: 5,
+            sort: 'id',
+            direction: 1 // ASC = 1, DESC = 0
+          }
+        }
+      };
+
+      state = freeze(state);
+      const codeBody = "{\n  name: 'bob'\n}";
+
+      const nextState = setCodeBody(state, codeBody);
+      expect(nextState).to.deep.equal({
+        selectedTable: {
+          databaseName: 'databaseName',
+          name: 'tableName',
+          type: 'table',
+          data: [],
+          loading: true,
+          codeBody: "{\n  name: 'bob'\n}",
+          codeAction: 'add',
+          codeBodyError: "It's illegal to insert new rows into the `rethinkdb.cluster_config` table.",
+          query: {
+            page: 1,
+            limit: 5,
+            sort: 'id',
+            direction: 1 // ASC = 1, DESC = 0
+          }
+        }
+      });
+    });
+  });
+
+  describe('setLastDbResult', () => {
+    it('should set the lastResult on the selectedTable', () => {
+      let state = {
+        selectedTable: {
+          databaseName: 'databaseName',
+          name: 'tableName',
+          type: 'table',
+          data: [],
+          loading: true,
+          codeBody: "{\n  \n}",
+          codeAction: 'add',
+          codeBodyError: null,
+          query: {
+            page: 1,
+            limit: 5,
+            sort: 'id',
+            direction: 1 // ASC = 1, DESC = 0
+          }
+        }
+      };
+
+      state = freeze(state);
+      const lastResult = {
+        profile: [{
+          description: "Evaluating insert.",
+          'duration(ms)': 51.496578
+        }],
+        value: {
+          deleted: 0,
+          errors: 0,
+          generated_keys: [],
+          inserted: 1,
+          replaced: 0,
+          skipped: 0,
+          unchanged: 0
+        }
+      };
+
+      const nextState = setLastDbResult(state, lastResult);
+      expect(nextState).to.deep.equal({
+        selectedTable: {
+          databaseName: 'databaseName',
+          name: 'tableName',
+          type: 'table',
+          data: [],
+          loading: true,
+          codeBody: "{\n  \n}",
+          codeAction: 'add',
+          codeBodyError: null,
+          lastResult: {
+            profile: [{
+              description: "Evaluating insert.",
+              'duration(ms)': 51.496578
+            }],
+            value: {
+              deleted: 0,
+              errors: 0,
+              generated_keys: [],
+              inserted: 1,
+              replaced: 0,
+              skipped: 0,
+              unchanged: 0
+            }
+          },
+          query: {
+            page: 1,
+            limit: 5,
+            sort: 'id',
+            direction: 1 // ASC = 1, DESC = 0
+          }
         }
       });
     });

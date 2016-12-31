@@ -41,6 +41,12 @@ const ExplorerHeader = ({
     })
   };
 
+  let queryProfile;
+  if (table.lastResult) {
+    queryProfile = '[' + table.lastResult.profile[0].description + ' - ';
+    queryProfile += table.lastResult.profile[0]['duration(ms)'] + 'ms]';
+  }
+
   const refreshTooltip = (
     <Tooltip id="tt-refresh-query">Refresh Query</Tooltip>
   );
@@ -93,9 +99,9 @@ const ExplorerHeader = ({
       <div className="bread-crumbs">
         {breadCrumbText}
 
-        {/*<div className="breadcrumb-text-container" style={{marginLeft: '20px'}}>
-         {queryProfile}
-         </div>*/}
+        <div className="breadcrumb-text-container" style={{marginLeft: '20px'}}>
+          {queryProfile}
+        </div>
 
         <div className="pull-right">
           {

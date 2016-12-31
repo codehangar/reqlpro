@@ -4,8 +4,11 @@ import ExplorerPagination from './ExplorerPagination';
 import Segment from '../../../services/segment.service';
 import ace from 'brace';
 import {connect} from "react-redux";
+import {saveRow} from '../../../actions';
+
 
 const ExplorerFooter = ({
+  dbConnection,
   selectedTable,
   onCancelClick,
   prevPage,
@@ -28,7 +31,7 @@ const ExplorerFooter = ({
     footerBody = (
       <div className="not-text-center pull-right">
         <span className="btn btn-default" onClick={onCancelClick} style={{marginRight: '10px'}}>Cancel</span>
-        <span className="btn btn-primary" onClick={save}>Save</span>
+        <span className="btn btn-primary" onClick={() => save(dbConnection, selectedTable)}>Save</span>
       </div>
     );
   }
@@ -47,7 +50,8 @@ const ExplorerFooter = ({
 
 const mapStateToProps = (state) => {
   return {
-    selectedTable: state.main.selectedTable
+    selectedTable: state.main.selectedTable,
+    dbConnection: state.main.dbConnection
   };
 };
 
@@ -103,13 +107,13 @@ const mapDispatchToProps = (dispatch) => {
       const start = this.props.table.data[this.props.table.data.length - 1].name;
       this.props.store.query({index, start});
     },
-    save: function() {
+    save: function(dbConnection, selectedTable) {
       const editor = ace.edit("editor");
       let string = editor.getValue();
 
       // Allows new Date() to be entered on edit view
       // string = string.replace('new Date()', '"' + new Date() + '"');
-      this.props.store.saveRow(string);
+      dispatch(saveRow(dbConnection, selectedTable, string));
 
       Segment.track({
         event: 'explorer.saveRow',

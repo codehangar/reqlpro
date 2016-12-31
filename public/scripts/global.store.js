@@ -366,34 +366,34 @@ store.prototype.getTableSize = function() {
   });
 };
 
-// Insert row
-store.prototype.insert = function(record) {
-  const conn = this.selectedFavorite.dbConnection;
-  const db = this.selectedTable.databaseName;
-  const table = this.selectedTable.name;
-
-  RethinkDbService.insert(conn, db, table, record).then((result) => {
-    console.log("--------> insert result", result)
-
-    this.selectedTable.lastResult = result;
-    const data = result.value;
-
-    if (data.errors) {
-      this.selectedTable.codeBodyError = data.first_error;
-      this.emit('updateSelectedTable');
-    } else {
-      // Run last query to update view
-      this.query();
-      this.getTableSize();
-      this.selectedTable.type = this.selectedTable.previousType;
-    }
-  }).catch((err) => {
-    console.error(err);
-    this.selectedTable.codeBodyError = err.first_error || err + '';
-    // Run last query to update view
-    this.query();
-  });
-};
+// // Insert row
+// store.prototype.insert = function(record) {
+//   const conn = this.selectedFavorite.dbConnection;
+//   const db = this.selectedTable.databaseName;
+//   const table = this.selectedTable.name;
+//
+//   RethinkDbService.insert(conn, db, table, record).then((result) => {
+//     console.log("--------> insert result", result)
+//
+//     this.selectedTable.lastResult = result;
+//     const data = result.value;
+//
+//     if (data.errors) {
+//       this.selectedTable.codeBodyError = data.first_error;
+//       this.emit('updateSelectedTable');
+//     } else {
+//       // Run last query to update view
+//       this.query();
+//       this.getTableSize();
+//       this.selectedTable.type = this.selectedTable.previousType;
+//     }
+//   }).catch((err) => {
+//     console.error(err);
+//     this.selectedTable.codeBodyError = err.first_error || err + '';
+//     // Run last query to update view
+//     this.query();
+//   });
+// };
 
 // Switch to edit mode
 store.prototype.startEdit = function(record) {
@@ -406,106 +406,106 @@ store.prototype.startEdit = function(record) {
   this.emit('updateRehinkDbClient');
 };
 
-// Update row
-store.prototype.update = function(record) {
-  const conn = this.selectedFavorite.dbConnection;
-  const db = this.selectedTable.databaseName;
-  const table = this.selectedTable.name;
-
-  RethinkDbService.update(conn, db, table, record).then((result) => {
-    console.log("--------> update result", result)
-
-    this.selectedTable.lastResult = result;
-    const data = result.value;
-
-    if (data.errors) {
-      this.selectedTable.codeBodyError = data.first_error;
-      this.emit('updateSelectedTable');
-    } else {
-      // Run last query to update view
-      this.query();
-      this.selectedTable.type = 'table';
-    }
-  }).catch((err) => {
-    console.error(err);
-    this.selectedTable.codeBodyError = err.first_error || err + '';
-    // Run last query to update view
-    this.query();
-  });
-};
-
-// Replace row
-// The difference here is that it will create a new record if an id is not found
-store.prototype.replace = function(record) {
-  const conn = this.selectedFavorite.dbConnection;
-  const db = this.selectedTable.databaseName;
-  const table = this.selectedTable.name;
-
-  RethinkDbService.replace(conn, db, table, record).then((result) => {
-    console.log("--------> replace result", result)
-
-    this.selectedTable.lastResult = result;
-    const data = result.value;
-
-    if (data.errors) {
-      this.selectedTable.codeBodyError = data.first_error;
-      this.emit('updateSelectedTable');
-    } else {
-      // Run last query to update view
-      this.query();
-      this.selectedTable.type = 'table';
-    }
-  }).catch((err) => {
-    console.error(err);
-    this.selectedTable.codeBodyError = err.first_error || err + '';
-    // Run last query to update view
-    this.query();
-  });
-};
+// // Update row
+// store.prototype.update = function(record) {
+//   const conn = this.selectedFavorite.dbConnection;
+//   const db = this.selectedTable.databaseName;
+//   const table = this.selectedTable.name;
+//
+//   RethinkDbService.update(conn, db, table, record).then((result) => {
+//     console.log("--------> update result", result)
+//
+//     this.selectedTable.lastResult = result;
+//     const data = result.value;
+//
+//     if (data.errors) {
+//       this.selectedTable.codeBodyError = data.first_error;
+//       this.emit('updateSelectedTable');
+//     } else {
+//       // Run last query to update view
+//       this.query();
+//       this.selectedTable.type = 'table';
+//     }
+//   }).catch((err) => {
+//     console.error(err);
+//     this.selectedTable.codeBodyError = err.first_error || err + '';
+//     // Run last query to update view
+//     this.query();
+//   });
+// };
+//
+// // Replace row
+// // The difference here is that it will create a new record if an id is not found
+// store.prototype.replace = function(record) {
+//   const conn = this.selectedFavorite.dbConnection;
+//   const db = this.selectedTable.databaseName;
+//   const table = this.selectedTable.name;
+//
+//   RethinkDbService.replace(conn, db, table, record).then((result) => {
+//     console.log("--------> replace result", result)
+//
+//     this.selectedTable.lastResult = result;
+//     const data = result.value;
+//
+//     if (data.errors) {
+//       this.selectedTable.codeBodyError = data.first_error;
+//       this.emit('updateSelectedTable');
+//     } else {
+//       // Run last query to update view
+//       this.query();
+//       this.selectedTable.type = 'table';
+//     }
+//   }).catch((err) => {
+//     console.error(err);
+//     this.selectedTable.codeBodyError = err.first_error || err + '';
+//     // Run last query to update view
+//     this.query();
+//   });
+// };
 
 store.prototype.cancelEdit = function() {
   this.toggleExplorerBody(this.selectedTable.previousType);
 };
 
 // Save Row from code view
-store.prototype.saveRow = function(row) {
-
-  ReQLEval(row).then((rowObj) => {
-    console.log("EVAL RESULT:", rowObj)
-
-    row = DateTypeService.convertStringsToDates(this.selectedTable.editingRecord, rowObj);
-    this.selectedTable.codeBodyError = null;
-
-    if (this.selectedTable.codeAction === 'update') {
-      if (row.length) {
-        this.selectedTable.codeBodyError = 'Update expects a single item';
-        this.emit('updateSelectedTable');
-        return;
-      }
-      let matched = false;
-      // Extra protection here if people alter the id when updating
-      // Using replace will insert a new record
-      // I'm assuming replace is less performant than update so lets use update when possible
-      this.selectedTable.data.forEach(function(item, index) {
-        if (item.id === row.id) {
-          matched = true;
-        }
-      });
-      if (matched) {
-        this.update(row);
-      } else {
-        this.replace(row);
-      }
-    } else if (this.selectedTable.codeAction === 'add') {
-      this.insert(row);
-    }
-  }).catch((err) => {
-    console.error(err)
-    this.selectedTable.codeBodyError = err.first_error || err + '' || 'There wasYou can only save valid json to your table';
-    this.emit('updateSelectedTable');
-  });
-
-};
+// store.prototype.saveRow = function(row) {
+//
+//   ReQLEval(row).then((rowObj) => {
+//     console.log("EVAL RESULT:", rowObj)
+//
+//     row = DateTypeService.convertStringsToDates(this.selectedTable.editingRecord, rowObj);
+//     this.selectedTable.codeBodyError = null;
+//
+//     if (this.selectedTable.codeAction === 'update') {
+//       if (row.length) {
+//         this.selectedTable.codeBodyError = 'Update expects a single item';
+//         this.emit('updateSelectedTable');
+//         return;
+//       }
+//       let matched = false;
+//       // Extra protection here if people alter the id when updating
+//       // Using replace will insert a new record
+//       // I'm assuming replace is less performant than update so lets use update when possible
+//       this.selectedTable.data.forEach(function(item, index) {
+//         if (item.id === row.id) {
+//           matched = true;
+//         }
+//       });
+//       if (matched) {
+//         this.update(row);
+//       } else {
+//         this.replace(row);
+//       }
+//     } else if (this.selectedTable.codeAction === 'add') {
+//       this.insert(row);
+//     }
+//   }).catch((err) => {
+//     console.error(err)
+//     this.selectedTable.codeBodyError = err.first_error || err + '' || 'There wasYou can only save valid json to your table';
+//     this.emit('updateSelectedTable');
+//   });
+//
+// };
 
 // Delete Row
 store.prototype.deleteRow = function(row) {

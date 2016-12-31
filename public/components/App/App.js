@@ -9,6 +9,7 @@ import DatabaseForm from '../modals/DatabaseForm';
 import DeleteDatabaseForm from '../modals/DeleteDatabaseForm';
 import DeleteTableForm from '../modals/DeleteTableForm';
 import TableForm from '../modals/TableForm';
+import DevTools from '../DevTools';
 
 const App = React.createClass({
   getInitialState: function () {
@@ -63,6 +64,7 @@ const App = React.createClass({
         <TableForm />
         <DeleteTableForm />
         <ExplorerContainer />
+        <DevTools />
       </div>
     );
   }

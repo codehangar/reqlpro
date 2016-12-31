@@ -454,3 +454,21 @@ export function deleteTable(state, databaseName, tableName) {
 
   return newState;
 }
+
+export function setCodeBodyError(state, codeBodyError) {
+  const selectedTable = Object.assign({}, state.selectedTable, {codeBodyError});
+  const newState = Object.assign({}, state, {selectedTable});
+  return newState;
+}
+
+export function setCodeBody(state, codeBody) {
+  const selectedTable = Object.assign({}, state.selectedTable, {codeBody});
+  const newState = Object.assign({}, state, {selectedTable});
+  return newState;
+}
+
+export function setLastDbResult(state, lastResult) {
+  const selectedTable = Object.assign({}, state.selectedTable, {lastResult});
+  const newState = Object.assign({}, state, {selectedTable});
+  return newState;
+}

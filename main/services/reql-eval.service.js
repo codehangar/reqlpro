@@ -1,13 +1,13 @@
 'use strict';
 
-var r = window.nodeRequire('rethinkdb');
-var co = require('co');
+const r = window.nodeRequire('rethinkdb');
+import co from 'co';
 
-var ReQLEval = function(script) {
+function ReQLEval(script) {
   return new Promise(function(resolve, reject) {
     co(function*() {
       // Wipe out global variables for the context of eval
-      var window, GLOBAL, global, require, process;
+      let window, GLOBAL, global, require, process;
 
       const string = '"use strict"; var obj = ' + script + '; obj;';
 
@@ -17,6 +17,6 @@ var ReQLEval = function(script) {
       reject(err);
     });
   });
-};
+}
 
-module.exports = ReQLEval;
+export default ReQLEval;

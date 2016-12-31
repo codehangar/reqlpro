@@ -30,7 +30,10 @@ import {
   cancelRowEdit,
   toggleExplorerBody,
   deleteDatabase,
-  deleteTable
+  deleteTable,
+  setCodeBodyError,
+  setCodeBody,
+  setLastDbResult
 } from './core';
 
 function reducer(state = {}, action) {
@@ -101,6 +104,12 @@ function reducer(state = {}, action) {
       return deleteDatabase(state, action.dbName);
     case 'DELETE_TABLE':
       return deleteTable(state, action.dbName, action.tableName);
+    case 'SET_CODE_BODY_ERROR':
+      return setCodeBodyError(state, action.codeBodyError);
+    case 'SET_CODE_BODY':
+      return setCodeBody(state, action.codeBody);
+    case 'SET_LAST_DB_RESULT':
+      return setLastDbResult(state, action.lastResult);
   }
   return state;
 }

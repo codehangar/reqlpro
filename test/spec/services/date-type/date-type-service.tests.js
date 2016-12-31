@@ -1,15 +1,15 @@
+import {convertStringsToDates} from '../../../../public/services/date-type.service';
+
 describe('DateTypeService Tests', function() {
 
-  var dateTypeService;
-
   beforeEach(function() {
-    dateTypeService = require('../../../../public/services/date-type.service');
+    // dateTypeService = require('../../../../public/services/date-type.service');
   });
 
   describe('convertStringsToDates', function() {
 
     it('should be a function', function(done) {
-      expect(dateTypeService.convertStringsToDates).to.be.a('function');
+      expect(convertStringsToDates).to.be.a('function');
       done();
     });
 
@@ -29,7 +29,7 @@ describe('DateTypeService Tests', function() {
         time: new Date('Wed Jun 22 2016 00:21:03 GMT+00:00')
       }
 
-      expect(dateTypeService.convertStringsToDates(prev, next)).to.deep.equal(expected);
+      expect(convertStringsToDates(prev, next)).to.deep.equal(expected);
       done();
     });
 
@@ -62,9 +62,9 @@ describe('DateTypeService Tests', function() {
             time: new Date('Wed Jun 22 2016 00:21:03 GMT+00:00')
           }
         }
-      }
+      };
 
-      expect(dateTypeService.convertStringsToDates(prev, next)).to.deep.equal(expected);
+      expect(convertStringsToDates(prev, next)).to.deep.equal(expected);
       done();
     });
 
