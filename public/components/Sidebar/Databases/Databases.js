@@ -50,7 +50,7 @@ const Databases = ({
 };
 
 function mapStateToProps(state) {
-  console.log('Databases', state.main.selectedConnection)
+  // console.log('Databases', state.main.selectedConnection)
   return {
     connections: state.main.connections,
     selectedConnection: state.main.selectedConnection,

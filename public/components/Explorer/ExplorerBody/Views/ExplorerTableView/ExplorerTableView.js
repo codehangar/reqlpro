@@ -19,7 +19,7 @@ const ExplorerTableView = ({
   onDeleteClick
 }) => {
 
-  console.log('selectedTable----->', selectedTable.query.sort, selectedTable.query.direction);
+  // console.log('selectedTable----->', selectedTable.query.sort, selectedTable.query.direction);
   const onColumnResizeEndCallback = (newColumnWidth, columnKey) => {
     var width = {};
     width[columnKey] = newColumnWidth;

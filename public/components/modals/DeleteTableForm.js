@@ -14,8 +14,8 @@ const DeleteTableForm = ({
   onDelete
 }) => {
   if(selectedTable) {
-    console.log({selectedDatabase})
-    console.log('the same?', tableToDelete === selectedTable.name, tableToDelete, selectedTable.name)
+    // console.log({selectedDatabase})
+    // console.log('the same?', tableToDelete === selectedTable.name, tableToDelete, selectedTable.name)
   }
   return (
     <Modal show={showDeleteTableForm} onHide={onClose}>
