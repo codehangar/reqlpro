@@ -1417,11 +1417,10 @@ describe('Application Logic', () => {
           databases: [{
             name: 'ReQL',
             tables: ['users1']
-          },
-            {
-              name: 'Test',
-              tables: ['users2']
-            }]
+          }, {
+            name: 'Test',
+            tables: ['users2']
+          }]
         }
       });
     });
@@ -1507,7 +1506,7 @@ describe('Application Logic', () => {
           loading: true,
           codeBody: "{\n  name: 'bob'\n}",
           codeAction: 'add',
-          codeBodyError: "It's illegal to insert new rows into the `rethinkdb.cluster_config` table.",
+          codeBodyError: null,
           query: {
             page: 1,
             limit: 5,

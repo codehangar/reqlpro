@@ -1,6 +1,5 @@
 // import RethinkDbService from '../main/services/rethinkdb.service';
 const RethinkDbService = require('../main/services/rethinkdb.service');
-// const ReQLEval = require('../main/services/reql-eval.service');
 import ReQLEval from '../main/services/reql-eval.service';
 import {convertStringsToDates} from './services/date-type.service'
 

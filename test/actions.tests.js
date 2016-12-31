@@ -29,6 +29,10 @@ describe('Action Creators', () => {
     // replace the require() module `rethinkdb` with a stub object
     mockery.registerMock('../main/services/rethinkdb.service', RethinkDbService);
 
+    // replace the require() module `ReQLEval` with a stub object
+    const ReQLEval = sinon.stub();
+    mockery.registerMock('../main/services/reql-eval.service', ReQLEval);
+
   });
 
   describe('getDbConnection', () => {

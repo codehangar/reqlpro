@@ -282,11 +282,11 @@ export function addTable(state, database, table) {
 export function toggleTableVisibility(state, database, showTables) {
 
   const databasesCopy = state.selectedConnection.databases.slice(0);
-  let selectedDatabase = databasesCopy.filter(db => db.name === database.name);
+  let selectedDatabase = databasesCopy.filter(db => db.name === database.name)[0];
   const index = databasesCopy.map(db => db.name).indexOf(database.name);
 
   // Assign the new showTables Value
-  selectedDatabase = Object.assign({}, ...selectedDatabase, {showTables});
+  selectedDatabase = Object.assign({}, selectedDatabase, {showTables});
 
   // Replace the selected database
   const databases = [...databasesCopy.slice(0, index), ...[selectedDatabase], ...databasesCopy.slice(index + 1)];
@@ -420,42 +420,18 @@ export function deleteDatabase(state, dbName) {
 
 export function deleteTable(state, databaseName, tableName) {
 
-  let databasesCopy = state.selectedConnection.databases.slice(0);
-  let databaseCopy;
-  let tablesCopy;
+  const databasesCopy = state.selectedConnection.databases.slice(0);
+  const databaseCopy = databasesCopy.filter(db => db.name === databaseName)[0];
+  const index = databasesCopy.map(db => db.name).indexOf(databaseName);
 
-  //remove affected db and copy it
-  databasesCopy = databasesCopy.filter(db => {
-    console.log(db.name, databaseName, db.name !== databaseName)
-    if (db.name !== databaseName) {
-      return true;
-    } else {
-      databaseCopy = db;
-    }
-  });
+  const tablesCopy = databaseCopy.tables.filter(table => table !== tableName);
+  const selectedDatabase = update(databaseCopy, {tables: {$set: tablesCopy}});
 
-  console.log({databasesCopy});
-  console.log({databaseCopy});
+  // Replace the selected database
+  const databases = [...databasesCopy.slice(0, index), ...[selectedDatabase], ...databasesCopy.slice(index + 1)];
 
-  //copy table with removed unwanted table
-  tablesCopy = databaseCopy.tables.filter(table => {
-    return table !== tableName
-  });
-
-  let newDatabaseCopy = update(databaseCopy, {tables: {$set: tablesCopy}});
-
-  let newDatabasesCopy = update(databasesCopy, {$push: [newDatabaseCopy]});
-
-  console.log({newDatabasesCopy});
-
-
-  const newSelectedConnection = Object.assign({}, state.selectedConnection, {
-    databases: newDatabasesCopy
-  });
-
-  const newState = Object.assign({}, state, {
-    selectedConnection: newSelectedConnection
-  });
+  const selectedConnection = Object.assign({}, state.selectedConnection, {databases});
+  const newState = Object.assign({}, state, {selectedConnection});
 
   return newState;
 }
