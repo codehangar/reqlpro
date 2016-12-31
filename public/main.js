@@ -60,17 +60,24 @@ function init() {
   //   store.updateSelectedFavorite(store.userConfig.favorites[0]);
   // }
   // const initialState = JSON.parse(remote.getGlobal('userConfig'))
-  const initialState = JSON.parse(remote.getGlobal('userConfig'))
+  const initialState = JSON.parse(remote.getGlobal('userConfig'));
 
   // console.log('initialState', initialState)
 
   if (initialState) {
+
+    // Looks for favorites field from versions 0.0.3 and prior
+    if (initialState.favorites) {
+      initialState.connections = initialState.favorites;
+    }
+
     reduxStore.dispatch({
       type: 'SET_STATE',
       state: {
-        userConfig: initialState
+        email: initialState.email || null,
+        connections: initialState.connections || []
       }
-    })
+    });
   }
 
 
