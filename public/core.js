@@ -54,12 +54,8 @@ export function showConnectionForm(state, mode, selectedConnection) {
 
 export function hideConnectionForm(state) {
   let newState = Object.assign({}, state)
-  if (state.showEditConnectionForm) {
-    delete newState.showEditConnectionForm;
-  }
-  if (state.showAddConnectionForm) {
-    delete newState.showAddConnectionForm;
-  }
+  delete newState.showEditConnectionForm;
+  delete newState.showAddConnectionForm;
   return newState;
 }
 
