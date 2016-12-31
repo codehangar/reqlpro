@@ -25,6 +25,7 @@ import {
   updateSelectedTable,
   updateSelectedTablePageLimit,
   updateSelectedTableSort,
+  setSelectedTableSize,
   startRowEdit,
   cancelRowEdit,
   toggleExplorerBody,
@@ -1113,6 +1114,50 @@ describe('Application Logic', () => {
             page: 1,
             limit: 5,
             sort: 'name',
+            direction: 1 // ASC = 1, DESC = 0
+          }
+        }
+      });
+    });
+  });
+
+  describe('setSelectedTableSize', () => {
+    it('should set selectedTable.size to new value', () => {
+      const state = {
+        selectedTable: {
+          databaseName: 'databaseName',
+          name: 'tableName',
+          type: 'table',
+          data: ['stuff'],
+          loading: false,
+          codeBody: "{\n  \n}",
+          codeAction: 'add',
+          codeBodyError: null,
+          query: {
+            page: 1,
+            limit: 5,
+            sort: 'id',
+            direction: 1 // ASC = 1, DESC = 0
+          }
+        }
+      }
+      const size = 27;
+      const nextState = setSelectedTableSize(state, size);
+      expect(nextState).to.deep.equal({
+        selectedTable: {
+          databaseName: 'databaseName',
+          name: 'tableName',
+          type: 'table',
+          data: ['stuff'],
+          loading: false,
+          codeBody: "{\n  \n}",
+          codeAction: 'add',
+          codeBodyError: null,
+          size: 27,
+          query: {
+            page: 1,
+            limit: 5,
+            sort: 'id',
             direction: 1 // ASC = 1, DESC = 0
           }
         }

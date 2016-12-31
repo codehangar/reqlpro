@@ -26,6 +26,7 @@ import {
   updateSelectedTable,
   updateSelectedTablePageLimit,
   updateSelectedTableSort,
+  setSelectedTableSize,
   startRowEdit,
   cancelRowEdit,
   toggleExplorerBody,
@@ -94,6 +95,8 @@ function reducer(state = {}, action) {
       return updateSelectedTablePageLimit(state, action.limit);
     case 'SET_TABLE_SORT':
       return updateSelectedTableSort(state, action.field);
+    case 'SET_TABLE_SIZE':
+      return setSelectedTableSize(state, action.size);
     case 'SET_ROW_EDIT':
       return startRowEdit(state, action.row);
     case 'CANCEL_ROW_EDIT':

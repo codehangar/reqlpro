@@ -1,6 +1,6 @@
 import React from'react';
 import {connect} from 'react-redux';
-import {queryTable} from '../../../../../actions';
+import {queryTable, getTableSize} from '../../../../../actions';
 
 const DbTable = ({
   dbConnection,
@@ -16,7 +16,7 @@ const DbTable = ({
         <i className="fa fa-table"/> {table}
         <div className="delete-table btn-group" role="group">
           <button onClick={(e) => deleteTable(e, database, table)} className="btn btn-default fa fa-trash"/>
-           {/*<button onClick={this.editDatabase.bind(this, this.props.database.name)} className="btn btn-default fa fa-pencil"></button>*!/*/}
+          {/*<button onClick={this.editDatabase.bind(this, this.props.database.name)} className="btn btn-default fa fa-pencil"></button>*!/*/}
         </div>
       </div>
     </div>
@@ -39,24 +39,22 @@ function mapDispatchToProps(dispatch) {
         databaseName,
         tableName
       });
-      selectedTable ? dispatch(queryTable(dbConnection, databaseName, tableName, selectedTable.query)) :
-        dispatch(queryTable(dbConnection, databaseName, tableName))
-      // ;
-      // dispatch({
-      //   type: "GET_TABLE_DATA",
-      //   databaseName,
-      //   tableName
-      // });
+      if (selectedTable) {
+        dispatch(queryTable(dbConnection, databaseName, tableName, selectedTable.query));
+      } else {
+        dispatch(queryTable(dbConnection, databaseName, tableName));
+      }
+      dispatch(getTableSize(dbConnection, databaseName, tableName));
     },
-    deleteTable: (e, database, table) =>{
-      console.log('deleteTable',table)
+    deleteTable: (e, database, table) => {
+      console.log('deleteTable', table)
       e.stopPropagation();
 
       dispatch({
-        type:"TOGGLE_DELETE_TABLE_FORM",
+        type: "TOGGLE_DELETE_TABLE_FORM",
         tableToDelete: table,
         database,
-        showDeleteTableForm:true
+        showDeleteTableForm: true
       })
 
     }

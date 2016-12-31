@@ -352,19 +352,19 @@ store.prototype.setColumnWidths = function(columnWidths) {
   this.selectedTable.columnWidths = columnWidths;
 };
 
-// Get table size
-store.prototype.getTableSize = function() {
-  const conn = this.selectedFavorite.dbConnection;
-  const db = this.selectedTable.databaseName;
-  const table = this.selectedTable.name;
-
-  RethinkDbService.getTableSize(conn, db, table).then((tableSize) => {
-    this.selectedTable.size = tableSize;
-    this.emit('updateSelectedTable');
-  }).catch(function(err) {
-    console.error(err);
-  });
-};
+// // Get table size
+// store.prototype.getTableSize = function() {
+//   const conn = this.selectedFavorite.dbConnection;
+//   const db = this.selectedTable.databaseName;
+//   const table = this.selectedTable.name;
+//
+//   RethinkDbService.getTableSize(conn, db, table).then((tableSize) => {
+//     this.selectedTable.size = tableSize;
+//     this.emit('updateSelectedTable');
+//   }).catch(function(err) {
+//     console.error(err);
+//   });
+// };
 
 // // Insert row
 // store.prototype.insert = function(record) {

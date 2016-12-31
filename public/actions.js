@@ -323,3 +323,20 @@ function handleResult(dispatch, result) {
     });
   }
 }
+
+// Get table size
+export function getTableSize(conn, dbName, tableName) {
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      RethinkDbService.getTableSize(conn, dbName, tableName).then((size) => {
+        dispatch({
+          type: "SET_TABLE_SIZE",
+          size
+        });
+        resolve();
+      }).catch(function(err) {
+        reject(err);
+      });
+    });
+  }
+};

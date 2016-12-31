@@ -351,6 +351,11 @@ export function updateSelectedTableSort(state, sort) {
   return Object.assign({}, state, {selectedTable: newSelectedTable});
 }
 
+export function setSelectedTableSize(state, size) {
+  let selectedTable = Object.assign({}, state.selectedTable, {size});
+  return Object.assign({}, state, {selectedTable});
+}
+
 export function startRowEdit(state, record) {
   const newFields = {
     codeAction: 'update',
