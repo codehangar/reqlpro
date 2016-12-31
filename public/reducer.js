@@ -90,7 +90,7 @@ function reducer(state = {}, action) {
     case 'SET_SELECTED_TABLE':
       return setSelectedTable(state, action.databaseName, action.tableName);
     case 'UPDATE_SELECTED_TABLE':
-      return updateSelectedTable(state, action.data);
+      return updateSelectedTable(state, action.data, action.lastResult);
     case 'SET_TABLE_PAGE_LIMIT':
       return updateSelectedTablePageLimit(state, action.limit);
     case 'SET_TABLE_SORT':

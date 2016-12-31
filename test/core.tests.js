@@ -968,10 +968,16 @@ describe('Application Logic', () => {
             direction: 1 // ASC = 1, DESC = 0
           }
         }
-      }
+      };
       const data = ['stuff'];
+      const lastResult = {
+        profile: [{
+          description: "Evaluating slice.",
+          'duration(ms)': 51.496578
+        }]
+      };
 
-      const nextState = updateSelectedTable(state, data);
+      const nextState = updateSelectedTable(state, data, lastResult);
 
       expect(nextState).to.deep.equal({
         selectedTable: {
@@ -983,6 +989,12 @@ describe('Application Logic', () => {
           codeBody: "{\n  \n}",
           codeAction: 'add',
           codeBodyError: null,
+          lastResult: {
+            profile: [{
+              description: "Evaluating slice.",
+              'duration(ms)': 51.496578
+            }]
+          },
           query: {
             page: 1,
             limit: 5,
