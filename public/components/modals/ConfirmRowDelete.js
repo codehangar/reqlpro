@@ -1,4 +1,5 @@
 import React from'react';
+import ReactDOM from'react-dom';
 import {connect} from 'react-redux';
 import classNames from 'classnames';
 import Segment from'../../services/segment.service.js';
@@ -14,6 +15,8 @@ const ConfirmRowDelete = ({
   handleDelete
 }) => {
 
+  let deleteBtn;
+
   const errorClass = classNames(
     'alert',
     'alert-danger', {
@@ -21,29 +24,30 @@ const ConfirmRowDelete = ({
       'hidden': !rowDeleteError
     });
 
+  const onModalOpen = () => {
+    ReactDOM.findDOMNode(deleteBtn).focus();
+  };
+
   const recordId = rowToDelete ? rowToDelete.id : '';
 
   return (
-    <Modal show={showConfirmRowDelete} onHide={handleCancel}>
+    <Modal show={showConfirmRowDelete} onHide={handleCancel} onEnter={onModalOpen}>
       <Modal.Header closeButton>
         <Modal.Title>Delete Record - {recordId}</Modal.Title>
       </Modal.Header>
-
       <Modal.Body>
         <p>Are you sure you want to delete this record?</p>
         <p className={errorClass}>{rowDeleteError}</p>
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={handleCancel} bsStyle="default" className="pull-left">Cancel</Button>
-        <Button onClick={() => handleDelete(rowToDelete)} bsStyle="primary" className="pull-right">Delete</Button>
+        <Button ref={btn => deleteBtn = btn} onClick={() => handleDelete(rowToDelete)} bsStyle="primary" className="pull-right">Delete</Button>
       </Modal.Footer>
     </Modal>
   );
-
 };
 
 const mapStateToProps = (state) => {
-  console.log('state.main.showConfirmRowDelete', state.main.showConfirmRowDelete);
   return {
     showConfirmRowDelete: state.main.showConfirmRowDelete,
     rowToDelete: state.main.rowToDelete,
