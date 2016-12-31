@@ -414,7 +414,7 @@ describe('Action Creators', () => {
           .then(function() {
             expect(RethinkDbService.getTableData.callCount).to.equal(1);
             expect(RethinkDbService.getTableData.calledWithExactly(dbConnection, databaseName, tableName, 'id', 0, 5, 1)).to.equal(true);
-            expect(dispatch.callCount).to.equal(1);
+            expect(dispatch.callCount).to.equal(2);
             expect(dispatch.calledWith({
               type: 'UPDATE_SELECTED_TABLE',
               lastResult: {value: [{name: 'Bob'}, {name: 'Jim'}]},
@@ -434,7 +434,7 @@ describe('Action Creators', () => {
           .then(function() {
             expect(RethinkDbService.getTableDataBetween.callCount).to.equal(1);
             expect(RethinkDbService.getTableDataBetween.calledWithExactly(dbConnection, databaseName, tableName, 'name', 7, 8)).to.equal(true);
-            expect(dispatch.callCount).to.equal(1);
+            expect(dispatch.callCount).to.equal(2);
             expect(dispatch.calledWith({
               type: 'UPDATE_SELECTED_TABLE',
               lastResult: {value: [{name: 'Jim'}, {name: 'Bob'}]},
