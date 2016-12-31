@@ -277,7 +277,25 @@ export function addTable(state, database, table) {
   });
 
   return newState;
-};
+}
+
+export function toggleTableVisibility(state, database, showTables) {
+
+  const databasesCopy = state.selectedConnection.databases.slice(0);
+  let selectedDatabase = databasesCopy.filter(db => db.name === database.name);
+  const index = databasesCopy.map(db => db.name).indexOf(database.name);
+
+  // Assign the new showTables Value
+  selectedDatabase = Object.assign({}, ...selectedDatabase, {showTables});
+
+  // Replace the selected database
+  const databases = [...databasesCopy.slice(0, index), ...[selectedDatabase], ...databasesCopy.slice(index + 1)];
+  const selectedConnection = Object.assign({}, state.selectedConnection, {databases});
+
+  const newState = Object.assign({}, state, {selectedConnection});
+
+  return newState;
+}
 
 export function setDbToEdit(state, database) {
   let newState = Object.assign({}, state, {
@@ -373,14 +391,16 @@ export function toggleExplorerBody(state, type) {
   return Object.assign({}, state, {selectedTable: newSelectedTable});
 }
 
-export function deleteDatabase(state, dbName){
-    // let newState = Object.assign({}, state);
+export function deleteDatabase(state, dbName) {
+  // let newState = Object.assign({}, state);
   let databasesCopy;
 
   if (state.selectedConnection.databases)
     databasesCopy = state.selectedConnection.databases.slice(0);
 
-  databasesCopy = databasesCopy.filter(db => { if(db.name != dbName) return db; });
+  databasesCopy = databasesCopy.filter(db => {
+    if (db.name != dbName) return db;
+  });
 
   const newSelectedConnection = Object.assign({}, state.selectedConnection, {
     databases: databasesCopy
@@ -393,7 +413,7 @@ export function deleteDatabase(state, dbName){
   return newState;
 }
 
-export function deleteTable(state, databaseName, tableName){
+export function deleteTable(state, databaseName, tableName) {
 
   let databasesCopy = state.selectedConnection.databases.slice(0);
   let databaseCopy;
@@ -402,10 +422,10 @@ export function deleteTable(state, databaseName, tableName){
   //remove affected db and copy it
   databasesCopy = databasesCopy.filter(db => {
     console.log(db.name, databaseName, db.name !== databaseName)
-    if(db.name !== databaseName) {
+    if (db.name !== databaseName) {
       return true;
-    }else{
-    databaseCopy = db;
+    } else {
+      databaseCopy = db;
     }
   });
 
@@ -417,9 +437,9 @@ export function deleteTable(state, databaseName, tableName){
     return table !== tableName
   });
 
-  let newDatabaseCopy = update(databaseCopy, { tables: {$set: tablesCopy} });
+  let newDatabaseCopy = update(databaseCopy, {tables: {$set: tablesCopy}});
 
-  let newDatabasesCopy = update(databasesCopy, {$push: [newDatabaseCopy] });
+  let newDatabasesCopy = update(databasesCopy, {$push: [newDatabaseCopy]});
 
   console.log({newDatabasesCopy});
 

@@ -19,6 +19,7 @@ import {
   toggleDeleteTableForm,
   addDatabase,
   addTable,
+  toggleTableVisibility,
   setDbToEdit,
   setSelectedTable,
   updateSelectedTable,
@@ -593,7 +594,7 @@ describe('Application Logic', () => {
 
   });
 
-    describe('toggleDatabaseForm', () => {
+  describe('toggleDatabaseForm', () => {
     it('should return new state with showDatabaseForm set to true', () => {
       const state = {
         email: 'ian@codehangar.io',
@@ -661,13 +662,13 @@ describe('Application Logic', () => {
         showDeleteTableForm: false
       };
 
-      const nextState = toggleDeleteTableForm(state, true, {database:'database'}, 'test');
+      const nextState = toggleDeleteTableForm(state, true, {database: 'database'}, 'test');
 
       expect(nextState).to.deep.equal({
         email: 'cassie@codehangar.io',
         showDeleteTableForm: true,
         tableToDelete: 'test',
-        selectedDatabase: {database:'database'}
+        selectedDatabase: {database: 'database'}
       });
     });
 
@@ -775,11 +776,11 @@ describe('Application Logic', () => {
             tables: []
           }]
         }
-      }
+      };
 
       const table = {
         name: 'users'
-      }
+      };
 
       let nextState = addTable(state, state.selectedConnection.databases[0], table);
 
@@ -796,6 +797,89 @@ describe('Application Logic', () => {
           databases: [{
             name: 'ReQL',
             tables: ['users']
+          }]
+        }
+      });
+
+    });
+  });
+
+  describe('toggleTableVisibility', () => {
+    it('should set the visibility of tables of the appropriate database object to true', () => {
+      const state = {
+        email: 'cassie@codehangar.io',
+        selectedConnection: {
+          name: "apple",
+          databases: [{
+            name: 'myDatabaseName1',
+            tables: ['users']
+          }, {
+            name: 'myDatabaseName2',
+            tables: ['users']
+          }, {
+            name: 'myDatabaseName3',
+            tables: ['users']
+          }]
+        }
+      };
+
+      const nextState = toggleTableVisibility(state, state.selectedConnection.databases[1], true);
+
+      expect(nextState).to.deep.equal({
+        email: 'cassie@codehangar.io',
+        selectedConnection: {
+          name: "apple",
+          databases: [{
+            name: 'myDatabaseName1',
+            tables: ['users']
+          }, {
+            name: 'myDatabaseName2',
+            tables: ['users'],
+            showTables: true
+          }, {
+            name: 'myDatabaseName3',
+            tables: ['users']
+          }]
+        }
+      });
+
+    });
+
+    it('should set the visibility of tables of the appropriate database object to false', () => {
+      const state = {
+        email: 'cassie@codehangar.io',
+        selectedConnection: {
+          name: "apple",
+          databases: [{
+            name: 'myDatabaseName1',
+            tables: ['users']
+          }, {
+            name: 'myDatabaseName2',
+            tables: ['users']
+          }, {
+            name: 'myDatabaseName3',
+            tables: ['users'],
+            showTables: true
+          }]
+        }
+      };
+
+      const nextState = toggleTableVisibility(state, state.selectedConnection.databases[2], false);
+
+      expect(nextState).to.deep.equal({
+        email: 'cassie@codehangar.io',
+        selectedConnection: {
+          name: "apple",
+          databases: [{
+            name: 'myDatabaseName1',
+            tables: ['users']
+          }, {
+            name: 'myDatabaseName2',
+            tables: ['users']
+          }, {
+            name: 'myDatabaseName3',
+            tables: ['users'],
+            showTables: false
           }]
         }
       });
@@ -1205,8 +1289,7 @@ describe('Application Logic', () => {
           databases: [{
             name: 'ReQL',
             tables: ['users']
-          },
-          {
+          }, {
             name: 'Test',
             tables: ['users']
           }]
