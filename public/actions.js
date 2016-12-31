@@ -160,6 +160,7 @@ function getTableData(sort, direction, limit, page, dbConnection, databaseName, 
           data: result.value,
           loading: false
         });
+        dispatch(getTableSize(conn, db, table));
 
         // result.value.toArray().then((tableData) => {
         //     dispatch({
@@ -213,6 +214,8 @@ function getTableDataBetween(index, start, end, dbConnection, databaseName, tabl
           data: result.value,
           loading: false
         });
+        dispatch(getTableSize(conn, db, table));
+
         resolve(result);
 
       }).catch(function(error) {
@@ -320,6 +323,7 @@ function handleResult(dispatch, result) {
       type: "TOGGLE_EXPLORER_BODY",
       key: 'table'
     });
+    dispatch(refreshExplorerBody());
   }
 }
 
@@ -338,4 +342,13 @@ export function getTableSize(conn, dbName, tableName) {
       });
     });
   }
-};
+}
+
+export function refreshExplorerBody() {
+  return (dispatch, getState) => {
+    const conn = getState().main.dbConnection;
+    const dbName = getState().main.selectedTable.databaseName;
+    const tableName = getState().main.selectedTable.name;
+    dispatch(queryTable(conn, dbName, tableName, getState().main.selectedTable.query));
+  }
+}

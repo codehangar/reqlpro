@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import Segment from '../../services/segment.service';
 import {OverlayTrigger, Tooltip} from 'react-bootstrap';
 import {connect} from 'react-redux';
-import {queryTable} from '../../actions';
+import {queryTable, refreshExplorerBody} from '../../actions';
 
 const ExplorerHeader = ({
   table,
@@ -166,9 +166,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     refreshExplorerBody: () => {
       console.log('refreshExplorerBody e');
-      dispatch({
-        type: "HIDE_CONNECTION_FORM"
-      });
+      dispatch(refreshExplorerBody());
 
       Segment.track({
         event: 'explorer.refreshExplorerBody',

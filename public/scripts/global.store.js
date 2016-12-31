@@ -544,9 +544,9 @@ store.prototype.deleteRow = function(row) {
 // };
 
 // Refresh Explorer Body
-store.prototype.refreshExplorerBody = function() {
-  this.query();
-};
+// store.prototype.refreshExplorerBody = function() {
+//   this.query();
+// };
 
 // Save Database
 // store.prototype.saveDatabase = function(dbName) {
