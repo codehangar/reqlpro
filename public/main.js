@@ -31,6 +31,7 @@ var Segment = require('./services/segment.service');
 
 import {Provider} from 'react-redux';
 import reduxStore from './store';
+import {getDbConnection} from './actions';
 
 
 // reduxStore.dispatch({
@@ -71,13 +72,23 @@ function init() {
       initialState.connections = initialState.favorites;
     }
 
+    let state = {
+      email: initialState.email || null,
+        connections: initialState.connections || []
+    };
+
+    //if connections, set selectedConnection and getDbConnection
+    if(initialState.connections){
+      state.selectedConnection = initialState.connections[0];
+      reduxStore.dispatch(getDbConnection(state.selectedConnection));
+    }
+
     reduxStore.dispatch({
       type: 'SET_STATE',
-      state: {
-        email: initialState.email || null,
-        connections: initialState.connections || []
-      }
+      state
     });
+
+
   }
 
 
