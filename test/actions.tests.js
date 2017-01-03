@@ -101,11 +101,14 @@ describe('Action Creators', () => {
             console.log('er', er);
             expect(RethinkDbService.getConnection.callCount).to.equal(1);
             expect(RethinkDbService.getConnection.calledWith('192.168.99.100', '32769', '')).to.equal(true);
-            // expect(dispatch.callCount).to.equal(1);
-            // expect(dispatch.calledWith({
-            //   type: 'SET_DB_CONNECTION',
-            //   dbConnection: 'im a connection error'
-            // })).to.equal(true);
+            expect(dispatch.callCount).to.equal(1);
+            expect(dispatch.calledWith({
+              type: 'SET_DB_CONNECTION_ERROR',
+              connectionError: {
+                error:'im a connection error',
+                connection
+              }
+            })).to.equal(true);
             done();
           })
           .catch(done);

@@ -466,3 +466,6 @@ export function toggleConfirmRowDelete(state, rowToDelete) {
 export function setRowDeleteError(state, rowDeleteError) {
   return Object.assign({}, state, {rowDeleteError})
 }
+export function setConnectionError(state, connectionError) {
+  return Object.assign({}, state, {connectionError})
+}

@@ -17,10 +17,14 @@ export function getDbConnection(connection) {
 
         resolve(conn);
       }).catch(error => {
-        // dispatch({
-        //   type: 'SET_DB_CONNECTION',
-        //   dbConnection: error
-        // });
+        console.log('getDbConnection error', connection)
+        dispatch({
+          type: 'SET_DB_CONNECTION_ERROR',
+          connectionError: {
+            connection,
+            error
+          }
+        });
         reject(error);
       });
     });
@@ -58,7 +62,6 @@ export function getDbTables(dbConnection, database) {
   return dispatch => {
     return new Promise((resolve, reject) => {
       RethinkDbService.getTableList(dbConnection, database.name).then(tables => {
-        console.log('getDbTables', database)
         dispatch({
           type: 'SET_DB_TABLES',
           database,
@@ -139,7 +142,6 @@ export function queryTable(dbConnection, databaseName, tableName, queryParams = 
 }
 
 function getTableData(sort, direction, limit, page, dbConnection, databaseName, tableName) {
-  console.log('getTableData limit', limit)
   return dispatch => {
     return new Promise((resolve, reject) => {
       const conn = dbConnection;
@@ -151,8 +153,6 @@ function getTableData(sort, direction, limit, page, dbConnection, databaseName, 
       }
 
       RethinkDbService.getTableData(conn, db, table, sort, direction, limit, page).then((result) => {
-        console.log("result.value", result.value)
-
         dispatch({
           type: 'UPDATE_SELECTED_TABLE',
           lastResult: result,
@@ -194,7 +194,6 @@ function getTableData(sort, direction, limit, page, dbConnection, databaseName, 
 }
 
 function getTableDataBetween(index, start, end, dbConnection, databaseName, tableName) {
-  console.log('-----> getTableDataBetween', index, start, end, dbConnection, databaseName, tableName)
   return dispatch => {
     return new Promise((resolve, reject) => {
       const conn = dbConnection;
@@ -232,7 +231,6 @@ function getTableDataBetween(index, start, end, dbConnection, databaseName, tabl
 }
 
 export function deleteDatabase(conn, dbName) {
-  console.log('deleting database', conn, dbName);
   return dispatch => {
     return new Promise((resolve, reject) => {
       RethinkDbService.deleteDb(conn, dbName).then((results) => {
@@ -249,12 +247,10 @@ export function deleteDatabase(conn, dbName) {
 }
 
 export function deleteTable(conn, dbName, tableName) {
-  console.log('deleting table', conn, dbName, tableName);
   return dispatch => {
     return new Promise((resolve, reject) => {
 
       RethinkDbService.deleteTable(conn, dbName, tableName).then((results) => {
-        console.log('dispatching from delete table action');
         dispatch({
           type: "DELETE_TABLE",
           dbName,
@@ -272,8 +268,6 @@ export function saveRow(conn, selectedTable, row) {
   return dispatch => {
     return new Promise((resolve, reject) => {
       ReQLEval(row).then(async(rowObj) => {
-        console.log("EVAL RESULT:", rowObj)
-
         row = convertStringsToDates(selectedTable.editingRecord, rowObj);
         selectedTable.codeBodyError = null;
 
@@ -296,7 +290,6 @@ export function saveRow(conn, selectedTable, row) {
           handleResult(dispatch, result);
         }
       }).catch((err) => {
-        console.error(err);
         const codeBodyError = err.first_error || err + '' || 'There was an error. You can only save valid json to your table';
         dispatch({
           type: 'SET_CODE_BODY_ERROR',
@@ -309,8 +302,6 @@ export function saveRow(conn, selectedTable, row) {
 }
 
 function handleResult(dispatch, result) {
-  console.log('*** result', result);
-
   dispatch({
     type: 'SET_LAST_DB_RESULT',
     lastResult: result
@@ -361,10 +352,6 @@ export function deleteRow(row) {
     const dbName = getState().main.selectedTable.databaseName;
     const tableName = getState().main.selectedTable.name;
     return RethinkDbService.delete(conn, dbName, tableName, row).then((result) => {
-      console.log('------------------------');
-      console.log('result', result);
-
-
       if (result.value.errors) {
         throw(result.value)
       } else {
@@ -377,9 +364,7 @@ export function deleteRow(row) {
       }
 
     }).catch((err) => {
-      console.error('err', err);
       const rowDeleteError = err.first_error || err + '' || 'There was an error. You can only save valid json to your table';
-      console.log('rowDeleteError', rowDeleteError);
       dispatch({
         type: "SET_ROW_DELETE_ERROR",
         rowDeleteError
