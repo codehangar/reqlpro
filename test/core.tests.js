@@ -35,7 +35,8 @@ import {
   setCodeBody,
   setLastDbResult,
   toggleConfirmRowDelete,
-  setRowDeleteError
+  setRowDeleteError,
+  setConnectionError
 } from '../public/core';
 
 let RethinkDbService;
@@ -1654,6 +1655,18 @@ describe('Application Logic', () => {
       expect(nextState).to.deep.equal({
         rowDeleteError: "It's illegal to delete rows from the `rethinkdb.cluster_config` table."
       });
+    });
+  });
+
+  describe('setConnectionError', () => {
+    it('adds connection error object to the main app state', () => {
+      let state = {};
+      state = freeze(state);
+      const connectionError = {message:'you have fucked up'};
+      let nextState = setConnectionError(state, connectionError);
+      expect(nextState).to.deep.equal({
+          connectionError: {message:'you have fucked up'}
+      })
     });
   });
 

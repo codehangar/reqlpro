@@ -56,6 +56,10 @@ const mapDispatchToProps = (dispatch) => {
     },
     onConnectionClick: (connection) => {
       dispatch(getDbConnection(connection));
+      dispatch({
+        type:"SET_CONNECTION",
+        connection
+      })
     }
   }
 };
