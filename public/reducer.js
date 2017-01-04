@@ -37,7 +37,8 @@ import {
   setLastDbResult,
   toggleConfirmRowDelete,
   setRowDeleteError,
-  setConnectionError
+  setConnectionError,
+  setColumnWidths
 } from './core';
 
 function reducer(state = {}, action) {
@@ -122,6 +123,8 @@ function reducer(state = {}, action) {
       return setRowDeleteError(state, action.rowDeleteError);
     case 'SET_DB_CONNECTION_ERROR':
       return setConnectionError(state, action.connectionError);
+    case 'SET_TABLE_COLUMN_WIDTH':
+      return setColumnWidths(state, action.databaseName, action.tableName, action.width);
   }
   return state;
 }

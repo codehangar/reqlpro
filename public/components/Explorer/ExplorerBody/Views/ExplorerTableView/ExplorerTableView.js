@@ -11,28 +11,22 @@ import {queryTable} from '../../../../../actions';
 const ExplorerTableView = ({
   width,
   table,
+  columnWidths,
   columnNames,
   dbConnection,
   selectedTable,
   onUpdateTableSort,
   onEditClick,
-  onDeleteClick
+  onDeleteClick,
+  setColumnWidth
 }) => {
 
-  // console.log('selectedTable----->', selectedTable.query.sort, selectedTable.query.direction);
-  const onColumnResizeEndCallback = (newColumnWidth, columnKey) => {
-    var width = {};
-    width[columnKey] = newColumnWidth;
+  console.log('selectedTable----->', selectedTable);
 
-    // Update local state
-    // this.setState(({columnWidths}) => ({
-    //   columnWidths: _.extend({}, columnWidths, width)
-    // }));
-
-    // Also back up in the store to maintain across paging
-    var cWs = _.extend({}, selectedTable.columnWidths, width)
-    // this.state.store.setColumnWidths(cWs);
+  const setColumnWidthCallback = (newColumnWidth, columnKey) => {
+    setColumnWidth(newColumnWidth, columnKey, selectedTable)
   };
+
   const rowChanged = (row) => {
     // console.log("rowChanged row", row)
     // this.state.store.update(row);
@@ -88,8 +82,15 @@ const ExplorerTableView = ({
             </Cell>
           );
         }}
-        // width={this.state.columnWidths[fieldName]}
-        width={100}
+        width={
+          columnWidths ?
+            columnWidths[selectedTable.databaseName] ?
+              columnWidths[selectedTable.databaseName][selectedTable.name] ?
+                columnWidths[selectedTable.databaseName][selectedTable.name][fieldName]?columnWidths[selectedTable.databaseName][selectedTable.name][fieldName]:100
+              : 100
+            : 100
+          : 100
+        }
       />
     );
   });
@@ -101,7 +102,7 @@ const ExplorerTableView = ({
       rowsCount={selectedTable.data.length}
       rowHeight={50}
       headerHeight={30}
-      onColumnResizeEndCallback={onColumnResizeEndCallback}
+      onColumnResizeEndCallback={setColumnWidthCallback}
       isColumnResizing={false}
       width={window.innerWidth - 360}
       height={window.innerHeight - 105}>
@@ -115,7 +116,8 @@ function mapStateToProps(state) {
     // connections: state.main.connections || [],
     // selectedConnection: state.main.selectedConnection,
     dbConnection: state.main.dbConnection,
-    selectedTable: state.main.selectedTable
+    selectedTable: state.main.selectedTable,
+    columnWidths: state.main.columnWidths,
   };
 }
 
@@ -130,6 +132,34 @@ function mapDispatchToProps(dispatch) {
       let params = Object.assign({}, selectedTable.query);
       params.sort = field;
       dispatch(queryTable(dbConnection, selectedTable.databaseName, selectedTable.name, params));
+    },
+    setColumnWidth: (newColumnWidth, columnKey, selectedTable) => {
+      console.log(newColumnWidth, columnKey, selectedTable)
+
+      var width = {};
+      width[columnKey] = newColumnWidth;
+      console.log(width);
+
+      dispatch({
+        type:"SET_TABLE_COLUMN_WIDTH",
+        databaseName:selectedTable.databaseName,
+        tableName:selectedTable.name,
+        width
+      })
+
+      // const onColumnResizeEndCallback = (newColumnWidth, columnKey) => {
+
+
+        // Update local state
+        // this.setState(({columnWidths}) => ({
+        //   columnWidths: _.extend({}, columnWidths, width)
+        // }));
+
+        // Also back up in the store to maintain across paging
+        // var cWs = _.extend({}, selectedTable.columnWidths, width)
+        // console.log(cWs);
+        // this.state.store.setColumnWidths(cWs);
+      // };
     },
     onEditClick: (row) => {
       dispatch({

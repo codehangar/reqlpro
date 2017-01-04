@@ -469,3 +469,50 @@ export function setRowDeleteError(state, rowDeleteError) {
 export function setConnectionError(state, connectionError) {
   return Object.assign({}, state, {connectionError})
 }
+export function setColumnWidths(state, database, table, width) {
+  let newColumnWidth = {};
+  let columnWidthsCopy;
+
+  if(state.columnWidths){
+    // columnWidthsCopy = state.columnWidths.slice();
+    columnWidthsCopy = Object.assign({},state.columnWidths)
+    if(!columnWidthsCopy[database]){
+      let obj = {};
+      obj[table] = width;
+      columnWidthsCopy[database] = obj;
+    }{
+      if(!columnWidthsCopy[database][table]){
+        columnWidthsCopy[database][table] = width;
+      }else{
+        columnWidthsCopy[database][table][Object.keys(width)[0]] = width[Object.keys(width)[0]]
+      }
+    }
+  }else{
+    newColumnWidth[database] = {};
+    newColumnWidth[database][table] = width;
+    console.log(newColumnWidth)
+    columnWidthsCopy = newColumnWidth;
+  }
+  //   if(columnWidthsCopy[database]){
+  //     cwdb = Object.assign({},columnWidthsCopy[database]);
+  //     if(cwdb[table]){
+  //       cwt = Object.assign({},cwdb[table]);
+  //     }else{
+  //
+  //       columnWidthsCopy = Object.assign({},columnWidthsCopy,newColumnWidth)
+  //     }
+  //
+  //   }else{
+  //     newColumnWidth[database] = {};
+  //     newColumnWidth[database][table] = width;
+  //     console.log(newColumnWidth)
+  //     columnWidthsCopy = Object.assign({},columnWidthsCopy,newColumnWidth)
+  //   }
+  //   // console.log(state.columnWidths)
+  //   // let columnWidths = Object.assign({}, state.columnWidths, newColumnWidth);
+  // }else{
+
+  // }
+
+  return Object.assign({}, state, {columnWidths:columnWidthsCopy})
+}

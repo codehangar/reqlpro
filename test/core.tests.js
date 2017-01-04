@@ -36,7 +36,8 @@ import {
   setLastDbResult,
   toggleConfirmRowDelete,
   setRowDeleteError,
-  setConnectionError
+  setConnectionError,
+  setColumnWidths
 } from '../public/core';
 
 let RethinkDbService;
@@ -1666,6 +1667,41 @@ describe('Application Logic', () => {
       let nextState = setConnectionError(state, connectionError);
       expect(nextState).to.deep.equal({
           connectionError: {message:'you have fucked up'}
+      })
+    });
+  });
+
+  describe('setColumnWidths', () => {
+    it('adds updated table column widths to state', () => {
+      let state = {};
+      state = freeze(state);
+      const width1 = {id:300};
+      const table1 = "logs";
+      const database1 = "rethinkdb";
+      const width2 = {age:24};
+      const table2 = "logs";
+      const database2 = "rethinkdb2";
+      const width3 = {age:24};
+      const table3 = "logs2";
+      const database3 = "rethinkdb2";
+      const width4 = {name:"sam"};
+      const table4 = "logs2";
+      const database4 = "rethinkdb2";
+      let nextState = setColumnWidths(state, database1, table1, width1);
+      nextState = setColumnWidths(nextState, database2, table2, width2);
+      nextState = setColumnWidths(nextState, database3, table3, width3);
+      nextState = setColumnWidths(nextState, database4, table4, width4);
+
+      expect(nextState).to.deep.equal({
+        columnWidths:{
+          rethinkdb: {
+            logs: {id:300}
+          },
+          rethinkdb2: {
+            logs: {age:24},
+            logs2: {age:24, name:"sam"}
+          }
+        }
       })
     });
   });
