@@ -1,18 +1,18 @@
 import React from 'react';
 import {Table, Column, Cell} from 'fixed-data-table';
 import JSONTree from 'react-json-tree';
-import ExplorerTableCell from './ExplorerTableCell.js';
 import _ from 'lodash';
 import classNames from 'classnames';
-import Segment from '../../../../../services/segment.service';
 import {connect} from 'react-redux';
+import ExplorerTableCell from './ExplorerTableCell.js';
+import Segment from '../../../../../services/segment.service';
 import {queryTable} from '../../../../../actions';
+import {getColumnNames, getColumnWidth} from './explorer-table-view-utils';
 
 const ExplorerTableView = ({
   width,
   table,
   columnWidths,
-  columnNames,
   dbConnection,
   selectedTable,
   onUpdateTableSort,
@@ -22,6 +22,9 @@ const ExplorerTableView = ({
 }) => {
 
   console.log('selectedTable----->', selectedTable);
+
+  let columnNames = getColumnNames(selectedTable.data);
+  console.log('columnNames', columnNames);
 
   const setColumnWidthCallback = (newColumnWidth, columnKey) => {
     setColumnWidth(newColumnWidth, columnKey, selectedTable)
@@ -36,7 +39,7 @@ const ExplorerTableView = ({
     //   properties: {}
     // });
   };
-  columnNames = ['id', 'level', 'message', 'server'];
+  // columnNames = ['id', 'level', 'message', 'server'];
 
   const actionColumn = (
     <Column
@@ -56,6 +59,7 @@ const ExplorerTableView = ({
   );
 
   const dynamicColumns = columnNames.map((fieldName, index) => {
+    console.log('fieldName', fieldName);
     const iconClasses = classNames({
       'fa': true,
       'fa-sort-asc': selectedTable.query.direction,
@@ -82,15 +86,7 @@ const ExplorerTableView = ({
             </Cell>
           );
         }}
-        width={
-          columnWidths ?
-            columnWidths[selectedTable.databaseName] ?
-              columnWidths[selectedTable.databaseName][selectedTable.name] ?
-                columnWidths[selectedTable.databaseName][selectedTable.name][fieldName]?columnWidths[selectedTable.databaseName][selectedTable.name][fieldName]:100
-              : 100
-            : 100
-          : 100
-        }
+        width={getColumnWidth(columnWidths, selectedTable, fieldName)}
       />
     );
   });
@@ -136,29 +132,29 @@ function mapDispatchToProps(dispatch) {
     setColumnWidth: (newColumnWidth, columnKey, selectedTable) => {
       console.log(newColumnWidth, columnKey, selectedTable)
 
-      var width = {};
+      let width = {};
       width[columnKey] = newColumnWidth;
       console.log(width);
 
       dispatch({
-        type:"SET_TABLE_COLUMN_WIDTH",
-        databaseName:selectedTable.databaseName,
-        tableName:selectedTable.name,
+        type: "SET_TABLE_COLUMN_WIDTH",
+        databaseName: selectedTable.databaseName,
+        tableName: selectedTable.name,
         width
-      })
+      });
 
       // const onColumnResizeEndCallback = (newColumnWidth, columnKey) => {
 
 
-        // Update local state
-        // this.setState(({columnWidths}) => ({
-        //   columnWidths: _.extend({}, columnWidths, width)
-        // }));
+      // Update local state
+      // this.setState(({columnWidths}) => ({
+      //   columnWidths: _.extend({}, columnWidths, width)
+      // }));
 
-        // Also back up in the store to maintain across paging
-        // var cWs = _.extend({}, selectedTable.columnWidths, width)
-        // console.log(cWs);
-        // this.state.store.setColumnWidths(cWs);
+      // Also back up in the store to maintain across paging
+      // var cWs = _.extend({}, selectedTable.columnWidths, width)
+      // console.log(cWs);
+      // this.state.store.setColumnWidths(cWs);
       // };
     },
     onEditClick: (row) => {
