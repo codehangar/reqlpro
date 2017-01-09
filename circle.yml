@@ -24,7 +24,7 @@ test:
   post:
     - npm run test-coverage
     # Move the coverage report to the artifacts folder
-    - mv coverage/ $CIRCLE_ARTIFACTS$
+    - mv coverage/ $CIRCLE_ARTIFACTS/coverage
 
 ## Custom notifications
 notify:
