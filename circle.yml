@@ -22,7 +22,7 @@ general:
 ## Customize test commands
 test:
   override:
-    - mocha npm run test-circle:
+    - npm run test-circle:
         environment:
           MOCHA_FILE: $CIRCLE_TEST_REPORTS/junit/test-results.xml
   post:
