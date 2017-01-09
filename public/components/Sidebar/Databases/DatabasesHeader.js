@@ -1,7 +1,7 @@
 import React from 'react';
-import classNames from 'classnames';
 import {connect} from 'react-redux';
 import {Dropdown, MenuItem} from 'react-bootstrap';
+import {writeConfigFile} from '../../../actions';
 
 
 const DatabasesHeader = ({
@@ -30,7 +30,6 @@ const DatabasesHeader = ({
 
 
 function mapStateToProps(state) {
-  // console.log('DatabasesHeader state.main', state.main)
   return {
     selectedConnection: state.main.selectedConnection,
     showConnectionActionMenu: state.main.showConnectionActionMenu
@@ -60,10 +59,8 @@ const mapDispatchToProps = (dispatch) => {
           type: "DELETE_CONNECTION",
           id: selectedConnection.index
         });
-      } else {
-        return;
+        dispatch(writeConfigFile());
       }
-      
     },
     addDatabase: function() {
       dispatch({

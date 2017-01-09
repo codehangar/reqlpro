@@ -12,7 +12,7 @@ const co = require('co');
 // Communication between main and renderer
 const ipcMain = require('electron').ipcMain;
 
-var packageDetails = require('./package.json');
+const packageDetails = require('./package.json');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -20,19 +20,9 @@ let mainWindow;
 
 function createWindow() {
   co(function*() {
-    var configFile = yield ConfigService.readConfigFile();
-    configFile = JSON.parse(configFile);
-    console.log("typeof configFile", typeof configFile)
-    if (typeof configFile.favorites === 'undefined') {
-      console.log("typeof configFile.favorites", typeof configFile.favorites)
-      configFile = {
-        favorites: []
-      };
-      yield ConfigService.writeConfigFile(configFile);
-    }
-    console.log("---> configFile", configFile)
-    console.log("---> configFile.favorites", configFile.favorites)
-    global.userConfig = JSON.stringify(configFile);
+    const userConfig = yield ConfigService.readConfigFile();
+    console.log("---> userConfig", userConfig)
+    global.userConfig = JSON.stringify(userConfig);
 
     global.appVersion = packageDetails.version;
     // Create the browser window.
@@ -46,8 +36,8 @@ function createWindow() {
     // Setup file save events
     ipcMain.on('writeConfigFile', function(event, args) {
       co(function*() {
-        configFile = yield ConfigService.writeConfigFile(args);
-        global.userConfig = configFile;
+        const userConfig = yield ConfigService.writeConfigFile(args);
+        global.userConfig = JSON.stringify(userConfig);
       }).catch(function(err) {
         console.error(err);
       });

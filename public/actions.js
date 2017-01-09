@@ -1,5 +1,6 @@
 // import RethinkDbService from '../main/services/rethinkdb.service';
 const RethinkDbService = require('../main/services/rethinkdb.service');
+const configService = remote.require('./main/services/config.service');
 import ReQLEval from '../main/services/reql-eval.service';
 import {convertStringsToDates} from './services/date-type.service'
 
@@ -318,7 +319,6 @@ function handleResult(dispatch, result) {
   }
 }
 
-// Get table size
 export function getTableSize(conn, dbName, tableName) {
   return dispatch => {
     return new Promise((resolve, reject) => {
@@ -370,5 +370,16 @@ export function deleteRow(row) {
         rowDeleteError
       });
     });
+  }
+}
+
+export function writeConfigFile() {
+  return (dispatch, getState) => {
+      const mainState = getState().main;
+
+      return configService.writeConfigFile({
+        email: mainState.email,
+        connections: mainState.connections
+      });
   }
 }

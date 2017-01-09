@@ -6,7 +6,7 @@ import md5 from 'md5';
 // getDbConnection,
 // } from '../public/actions';
 
-let RethinkDbService;
+let RethinkDbService, configService;
 let dispatch;
 const FALSE_SUCCESS_ERROR = new Error('This promise should have failed');
 
@@ -32,6 +32,10 @@ describe('Action Creators', () => {
     // replace the require() module `ReQLEval` with a stub object
     const ReQLEval = sinon.stub();
     mockery.registerMock('../main/services/reql-eval.service', ReQLEval);
+
+    // replace the require() module `configService` with a stub object
+    configService = sinon.stub();
+    mockery.registerMock('./main/services/config.service', configService);
 
   });
 
@@ -97,15 +101,14 @@ describe('Action Creators', () => {
           .then(function() {
             done(FALSE_SUCCESS_ERROR);
           })
-          .catch(function(er) {
-            console.log('er', er);
+          .catch(function(err) {
             expect(RethinkDbService.getConnection.callCount).to.equal(1);
             expect(RethinkDbService.getConnection.calledWith('192.168.99.100', '32769', '')).to.equal(true);
             expect(dispatch.callCount).to.equal(1);
             expect(dispatch.calledWith({
               type: 'SET_DB_CONNECTION_ERROR',
               connectionError: {
-                error:'im a connection error',
+                error: 'im a connection error',
                 connection
               }
             })).to.equal(true);
@@ -534,6 +537,80 @@ describe('Action Creators', () => {
             expect(dispatch.calledWith({
               type: 'DELETE_DATABASE',
               dbName: database.name
+            })).to.equal(true);
+            done();
+          })
+          .catch(done);
+      });
+
+    });
+  });
+
+  describe('writeConfigFile', () => {
+
+    const state = {
+      email: 'cassie@codehangar.io',
+      connections: [{
+        authKey: "",
+        database: "",
+        host: "192.168.99.100",
+        identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+        index: 0,
+        name: "rethink-tut",
+        port: "32769"
+      }],
+      dbConnection: {stuff: 'stuff'},
+      selectedConnection: {
+        name: 'localhost',
+        host: 'localhost',
+        port: 1234
+      },
+      selectedTable: {
+        databaseName: 'databaseName',
+        name: 'tableName',
+        type: 'table',
+        data: [],
+        loading: true,
+        codeBody: "{\n  \n}",
+        codeAction: 'add',
+        codeBodyError: null,
+        query: {
+          page: 1,
+          limit: 5,
+          sort: 'id',
+          direction: 1 // ASC = 1, DESC = 0
+        }
+      }
+    };
+
+    const getState = () => {
+      return {main: state}
+    };
+
+    describe('success', () => {
+      beforeEach(function() {
+        configService.writeConfigFile = sinon.stub().returns(new Promise(function(resolve, reject) {
+          resolve('ok was successfully created.');
+        }));
+      });
+
+      it('should write the user config file', (done) => {
+        const {writeConfigFile} = require('../public/actions');
+        const promise = writeConfigFile()(dispatch, getState);
+        promise
+          .then(function(resu) {
+            expect(configService.writeConfigFile.callCount).to.equal(1);
+            expect(configService.writeConfigFile.calledWithExactly({
+              email: 'cassie@codehangar.io',
+              connections: [{
+                authKey: "",
+                database: "",
+                host: "192.168.99.100",
+                identicon: jdenticon.toSvg(md5("rethink-tut"), 40),
+                index: 0,
+                name: "rethink-tut",
+                port: "32769"
+              }]
             })).to.equal(true);
             done();
           })

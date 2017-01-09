@@ -3,7 +3,7 @@ import classNames from'classnames';
 import Segment from'../../services/segment.service.js';
 import {Field, actions} from 'react-redux-form';
 import {connect} from 'react-redux';
-import {getDbConnection} from '../../actions';
+import {getDbConnection, writeConfigFile} from '../../actions';
 
 const ConnectionForm = ({
   showAddConnectionForm,
@@ -185,6 +185,7 @@ const mapDispatchToProps = (dispatch) => {
         connection
       });
       dispatch(getDbConnection(connection));
+      dispatch(writeConfigFile());
     },
     onUpdate: (connection) => {
       // console.log("    --------> onUpdate connection", connection)
@@ -192,6 +193,7 @@ const mapDispatchToProps = (dispatch) => {
         type: "UPDATE_CONNECTION",
         connection
       });
+      dispatch(writeConfigFile());
     },
     onDelete: (connection) => {
       // console.log("    --------> onDelete connection", connection)
@@ -200,6 +202,7 @@ const mapDispatchToProps = (dispatch) => {
           type: "DELETE_CONNECTION",
           id: connection.index
         });
+        dispatch(writeConfigFile());
       }
     }
   }

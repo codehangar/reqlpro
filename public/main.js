@@ -8,77 +8,33 @@ require.context('./', true, /index\.html$/);
 require.context('./', true, /about\.html$/);
 // IMAGES
 require.context('./images', true, /^\.\//);
+
 // Module needed to access global values from main process to any renderer process
-var remote = window.nodeRequire('remote');
-// var remote = require('remote');
-// Define the store class
-// var Store = require('./scripts/global.store');
-// Connection model for connection favorites
-// var Connection = require('./models/Connection');
-// Instantiate store Class with any params needed
-// const store = new Store({
-//   userConfig: JSON.parse(remote.getGlobal('userConfig')), // Setup userConfig from config file
-//   connection: Connection.create() // Setup default connection for ConnectionForm
-// });
+const remote = window.nodeRequire('remote');
+
+// Segment
+import Segment from './services/segment.service';
 
 // React Specific libs/components
-var React = require('react');
-var ReactDOM = require('react-dom');
-var App = require('./components/App/App');
-// Segment
-
-var Segment = require('./services/segment.service');
-
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './components/App/App';
 import {Provider} from 'react-redux';
 import reduxStore from './store';
 import {getDbConnection} from './actions';
 
-
-// reduxStore.dispatch({
-//   type: 'SET_EMAIL',
-//   // state: {},
-//   email: 'cassie@codehangar.io'
-// });
-// Create Provider Class to provide global store to anyone who wants it
-// class Provider extends React.Component {
-//   getChildContext() {
-//     return {
-//       store: this.props.store
-//     };
-//   }
-
-//   render() {
-//     return this.props.children;
-//   }
-// }
-// Provider.childContextTypes = {
-//   store: React.PropTypes.object
-// }
-
 function init() {
-  // If anything in memory for favorites load the first one when app starts
-  // if (store.userConfig.favorites.length) {
-  //   store.updateSelectedFavorite(store.userConfig.favorites[0]);
-  // }
-  // const initialState = JSON.parse(remote.getGlobal('userConfig'))
   const initialState = JSON.parse(remote.getGlobal('userConfig'));
-
-  // console.log('initialState', initialState)
 
   if (initialState) {
 
-    // Looks for favorites field from versions 0.0.3 and prior
-    if (initialState.favorites) {
-      initialState.connections = initialState.favorites;
-    }
-
     let state = {
       email: initialState.email || null,
-        connections: initialState.connections || []
+      connections: initialState.connections || []
     };
 
     //if connections, set selectedConnection and getDbConnection
-    if(initialState.connections){
+    if (initialState.connections && initialState.connections[0]) {
       state.selectedConnection = initialState.connections[0];
       reduxStore.dispatch(getDbConnection(state.selectedConnection));
     }
@@ -88,15 +44,12 @@ function init() {
       state
     });
 
-
   }
-
 
   Segment.track({
     event: 'app.open',
     properties: {}
   });
-
 
   // Render App Component
   ReactDOM.render(
@@ -105,6 +58,6 @@ function init() {
     </Provider>,
     document.getElementById('app')
   );
-};
+}
 
 init();

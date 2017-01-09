@@ -2,6 +2,7 @@ const React = require('react');
 const classNames = require('classnames');
 const Segment = require('../../services/segment.service.js');
 import {connect} from 'react-redux';
+import {writeConfigFile} from '../../actions';
 
 const ConnectionForm = ({
   email,
@@ -67,7 +68,8 @@ function mapDispatchToProps(dispatch) {
       dispatch({
         type: "SET_EMAIL",
         email
-      })
+      });
+      dispatch(writeConfigFile());
     }
   }
 }

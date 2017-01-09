@@ -11,5 +11,7 @@ beforeEach(function() {
   global.sinon = require('sinon');
   global.mockery = require('mockery');
 
-  // global.window.nodeRequire = require;
+  global.remote = {
+    require: require
+  }
 });

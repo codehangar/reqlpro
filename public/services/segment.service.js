@@ -1,8 +1,8 @@
 // var Analytics = require("analytics-node");
-var _ = require('lodash');
-var AnonId = require('./anon-id.service');
+const _ = require('lodash');
+const AnonId = require('./anon-id.service');
 
-var analytics = new Analytics('lU0Oq54ABsjViXkKOcZe8YfeB18UbaNU', {
+const analytics = new Analytics('lU0Oq54ABsjViXkKOcZe8YfeB18UbaNU', {
   flushAt: 1
 });
 
@@ -36,7 +36,7 @@ function Segment() {
 
   this.alias = function(userId) {
     AnonId.get(function(anonId) {
-      var payload = {
+      const payload = {
         previousId: anonId,
         userId: userId
       };
@@ -48,4 +48,4 @@ function Segment() {
   return this;
 
 }
-module.exports = new Segment();
+export default new Segment();
