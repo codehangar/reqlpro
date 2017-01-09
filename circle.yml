@@ -26,13 +26,6 @@ test:
     # Move the coverage report to the artifacts folder
     - mv coverage/ $CIRCLE_ARTIFACTS$
 
-## Customize deployment commands
-deployment:
-  dev:
-    branch: dev
-    commands:
-#      - ./deploy-dev.sh
-
 ## Custom notifications
 notify:
   webhooks:
