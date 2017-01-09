@@ -1,26 +1,6 @@
+import * as explorerTableViewUtils from './explorer-table-view-utils';
+
 describe('Explorer Table View Utils', () => {
-  let explorerTableViewUtils;
-  let Segment, actions;
-
-  beforeEach(function() {
-
-    mockery.enable({
-      warnOnReplace: false,
-      warnOnUnregistered: false,
-      useCleanCache: true
-    });
-
-    // Mock the rethinkdb service
-    Segment = sinon.stub();
-    Segment.track = sinon.stub();
-    mockery.registerMock('../../../../../services/segment.service', Segment);
-
-    actions = sinon.stub();
-    mockery.registerMock('../../../../../actions', actions);
-
-    explorerTableViewUtils = require('./explorer-table-view-utils');
-    console.log('explorerTableViewUtils', explorerTableViewUtils);
-  });
 
   describe('getColumnNames', () => {
     it('should return a sorted array of column names', () => {
