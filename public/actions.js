@@ -279,7 +279,12 @@ export function saveRow(conn, selectedTable, row) {
           const matched = selectedTable.data.filter((item) => item.id === row.id).length === 1;
 
           if (matched) {
-            const result = await RethinkDbService.update(conn, selectedTable.databaseName, selectedTable.name, row);
+            /*
+             * TODO: Figure out if this is relevant - but it was removed to solve HelpScout #49
+             * i.e. document fields can not be removed via the update operation
+             * const result = await RethinkDbService.update(conn, selectedTable.databaseName, selectedTable.name, row);
+             */
+            const result = await RethinkDbService.replace(conn, selectedTable.databaseName, selectedTable.name, row);
             handleResult(dispatch, result);
           } else {
             // The difference here is that it will create a new record if an id is not found

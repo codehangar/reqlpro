@@ -24,7 +24,6 @@ const ExplorerTableView = ({
   console.log('selectedTable----->', selectedTable);
 
   let columnNames = getColumnNames(selectedTable.data);
-  console.log('columnNames', columnNames);
 
   const setColumnWidthCallback = (newColumnWidth, columnKey) => {
     setColumnWidth(newColumnWidth, columnKey, selectedTable)
@@ -39,7 +38,6 @@ const ExplorerTableView = ({
     //   properties: {}
     // });
   };
-  // columnNames = ['id', 'level', 'message', 'server'];
 
   const actionColumn = (
     <Column
@@ -59,7 +57,6 @@ const ExplorerTableView = ({
   );
 
   const dynamicColumns = columnNames.map((fieldName, index) => {
-    console.log('fieldName', fieldName);
     const iconClasses = classNames({
       'fa': true,
       'fa-sort-asc': selectedTable.query.direction,
