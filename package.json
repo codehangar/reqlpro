@@ -8,8 +8,8 @@
   "scripts": {
     "start": "node tools/start.js",
     "serve": "webpack-dev-server",
-    "test": "mocha --compilers js:babel-core/register --recursive",
-    "test-circle": "mocha --compilers js:babel-core/register --recursive --reporter mocha-junit-reporter",
+    "test": "mocha --compilers js:babel-core/register",
+    "test-circle": "mocha --compilers js:babel-core/register --reporter mocha-junit-reporter",
     "test-coverage": "babel-node node_modules/.bin/babel-istanbul cover node_modules/mocha/bin/_mocha -- -R spec",
     "electron": "electron main.js",
     "watch": "webpack --colors --watch",

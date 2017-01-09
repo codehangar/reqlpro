@@ -38,7 +38,7 @@ import {
   setRowDeleteError,
   setConnectionError,
   setColumnWidths
-} from '../public/core';
+} from './core';
 
 let RethinkDbService;
 

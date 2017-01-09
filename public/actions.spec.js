@@ -64,7 +64,7 @@ describe('Action Creators', () => {
       });
 
       it('returns successful connection info from RethinkDB', (done) => {
-        const {getDbConnection} = require('../public/actions');
+        const {getDbConnection} = require('./actions');
 
         const promise = getDbConnection(connection)(dispatch);
 
@@ -95,7 +95,7 @@ describe('Action Creators', () => {
       });
 
       it('handles failed connection info from RethinkDB', (done) => {
-        const {getDbConnection} = require('../public/actions');
+        const {getDbConnection} = require('./actions');
         const promise = getDbConnection(connection)(dispatch);
         promise
           .then(function() {
@@ -136,7 +136,7 @@ describe('Action Creators', () => {
       });
 
       it('get list of databases from dbConnection', (done) => {
-        const {getDbList} = require('../public/actions');
+        const {getDbList} = require('./actions');
         const promise = getDbList(state.dbConnection)(dispatch);
         promise
           .then(function() {
@@ -168,7 +168,7 @@ describe('Action Creators', () => {
       });
 
       it('handles failed connection info from RethinkDB', (done) => {
-        const {getDbList} = require('../public/actions');
+        const {getDbList} = require('./actions');
         const promise = getDbList(state.dbConnection)(dispatch);
         console.log('promise', promise);
         promise
@@ -208,7 +208,7 @@ describe('Action Creators', () => {
       });
 
       it('should get a list of tables from a database', (done) => {
-        const {getDbTables} = require('../public/actions');
+        const {getDbTables} = require('./actions');
         const promise = getDbTables(dbConnection, database)(dispatch);
         promise
           .then(function() {
@@ -236,7 +236,7 @@ describe('Action Creators', () => {
       });
 
       it('handles failed connection info from RethinkDB', (done) => {
-        const {getDbTables} = require('../public/actions');
+        const {getDbTables} = require('./actions');
         const promise = getDbTables(dbConnection, database)(dispatch);
         promise
           .then(function() {
@@ -273,7 +273,7 @@ describe('Action Creators', () => {
       });
 
       it('should get a list of tables from a database', (done) => {
-        const {createDatabase} = require('../public/actions');
+        const {createDatabase} = require('./actions');
         const promise = createDatabase(dbConnection, database)(dispatch);
         promise
           .then(function() {
@@ -303,7 +303,7 @@ describe('Action Creators', () => {
       });
 
       it('handles failed connection info from RethinkDB', (done) => {
-        const {createDatabase} = require('../public/actions');
+        const {createDatabase} = require('./actions');
         const promise = createDatabase(dbConnection, database)(dispatch);
         promise
           .then(function() {
@@ -341,7 +341,7 @@ describe('Action Creators', () => {
       });
 
       it('should get a list of tables from a database', (done) => {
-        const {createTable} = require('../public/actions');
+        const {createTable} = require('./actions');
         const promise = createTable(dbConnection, database, table)(dispatch);
         promise
           .then(function() {
@@ -369,7 +369,7 @@ describe('Action Creators', () => {
       });
 
       it('handles failed creation info from RethinkDB', (done) => {
-        const {createTable} = require('../public/actions');
+        const {createTable} = require('./actions');
         const promise = createTable(dbConnection, database, table)(dispatch);
         promise
           .then(function() {
@@ -414,7 +414,7 @@ describe('Action Creators', () => {
       });
 
       it('should query the table for data with default params', (done) => {
-        const {queryTable} = require('../public/actions');
+        const {queryTable} = require('./actions');
         const promise = queryTable(dbConnection, databaseName, tableName)(dispatch);
         promise
           .then(function() {
@@ -433,7 +433,7 @@ describe('Action Creators', () => {
       });
 
       it('should query the table for data with given params', (done) => {
-        const {queryTable} = require('../public/actions');
+        const {queryTable} = require('./actions');
         const params = Object.assign({}, queryParams, {index: 'name', start: 7, end: 8});
         const promise = queryTable(dbConnection, databaseName, tableName, params)(dispatch);
         promise
@@ -466,7 +466,7 @@ describe('Action Creators', () => {
       });
 
       it('should handle failed query info from RethinkDB', (done) => {
-        const {queryTable} = require('../public/actions');
+        const {queryTable} = require('./actions');
         const promise = queryTable(dbConnection, databaseName, tableName)(dispatch);
         promise
           .then(function() {
@@ -488,7 +488,7 @@ describe('Action Creators', () => {
       });
 
       it('should handle failed query info from RethinkDB', (done) => {
-        const {queryTable} = require('../public/actions');
+        const {queryTable} = require('./actions');
         const params = Object.assign({}, queryParams, {index: 'name', start: 7, end: 8});
         const promise = queryTable(dbConnection, databaseName, tableName, params)(dispatch);
         promise
@@ -527,7 +527,7 @@ describe('Action Creators', () => {
       });
 
       it('should delete a database', (done) => {
-        const {deleteDatabase} = require('../public/actions');
+        const {deleteDatabase} = require('./actions');
         const promise = deleteDatabase(dbConnection, database.name)(dispatch);
         promise
           .then(function() {
@@ -595,7 +595,7 @@ describe('Action Creators', () => {
       });
 
       it('should write the user config file', (done) => {
-        const {writeConfigFile} = require('../public/actions');
+        const {writeConfigFile} = require('./actions');
         const promise = writeConfigFile()(dispatch, getState);
         promise
           .then(function(resu) {
@@ -633,7 +633,7 @@ describe('deleteTable', () => {
     });
 
     it('should delete a table', (done) => {
-      const {deleteTable} = require('../public/actions');
+      const {deleteTable} = require('./actions');
       const promise = deleteTable(dbConnection, database.name, 'table1')(dispatch);
       promise
         .then(function() {
@@ -661,7 +661,7 @@ describe('deleteTable', () => {
     });
 
     it('handles failed delete info from RethinkDB', (done) => {
-      const {deleteTable} = require('../public/actions');
+      const {deleteTable} = require('./actions');
       const promise = deleteTable(dbConnection, database.name, 'table1')(dispatch);
       promise
         .then(function() {

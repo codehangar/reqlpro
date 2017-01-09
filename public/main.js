@@ -7,7 +7,7 @@ require.context('./', true, /index\.html$/);
 // About template
 require.context('./', true, /about\.html$/);
 // IMAGES
-require.context('./images', true, /^\.\//);
+require.context('./images', true, /^\.png\//);
 
 // Module needed to access global values from main process to any renderer process
 const remote = window.nodeRequire('remote');

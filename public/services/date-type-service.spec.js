@@ -1,4 +1,4 @@
-import {convertStringsToDates} from '../../../../public/services/date-type.service';
+import {convertStringsToDates} from './date-type.service';
 
 describe('DateTypeService Tests', function() {
 

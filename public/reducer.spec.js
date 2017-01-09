@@ -2,7 +2,7 @@ import {List, Map, fromJS} from 'immutable';
 import jdenticon from 'jdenticon';
 import md5 from 'md5';
 
-import reducer from '../public/reducer';
+import reducer from './reducer';
 
 describe('reducer', () => {
 
