@@ -61,7 +61,7 @@ const mapDispatchToProps = (dispatch) => {
     toggleTableVisibility: (database) => {
       dispatch({
         type: 'TOGGLE_TABLE_VISIBILITY',
-        database,
+        dbName: database.name,
         showTables: !database.showTables
       });
     },

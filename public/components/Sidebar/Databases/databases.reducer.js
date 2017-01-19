@@ -4,10 +4,10 @@ function setDbList(databases) {
   return databases;
 }
 
-function toggleTableVisibility(state, database, showTables) {
+function toggleTableVisibility(state, dbName, showTables) {
   const databasesCopy = state.slice(0);
-  let selectedDatabase = databasesCopy.filter(db => db.name === database.name)[0];
-  const index = databasesCopy.map(db => db.name).indexOf(database.name);
+  let selectedDatabase = databasesCopy.filter(db => db.name === dbName)[0];
+  const index = databasesCopy.map(db => db.name).indexOf(dbName);
 
   // Assign the new showTables Value
   selectedDatabase = Object.assign({}, selectedDatabase, { showTables });
@@ -36,7 +36,7 @@ export function databases(state = initialState, action) {
     case types.SET_DB_LIST:
       return setDbList(action.databases);
     case types.TOGGLE_TABLE_VISIBILITY:
-      return toggleTableVisibility(state, action.database, action.showTables);
+      return toggleTableVisibility(state, action.dbName, action.showTables);
     case types.ADD_TO_DB_LIST:
       return addDatabase(state, action.database);
     case types.DELETE_DATABASE:
