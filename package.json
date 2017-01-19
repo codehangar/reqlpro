@@ -2,7 +2,7 @@
   "name": "reqlpro",
   "productName": "ReQLPro",
   "version": "0.0.3",
-  "engine": "node 6.9.1",
+  "engine": "node 6.9.2",
   "description": "A simple desktop client to connect to RethinkDB servers to work with data.",
   "main": "main.js",
   "scripts": {
@@ -29,7 +29,6 @@
   "bugs": {},
   "homepage": "http://codehangar.io",
   "devDependencies": {
-    "appdmg": "^0.4.0",
     "asar": "^0.10.0",
     "babel-cli": "^6.18.0",
     "babel-core": "^6.14.0",
