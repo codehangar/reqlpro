@@ -41,7 +41,8 @@ export function showConnectionForm(state, mode, selectedConnection) {
       // console.log('EDIT', mode)
       let newState2 = Object.assign({}, state, {
         showEditConnectionForm: true,
-        selectedConnection: selectedConnection
+        selectedConnection: selectedConnection,
+        connectionForm: selectedConnection
       })
       if (state.showAddConnectionForm) {
         delete newState2.showAddConnectionForm;
@@ -57,6 +58,14 @@ export function hideConnectionForm(state) {
   delete newState.showEditConnectionForm;
   delete newState.showAddConnectionForm;
   return newState;
+}
+
+export function setConnectionFormFields(state, fields) {
+  console.log('set connection form fields: ', state, fields);
+  // let newState = Object.assign({}, state)
+  // delete newState.showEditConnectionForm;
+  // delete newState.showAddConnectionForm;
+  return state;
 }
 
 export function addConnection(state, connection) {

@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import Sidebar from '../Sidebar/Sidebar';
 import ExplorerContainer from '../Explorer/Explorer';
 import ConnectionFormContainer from '../modals/ConnectionForm';
@@ -12,10 +13,7 @@ import TableForm from '../modals/TableForm';
 import DevTools from '../DevTools';
 
 const App = React.createClass({
-  getInitialState: function() {
-    return this.context.store;
-  },
-  componentDidMount: function() {
+  componentDidMount: function () {
     // this.setupEvents();
     this.resizeTimeoutFunction = () => {
       this.resizeTimeout = setTimeout(() => {
@@ -27,29 +25,10 @@ const App = React.createClass({
       this.resizeTimeoutFunction();
     }
   },
-  componentWillUnmount: function() {
+  componentWillUnmount: function () {
     window.onresize = null;
   },
-  setupEvents: function() {
-
-    // Event for toggling connection form
-    this.state.on('showConnectionForm', () => {
-      this.forceUpdate();
-    });
-    this.state.on('hideConnectionForm', () => {
-      this.forceUpdate();
-    });
-
-    this.state.on('toggleEntityForm', () => {
-      this.forceUpdate();
-    });
-
-    // Event for updating selected favorite
-    this.state.on('updateRehinkDbClient', () => {
-      this.forceUpdate();
-    });
-  },
-  render: function() {
+  render: function () {
 
     // 
     // <EntityForm />
@@ -58,7 +37,7 @@ const App = React.createClass({
       <div className="content-wrapper">
         <EmailIntroContainer />
         <Sidebar />
-        <ConnectionFormContainer />
+        {this.props.showEditConnectionForm || this.props.showAddConnectionForm ? <ConnectionFormContainer /> : ''}
         <DatabaseForm />
         <DeleteDatabaseForm />
         <TableForm />
@@ -70,8 +49,19 @@ const App = React.createClass({
     );
   }
 });
-App.contextTypes = {
-  store: React.PropTypes.object
-};
 
-module.exports = App;
+
+function mapStateToProps(state) {
+  return {
+    showAddConnectionForm: state.main.showAddConnectionForm,
+    showEditConnectionForm: state.main.showEditConnectionForm,
+    selectedConnection: state.main.selectedConnection,
+    cForm: state.cForm
+  };
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+}
+
+module.exports = connect(mapStateToProps, mapDispatchToProps)(App);

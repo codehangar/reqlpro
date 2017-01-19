@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import {connect} from 'react-redux';
 import {Dropdown, MenuItem} from 'react-bootstrap';
+import { actions } from 'react-redux-form';
 
 
 const DatabasesHeader = ({
@@ -39,10 +40,17 @@ function mapStateToProps(state) {
 const mapDispatchToProps = (dispatch) => {
   return {
     editFavorite: function(selectedConnection) {
+      dispatch(actions.change('connectionForm', selectedConnection));
+
       dispatch({
         type: "SHOW_CONNECTION_FORM",
         mode: "EDIT",
         selectedConnection: selectedConnection
+      });
+
+      dispatch({
+        type: "SET_CONNECTION_FORM_FIELDS",
+        fields: selectedConnection
       });
 
       // this.props.store.showConnectionForm(this.props.selectedConnection);
@@ -63,7 +71,7 @@ const mapDispatchToProps = (dispatch) => {
       } else {
         return;
       }
-      
+
     },
     addDatabase: function() {
       dispatch({

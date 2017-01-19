@@ -33,28 +33,6 @@ import {Provider} from 'react-redux';
 import reduxStore from './store';
 import {getDbConnection} from './actions';
 
-
-// reduxStore.dispatch({
-//   type: 'SET_EMAIL',
-//   // state: {},
-//   email: 'cassie@codehangar.io'
-// });
-// Create Provider Class to provide global store to anyone who wants it
-// class Provider extends React.Component {
-//   getChildContext() {
-//     return {
-//       store: this.props.store
-//     };
-//   }
-
-//   render() {
-//     return this.props.children;
-//   }
-// }
-// Provider.childContextTypes = {
-//   store: React.PropTypes.object
-// }
-
 function init() {
   // If anything in memory for favorites load the first one when app starts
   // if (store.userConfig.favorites.length) {
