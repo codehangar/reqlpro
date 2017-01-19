@@ -1,8 +1,9 @@
 import React from 'react';
 import DbTables from './DbTables/DbTables';
 import AddDbTable from './DbTables/AddDbTable';
-import {connect} from 'react-redux';
-import {deleteDatabase} from '../../../../actions';
+import { connect } from 'react-redux';
+import { deleteDatabase } from '../../../../actions';
+import { getDbTables } from '../../../../actions';
 
 const Database = React.createClass({
   getInitialState: function() {
@@ -11,10 +12,12 @@ const Database = React.createClass({
     }
   },
   render: function() {
-    const {database, onDatabaseClick, onAddTable, toggleTableVisibility, deleteDatabase, editDatabase, dbConnection} = this.props;
+    const { database, getDbTables, onAddTable, toggleTableVisibility, deleteDatabase, editDatabase, dbConnection } = this.props;
 
     const onClick = () => {
-      onDatabaseClick(database);
+      if (!database.showTables) {
+        getDbTables(dbConnection, database);
+      }
       toggleTableVisibility(database);
     };
 
@@ -24,7 +27,8 @@ const Database = React.createClass({
         <div className="db noselect" onClick={onClick}>
           <i className="fa fa-database"/>&nbsp;&nbsp;<span className="database-name">{database.name}</span>
           <div className="delete-db btn-group" role="group">
-            <button onClick={(e) => deleteDatabase(e, database.name, dbConnection)} className="btn btn-default fa fa-trash"/>
+            <button onClick={(e) => deleteDatabase(e, database.name, dbConnection)}
+                    className="btn btn-default fa fa-trash"/>
             <button onClick={(e) => editDatabase(e, database.name)} className="btn btn-default fa fa-pencil"/>
           </div>
         </div>
@@ -63,21 +67,24 @@ function mapDispatchToProps(dispatch) {
         showTables: !database.showTables
       });
     },
+    getDbTables: (dbConnection, database) => {
+      dispatch(getDbTables(dbConnection, database));
+    },
     deleteDatabase: function(e, dbName, connection) {
       e.stopPropagation();
       // let confirmDelete = () =>{
       //   return confirm(`Are you sure you want to permanently delete the database called "${dbName}"?`)
       // }
       // if(confirmDelete()){
-        // console.log('delete confirmed');
-        // dispatch(deleteDatabase(dbName, connection));
-        dispatch({
-          type:"TOGGLE_DELETE_DATABASE_FORM",
-          dbToDelete: dbName,
-          showDeleteDatabaseForm:true
-        })
+      // console.log('delete confirmed');
+      // dispatch(deleteDatabase(dbName, connection));
+      dispatch({
+        type: "TOGGLE_DELETE_DATABASE_FORM",
+        dbToDelete: dbName,
+        showDeleteDatabaseForm: true
+      })
       // }
-      
+
       // this.state.store.toggleEntityForm('Database', 'Delete', dbName);
     },
     editDatabase: function(dbName, e) {
@@ -86,6 +93,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-const DatabaseContainer = connect(mapStateToProps, mapDispatchToProps)(Database);
-
-export default DatabaseContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(Database);

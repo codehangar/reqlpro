@@ -4,33 +4,6 @@ const configService = remote.require('./main/services/config.service');
 import ReQLEval from '../main/services/reql-eval.service';
 import { convertStringsToDates } from './services/date-type.service'
 
-export function getDbList(dbConnection) {
-  return dispatch => {
-    return new Promise((resolve, reject) => {
-      RethinkDbService.getDbList(dbConnection).then(dbList => {
-        var databases = [];
-        for (var i = 0; i < dbList.length; i++) {
-          databases.push({
-            name: dbList[i],
-            tables: []
-          });
-        }
-        dispatch({
-          type: 'SET_DB_LIST',
-          databases: databases
-        });
-        resolve(dbList);
-      }).catch(error => {
-        // dispatch({
-        //   type: 'SET_DB_LIST',
-        //   databases: error
-        // });
-        reject(error);
-      });
-    });
-  }
-}
-
 export function getDbTables(dbConnection, database) {
   return dispatch => {
     return new Promise((resolve, reject) => {
@@ -52,28 +25,6 @@ export function getDbTables(dbConnection, database) {
   }
 }
 
-export function createDatabase(dbConnection, database) {
-  return dispatch => {
-    return new Promise((resolve, reject) => {
-      RethinkDbService.createDb(dbConnection, database.name).then(function(results) {
-        dispatch({
-          type: 'ADD_TO_DB_LIST',
-          database: {
-            name: database.name,
-            tables: []
-          }
-        });
-        resolve(results);
-      }).catch(error => {
-        // dispatch({
-        //   type: 'ADD_TO_DB_LIST',
-        //   database: error,
-        // });
-        reject(error);
-      });
-    });
-  }
-}
 
 export function createTable(dbConnection, database, table) {
   return dispatch => {

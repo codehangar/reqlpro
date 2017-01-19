@@ -1,47 +1,53 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Field } from 'react-redux-form';
 import { Modal, Button } from 'react-bootstrap';
-import {createDatabase} from '../../actions';
+import { createDatabase } from '../Sidebar/Databases/databases.actions';
 
 const DatabaseForm = ({
   showDatabaseForm,
-  selectedDatabase,
   dbConnection,
   onClose,
   onSave
 }) => {
+  let nameInput;
   return (
     <Modal show={showDatabaseForm} onHide={onClose}>
       <Modal.Header closeButton>
         <Modal.Title>Add Database</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <form>
+        <form onSubmit={(e) => {
+          e.preventDefault();
+          onSave(dbConnection, nameInput.value)
+        }}>
           <div>
-            <Field model="main.selectedDatabase.name">
-              <label>Database Name</label>
-              <input className="form-control" id="name" type="text" />
-            </Field>
+            <label>Database Name</label>
+            <input className="form-control" id="name" type="text" ref={(input) => {
+              nameInput = input;
+              if (input) {
+                nameInput.focus();
+              }
+            }}/>
           </div>
         </form>
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={onClose} bsStyle="default" className="pull-left">Cancel</Button>
-        <Button onClick={() => onSave(dbConnection, selectedDatabase)} bsStyle="primary" className="pull-right">Save</Button>
+        <Button onClick={() => {
+          onSave(dbConnection, nameInput.value)
+        }} bsStyle="primary" className="pull-right">Save</Button>
       </Modal.Footer>
     </Modal>
   );
 };
 
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
   return {
     showDatabaseForm: state.main.showDatabaseForm,
-    selectedDatabase: state.main.selectedDatabase,
     dbConnection: state.main.dbConnection,
   };
-}
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -57,6 +63,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 };
 
-const DatabaseFormContainer = connect(mapStateToProps, mapDispatchToProps)(DatabaseForm);
-
-export default DatabaseFormContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(DatabaseForm);

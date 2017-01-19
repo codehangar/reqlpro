@@ -20,15 +20,6 @@ export function setDbConnection(state, dbConnection) {
   });
 };
 
-export function setDbList(state, databases) {
-  const selectedConnectionCopy = Object.assign({}, state.selectedConnection, {
-    databases
-  })
-  return Object.assign({}, state, {
-    selectedConnection: selectedConnectionCopy
-  });
-};
-
 export function setDbTables(state, databaseName, tables) {
 
   let newDatabase, index;
@@ -104,31 +95,6 @@ export function toggleDeleteTableForm(state, showDeleteTableForm, database, tabl
   // return state;
 }
 
-export function addDatabase(state, database) {
-
-  // let newState = Object.assign({}, state);
-  let databasesCopy;
-
-  if (state.selectedConnection.databases)
-    databasesCopy = state.selectedConnection.databases.slice(0);
-
-  if (!databasesCopy) {
-    databasesCopy = [database];
-  } else {
-    databasesCopy.push(database);
-  }
-
-  const newSelectedConnection = Object.assign({}, state.selectedConnection, {
-    databases: databasesCopy
-  });
-
-  const newState = Object.assign({}, state, {
-    selectedConnection: newSelectedConnection
-  });
-
-  return newState;
-}
-
 export function addTable(state, database, table) {
 
   let databasesCopy = state.selectedConnection.databases.slice(0);
@@ -150,24 +116,6 @@ export function addTable(state, database, table) {
   const newState = Object.assign({}, state, {
     selectedConnection: newSelectedConnection
   });
-
-  return newState;
-}
-
-export function toggleTableVisibility(state, database, showTables) {
-
-  const databasesCopy = state.selectedConnection.databases.slice(0);
-  let selectedDatabase = databasesCopy.filter(db => db.name === database.name)[0];
-  const index = databasesCopy.map(db => db.name).indexOf(database.name);
-
-  // Assign the new showTables Value
-  selectedDatabase = Object.assign({}, selectedDatabase, { showTables });
-
-  // Replace the selected database
-  const databases = [...databasesCopy.slice(0, index), ...[selectedDatabase], ...databasesCopy.slice(index + 1)];
-  const selectedConnection = Object.assign({}, state.selectedConnection, { databases });
-
-  const newState = Object.assign({}, state, { selectedConnection });
 
   return newState;
 }
@@ -269,28 +217,6 @@ export function toggleExplorerBody(state, type) {
   }
   const newSelectedTable = Object.assign({}, state.selectedTable, newFields);
   return Object.assign({}, state, { selectedTable: newSelectedTable });
-}
-
-export function deleteDatabase(state, dbName) {
-  // let newState = Object.assign({}, state);
-  let databasesCopy;
-
-  if (state.selectedConnection.databases)
-    databasesCopy = state.selectedConnection.databases.slice(0);
-
-  databasesCopy = databasesCopy.filter(db => {
-    if (db.name != dbName) return db;
-  });
-
-  const newSelectedConnection = Object.assign({}, state.selectedConnection, {
-    databases: databasesCopy
-  });
-
-  const newState = Object.assign({}, state, {
-    selectedConnection: newSelectedConnection
-  });
-
-  return newState;
 }
 
 export function deleteTable(state, databaseName, tableName) {
