@@ -1,6 +1,6 @@
-import myModeledReducer from './reducer';
+import rootReducer from './reducer';
 import {modelReducer, formReducer, modeled} from 'react-redux-form';
-import {combineReducers, createStore, applyMiddleware, compose} from 'redux';
+import {createStore, applyMiddleware, compose} from 'redux';
 import thunk from 'redux-thunk';
 import DevTools from './components/DevTools';
 // import freeze from 'redux-freeze';
@@ -13,11 +13,4 @@ const enhancer = compose(
   DevTools.instrument()
 );
 
-const reducers = combineReducers({
-  // connection: modelReducer('connection'),
-  connectionForm: formReducer('connectionForm'),
-  databaseForm: formReducer('databaseForm'),
-  main: myModeledReducer
-});
-
-export default createStore(reducers, {}, enhancer);
+export default createStore(rootReducer, {}, enhancer);

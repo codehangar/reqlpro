@@ -86,7 +86,7 @@
     "react-dom": "^0.14.8",
     "react-json-tree": "^0.6.3",
     "react-redux": "^4.4.5",
-    "react-redux-form": "^0.14.6",
+    "react-redux-form": "^1.5.3",
     "redux": "^3.5.2",
     "redux-thunk": "^2.1.0",
     "rethinkdb": "^2.2.2"

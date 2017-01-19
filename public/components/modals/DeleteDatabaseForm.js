@@ -24,10 +24,10 @@ const DeleteDatabaseForm = ({
       <Modal.Body>
         <form>
           <div>
-            <Field model="main.selectedDatabase.name">
+            {/*<Field model="main.selectedDatabase.name">*/}
               <label>Type in the name of the database to permanently delete it. This action cannot be undone.</label>
-              <input className="form-control" id="name" type="text" />
-            </Field>
+              {/*<input className="form-control" id="name" type="text" />*/}
+            {/*</Field>*/}
           </div>
         </form>
       </Modal.Body>
