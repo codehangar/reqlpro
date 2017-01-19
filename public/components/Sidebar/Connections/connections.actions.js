@@ -5,7 +5,7 @@ export function deleteConnection(connection) {
   return dispatch => {
     dispatch({
       type: types.DELETE_CONNECTION,
-      id: connection
+      connection
     });
     dispatch(writeConfigFile());
   }

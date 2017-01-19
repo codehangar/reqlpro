@@ -2,12 +2,8 @@ import * as types from '../../../action-types';
 import jdenticon from 'jdenticon';
 import md5 from 'md5';
 
-function setConnections(state, connections) {
-  return Object.assign({}, state, {
-    main: {
-      connections
-    }
-  });
+function setConnections(connections) {
+  return connections;
 }
 
 function addConnection(state, connection) {
@@ -24,24 +20,18 @@ function updateConnection(state, connection) {
 }
 
 function deleteConnection(state, connection) {
-  return [...state.slice(0, connection.index), ...state.slice(connection.index + 1)];
+  // const connections = [...state.slice(0, connection.index), ...state.slice(connection.index + 1)];
+  const connections = state.filter(conn => conn.index != connection.index);
+  return connections.map((conn, index) => Object.assign({}, conn, { index }));
 }
 
-export function setConnection(state, selectedConnection) {
-  return Object.assign({}, state, {
-    selectedConnection
-  });
-};
-
-
 const initialState = [];
-
 export function connections(state = initialState, action) {
   switch (action.type) {
     case 'SET_STATE':
       return action.state.connections;
     case types.SET_CONNECTIONS:
-      return setConnections(state, action.connections);
+      return setConnections(action.connections);
     case types.ADD_CONNECTION:
       return addConnection(state, action.connection);
     case types.UPDATE_CONNECTION:

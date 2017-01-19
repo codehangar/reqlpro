@@ -28,20 +28,23 @@ export function selectConnection(connection) {
 
 export function getDbConnection(connection) {
   return dispatch => {
-    RethinkDbService.getConnection(connection.host, connection.port, connection.authKey).then((conn) => {
-      dispatch({
-        type: 'SET_DB_CONNECTION',
-        dbConnection: conn
-      });
-      dispatch(getDbList(conn));
-    }).catch(error => {
-      console.log('getDbConnection error', connection);
-      dispatch({
-        type: 'SET_DB_CONNECTION_ERROR',
-        connectionError: {
-          connection,
-          error
-        }
+    return new Promise((resolve, reject) => {
+      RethinkDbService.getConnection(connection.host, connection.port, connection.authKey).then((conn) => {
+        dispatch({
+          type: 'SET_DB_CONNECTION',
+          dbConnection: conn
+        });
+        dispatch(getDbList(conn));
+        resolve(conn);
+      }).catch(error => {
+        dispatch({
+          type: 'SET_DB_CONNECTION_ERROR',
+          connectionError: {
+            connection,
+            error
+          }
+        });
+        reject(error);
       });
     });
   }
