@@ -8,6 +8,12 @@ let dispatch;
 const FALSE_SUCCESS_ERROR = new Error('This promise should have failed');
 
 describe('selectedConnection', () => {
+
+  afterEach(function() {
+    mockery.deregisterAll();
+    mockery.resetCache();
+  });
+
   describe('Actions', () => {
 
     beforeEach(function() {
@@ -24,6 +30,9 @@ describe('selectedConnection', () => {
       RethinkDbService = sinon.stub();
       mockery.registerMock('../../../../main/services/rethinkdb.service', RethinkDbService);
       mockery.registerMock('../main/services/rethinkdb.service', RethinkDbService);
+
+      mockery.registerMock('../main/services/reql-eval.service', sinon.stub());
+      mockery.registerMock('./main/services/config.service', sinon.stub());
     });
 
     describe('getDbConnection', () => {

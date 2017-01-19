@@ -7,6 +7,12 @@ import * as types from '../../../action-types';
 let dispatch;
 
 describe('connections', () => {
+
+  afterEach(function() {
+    mockery.deregisterAll();
+    mockery.resetCache();
+  });
+
   describe('Actions', () => {
 
     beforeEach(function() {
