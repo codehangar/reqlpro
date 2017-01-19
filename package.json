@@ -11,7 +11,7 @@
     "test": "mocha --compilers js:babel-core/register",
     "test-circle": "mocha --compilers js:babel-core/register --reporter mocha-junit-reporter",
     "test-coverage": "babel-node node_modules/.bin/babel-istanbul cover node_modules/mocha/bin/_mocha -- -R spec",
-    "electron": "electron main.js",
+    "electron": "electron main.js --dev",
     "watch": "webpack --colors --watch",
     "build-all": "./tools/build-all.sh"
   },
