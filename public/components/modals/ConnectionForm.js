@@ -25,21 +25,23 @@ class ConnectionForm extends Component {
   }
 
   componentDidMount() {
-    console.log('componentDidMount');
+    // For some reason this will put the cursor at the end of the text
+    this.nameInput.value = this.nameInput.value;
+    // Focus the name input
     store.dispatch(actions.focus('connectionForm.name'));
   }
 
   render() {
-     const {
-       showAddConnectionForm,
-       showEditConnectionForm,
-       selectedConnection,
-       onCancel,
-       onDelete,
-       onSave,
-       onUpdate,
-       cForm
-     } = this.props;
+    const {
+      showAddConnectionForm,
+      showEditConnectionForm,
+      selectedConnection,
+      onCancel,
+      onDelete,
+      onSave,
+      onUpdate,
+      cForm
+    } = this.props;
 
     const containerStyles = {
       display: showAddConnectionForm || showEditConnectionForm ? 'block' : 'none'
@@ -57,11 +59,10 @@ class ConnectionForm extends Component {
           </div>
           {/*<input type="text" />*/}
           {/*<Form model="connectionForm" onSubmit={(form) => {console.log('form',cForm)}}>*/}
-            <Form model="connectionForm" onSubmit={() => showAddConnectionForm ? onSave(cForm) : onUpdate(cForm)}>
+          <Form model="connectionForm" onSubmit={() => showAddConnectionForm ? onSave(cForm) : onUpdate(cForm)}>
             <div className="panel-body">
               <div className="row">
                 <div className="col-sm-12">
-
                   <div >
                     <label>Connection Name</label>
                     <Field model=".name">
@@ -83,26 +84,6 @@ class ConnectionForm extends Component {
                              placeholder="i.e. 28015"/>
                     </Field>
                   </div>
-                  {/*<div>
-                   <label htmlFor="host">Host</label>
-                   <input
-                   ref={node => { if (!node) return; form.host = node; }}
-                   type="text" className="form-control" id="host" placeholder="i.e. localhost" />
-                   </div>
-                   <div >
-                   <label htmlFor="port">Port</label>
-                   <input
-                   ref={node => { if (!node) return; form.port = node; }}
-                   type="text" className="form-control" id="port" placeholder="i.e. 28015" />
-                   </div>
-                   <div className={inputValidationClasses.database}>
-                   <label htmlFor="database">Database</label>
-                   <input type="text" className="form-control" id="database" placeholder="Database" value={this.state.connection.database.value} onChange={this.handleTextChange.bind(this, 'database')} />
-                   </div>
-                   <div className={inputValidationClasses.authKey}>
-                   <label htmlFor="authKey">Auth Key</label>
-                   <input type="text" className="form-control" id="authKey" placeholder="Auth Key" value={this.state.connection.authKey.value} onChange={this.handleTextChange.bind(this, 'authKey')} />
-                   </div>*/}
                 </div>
               </div>
             </div>
