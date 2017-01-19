@@ -18,6 +18,10 @@ function setConnection(state, connection) {
   });
 }
 
+function setConnectionLoading(state, loading) {
+  return Object.assign({}, state, { loading });
+}
+
 
 const initialState = {};
 
@@ -29,6 +33,8 @@ export function connection(state = initialState, action) {
       return setConnection(state, action.connection);
     case types.SHOW_CONNECTION_FORM:
       return showConnectionForm(state, action.connection);
+    case types.SET_CONNECTION_LOADING:
+      return setConnectionLoading(state, action.loading);
     case types.HIDE_CONNECTION_FORM:
     case types.ADD_CONNECTION:
     case types.UPDATE_CONNECTION:

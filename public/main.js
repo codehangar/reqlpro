@@ -38,14 +38,18 @@ function init() {
     //if connections, set selectedConnection and getDbConnection
     if (userConfig.connections && userConfig.connections[0]) {
       state.connection.selected = userConfig.connections[0];
-      reduxStore.dispatch(getDbConnection(state.connection.selected));
     }
 
+    // Set Initial State
     reduxStore.dispatch({
       type: 'SET_STATE',
       state
     });
 
+    // If a connection exists, connect to it
+    if (state.connection.selected) {
+      reduxStore.dispatch(getDbConnection(state.connection.selected));
+    }
   }
 
   Segment.track({

@@ -67,13 +67,25 @@ describe('selectedConnection', () => {
             .then(function() {
               expect(RethinkDbService.getConnection.callCount).to.equal(1);
               expect(RethinkDbService.getConnection.calledWith('192.168.99.100', '32769', '')).to.equal(true);
-              expect(dispatch.callCount).to.equal(2);
+              expect(dispatch.callCount).to.equal(4);
+
+              expect(dispatch.calledWith({
+                type: 'SET_CONNECTION_LOADING',
+                loading: true
+              })).to.equal(true);
+
+              expect(dispatch.calledWith({
+                type: 'SET_CONNECTION_LOADING',
+                loading: false
+              })).to.equal(true);
+
               expect(dispatch.calledWith({
                 type: 'SET_DB_CONNECTION',
                 dbConnection: 'im a connection'
               })).to.equal(true);
-              const secondDispatchCall = dispatch.getCall(1);
-              expect(secondDispatchCall.args[0]).to.be.a('function');
+
+              const fourthDispatchCall = dispatch.getCall(3);
+              expect(fourthDispatchCall.args[0]).to.be.a('function');
               done();
             })
             .catch(done);
@@ -100,7 +112,18 @@ describe('selectedConnection', () => {
             .catch(function(err) {
               expect(RethinkDbService.getConnection.callCount).to.equal(1);
               expect(RethinkDbService.getConnection.calledWith('192.168.99.100', '32769', '')).to.equal(true);
-              expect(dispatch.callCount).to.equal(1);
+              expect(dispatch.callCount).to.equal(3);
+
+              expect(dispatch.calledWith({
+                type: 'SET_CONNECTION_LOADING',
+                loading: true
+              })).to.equal(true);
+
+              expect(dispatch.calledWith({
+                type: 'SET_CONNECTION_LOADING',
+                loading: false
+              })).to.equal(true);
+
               expect(dispatch.calledWith({
                 type: 'SET_DB_CONNECTION_ERROR',
                 connectionError: {

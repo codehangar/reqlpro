@@ -6,46 +6,55 @@ import { connect } from 'react-redux';
 
 const Explorer = ({
   connections,
-  selectedConnection,
-  dbConnection,
+  connection,
   selectedTable,
   connectionError
 }) => {
 
   console.log('------------------------'); // eslint-disable-line no-console
-  console.log({ connectionError, selectedTable, selectedConnection });
+  console.log({ connectionError, selectedTable, connection });
   console.log('connections', connections); // eslint-disable-line no-console
+
+  const HelpCenter = <a href="http://utils.codehangar.io/rethink/support" target="_blank">Help Center</a>;
+  const SendMessage = (
+    <a className="clickable" onClick={() => {
+      HS.beacon.open();
+    }}>send us a message</a>
+  );
 
   let content = (
     <div className="explorer-container">
       <div className="explorer-full-message">
         <p className="super-large-text">Connected!</p>
         <p className="">Start browsing your data by clicking on a database.</p>
-        <p className="small-text">Having trouble? Visit our <a href="http://utils.codehangar.io/rethink/support"
-                                                               target="_blank">Help Center</a> or <a
-          onClick={function() {
-            HS.beacon.open();
-          }}>send us a message</a>.</p>
-        {/* <p className="text-danger small-text">{dbConnection.msg}</p> */}
+        <p className="small-text">
+          Having trouble? Visit our {HelpCenter} or {SendMessage}.
+        </p>
       </div>
     </div>
   );
 
   const connectionErrors = ['ReqlAuthError', 'ReqlDriverError'];
 
-  if (connectionError && connectionError.connection.name == selectedConnection.name) {
+  if (connection.loading) {
+    content = (
+      <div className="explorer-container">
+        <div className="explorer-loading">
+          <span className="fa fa-refresh fa-spin"/>
+        </div>
+      </div>
+    );
+  } else if (connectionError && connectionError.connection.name == connection.selected.name) {
     console.log('show Explorer Error');
     content = (
       <div className="explorer-container">
         <div className="explorer-full-message">
           <p className="super-large-text">Woops!</p>
           <p className="">Something isn't right. Check your connection details.</p>
-          <p className="small-text">Still having trouble? Visit our <a href="http://utils.codehangar.io/rethink/support"
-                                                                       target="_blank">Help Center</a> or <a
-            onClick={function() {
-              HS.beacon.open();
-            }}>send us a message</a>.</p>
-          <p className="text-danger small-text">{connectionError.error.msg}</p>
+          <pre className="text-danger">{connectionError.error.msg}</pre>
+          <p className="small-text">
+            Still having trouble? Visit our {HelpCenter} or {SendMessage}.
+          </p>
         </div>
       </div>
     );
@@ -79,11 +88,9 @@ const Explorer = ({
 };
 
 const mapStateToProps = (state) => {
-  // console.log('Explorer  mapStateToProps', state.main);
   return {
     connections: state.connections || [],
-    selectedConnection: state.connection.selected,
-    dbConnection: state.main.dbConnection,
+    connection: state.connection,
     selectedTable: state.main.selectedTable,
     connectionError: state.main.connectionError
   };

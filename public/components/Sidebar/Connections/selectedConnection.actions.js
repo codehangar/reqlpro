@@ -16,6 +16,7 @@ export function showConnectionForm(connection = null) {
     });
   }
 }
+
 export function selectConnection(connection) {
   return dispatch => {
     dispatch({
@@ -29,7 +30,16 @@ export function selectConnection(connection) {
 export function getDbConnection(connection) {
   return dispatch => {
     return new Promise((resolve, reject) => {
+      dispatch({
+        type: 'SET_CONNECTION_LOADING',
+        loading: true
+      });
+
       RethinkDbService.getConnection(connection.host, connection.port, connection.authKey).then((conn) => {
+        dispatch({
+          type: 'SET_CONNECTION_LOADING',
+          loading: false
+        });
         dispatch({
           type: 'SET_DB_CONNECTION',
           dbConnection: conn
@@ -37,6 +47,10 @@ export function getDbConnection(connection) {
         dispatch(getDbList(conn));
         resolve(conn);
       }).catch(error => {
+        dispatch({
+          type: 'SET_CONNECTION_LOADING',
+          loading: false
+        });
         dispatch({
           type: 'SET_DB_CONNECTION_ERROR',
           connectionError: {
