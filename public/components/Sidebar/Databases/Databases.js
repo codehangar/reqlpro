@@ -1,11 +1,11 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import DatabasesHeader from './DatabasesHeader';
 import Database from './Database/Database';
-import {getDbTables} from '../../../actions';
+import { getDbTables } from '../../../actions';
 
 const Databases = ({
-  connections, 
+  connections,
   selectedConnection,
   selectedDatabase,
   dbConnection,
@@ -13,7 +13,7 @@ const Databases = ({
 }) => {
   let databaseNodes;
 
-  if(selectedConnection && selectedConnection.databases){
+  if (selectedConnection && selectedConnection.databases) {
     databaseNodes = selectedConnection.databases.map((database) => {
       return (
         <Database
@@ -29,15 +29,11 @@ const Databases = ({
 
   const content = () => {
     if (connections && connections.length > 0) {
-      return (
-        <div>
-          <DatabasesHeader selectedFavorite={selectedConnection} />
-        </div>
-      );
+      return <DatabasesHeader />;
     } else {
-      return (<div></div>);
+      return <div></div>;
     }
-  }
+  };
 
   return (
     <div className="db-content-col">
@@ -52,27 +48,19 @@ const Databases = ({
 function mapStateToProps(state) {
   // console.log('Databases', state.main.selectedConnection)
   return {
-    connections: state.main.connections,
-    selectedConnection: state.main.selectedConnection,
+    connections: state.connections,
+    selectedConnection: state.connection.selected,
     selectedDatabase: state.main.selectedDatabase,
     dbConnection: state.main.dbConnection,
   };
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    onEmailSubmit: (email) =>{
-      dispatch({
-        type: "SET_EMAIL",
-        email
-      });
-    },
     onDatabaseClick: (dbConnection, database) => {
       dispatch(getDbTables(dbConnection, database));
-      
+
     }
   }
 };
 
-const DatabasesContainer = connect(mapStateToProps, mapDispatchToProps)(Databases);
-
-export default DatabasesContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(Databases);

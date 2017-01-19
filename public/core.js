@@ -1,18 +1,7 @@
-import jdenticon from 'jdenticon';
-import md5 from 'md5';
 import update from 'immutability-helper';
-// import RethinkDbService from '../main/services/rethinkdb.service';
 
 export function setState(state, newState) {
   return Object.assign({}, state, newState);
-}
-
-export function setConnections(state, connections) {
-  return Object.assign({}, state, {
-    main: {
-      connections
-    }
-  });
 }
 
 export function setEmail(state, email) {
@@ -23,125 +12,6 @@ export function setEmail(state, email) {
   }
   return state;
 }
-
-export function showConnectionForm(state, mode, selectedConnection) {
-  switch (mode) {
-    case 'NEW':
-      let newState = Object.assign({}, state, {
-        showAddConnectionForm: true
-      })
-      if (state.showEditConnectionForm) {
-        delete newState.showEditConnectionForm;
-      }
-      if (state.selectedConnection) {
-        delete newState.selectedConnection;
-      }
-      return newState;
-    case 'EDIT':
-      // console.log('EDIT', mode)
-      let newState2 = Object.assign({}, state, {
-        showEditConnectionForm: true,
-        selectedConnection: selectedConnection,
-        connectionForm: selectedConnection
-      })
-      if (state.showAddConnectionForm) {
-        delete newState2.showAddConnectionForm;
-      }
-      return newState2;
-  }
-
-  return state;
-}
-
-export function hideConnectionForm(state) {
-  let newState = Object.assign({}, state)
-  delete newState.showEditConnectionForm;
-  delete newState.showAddConnectionForm;
-  return newState;
-}
-
-export function setConnectionFormFields(state, fields) {
-  console.log('set connection form fields: ', state, fields);
-  // let newState = Object.assign({}, state)
-  // delete newState.showEditConnectionForm;
-  // delete newState.showAddConnectionForm;
-  return state;
-}
-
-export function addConnection(state, connection) {
-  let connections = [];
-  if (state.connections) {
-    connections = state.connections.slice();
-  }
-  let newConnection;
-  if (connection) {
-    newConnection = {
-      name: connection.name,
-      host: connection.host,
-      port: connection.port,
-      database: connection.database,
-      authKey: "",
-      identicon: jdenticon.toSvg(md5(connection.name), 40),
-      index: state.connections ? state.connections.length : 0
-    }
-    connections.push(newConnection);
-    //TODO: Auto-connect to DB
-  }
-
-  const selectedConnectionState = setConnection(state, newConnection)
-
-  return Object.assign({}, state, selectedConnectionState, {
-    connections
-  });
-}
-
-export function updateConnection(state, connection) {
-  // console.log('core updateConnection', connection);
-  const connectionsCopy = state.connections.slice(0);
-  connectionsCopy.forEach((c, i) => {
-    if (c.index === connection.index) {
-      connectionsCopy[i] = connection
-    }
-  })
-
-  const newState = Object.assign({}, state, {
-    connections: connectionsCopy
-  })
-  return newState;
-}
-
-export function deleteConnection(state, id) {
-  //copy state
-  let newState = Object.assign({}, state);
-  //copy connections
-  const connectionsCopy = state.connections.slice(0);
-
-  //remove connection with appropriate id from connections copy
-  connectionsCopy.forEach((c, i) => {
-    if (c.index === id) {
-      connectionsCopy.splice(i, 1);
-    }
-  })
-
-  //remove or set new selectedConnection
-  if (state.selectedConnection && connectionsCopy.length == 0) {
-    newState.selectedConnection = Object.assign({}, state.selectedConnection);
-    delete newState.selectedConnection;
-  } else if (state.selectedConnection) {
-    newState = setConnection(newState, connectionsCopy[0]);
-  }
-
-  newState = Object.assign({}, newState, {
-    connections: connectionsCopy
-  })
-  return newState;
-}
-
-export function setConnection(state, selectedConnection) {
-  return Object.assign({}, state, {
-    selectedConnection
-  });
-};
 
 export function setDbConnection(state, dbConnection) {
   // console.log('<3<3<3 setDbConnection dbConnection', dbConnection);
@@ -212,7 +82,7 @@ export function toggleDatabaseForm(state, showDatabaseForm) {
 export function toggleDeleteDatabaseForm(state, showDeleteDatabaseForm, dbToDelete) {
   // state.showDeleteDatabaseForm = showDeleteDatabaseForm;
   // if (dbToDelete) state.dbToDelete = dbToDelete;
-  let newState = Object.assign({}, state, {showDeleteDatabaseForm});
+  let newState = Object.assign({}, state, { showDeleteDatabaseForm });
   if (dbToDelete) newState.dbToDelete = dbToDelete;
   return newState;
   // return state;
@@ -227,7 +97,7 @@ export function toggleTableForm(state, showTableForm) {
 export function toggleDeleteTableForm(state, showDeleteTableForm, database, tableToDelete) {
   // state.showDeleteDatabaseForm = showDeleteDatabaseForm;
   // if (dbToDelete) state.dbToDelete = dbToDelete;
-  let newState = Object.assign({}, state, {showDeleteTableForm});
+  let newState = Object.assign({}, state, { showDeleteTableForm });
   if (tableToDelete) newState.tableToDelete = tableToDelete;
   if (database) newState.selectedDatabase = database;
   return newState;
@@ -291,13 +161,13 @@ export function toggleTableVisibility(state, database, showTables) {
   const index = databasesCopy.map(db => db.name).indexOf(database.name);
 
   // Assign the new showTables Value
-  selectedDatabase = Object.assign({}, selectedDatabase, {showTables});
+  selectedDatabase = Object.assign({}, selectedDatabase, { showTables });
 
   // Replace the selected database
   const databases = [...databasesCopy.slice(0, index), ...[selectedDatabase], ...databasesCopy.slice(index + 1)];
-  const selectedConnection = Object.assign({}, state.selectedConnection, {databases});
+  const selectedConnection = Object.assign({}, state.selectedConnection, { databases });
 
-  const newState = Object.assign({}, state, {selectedConnection});
+  const newState = Object.assign({}, state, { selectedConnection });
 
   return newState;
 }
@@ -330,35 +200,35 @@ export function setSelectedTable(state, databaseName, tableName) {
       direction: 1 // ASC = 1, DESC = 0
     }
   };
-  let newState = Object.assign({}, state, {selectedTable});
+  let newState = Object.assign({}, state, { selectedTable });
   return newState;
 }
 
 export function updateSelectedTable(state, data, lastResult) {
-  let newSelectedTable = Object.assign({}, state.selectedTable, {data, lastResult});
+  let newSelectedTable = Object.assign({}, state.selectedTable, { data, lastResult });
   newSelectedTable.loading = false;
-  let newState = Object.assign({}, state, {selectedTable: newSelectedTable})
+  let newState = Object.assign({}, state, { selectedTable: newSelectedTable })
   return newState;
 }
 
 export function updateSelectedTablePageLimit(state, limit) {
   let queryCopy = Object.assign({}, state.selectedTable.query)
   queryCopy.limit = parseInt(limit);
-  let newSelectedTable = Object.assign({}, state.selectedTable, {query: queryCopy});
-  return Object.assign({}, state, {selectedTable: newSelectedTable});
+  let newSelectedTable = Object.assign({}, state.selectedTable, { query: queryCopy });
+  return Object.assign({}, state, { selectedTable: newSelectedTable });
 }
 
 export function updateSelectedTableSort(state, sort) {
   let queryCopy = Object.assign({}, state.selectedTable.query)
   queryCopy.sort = sort;
   queryCopy.direction = queryCopy.direction === 1 ? 0 : 1;
-  let newSelectedTable = Object.assign({}, state.selectedTable, {query: queryCopy});
-  return Object.assign({}, state, {selectedTable: newSelectedTable});
+  let newSelectedTable = Object.assign({}, state.selectedTable, { query: queryCopy });
+  return Object.assign({}, state, { selectedTable: newSelectedTable });
 }
 
 export function setSelectedTableSize(state, size) {
-  let selectedTable = Object.assign({}, state.selectedTable, {size});
-  return Object.assign({}, state, {selectedTable});
+  let selectedTable = Object.assign({}, state.selectedTable, { size });
+  return Object.assign({}, state, { selectedTable });
 }
 
 export function startRowEdit(state, record) {
@@ -371,7 +241,7 @@ export function startRowEdit(state, record) {
     type: 'code',
   };
   const newSelectedTable = Object.assign({}, state.selectedTable, newFields);
-  return Object.assign({}, state, {selectedTable: newSelectedTable});
+  return Object.assign({}, state, { selectedTable: newSelectedTable });
 }
 
 export function cancelRowEdit(state) {
@@ -384,7 +254,7 @@ export function cancelRowEdit(state) {
     type: state.selectedTable.previousType,
   };
   const newSelectedTable = Object.assign({}, state.selectedTable, newFields);
-  return Object.assign({}, state, {selectedTable: newSelectedTable});
+  return Object.assign({}, state, { selectedTable: newSelectedTable });
 }
 
 export function toggleExplorerBody(state, type) {
@@ -398,7 +268,7 @@ export function toggleExplorerBody(state, type) {
     newFields.codeBodyError = null;
   }
   const newSelectedTable = Object.assign({}, state.selectedTable, newFields);
-  return Object.assign({}, state, {selectedTable: newSelectedTable});
+  return Object.assign({}, state, { selectedTable: newSelectedTable });
 }
 
 export function deleteDatabase(state, dbName) {
@@ -430,32 +300,32 @@ export function deleteTable(state, databaseName, tableName) {
   const index = databasesCopy.map(db => db.name).indexOf(databaseName);
 
   const tablesCopy = databaseCopy.tables.filter(table => table !== tableName);
-  const selectedDatabase = update(databaseCopy, {tables: {$set: tablesCopy}});
+  const selectedDatabase = update(databaseCopy, { tables: { $set: tablesCopy } });
 
   // Replace the selected database
   const databases = [...databasesCopy.slice(0, index), ...[selectedDatabase], ...databasesCopy.slice(index + 1)];
 
-  const selectedConnection = Object.assign({}, state.selectedConnection, {databases});
-  const newState = Object.assign({}, state, {selectedConnection});
+  const selectedConnection = Object.assign({}, state.selectedConnection, { databases });
+  const newState = Object.assign({}, state, { selectedConnection });
 
   return newState;
 }
 
 export function setCodeBodyError(state, codeBodyError) {
-  const selectedTable = Object.assign({}, state.selectedTable, {codeBodyError});
-  const newState = Object.assign({}, state, {selectedTable});
+  const selectedTable = Object.assign({}, state.selectedTable, { codeBodyError });
+  const newState = Object.assign({}, state, { selectedTable });
   return newState;
 }
 
 export function setCodeBody(state, codeBody) {
-  const selectedTable = Object.assign({}, state.selectedTable, {codeBody});
-  const newState = Object.assign({}, state, {selectedTable});
+  const selectedTable = Object.assign({}, state.selectedTable, { codeBody });
+  const newState = Object.assign({}, state, { selectedTable });
   return newState;
 }
 
 export function setLastDbResult(state, lastResult) {
-  const selectedTable = Object.assign({}, state.selectedTable, {lastResult});
-  const newState = Object.assign({}, state, {selectedTable});
+  const selectedTable = Object.assign({}, state.selectedTable, { lastResult });
+  const newState = Object.assign({}, state, { selectedTable });
   return newState;
 }
 
@@ -464,7 +334,7 @@ export function toggleConfirmRowDelete(state, rowToDelete) {
   delete newState.rowDeleteError;
   if (rowToDelete) {
     newState.showConfirmRowDelete = true;
-    newState = Object.assign({}, newState, {rowToDelete});
+    newState = Object.assign({}, newState, { rowToDelete });
   } else {
     newState.showConfirmRowDelete = false;
     delete newState.rowToDelete;
@@ -473,30 +343,31 @@ export function toggleConfirmRowDelete(state, rowToDelete) {
 }
 
 export function setRowDeleteError(state, rowDeleteError) {
-  return Object.assign({}, state, {rowDeleteError})
+  return Object.assign({}, state, { rowDeleteError })
 }
 export function setConnectionError(state, connectionError) {
-  return Object.assign({}, state, {connectionError})
+  return Object.assign({}, state, { connectionError })
 }
 export function setColumnWidths(state, database, table, width) {
   let newColumnWidth = {};
   let columnWidthsCopy;
 
-  if(state.columnWidths){
+  if (state.columnWidths) {
     // columnWidthsCopy = state.columnWidths.slice();
-    columnWidthsCopy = Object.assign({},state.columnWidths)
-    if(!columnWidthsCopy[database]){
+    columnWidthsCopy = Object.assign({}, state.columnWidths)
+    if (!columnWidthsCopy[database]) {
       let obj = {};
       obj[table] = width;
       columnWidthsCopy[database] = obj;
-    }{
-      if(!columnWidthsCopy[database][table]){
+    }
+    {
+      if (!columnWidthsCopy[database][table]) {
         columnWidthsCopy[database][table] = width;
-      }else{
+      } else {
         columnWidthsCopy[database][table][Object.keys(width)[0]] = width[Object.keys(width)[0]]
       }
     }
-  }else{
+  } else {
     newColumnWidth[database] = {};
     newColumnWidth[database][table] = width;
     console.log(newColumnWidth)
@@ -523,5 +394,5 @@ export function setColumnWidths(state, database, table, width) {
 
   // }
 
-  return Object.assign({}, state, {columnWidths:columnWidthsCopy})
+  return Object.assign({}, state, { columnWidths: columnWidthsCopy })
 }

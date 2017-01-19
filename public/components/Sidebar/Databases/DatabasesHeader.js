@@ -1,12 +1,11 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {Dropdown, MenuItem} from 'react-bootstrap';
-import {writeConfigFile} from '../../../actions';
-import { actions } from 'react-redux-form';
-
+import { connect } from 'react-redux';
+import { Dropdown, MenuItem } from 'react-bootstrap';
+import { deleteConnection } from '../Connections/connections.actions';
+import { showConnectionForm } from '../Connections/selectedConnection.actions';
 
 const DatabasesHeader = ({
-  editFavorite,
+  editConnection,
   addDatabase,
   onDeleteConnection,
   selectedConnection
@@ -16,12 +15,16 @@ const DatabasesHeader = ({
       <div>
         <span className="title">{selectedConnection ? selectedConnection.name : ''}</span>
         <Dropdown id="connection-dropdown" className="pull-right">
-          <i bsRole="toggle" className="fa fa-bars connection-action-menu-button" />
+          <i bsRole="toggle" className="fa fa-bars connection-action-menu-button"/>
           <Dropdown.Menu className="super-colors">
             <MenuItem onClick={addDatabase}>Add database</MenuItem>
-            <MenuItem divider />
-            <MenuItem onClick={() => {editFavorite(selectedConnection)}}>Edit Connection</MenuItem>
-            <MenuItem eventKey="3" onClick={() => {onDeleteConnection(selectedConnection)}}>Delete Connection</MenuItem>
+            <MenuItem divider/>
+            <MenuItem onClick={() => {
+              editConnection(selectedConnection)
+            }}>Edit Connection</MenuItem>
+            <MenuItem eventKey="3" onClick={() => {
+              onDeleteConnection(selectedConnection)
+            }}>Delete Connection</MenuItem>
           </Dropdown.Menu>
         </Dropdown>
       </div>
@@ -32,42 +35,17 @@ const DatabasesHeader = ({
 
 function mapStateToProps(state) {
   return {
-    selectedConnection: state.main.selectedConnection,
-    showConnectionActionMenu: state.main.showConnectionActionMenu
+    selectedConnection: state.connection.selected
   };
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    editFavorite: function(selectedConnection) {
-      dispatch(actions.change('connectionForm', selectedConnection));
-
-      dispatch({
-        type: "SHOW_CONNECTION_FORM",
-        mode: "EDIT",
-        selectedConnection: selectedConnection
-      });
-
-      dispatch({
-        type: "SET_CONNECTION_FORM_FIELDS",
-        fields: selectedConnection
-      });
-
-      // this.props.store.showConnectionForm(this.props.selectedConnection);
-
-      // The event is a "SyntheticMouseEvent" from React, so you have call all 3 version below to stop
-      // the click from cascading down to the native event listeners. See:
-      // http://stackoverflow.com/questions/24415631/reactjs-syntheticevent-stoppropagation-only-works-with-react-events
-      // event.stopPropagation();
-      // event.nativeEvent.stopPropagation();
-      // event.nativeEvent.stopImmediatePropagation();
+    editConnection: function(connection) {
+      dispatch(showConnectionForm(connection));
     },
-    onDeleteConnection: function(selectedConnection) {
-      if (confirm("Are you sure you want to delete the connection named " + selectedConnection.name)){
-        dispatch({
-          type: "DELETE_CONNECTION",
-          id: selectedConnection.index
-        });
-        dispatch(writeConfigFile());
+    onDeleteConnection: function(connection) {
+      if (confirm("Are you sure you want to delete the connection named " + connection.name)) {
+        dispatch(deleteConnection(connection));
       }
     },
     addDatabase: function() {

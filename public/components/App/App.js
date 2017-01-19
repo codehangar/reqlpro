@@ -1,5 +1,5 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import Sidebar from '../Sidebar/Sidebar';
 import ExplorerContainer from '../Explorer/Explorer';
 import ConnectionFormContainer from '../modals/ConnectionForm';
@@ -12,7 +12,7 @@ import TableForm from '../modals/TableForm';
 import DevTools from '../DevTools';
 
 const App = React.createClass({
-  componentDidMount: function () {
+  componentDidMount: function() {
     this.resizeTimeoutFunction = () => {
       this.resizeTimeout = setTimeout(() => {
         this.forceUpdate();
@@ -23,15 +23,15 @@ const App = React.createClass({
       this.resizeTimeoutFunction();
     }
   },
-  componentWillUnmount: function () {
+  componentWillUnmount: function() {
     window.onresize = null;
   },
-  render: function () {
+  render: function() {
     return (
       <div className="content-wrapper">
         <EmailIntroContainer />
         <Sidebar />
-        {this.props.showEditConnectionForm || this.props.showAddConnectionForm ? <ConnectionFormContainer /> : ''}
+        {this.props.connection && this.props.connection.showForm ? <ConnectionFormContainer /> : ''}
         <DatabaseForm />
         <DeleteDatabaseForm />
         <TableForm />
@@ -47,15 +47,12 @@ const App = React.createClass({
 
 function mapStateToProps(state) {
   return {
-    showAddConnectionForm: state.main.showAddConnectionForm,
-    showEditConnectionForm: state.main.showEditConnectionForm,
-    selectedConnection: state.main.selectedConnection,
-    cForm: state.cForm
+    connection: state.connection
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {};
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

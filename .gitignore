@@ -5,7 +5,8 @@ build
 ReQLPro-darwin-x64
 
 # WebStorm Settings
-.idea
+.idea/**
+!.idea/codeStyleSettings.xml
 
 # Generated Coverage Report
 coverage/

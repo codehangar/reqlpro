@@ -1,23 +1,11 @@
-import React, {Component} from'react';
-import classNames from'classnames';
+import React, { Component } from'react';
 import Segment from'../../services/segment.service.js';
-import {Control, Form, Field, actions} from 'react-redux-form';
-import {connect} from 'react-redux';
+import { Control, Form, Field, actions } from 'react-redux-form';
+import { connect } from 'react-redux';
 import store from '../../store';
-import {getDbConnection, writeConfigFile} from '../../actions';
-
-
-//
-// const ConnectionForm = ({
-//   showAddConnectionForm,
-//   showEditConnectionForm,
-//   selectedConnection,
-//   onCancel,
-//   onDelete,
-//   onSave,
-//   onUpdate,
-//   cForm
-// }) => {
+import { selectConnection } from '../Sidebar/Connections/selectedConnection.actions';
+import { deleteConnection } from '../Sidebar/Connections/connections.actions';
+import { writeConfigFile } from '../../actions';
 
 class ConnectionForm extends Component {
   constructor(props) {
@@ -28,59 +16,51 @@ class ConnectionForm extends Component {
     // For some reason this will put the cursor at the end of the text
     this.nameInput.value = this.nameInput.value;
     // Focus the name input
-    store.dispatch(actions.focus('connectionForm.name'));
+    store.dispatch(actions.focus('forms.connection.name'));
   }
 
   render() {
     const {
-      showAddConnectionForm,
-      showEditConnectionForm,
       selectedConnection,
+      isAdd,
       onCancel,
       onDelete,
       onSave,
-      onUpdate,
-      cForm
+      onUpdate
     } = this.props;
 
-    const containerStyles = {
-      display: showAddConnectionForm || showEditConnectionForm ? 'block' : 'none'
-    };
-
-    const MyTextInput = (props) => <input className="form-control" type="text" {...props} />;
-
-    let nameInput;
-
+    console.log('isAdd', isAdd); // eslint-disable-line no-console
     return (
-      <div className="ConnectionForm" style={containerStyles}>
+      <div className="ConnectionForm">
         <div className="panel panel-default">
           <div className="panel-heading">
-            <strong>{ showAddConnectionForm ? 'Add New' : 'Edit' } RethinkDB Connection</strong>
+            <strong>{ isAdd ? 'Add New' : 'Edit' } RethinkDB Connection</strong>
           </div>
-          {/*<input type="text" />*/}
-          {/*<Form model="connectionForm" onSubmit={(form) => {console.log('form',cForm)}}>*/}
-          <Form model="connectionForm" onSubmit={() => showAddConnectionForm ? onSave(cForm) : onUpdate(cForm)}>
+          <Form model="forms.connection" onSubmit={(data) => isAdd ? onSave(data) : onUpdate(data)}>
             <div className="panel-body">
               <div className="row">
                 <div className="col-sm-12">
                   <div >
                     <label>Connection Name</label>
                     <Field model=".name">
-                      <input className="form-control" type="text" value={cForm.connectionForm.name} id="name"
+                      <input className="form-control" type="text" id="name"
+                             ref={(input) => {
+                               this.nameInput = input;
+                             }}
                              placeholder="i.e. TodoApp-local"/>
                     </Field>
                   </div>
                   <div >
                     <label>Host</label>
                     <Field model=".host">
-                      <input className="form-control" type="text" value={cForm.connectionForm.host} id="host"
+                      <input className="form-control" type="text" id="host"
                              placeholder="i.e. localhost"/>
                     </Field>
                   </div>
                   <div >
                     <label>Port</label>
                     <Field model=".port">
-                      <input className="form-control" type="text" value={cForm.connectionForm.port} id="host"
+                      <input className="form-control" type="text" id="host"
                              placeholder="i.e. 28015"/>
                     </Field>
                   </div>
@@ -90,10 +70,9 @@ class ConnectionForm extends Component {
             <div className="panel-footer">
               <button className="btn btn-primary pull-right">Save</button>
               <button type="cancel" onClick={onCancel} className="btn btn-default pull-left">Cancel</button>
-              {showEditConnectionForm ?
+              {!isAdd ?
                 <button type="delete" className="btn btn-default" onClick={() => onDelete(selectedConnection)}>
                   Delete</button> : ''}
-
               <div className="clearfix"/>
             </div>
           </Form>
@@ -104,11 +83,11 @@ class ConnectionForm extends Component {
 }
 
 function mapStateToProps(state) {
+  console.log('------------------------'); // eslint-disable-line no-console
+  console.log('state.forms.connection', state.forms.connection); // eslint-disable-line no-console
   return {
-    showAddConnectionForm: state.main.showAddConnectionForm,
-    showEditConnectionForm: state.main.showEditConnectionForm,
-    selectedConnection: state.main.selectedConnection,
-    cForm: state.cForm
+    isAdd: !state.forms.connection,
+    selectedConnection: state.connection.selected
   };
 }
 
@@ -119,39 +98,30 @@ const mapDispatchToProps = (dispatch) => {
         type: "HIDE_CONNECTION_FORM"
       })
     },
-    onSave: (form) => {
-      console.log(form);
+    onSave: (data) => {
+      console.log(data);
       dispatch({
         type: "ADD_CONNECTION",
-        connection: form.connectionForm
+        connection: data
       });
-      dispatch(getDbConnection(form.connectionForm));
+      dispatch(selectConnection(data));
       dispatch(writeConfigFile());
     },
-    onUpdate: (form) => {
-      console.log(form);
+    onUpdate: (data) => {
+      console.log('data', data);
       dispatch({
         type: "UPDATE_CONNECTION",
-        connection: form.connectionForm
+        connection: data
       });
-      dispatch({
-        type: "SET_CONNECTION",
-        connection: form.connectionForm
-      });
+      dispatch(selectConnection(data));
       dispatch(writeConfigFile());
     },
     onDelete: (connection) => {
       if (confirm("Are you sure you want to delete the connection named " + connection.name)) {
-        dispatch({
-          type: "DELETE_CONNECTION",
-          id: connection.index
-        });
-        dispatch(writeConfigFile());
+        dispatch(deleteConnection(connection));
       }
     }
   }
 };
 
-const ConnectionFormContainer = connect(mapStateToProps, mapDispatchToProps)(ConnectionForm);
-
-export default ConnectionFormContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(ConnectionForm);

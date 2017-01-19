@@ -2,35 +2,7 @@
 const RethinkDbService = require('../main/services/rethinkdb.service');
 const configService = remote.require('./main/services/config.service');
 import ReQLEval from '../main/services/reql-eval.service';
-import {convertStringsToDates} from './services/date-type.service'
-
-export function getDbConnection(connection) {
-  return dispatch => {
-    return new Promise((resolve, reject) => {
-      RethinkDbService.getConnection(connection.host, connection.port, connection.authKey).then((conn) => {
-
-        dispatch({
-          type: 'SET_DB_CONNECTION',
-          dbConnection: conn
-        });
-
-        dispatch(getDbList(conn));
-
-        resolve(conn);
-      }).catch(error => {
-        console.log('getDbConnection error', connection)
-        dispatch({
-          type: 'SET_DB_CONNECTION_ERROR',
-          connectionError: {
-            connection,
-            error
-          }
-        });
-        reject(error);
-      });
-    });
-  }
-}
+import { convertStringsToDates } from './services/date-type.service'
 
 export function getDbList(dbConnection) {
   return dispatch => {
@@ -380,11 +352,10 @@ export function deleteRow(row) {
 
 export function writeConfigFile() {
   return (dispatch, getState) => {
-      const mainState = getState().main;
-
-      return configService.writeConfigFile({
-        email: mainState.email,
-        connections: mainState.connections
-      });
+    const state = getState();
+    return configService.writeConfigFile({
+      email: state.main.email,
+      connections: state.connections
+    });
   }
 }

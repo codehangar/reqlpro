@@ -1,20 +1,19 @@
-import { combineForms } from 'react-redux-form';
-import {combineReducers} from 'redux';
+import { combineForms, formReducer, modelReducer } from 'react-redux-form';
+import { combineReducers } from 'redux';
 import { main } from './main.reducer';
-import { connection } from './connection.reducer';
+import { connections } from './components/Sidebar/Connections/connections.reducer';
+import { connection } from './components/Sidebar/Connections/selectedConnection.reducer';
 
-// const initialUser = {name:''};
-const cForm = combineForms({
-  connectionForm: connection,
-})
+const forms = combineForms({
+  // lol: {},
+  connection: {}
+}, 'forms');
 
 const rootReducer = combineReducers({
-  // connection: modelReducer('connection'),
-  // connectionForm: formReducer('connectionForm'),
-  // databaseForm: formReducer('databaseForm'),
   main,
+  connections,
   connection,
-  cForm
+  forms
 });
 
 export default rootReducer;

@@ -75,6 +75,7 @@ ConfigService.prototype.writeConfigFile = function(data) {
         console.log(err);
         reject(err);
       } else {
+        global.userConfig = JSON.stringify(data);
         resolve(JSON.stringify(data));
       }
     });

@@ -19,24 +19,26 @@ import Segment from './services/segment.service';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App/App';
-import {Provider} from 'react-redux';
+import { Provider } from 'react-redux';
 import reduxStore from './store';
-import {getDbConnection} from './actions';
+import { getDbConnection } from './components/Sidebar/Connections/selectedConnection.actions';
 
 function init() {
-  const initialState = JSON.parse(remote.getGlobal('userConfig'));
+  const userConfig = JSON.parse(remote.getGlobal('userConfig'));
+  console.log('userConfig', userConfig); // eslint-disable-line no-console
 
-  if (initialState) {
+  if (userConfig) {
 
     let state = {
-      email: initialState.email || null,
-      connections: initialState.connections || []
+      main: { email: userConfig.email || null },
+      connections: userConfig.connections || [],
+      connection: {}
     };
 
     //if connections, set selectedConnection and getDbConnection
-    if (initialState.connections && initialState.connections[0]) {
-      state.selectedConnection = initialState.connections[0];
-      reduxStore.dispatch(getDbConnection(state.selectedConnection));
+    if (userConfig.connections && userConfig.connections[0]) {
+      state.connection.selected = userConfig.connections[0];
+      reduxStore.dispatch(getDbConnection(state.connection.selected));
     }
 
     reduxStore.dispatch({
