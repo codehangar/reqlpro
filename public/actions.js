@@ -4,52 +4,6 @@ const configService = remote.require('./main/services/config.service');
 import ReQLEval from '../main/services/reql-eval.service';
 import { convertStringsToDates } from './services/date-type.service'
 
-export function getDbTables(dbConnection, database) {
-  return dispatch => {
-    return new Promise((resolve, reject) => {
-      RethinkDbService.getTableList(dbConnection, database.name).then(tables => {
-        dispatch({
-          type: 'SET_DB_TABLES',
-          database,
-          tables
-        });
-        resolve(tables);
-      }).catch(error => {
-        // dispatch({
-        //   type: 'SET_DB_TABLES',
-        //   tables: error
-        // });
-        reject(error);
-      });
-    });
-  }
-}
-
-
-export function createTable(dbConnection, database, table) {
-  return dispatch => {
-    return new Promise((resolve, reject) => {
-      RethinkDbService.createTable(dbConnection, database.name, table.name, 'id').then((results) => {
-        // Add table to selectedDatabase list
-        dispatch({
-          type: 'ADD_TO_TABLE_LIST',
-          table: {
-            name: table.name
-          },
-          database
-        });
-        resolve(results);
-      }).catch(error => {
-        // dispatch({
-        //   type: 'ADD_TO_TABLE_LIST',
-        //   table: error,
-        // });
-        reject(error);
-      });
-    });
-  }
-}
-
 // export function queryTable(queryParams = selectedTable.query) {
 // Todo: pull from passed in queryParams or default to selectedTable on state (or leave as is, not sure)
 export function queryTable(dbConnection, databaseName, tableName, queryParams = {
@@ -161,24 +115,6 @@ export function deleteDatabase(conn, dbName) {
         dispatch({
           type: "DELETE_DATABASE",
           dbName
-        });
-        resolve();
-      }).catch((err) => {
-        reject(err);
-      });
-    });
-  }
-}
-
-export function deleteTable(conn, dbName, tableName) {
-  return dispatch => {
-    return new Promise((resolve, reject) => {
-
-      RethinkDbService.deleteTable(conn, dbName, tableName).then((results) => {
-        dispatch({
-          type: "DELETE_TABLE",
-          dbName,
-          tableName
         });
         resolve();
       }).catch((err) => {

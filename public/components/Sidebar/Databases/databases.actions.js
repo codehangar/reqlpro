@@ -1,4 +1,5 @@
 const RethinkDbService = require('../../../../main/services/rethinkdb.service');
+import * as types from '../../../action-types';
 
 export function getDbList(dbConnection) {
   return dispatch => {
@@ -8,7 +9,7 @@ export function getDbList(dbConnection) {
           return { name: dbName };
         });
         dispatch({
-          type: 'SET_DB_LIST',
+          type: types.SET_DB_LIST,
           databases: databases
         });
         resolve(dbList);
@@ -24,18 +25,14 @@ export function createDatabase(dbConnection, databaseName) {
     return new Promise((resolve, reject) => {
       RethinkDbService.createDb(dbConnection, databaseName).then(function(results) {
         dispatch({
-          type: 'ADD_TO_DB_LIST',
+          type: types.ADD_TO_DB_LIST,
           database: {
             name: databaseName
           }
         });
-        dispatch({ type: 'TOGGLE_DATABASE_FORM' });
+        dispatch({ type: types.TOGGLE_DATABASE_FORM });
         resolve(results);
       }).catch(error => {
-        // dispatch({
-        //   type: 'ADD_TO_DB_LIST',
-        //   database: error,
-        // });
         reject(error);
       });
     });

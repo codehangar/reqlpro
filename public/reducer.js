@@ -4,6 +4,7 @@ import { main } from './main.reducer';
 import { connections } from './components/Sidebar/Connections/connections.reducer';
 import { connection } from './components/Sidebar/Connections/selectedConnection.reducer';
 import { databases } from './components/Sidebar/Databases/databases.reducer';
+import { tables } from './components/Sidebar/Databases/Database/DbTables/tables.reducer';
 
 const forms = combineForms({
   connection: {}
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   connections,
   connection,
   databases,
+  tables,
   forms
 });
 

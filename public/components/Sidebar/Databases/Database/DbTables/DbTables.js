@@ -2,10 +2,11 @@ import React from 'react';
 import DbTable from './DbTable';
 
 const DbTables = ({
-  database
+  database,
+  tables = []
 }) => {
   return (
-    <div>{database.tables.map(table => <DbTable key={table} table={table} database={database}/>)}</div>
+    <div>{tables.map(table => <DbTable key={table} table={table} database={database}/>)}</div>
   );
 };
 

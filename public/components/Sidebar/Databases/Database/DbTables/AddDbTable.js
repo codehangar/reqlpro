@@ -5,7 +5,7 @@ const AddDbTable = ({
 }) => {
   return (
     <div onClick={onAddTable} className="db-table">
-      <div><i className="fa fa-plus"></i> Add Table</div>
+      <div><i className="fa fa-plus"/> Add Table</div>
     </div>
   );
 };

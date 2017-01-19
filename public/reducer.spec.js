@@ -23,6 +23,8 @@ describe('reducer', () => {
       },
       connections: [],
       connection: {},
+      databases: [],
+      tables: {},
       forms: {
         connection: {},
         forms: {

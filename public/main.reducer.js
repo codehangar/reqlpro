@@ -47,18 +47,12 @@ export function main(state = {}, action) {
       return hideOpenMenus(state, action.props);
     case 'SET_DB_CONNECTION':
       return setDbConnection(state, action.dbConnection);
-    case 'SET_DB_TABLES':
-      console.log('action.database', action.database);
-      return setDbTables(state, action.database.name, action.tables);
     case 'TOGGLE_DATABASE_FORM':
       return toggleDatabaseForm(state, action.showDatabaseForm);
     case 'TOGGLE_DELETE_DATABASE_FORM':
       return toggleDeleteDatabaseForm(state, action.showDeleteDatabaseForm, action.dbToDelete);
     case 'TOGGLE_DELETE_TABLE_FORM':
-      console.log('TOGGLE_DELETE_TABLE_FORM', action.tableToDelete)
       return toggleDeleteTableForm(state, action.showDeleteTableForm, action.database, action.tableToDelete);
-    case 'ADD_TO_TABLE_LIST':
-      return addTable(state, action.database, action.table);
     case 'TOGGLE_TABLE_FORM':
       return toggleTableForm(state, action.showTableForm);
     case 'SET_DB_TO_EDIT':
@@ -79,8 +73,6 @@ export function main(state = {}, action) {
       return cancelRowEdit(state, action.row);
     case 'TOGGLE_EXPLORER_BODY':
       return toggleExplorerBody(state, action.key);
-    case 'DELETE_TABLE':
-      return deleteTable(state, action.dbName, action.tableName);
     case 'SET_CODE_BODY_ERROR':
       return setCodeBodyError(state, action.codeBodyError);
     case 'SET_CODE_BODY':

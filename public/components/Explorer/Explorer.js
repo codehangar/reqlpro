@@ -11,10 +11,6 @@ const Explorer = ({
   connectionError
 }) => {
 
-  console.log('------------------------'); // eslint-disable-line no-console
-  console.log({ connectionError, selectedTable, connection });
-  console.log('connections', connections); // eslint-disable-line no-console
-
   const HelpCenter = <a href="http://utils.codehangar.io/rethink/support" target="_blank">Help Center</a>;
   const SendMessage = (
     <a className="clickable" onClick={() => {
