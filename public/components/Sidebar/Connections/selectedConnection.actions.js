@@ -1,5 +1,5 @@
 const RethinkDbService = require('../../../../main/services/rethinkdb.service');
-import { getDbList } from '../../../actions';
+import { getDbList } from '../Databases/databases.actions';
 import { actions } from 'react-redux-form';
 import * as types from '../../../action-types';
 
@@ -22,6 +22,10 @@ export function selectConnection(connection) {
     dispatch({
       type: types.SET_CONNECTION,
       connection
+    });
+    dispatch({
+      type: 'SET_DB_CONNECTION_ERROR',
+      connectionError: null
     });
     dispatch(getDbConnection(connection));
   }
