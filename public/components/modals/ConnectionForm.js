@@ -68,10 +68,10 @@ class ConnectionForm extends Component {
               </div>
             </div>
             <div className="panel-footer">
-              <button className="btn btn-primary pull-right">Save</button>
-              <button type="cancel" onClick={onCancel} className="btn btn-default pull-left">Cancel</button>
+              <button type="submit" className="btn btn-primary pull-right">Save</button>
+              <button type="button" onClick={onCancel} className="btn btn-default pull-left">Cancel</button>
               {!isAdd ?
-                <button type="delete" className="btn btn-default" onClick={() => onDelete(selectedConnection)}>
+                <button type="button" className="btn btn-default" onClick={() => onDelete(selectedConnection)}>
                   Delete</button> : ''}
               <div className="clearfix"/>
             </div>
