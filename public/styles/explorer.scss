@@ -52,7 +52,7 @@
 
 .filter-predicate {
   display: inline-block;
-  width: 300px;
+  min-width: 100px;
   position: relative;
   font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
   font-size: 12px;
@@ -89,4 +89,11 @@ input.input-code:focus {
   right: 0;
   height: 20px;
   line-height: 20px;
+}
+
+.filter-help-icon {
+  font-size: 14px;
+  position: absolute;
+  top: -5px;
+  right: -12px;
 }

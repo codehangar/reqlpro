@@ -1,28 +1,56 @@
-import React, { PropTypes } from 'react';
+import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { refreshExplorerBody } from '../../../actions';
+const shell = window.nodeRequire('electron').shell;
 
-const FilterPredicate = ({
-  table,
-  setFilterPredicate
-}) => {
-  let predInput;
-  const submit = (e) => {
-    e.preventDefault();
-    setFilterPredicate(predInput.value);
+class FilterPredicate extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      width: '100px'
+    };
+  }
+
+  componentDidMount() {
+    this.predInput.focus();
+  }
+
+  onChange = (e) => {
+    const len = e.target.value.length;
+    const width = ((len * 7.24) + 70) + 'px';
+    this.setState({ width });
+    this.props.setFilterPredicate(e.target.value);
   };
-  return (
-    <div className="filter-predicate">
-      <form onSubmit={submit}>
-        <span className="predicate-opener">.filter(</span>
-        <input className="form-control input-code" type="text"
-               value={table.filterPredicate}
-               ref={input => predInput = input}/>
-        <span className="predicate-closer">)</span>
-      </form>
-    </div>
-  );
-};
+
+  onSubmit = (e) => {
+    e.preventDefault();
+    this.props.submit(this.predInput.value);
+  };
+
+  filterHelpClick() {
+    shell.openExternal('https://www.rethinkdb.com/api/javascript/filter/');
+  }
+
+  render() {
+    const { table } = this.props;
+    return (
+      <div className="filter-predicate" style={{ width: this.state.width }}>
+        <form onSubmit={this.onSubmit}>
+          <span className="predicate-opener">.filter(</span>
+          <input className="form-control input-code" type="text"
+                 value={table.filterPredicate}
+                 onChange={this.onChange}
+                 ref={input => this.predInput = input}
+          />
+          <span className="predicate-closer">)</span>
+        </form>
+        <span className="filter-help-icon">
+          <i className="fa fa-info-circle clickable" onClick={this.filterHelpClick}/>
+        </span>
+      </div>
+    )
+  }
+}
 
 FilterPredicate.propTypes = {
   table: PropTypes.object
@@ -42,8 +70,9 @@ const mapDispatchToProps = (dispatch) => {
         type: "SET_FILTER_PREDICATE",
         filterPredicate
       });
+    },
+    submit: (filterPredicate) => {
       dispatch(refreshExplorerBody());
-
       // Segment.track({
       //   event: 'explorer.setFilterPredicate',
       //   properties: {}
