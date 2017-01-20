@@ -3,9 +3,7 @@ import Segment from'../../services/segment.service.js';
 import { Control, Form, Field, actions } from 'react-redux-form';
 import { connect } from 'react-redux';
 import store from '../../store';
-import { selectConnection } from '../Sidebar/Connections/selectedConnection.actions';
-import { deleteConnection } from '../Sidebar/Connections/connections.actions';
-import { writeConfigFile } from '../../actions';
+import { addConnection, updateConnection, deleteConnection } from '../Sidebar/Connections/connections.actions';
 
 class ConnectionForm extends Component {
   constructor(props) {
@@ -100,21 +98,11 @@ const mapDispatchToProps = (dispatch) => {
     },
     onSave: (data) => {
       console.log('onSave data', data);
-      dispatch({
-        type: "ADD_CONNECTION",
-        connection: data
-      });
-      dispatch(selectConnection(data));
-      dispatch(writeConfigFile());
+      dispatch(addConnection(data));
     },
     onUpdate: (data) => {
       console.log('onUpdate data', data);
-      dispatch({
-        type: "UPDATE_CONNECTION",
-        connection: data
-      });
-      dispatch(selectConnection(data));
-      dispatch(writeConfigFile());
+      dispatch(updateConnection(data));
     },
     onDelete: (connection) => {
       if (confirm("Are you sure you want to delete the connection named " + connection.name)) {
