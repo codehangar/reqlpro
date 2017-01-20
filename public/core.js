@@ -132,6 +132,12 @@ export function setSelectedTableSize(state, size) {
   return Object.assign({}, state, { selectedTable });
 }
 
+export function setFilterPredicate(state, filterPredicate) {
+  const query = Object.assign({}, state.selectedTable.query, { filterPredicate });
+  const selectedTable = Object.assign({}, state.selectedTable, { query });
+  return Object.assign({}, state, { selectedTable });
+}
+
 export function startRowEdit(state, record) {
   const newFields = {
     codeAction: 'update',

@@ -5,6 +5,7 @@ import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { queryTable, refreshExplorerBody } from '../../../actions';
 import Breadcrumbs from './Breadcrumbs';
+import FilterPredicate from './FilterPredicate';
 
 const ExplorerHeader = ({
   table,
@@ -69,13 +70,8 @@ const ExplorerHeader = ({
 
   return (
     <div className="explorer-header" id="explorer-header">
-      <div className="bread-crumbs">
+      <div className="row bread-crumbs">
         <Breadcrumbs connection={connection} table={table}/>
-
-        <div className="breadcrumb-text-container" style={{ marginLeft: '20px' }}>
-          {queryProfile}
-        </div>
-
         <div className="pull-right">
           {(table.type === 'code') ? '' : rowsPerPage}
           <OverlayTrigger placement="bottom" overlay={refreshTooltip}>
@@ -92,6 +88,14 @@ const ExplorerHeader = ({
               <span onClick={() => toggleExplorerBody('table')} className={buttonClasses.table}/>
             </OverlayTrigger>
           </div>
+        </div>
+      </div>
+
+      <div className="row">
+        {(table.type === 'code') ? '' : <FilterPredicate />}
+
+        <div className="query-profile" style={{ marginLeft: '20px' }}>
+          {queryProfile}
         </div>
       </div>
     </div>

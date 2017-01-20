@@ -1,4 +1,5 @@
 // import RethinkDbService from '../main/services/rethinkdb.service';
+import co from 'co';
 const RethinkDbService = require('../main/services/rethinkdb.service');
 const configService = remote.require('./main/services/config.service');
 import ReQLEval from '../main/services/reql-eval.service';
@@ -6,31 +7,37 @@ import { convertStringsToDates } from './services/date-type.service'
 
 // export function queryTable(queryParams = selectedTable.query) {
 // Todo: pull from passed in queryParams or default to selectedTable on state (or leave as is, not sure)
-export function queryTable(dbConnection, databaseName, tableName, queryParams = {
+export function queryTable(conn, db, table, query = {
   page: 1,
   limit: 5,
   sort: 'id',
-  direction: 0 // ASC = 1, DESC = 0
+  direction: 0, // ASC = 1, DESC = 0,
+  filterPredicate: null
 }) {
-  if (queryParams.page) {
-    return getTableData(queryParams.sort, queryParams.direction, queryParams.limit, queryParams.page, dbConnection, databaseName, tableName);
-  } else if (queryParams.index) {
-    return getTableDataBetween(queryParams.index, queryParams.start, queryParams.end, dbConnection, databaseName, tableName);
+  if (query.page) {
+    return getTableData(conn, db, table, query);
+  } else if (query.index) {
+    return getTableDataBetween(query.index, query.start, query.end, conn, db, table);
   }
 }
 
-function getTableData(sort, direction, limit, page, dbConnection, databaseName, tableName) {
+function getTableData(conn, db, table, query) {
   return dispatch => {
     return new Promise((resolve, reject) => {
-      const conn = dbConnection;
-      const db = databaseName;
-      const table = tableName;
+      co(function *() {
+        let { sort, direction, limit, page, filterPredicate } = query;
 
-      if (page < 1) {
-        page = 1;
-      }
+        // Example filterPredicate: r.row('name').eq('yes')
+        if (filterPredicate) {
+          filterPredicate = yield ReQLEval(filterPredicate);
+        }
+        console.log('ReQLEval filterPredicate', filterPredicate); // eslint-disable-line no-console})
 
-      RethinkDbService.getTableData(conn, db, table, sort, direction, limit, page).then((result) => {
+        if (page < 1) {
+          page = 1;
+        }
+
+        const result = yield RethinkDbService.getTableData(conn, db, table, sort, direction, limit, page, filterPredicate);
         console.log('result', result); // eslint-disable-line no-console
         dispatch({
           type: 'UPDATE_SELECTED_TABLE',
@@ -38,16 +45,18 @@ function getTableData(sort, direction, limit, page, dbConnection, databaseName, 
           data: result.value
         });
         dispatch(getTableSize(conn, db, table));
-
         resolve(result);
-
-      }).catch(error => {
-        dispatch({
-          type: 'UPDATE_SELECTED_TABLE',
-          queryError: error
+      })
+        .catch(error => {
+          if (!error.msg) {
+            error.msg = error.message;
+          }
+          dispatch({
+            type: 'UPDATE_SELECTED_TABLE',
+            queryError: error
+          });
+          // reject(error);
         });
-        reject(error);
-      });
     });
   }
 }

@@ -5,7 +5,7 @@
 }
 
 .explorer-header {
-  flex: 0 0 55px;
+  flex: 0 0 80px;
   padding: 15px 20px;
   color: #999;
   // background: $lighter-color;
@@ -28,7 +28,6 @@
   // background: $lighter-color;
 }
 
-
 /* Explorer Body Loading styles */
 
 .explorer-loading {
@@ -45,4 +44,49 @@
     margin-left: -50px;
     color: $dark-color;
   }
+}
+
+.query-profile {
+  float: right;
+}
+
+.filter-predicate {
+  display: inline-block;
+  width: 300px;
+  position: relative;
+  font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+  font-size: 12px;
+  padding: 2px 10px 2px 60px;
+}
+
+input.input-code {
+  display: inline;
+  height: 20px;
+  line-height: 20px;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  border: none;
+  box-shadow: none;
+  border-bottom: 1px solid darkorchid;
+  font-size: 12px;
+}
+
+input.input-code:focus {
+  box-shadow: none;
+  border-bottom: 1px solid hotpink;
+}
+
+.predicate-opener {
+  position: absolute;
+  left: 0;
+  height: 20px;
+  line-height: 20px;
+}
+
+.predicate-closer {
+  position: absolute;
+  right: 0;
+  height: 20px;
+  line-height: 20px;
 }

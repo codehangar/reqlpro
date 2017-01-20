@@ -280,22 +280,25 @@ RethinkDbService.prototype.getTableList = function(conn, db) {
  * @param {String} Index value to start from for pagination
  * @returns {Promise}
  */
-RethinkDbService.prototype.getTableData = function(conn, db, table, sort, direction, limit, page) {
+RethinkDbService.prototype.getTableData = function(conn, db, table, sort, direction, limit, page, pred) {
   return new Promise(function(resolve, reject) {
     co(function*() {
 
       if (page < 1) {
         throw new Error('page cannot be less than 1');
       }
+      if (!pred) {
+        pred = true;
+      }
+
       const minval = ((page - 1) * limit);
       const maxval = page * limit;
 
       let tableData;
-
       if (direction) {
-        tableData = yield r.db(db).table(table).orderBy(sort || 'id').slice(minval, maxval).run(conn, { profile: true });
+        tableData = yield r.db(db).table(table).filter(pred).orderBy(sort || 'id').slice(minval, maxval).run(conn, { profile: true });
       } else {
-        tableData = yield r.db(db).table(table).orderBy(r.desc(sort || 'id')).slice(minval, maxval).run(conn, { profile: true });
+        tableData = yield r.db(db).table(table).filter(pred).orderBy(r.desc(sort || 'id')).slice(minval, maxval).run(conn, { profile: true });
       }
 
       // console.log("tableData", tableData)
