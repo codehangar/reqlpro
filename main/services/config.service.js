@@ -1,3 +1,5 @@
+'use strict';
+
 const electron = require('electron');
 // Module to control application life.
 const app = electron.app;
@@ -68,9 +70,18 @@ ConfigService.prototype.readConfigFile = function() {
 };
 
 ConfigService.prototype.writeConfigFile = function(data) {
-  console.log(" ***writeConfigFile", data)
   return new Promise((resolve, reject) => {
-    fs.writeFile(this.fullConfigPath, JSON.stringify(data), (err) => {
+
+    let wipedConnections;
+    if (data.connections) {
+      wipedConnections = data.connections.map(c => {
+        return Object.assign({}, c, { pass: void 0 });
+      });
+    }
+    const wipedData = Object.assign({}, data, { connections: wipedConnections });
+    console.log(' ***      wipedData', wipedData); // eslint-disable-line no-console
+
+    fs.writeFile(this.fullConfigPath, JSON.stringify(wipedData), (err) => {
       if (err) {
         console.log(err);
         reject(err);

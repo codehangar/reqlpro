@@ -1,5 +1,5 @@
 import React from 'react';
-import ExplorerHeader from'./ExplorerHeader';
+import ExplorerHeader from'./ExplorerHeader/ExplorerHeader';
 import ExplorerBody from'./ExplorerBody/ExplorerBody';
 import ExplorerFooter from'./ExplorerFooter/ExplorerFooter';
 import { connect } from 'react-redux';

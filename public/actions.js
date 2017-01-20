@@ -31,40 +31,21 @@ function getTableData(sort, direction, limit, page, dbConnection, databaseName, 
       }
 
       RethinkDbService.getTableData(conn, db, table, sort, direction, limit, page).then((result) => {
+        console.log('result', result); // eslint-disable-line no-console
         dispatch({
           type: 'UPDATE_SELECTED_TABLE',
           lastResult: result,
-          // data: Object.keys(result.value).map(key => result.value[key]),//convert to array
-          data: result.value,
-          loading: false
+          data: result.value
         });
         dispatch(getTableSize(conn, db, table));
 
-        // result.value.toArray().then((tableData) => {
-        //     dispatch({
-        //       type: 'UPDATE_SELECTED_TABLE',
-        //       lastResult: result,
-        //       data: tableData,
-        //       loading: false
-        //     });
-        // }).catch(function(err) {
-        //   console.error(err);
-        //   dispatch({
-        //       type: 'UPDATE_SELECTED_TABLE',
-        //       lastResult: err,
-        //       data: err,
-        //       loading: false
-        //     });
-        // });
         resolve(result);
 
       }).catch(error => {
-        // dispatch({
-        //   type: 'UPDATE_SELECTED_TABLE',
-        //   lastResult: error,
-        //   data: error,
-        //   loading: false
-        // });
+        dispatch({
+          type: 'UPDATE_SELECTED_TABLE',
+          queryError: error
+        });
         reject(error);
       });
     });
@@ -87,21 +68,17 @@ function getTableDataBetween(index, start, end, dbConnection, databaseName, tabl
         dispatch({
           type: 'UPDATE_SELECTED_TABLE',
           lastResult: result,
-          // data: Object.keys(result.value).map(key => result.value[key]),//convert to array
-          data: result.value,
-          loading: false
+          data: result.value
         });
         dispatch(getTableSize(conn, db, table));
 
         resolve(result);
 
       }).catch(function(error) {
-        // dispatch({
-        //   type: 'UPDATE_SELECTED_TABLE',
-        //   lastResult: error,
-        //   data: error,
-        //   loading: false
-        // });
+        dispatch({
+          type: 'UPDATE_SELECTED_TABLE',
+          queryError: error
+        });
         reject(error);
       });
     });

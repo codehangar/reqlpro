@@ -44,7 +44,7 @@ const mapDispatchToProps = (dispatch) => {
       } else {
         dispatch(queryTable(dbConnection, databaseName, tableName));
       }
-      dispatch(getTableSize(dbConnection, databaseName, tableName));
+      // dispatch(getTableSize(dbConnection, databaseName, tableName));
     },
     deleteTable: (e, database, table) => {
       e.stopPropagation();

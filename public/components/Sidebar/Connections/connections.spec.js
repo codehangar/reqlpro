@@ -4,7 +4,9 @@ import md5 from 'md5';
 import * as reducer from './connections.reducer';
 import * as types from '../../../action-types';
 
+let RethinkDbService;
 let dispatch;
+let getState;
 
 describe('connections', () => {
 
@@ -24,6 +26,17 @@ describe('connections', () => {
       });
 
       dispatch = sinon.stub();
+      getState = sinon.stub().returns({
+        connections: [],
+        connection: {
+          selected: {}
+        }
+      });
+
+      // Mock the rethinkdb service
+      RethinkDbService = sinon.stub();
+      mockery.registerMock('../../../../main/services/rethinkdb.service', RethinkDbService);
+      mockery.registerMock('../main/services/rethinkdb.service', RethinkDbService);
 
       // Mock related actions
       const actions = sinon.stub();
@@ -38,9 +51,9 @@ describe('connections', () => {
           name: 'hello'
         };
 
-        deleteConnection(connection)(dispatch);
+        deleteConnection(connection)(dispatch, getState);
 
-        expect(dispatch.callCount).to.equal(2);
+        expect(dispatch.callCount).to.equal(3);
         expect(dispatch.calledWith({
           type: types.DELETE_CONNECTION,
           connection

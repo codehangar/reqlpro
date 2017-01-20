@@ -91,16 +91,20 @@ const ExplorerTableView = ({
   const columnNodes = [actionColumn].concat(dynamicColumns);
 
   return (
-    <Table
-      rowsCount={selectedTable.data.length}
-      rowHeight={50}
-      headerHeight={30}
-      onColumnResizeEndCallback={setColumnWidthCallback}
-      isColumnResizing={false}
-      width={window.innerWidth - 360}
-      height={window.innerHeight - 105}>
-      {columnNodes}
-    </Table>
+    <div style={{ position: 'relative' }}>
+      <div className="table-view-container">
+        <Table
+          rowsCount={selectedTable.data.length}
+          rowHeight={50}
+          headerHeight={30}
+          onColumnResizeEndCallback={setColumnWidthCallback}
+          isColumnResizing={false}
+          width={window.innerWidth - 360}
+          height={window.innerHeight - 105}>
+          {columnNodes}
+        </Table>
+      </div>
+    </div>
   );
 };
 

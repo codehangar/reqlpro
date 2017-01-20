@@ -101,8 +101,12 @@ export function setSelectedTable(state, databaseName, tableName) {
   return newState;
 }
 
-export function updateSelectedTable(state, data, lastResult) {
-  let newSelectedTable = Object.assign({}, state.selectedTable, { data, lastResult });
+export function removeSelectedTable(state) {
+  return Object.assign({}, state, { selectedTable: void 0 });
+}
+
+export function updateSelectedTable(state, data, lastResult, queryError = null) {
+  let newSelectedTable = Object.assign({}, state.selectedTable, { data, lastResult, queryError });
   newSelectedTable.loading = false;
   let newState = Object.assign({}, state, { selectedTable: newSelectedTable })
   return newState;

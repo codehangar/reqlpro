@@ -324,6 +324,7 @@ describe('Application Logic', () => {
           databaseName: 'databaseName',
           name: 'tableName',
           type: 'table',
+          queryError: null,
           data: ['stuff'],
           loading: false,
           codeBody: "{\n  \n}",

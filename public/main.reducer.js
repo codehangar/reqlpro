@@ -16,6 +16,7 @@ import {
   addTable,
   toggleTableVisibility,
   setSelectedTable,
+  removeSelectedTable,
   updateSelectedTable,
   updateSelectedTablePageLimit,
   updateSelectedTableSort,
@@ -59,8 +60,10 @@ export function main(state = {}, action) {
       return setDbToEdit(state, action.database);
     case 'SET_SELECTED_TABLE':
       return setSelectedTable(state, action.databaseName, action.tableName);
+    case 'REMOVE_SELECTED_TABLE':
+      return removeSelectedTable(state);
     case 'UPDATE_SELECTED_TABLE':
-      return updateSelectedTable(state, action.data, action.lastResult);
+      return updateSelectedTable(state, action.data, action.lastResult, action.queryError);
     case 'SET_TABLE_PAGE_LIMIT':
       return updateSelectedTablePageLimit(state, action.limit);
     case 'SET_TABLE_SORT':

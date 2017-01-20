@@ -38,7 +38,7 @@ class ConnectionForm extends Component {
             <div className="panel-body">
               <div className="row">
                 <div className="col-sm-12">
-                  <div >
+                  <div>
                     <label>Connection Name</label>
                     <Field model=".name">
                       <input className="form-control" type="text" id="name"
@@ -48,19 +48,33 @@ class ConnectionForm extends Component {
                              placeholder="i.e. TodoApp-local"/>
                     </Field>
                   </div>
-                  <div >
+                  <div>
                     <label>Host</label>
                     <Field model=".host">
                       <input className="form-control" type="text" id="host"
                              placeholder="i.e. localhost"/>
                     </Field>
                   </div>
-                  <div >
+                  <div>
                     <label>Port</label>
                     <Field model=".port">
                       <input className="form-control" type="text" id="host"
                              placeholder="i.e. 28015"/>
                     </Field>
+                  </div>
+                  <div className="row">
+                    <div className="col-sm-6">
+                      <label>User</label>
+                      <Field model=".user">
+                        <input className="form-control" type="text" id="user"/>
+                      </Field>
+                    </div>
+                    <div className="col-sm-6">
+                      <label>Pass</label>
+                      <Field model=".pass">
+                        <input className="form-control" type="password" id="pass"/>
+                      </Field>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -81,8 +95,6 @@ class ConnectionForm extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log('------------------------'); // eslint-disable-line no-console
-  console.log('state.forms.connection', state.forms.connection); // eslint-disable-line no-console
   return {
     isAdd: typeof state.forms.connection.index === 'undefined',
     selectedConnection: state.connection.selected

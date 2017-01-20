@@ -72,8 +72,7 @@ describe('Action Creators', () => {
             expect(dispatch.calledWith({
               type: 'UPDATE_SELECTED_TABLE',
               lastResult: { value: [{ name: 'Bob' }, { name: 'Jim' }] },
-              data: [{ name: 'Bob' }, { name: 'Jim' }],
-              loading: false
+              data: [{ name: 'Bob' }, { name: 'Jim' }]
             })).to.equal(true);
             done();
           })
@@ -92,8 +91,7 @@ describe('Action Creators', () => {
             expect(dispatch.calledWith({
               type: 'UPDATE_SELECTED_TABLE',
               lastResult: { value: [{ name: 'Jim' }, { name: 'Bob' }] },
-              data: [{ name: 'Jim' }, { name: 'Bob' }],
-              loading: false
+              data: [{ name: 'Jim' }, { name: 'Bob' }]
             })).to.equal(true);
             done();
           })

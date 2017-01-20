@@ -66,7 +66,7 @@ describe('selectedConnection', () => {
           promise
             .then(function() {
               expect(RethinkDbService.getConnection.callCount).to.equal(1);
-              expect(RethinkDbService.getConnection.calledWith('192.168.99.100', '32769', '')).to.equal(true);
+              expect(RethinkDbService.getConnection.calledWith(connection)).to.equal(true);
               expect(dispatch.callCount).to.equal(4);
 
               expect(dispatch.calledWith({
@@ -111,7 +111,7 @@ describe('selectedConnection', () => {
             })
             .catch(function(err) {
               expect(RethinkDbService.getConnection.callCount).to.equal(1);
-              expect(RethinkDbService.getConnection.calledWith('192.168.99.100', '32769', '')).to.equal(true);
+              expect(RethinkDbService.getConnection.calledWith(connection)).to.equal(true);
               expect(dispatch.callCount).to.equal(3);
 
               expect(dispatch.calledWith({

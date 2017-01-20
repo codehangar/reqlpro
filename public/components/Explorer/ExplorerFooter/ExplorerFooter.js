@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import ExplorerPagination from './ExplorerPagination';
 import Segment from '../../../services/segment.service';
 import ace from 'brace';
-import {connect} from "react-redux";
-import {saveRow} from '../../../actions';
+import { connect } from "react-redux";
+import { saveRow } from '../../../actions';
 
 
 const ExplorerFooter = ({
@@ -30,13 +30,13 @@ const ExplorerFooter = ({
   if (selectedTable.type === 'code') {
     footerBody = (
       <div className="not-text-center pull-right">
-        <span className="btn btn-default" onClick={onCancelClick} style={{marginRight: '10px'}}>Cancel</span>
+        <span className="btn btn-default" onClick={onCancelClick} style={{ marginRight: '10px' }}>Cancel</span>
         <span className="btn btn-primary" onClick={() => save(dbConnection, selectedTable)}>Save</span>
       </div>
     );
-  }
-
-  if (selectedTable.type !== 'code' && !selectedTable.data.length) {
+  } else if (selectedTable.queryError) {
+    footerBody = '';
+  } else if (!selectedTable.data.length) {
     footerBody = '';
   }
 
@@ -71,7 +71,7 @@ const mapDispatchToProps = (dispatch) => {
       const index = this.props.table.query.index;
       const limit = this.props.table.query.limit;
       const page = this.props.table.query.page - 1;
-      this.props.store.query({index, limit, page});
+      this.props.store.query({ index, limit, page });
 
       Segment.track({
         event: 'explorer.paginationClick',
@@ -86,7 +86,7 @@ const mapDispatchToProps = (dispatch) => {
       const index = this.props.table.query.index;
       const limit = this.props.table.query.limit;
       const page = this.props.table.query.page + 1;
-      this.props.store.query({index, limit, page});
+      this.props.store.query({ index, limit, page });
 
       Segment.track({
         event: 'explorer.paginationClick',
@@ -100,12 +100,12 @@ const mapDispatchToProps = (dispatch) => {
     prevPageBetween: function() {
       const index = this.props.table.query.index;
       const end = this.props.table.data[0].name;
-      this.props.store.query({index, end});
+      this.props.store.query({ index, end });
     },
     nextPageBetween: function() {
       const index = this.props.table.query.index;
       const start = this.props.table.data[this.props.table.data.length - 1].name;
-      this.props.store.query({index, start});
+      this.props.store.query({ index, start });
     },
     save: function(dbConnection, selectedTable) {
       const editor = ace.edit("editor");

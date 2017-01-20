@@ -13,17 +13,21 @@ var RethinkDbService = function() {
  * Generate a RethinkDB client connection
  * @returns {Promise}
  */
-RethinkDbService.prototype.getConnection = function(host, port, authkey) {
-  var connectionInfo = {
-    host: host || process.env.DATABASE_HOST,
-    port: port || process.env.DATABASE_PORT,
-    authKey: authkey || process.env.DATABASE_KEY
+RethinkDbService.prototype.getConnection = function(connectionInfo) {
+  connectionInfo = {
+    host: connectionInfo.host || process.env.DATABASE_HOST,
+    port: connectionInfo.port || process.env.DATABASE_HOST,
+    authKey: connectionInfo.authkey || process.env.DATABASE_KEY,
+    user: connectionInfo.user || void 0,
+    password: connectionInfo.pass || void 0
   };
   return new Promise(function(resolve, reject) {
     r.connect(connectionInfo).then(function(conn) {
-      // conn.on('close', function() {
-      //  console.log('closed a database connection');
-      // });
+      conn.on('close', function() {
+        console.warn('------------------------------------------------------'); // eslint-disable-line no-console
+        console.warn('*********** closed a database connection *************');
+        console.warn('------------------------------------------------------'); // eslint-disable-line no-console
+      });
       resolve(conn);
     }).catch(function(err) {
       reject(err);
@@ -288,10 +292,10 @@ RethinkDbService.prototype.getTableData = function(conn, db, table, sort, direct
 
       let tableData;
 
-      if(direction) {
-        tableData = yield r.db(db).table(table).orderBy(sort || 'id').slice(minval, maxval).run(conn, {profile: true});
+      if (direction) {
+        tableData = yield r.db(db).table(table).orderBy(sort || 'id').slice(minval, maxval).run(conn, { profile: true });
       } else {
-        tableData = yield r.db(db).table(table).orderBy(r.desc(sort || 'id')).slice(minval, maxval).run(conn, {profile: true});
+        tableData = yield r.db(db).table(table).orderBy(r.desc(sort || 'id')).slice(minval, maxval).run(conn, { profile: true });
       }
 
       // console.log("tableData", tableData)
@@ -318,18 +322,18 @@ RethinkDbService.prototype.getTableDataBetween = function(conn, db, table, index
       let tableData;
       if (start) {
         tableData = yield r.db(db).table(table).between(start, r.maxval, {
-            leftBound: "open",
-            index: index
-          })
+          leftBound: "open",
+          index: index
+        })
           .orderBy({
             index: index
           }).limit(5).run(conn);
       } else if (end) {
         // TODO: This doesn't work, as it start over from "zero" position
         tableData = yield r.db(db).table(table).between(r.minval, end, {
-            rightBound: "open",
-            index: index
-          })
+          rightBound: "open",
+          index: index
+        })
           .orderBy({
             index: r.desc(index)
           }).limit(5).run(conn);
@@ -376,7 +380,7 @@ RethinkDbService.prototype.getTableSize = function(conn, db, table) {
 RethinkDbService.prototype.insert = function(conn, db, table, record) {
   return new Promise(function(resolve, reject) {
     co(function*() {
-      const result = yield r.db(db).table(table).insert(record).run(conn, {profile: true});
+      const result = yield r.db(db).table(table).insert(record).run(conn, { profile: true });
       resolve(result);
     }).catch(function(err) {
       reject(err);
@@ -395,7 +399,7 @@ RethinkDbService.prototype.insert = function(conn, db, table, record) {
 RethinkDbService.prototype.update = function(conn, db, table, record) {
   return new Promise(function(resolve, reject) {
     co(function*() {
-      const result = yield r.db(db).table(table).get(record.id).update(record).run(conn, {profile: true});
+      const result = yield r.db(db).table(table).get(record.id).update(record).run(conn, { profile: true });
       resolve(result);
     }).catch(function(err) {
       reject(err);
@@ -436,7 +440,7 @@ RethinkDbService.prototype.replace = function(conn, db, table, record) {
 RethinkDbService.prototype.delete = function(conn, db, table, record) {
   return new Promise(function(resolve, reject) {
     co(function*() {
-      const result = yield r.db(db).table(table).get(record.id).delete().run(conn, {profile: true});
+      const result = yield r.db(db).table(table).get(record.id).delete().run(conn, { profile: true });
       resolve(result);
     }).catch(function(err) {
       reject(err);
