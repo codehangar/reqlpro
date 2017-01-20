@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { queryTable, refreshExplorerBody } from '../../../actions';
 import Breadcrumbs from './Breadcrumbs';
 import FilterPredicate from './FilterPredicate';
+import OrderByPredicate from './OrderByPredicate';
 import QueryProfile from './QueryProfile';
 
 const ExplorerHeader = ({
@@ -86,9 +87,9 @@ const ExplorerHeader = ({
         </div>
       </div>
 
-      <div className="row">
+      <div className="row" style={{marginTop: '5px'}}>
         {(table.type === 'code') ? '' : <FilterPredicate />}
-
+        {(table.type === 'code') ? '' : <OrderByPredicate />}
         <QueryProfile lastResult={table.lastResult}/>
       </div>
     </div>

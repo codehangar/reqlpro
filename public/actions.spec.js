@@ -6,7 +6,7 @@ import md5 from 'md5';
 // getDbConnection,
 // } from '../public/actions';
 
-let RethinkDbService, configService;
+let RethinkDbService, configService, ReQLEval;
 let dispatch;
 const FALSE_SUCCESS_ERROR = new Error('This promise should have failed');
 
@@ -30,7 +30,7 @@ describe('Action Creators', () => {
     mockery.registerMock('../main/services/rethinkdb.service', RethinkDbService);
 
     // replace the require() module `ReQLEval` with a stub object
-    const ReQLEval = sinon.stub();
+    ReQLEval = () => Promise.resolve('ReQLEvalResult');
     mockery.registerMock('../main/services/reql-eval.service', ReQLEval);
 
     // replace the require() module `configService` with a stub object
@@ -53,12 +53,9 @@ describe('Action Creators', () => {
 
     describe('success', () => {
       beforeEach(function() {
-        RethinkDbService.getTableData = sinon.stub().returns(new Promise(function(resolve, reject) {
-          resolve({ value: [{ name: 'Bob' }, { name: 'Jim' }] });
-        }));
-        RethinkDbService.getTableDataBetween = sinon.stub().returns(new Promise(function(resolve, reject) {
-          resolve({ value: [{ name: 'Bob' }, { name: 'Jim' }] });
-        }));
+        const promise = Promise.resolve({ value: [{ name: 'Bob' }, { name: 'Jim' }] });
+        RethinkDbService.getTableData = sinon.stub().returns(promise);
+        RethinkDbService.getTableDataBetween = sinon.stub().returns(promise);
       });
 
       it('should query the table for data with default params', (done) => {
@@ -67,7 +64,7 @@ describe('Action Creators', () => {
         promise
           .then(function() {
             expect(RethinkDbService.getTableData.callCount).to.equal(1);
-            expect(RethinkDbService.getTableData.calledWithExactly(dbConnection, databaseName, tableName, 'id', 0, 5, 1)).to.equal(true);
+            expect(RethinkDbService.getTableData.calledWithExactly(dbConnection, databaseName, tableName, null, ['ReQLEvalResult'], 5, 1)).to.equal(true);
             expect(dispatch.callCount).to.equal(2);
             expect(dispatch.calledWith({
               type: 'UPDATE_SELECTED_TABLE',
@@ -103,12 +100,9 @@ describe('Action Creators', () => {
     describe('failure', () => {
 
       beforeEach(function() {
-        RethinkDbService.getTableData = sinon.stub().returns(new Promise(function(resolve, reject) {
-          reject('im a query table error');
-        }));
-        RethinkDbService.getTableDataBetween = sinon.stub().returns(new Promise(function(resolve, reject) {
-          reject('im a query table error');
-        }));
+        const promise = Promise.reject(new Error('im a query table error'));
+        RethinkDbService.getTableData = sinon.stub().returns(promise);
+        RethinkDbService.getTableDataBetween = sinon.stub().returns(promise);
       });
 
       it('should handle failed query info from RethinkDB', (done) => {
@@ -119,8 +113,9 @@ describe('Action Creators', () => {
             done(FALSE_SUCCESS_ERROR);
           })
           .catch(function() {
+            console.log('catching'); // eslint-disable-line no-console
             expect(RethinkDbService.getTableData.callCount).to.equal(1);
-            expect(RethinkDbService.getTableData.calledWithExactly(dbConnection, databaseName, tableName, 'id', 0, 5, 1)).to.equal(true);
+            expect(RethinkDbService.getTableData.calledWithExactly(dbConnection, databaseName, tableName, null, ['ReQLEvalResult'], 5, 1)).to.equal(true);
             // expect(dispatch.callCount).to.equal(1);
             // expect(dispatch.calledWith({
             //   type: 'UPDATE_SELECTED_TABLE',

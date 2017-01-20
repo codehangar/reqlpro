@@ -22,6 +22,7 @@ import {
   updateSelectedTableSort,
   setSelectedTableSize,
   setFilterPredicate,
+  setOrderByPredicate,
   startRowEdit,
   cancelRowEdit,
   toggleExplorerBody,
@@ -73,6 +74,8 @@ export function main(state = {}, action) {
       return setSelectedTableSize(state, action.size);
     case 'SET_FILTER_PREDICATE':
       return setFilterPredicate(state, action.filterPredicate);
+    case 'SET_ORDER_BY_PREDICATE':
+      return setOrderByPredicate(state, action.orderByPredicate);
     case 'SET_ROW_EDIT':
       return startRowEdit(state, action.row);
     case 'CANCEL_ROW_EDIT':

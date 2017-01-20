@@ -279,10 +279,11 @@ describe('Application Logic', () => {
           codeAction: 'add',
           codeBodyError: null,
           query: {
+            orderByPredicate: "r.asc('id')",
             page: 1,
             limit: 5,
             sort: 'id',
-            direction: 1 // ASC = 1, DESC = 0
+            direction: 'asc'
           }
         }
       });

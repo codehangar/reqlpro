@@ -1,19 +1,18 @@
 import React from 'react';
-import {Table, Column, Cell} from 'fixed-data-table';
+import { Table, Column, Cell } from 'fixed-data-table';
 import JSONTree from 'react-json-tree';
 import _ from 'lodash';
 import classNames from 'classnames';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import ExplorerTableCell from './ExplorerTableCell.js';
 import Segment from '../../../../../services/segment.service';
-import {queryTable} from '../../../../../actions';
-import {getColumnNames, getColumnWidth} from './explorer-table-view-utils';
+import { refreshExplorerBody } from '../../../../../actions';
+import { getColumnNames, getColumnWidth } from './explorer-table-view-utils';
 
 const ExplorerTableView = ({
   width,
   table,
   columnWidths,
-  dbConnection,
   selectedTable,
   onUpdateTableSort,
   onEditClick,
@@ -57,20 +56,21 @@ const ExplorerTableView = ({
   );
 
   const dynamicColumns = columnNames.map((fieldName, index) => {
-    const iconClasses = classNames({
-      'fa': true,
-      'fa-sort-asc': selectedTable.query.direction,
-      'fa-sort-desc': !selectedTable.query.direction,
-      'pull-right': true
-    });
+    const iconClasses = `fa fa-sort-${selectedTable.query.direction} pull-right`;
     let iconBody = '';
     if (selectedTable.query.sort === fieldName) {
       iconBody = <i className={iconClasses}/>;
     }
+    const header = (
+      <Cell className="tableview-header"
+            onClick={() => onUpdateTableSort(selectedTable.query.sort, fieldName, selectedTable.query.direction)}>
+        {fieldName}{iconBody}
+      </Cell>
+    );
     return (
       <Column
         key={index}
-        header={<Cell className="tableview-header" onClick={() => onUpdateTableSort(fieldName, dbConnection, selectedTable)}>{fieldName}{iconBody}</Cell>}
+        header={header}
         isResizable={true}
         columnKey={fieldName}
         cell={(props) => {
@@ -79,7 +79,8 @@ const ExplorerTableView = ({
           }
           return (
             <Cell>
-              <ExplorerTableCell row={selectedTable.data[props.rowIndex]} fieldName={fieldName} rowChanged={rowChanged}/>
+              <ExplorerTableCell row={selectedTable.data[props.rowIndex]} fieldName={fieldName}
+                                 rowChanged={rowChanged}/>
             </Cell>
           );
         }}
@@ -110,9 +111,6 @@ const ExplorerTableView = ({
 
 function mapStateToProps(state) {
   return {
-    // connections: state.main.connections || [],
-    // selectedConnection: state.main.selectedConnection,
-    dbConnection: state.main.dbConnection,
     selectedTable: state.main.selectedTable,
     columnWidths: state.main.columnWidths,
   };
@@ -120,15 +118,15 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    onUpdateTableSort: (field, dbConnection, selectedTable) => {
-      console.log('onUpdateTableSort', field, dbConnection, selectedTable)
+    onUpdateTableSort: (sort, field, direction) => {
+      if (sort === field) {
+        direction = direction === 'asc' ? 'desc' : 'asc';
+      }
       dispatch({
-        type: "SET_TABLE_SORT",
-        field
+        type: "SET_ORDER_BY_PREDICATE",
+        orderByPredicate: `r.${direction}('${field}')`
       });
-      let params = Object.assign({}, selectedTable.query);
-      params.sort = field;
-      dispatch(queryTable(dbConnection, selectedTable.databaseName, selectedTable.name, params));
+      dispatch(refreshExplorerBody());
     },
     setColumnWidth: (newColumnWidth, columnKey, selectedTable) => {
       console.log(newColumnWidth, columnKey, selectedTable)

@@ -80,7 +80,6 @@ export function setSelectedTable(state, databaseName, tableName) {
   let selectedTable = {
     databaseName: databaseName,
     name: tableName,
-    // type: this.selectedTable ? this.selectedTable.type !== 'code' ? this.selectedTable.type : 'table' : 'table',
     // Todo: maintain type from previous selectedTable
     type: 'table',
     data: [],
@@ -88,13 +87,13 @@ export function setSelectedTable(state, databaseName, tableName) {
     codeBody: "{\n  \n}",
     codeAction: 'add',
     codeBodyError: null,
+    // Todo: maintain query from previous selectedTable
     query: {
-      page: 1,
-      // limit: this.selectedTable ? this.selectedTable.query.limit : 5,
-      // Todo: maintain limit from previous selectedTable
+      orderByPredicate: "r.asc('id')",
       limit: 5,
+      page: 1,
       sort: 'id',
-      direction: 1 // ASC = 1, DESC = 0
+      direction: 'asc'
     }
   };
   let newState = Object.assign({}, state, { selectedTable });
@@ -134,6 +133,16 @@ export function setSelectedTableSize(state, size) {
 
 export function setFilterPredicate(state, filterPredicate) {
   const query = Object.assign({}, state.selectedTable.query, { filterPredicate });
+  const selectedTable = Object.assign({}, state.selectedTable, { query });
+  return Object.assign({}, state, { selectedTable });
+}
+
+export function setOrderByPredicate(state, orderByPredicate) {
+  const preds = orderByPredicate.split(',');
+  const pieces = preds[0].match(/[^'"]+(?=['"])/g);
+  const sort = pieces ? pieces[pieces.length - 1] : '';
+  const direction = orderByPredicate.indexOf('desc') !== -1 ? 'desc' : 'asc';
+  const query = Object.assign({}, state.selectedTable.query, { orderByPredicate, sort, direction });
   const selectedTable = Object.assign({}, state.selectedTable, { query });
   return Object.assign({}, state, { selectedTable });
 }

@@ -8,11 +8,10 @@ import { convertStringsToDates } from './services/date-type.service'
 // export function queryTable(queryParams = selectedTable.query) {
 // Todo: pull from passed in queryParams or default to selectedTable on state (or leave as is, not sure)
 export function queryTable(conn, db, table, query = {
-  page: 1,
+  filterPredicate: null,
+  orderByPredicate: "r.asc('id')",
   limit: 5,
-  sort: 'id',
-  direction: 0, // ASC = 1, DESC = 0,
-  filterPredicate: null
+  page: 1
 }) {
   if (query.page) {
     return getTableData(conn, db, table, query);
@@ -25,20 +24,22 @@ function getTableData(conn, db, table, query) {
   return dispatch => {
     return new Promise((resolve, reject) => {
       co(function *() {
-        let { sort, direction, limit, page, filterPredicate } = query;
+        let { filterPredicate, orderByPredicate, limit, page } = query;
 
-        // Example filterPredicate: r.row('name').eq('yes')
         if (filterPredicate) {
           filterPredicate = yield ReQLEval(filterPredicate);
         }
-        console.log('ReQLEval filterPredicate', filterPredicate); // eslint-disable-line no-console})
+
+        const orderBy = yield orderByPredicate.split(',').map((p) => {
+          return ReQLEval(p);
+        });
 
         if (page < 1) {
           page = 1;
         }
 
-        const result = yield RethinkDbService.getTableData(conn, db, table, sort, direction, limit, page, filterPredicate);
-        console.log('result', result); // eslint-disable-line no-console
+        const result = yield RethinkDbService.getTableData(conn, db, table, filterPredicate, orderBy, limit, page);
+
         dispatch({
           type: 'UPDATE_SELECTED_TABLE',
           lastResult: result,
@@ -55,7 +56,7 @@ function getTableData(conn, db, table, query) {
             type: 'UPDATE_SELECTED_TABLE',
             queryError: error
           });
-          // reject(error);
+          reject(error);
         });
     });
   }
