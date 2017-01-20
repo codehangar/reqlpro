@@ -21,7 +21,7 @@ const ExplorerTableView = ({
   setColumnWidth
 }) => {
 
-  console.log('selectedTable----->', selectedTable);
+  // console.log('selectedTable----->', selectedTable);
 
   let columnNames = getColumnNames(selectedTable.data);
 

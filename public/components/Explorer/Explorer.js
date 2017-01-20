@@ -41,7 +41,7 @@ const Explorer = ({
       </div>
     );
   } else if (connectionError && connectionError.connection.name == connection.selected.name) {
-    console.log('show Explorer Error');
+    // console.log('show Explorer Error');
     content = (
       <div className="explorer-container">
         <div className="explorer-full-message">
@@ -55,7 +55,7 @@ const Explorer = ({
       </div>
     );
   } else if (connections.length === 0) {
-    console.log('show add a RethinkDB connection message');
+    // console.log('show add a RethinkDB connection message');
     content = (
       <div>
         <div className="text-center">
@@ -66,7 +66,7 @@ const Explorer = ({
       </div>
     );
   } else if (selectedTable) {
-    console.log('show Table Data');
+    // console.log('show Table Data');
     content = (
       <div className="explorer-container">
         <ExplorerHeader table={selectedTable}/>

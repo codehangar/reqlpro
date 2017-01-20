@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { queryTable, refreshExplorerBody } from '../../../actions';
 import Breadcrumbs from './Breadcrumbs';
 import FilterPredicate from './FilterPredicate';
+import QueryProfile from './QueryProfile';
 
 const ExplorerHeader = ({
   table,
@@ -43,12 +44,6 @@ const ExplorerHeader = ({
       'hidden': table.type === 'code'
     })
   };
-
-  let queryProfile;
-  if (table.lastResult) {
-    queryProfile = '[' + table.lastResult.profile[0].description + ' - ';
-    queryProfile += table.lastResult.profile[0]['duration(ms)'] + 'ms]';
-  }
 
   const refreshTooltip = <Tooltip id="tt-refresh-query">Refresh Query</Tooltip>;
   const addRecordTooltip = <Tooltip id="tt-add-record">Add New Record</Tooltip>;
@@ -94,9 +89,7 @@ const ExplorerHeader = ({
       <div className="row">
         {(table.type === 'code') ? '' : <FilterPredicate />}
 
-        <div className="query-profile" style={{ marginLeft: '20px' }}>
-          {queryProfile}
-        </div>
+        <QueryProfile lastResult={table.lastResult}/>
       </div>
     </div>
   );
