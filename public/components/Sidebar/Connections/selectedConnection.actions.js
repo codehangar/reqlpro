@@ -3,12 +3,8 @@ import { getDbList } from '../Databases/databases.actions';
 import { actions } from 'react-redux-form';
 import * as types from '../../../action-types';
 
-export function showConnectionForm(connection = null) {
+export function showConnectionForm(connection = {}) {
   return dispatch => {
-    /**
-     * Note: actions.change won't work with an undefined value,
-     * which is why connection is initialized to null
-     */
     dispatch(actions.change('forms.connection', connection));
 
     dispatch({

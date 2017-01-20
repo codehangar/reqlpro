@@ -86,7 +86,7 @@ function mapStateToProps(state) {
   console.log('------------------------'); // eslint-disable-line no-console
   console.log('state.forms.connection', state.forms.connection); // eslint-disable-line no-console
   return {
-    isAdd: !state.forms.connection,
+    isAdd: typeof state.forms.connection.index === 'undefined',
     selectedConnection: state.connection.selected
   };
 }
@@ -99,7 +99,7 @@ const mapDispatchToProps = (dispatch) => {
       })
     },
     onSave: (data) => {
-      console.log(data);
+      console.log('onSave data', data);
       dispatch({
         type: "ADD_CONNECTION",
         connection: data
@@ -108,7 +108,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(writeConfigFile());
     },
     onUpdate: (data) => {
-      console.log('data', data);
+      console.log('onUpdate data', data);
       dispatch({
         type: "UPDATE_CONNECTION",
         connection: data
