@@ -24,6 +24,10 @@ export function queryTable(conn, db, table, query = {
 function getTableData(conn, db, table, query) {
   return dispatch => {
     return new Promise((resolve, reject) => {
+      dispatch({
+        type: 'SET_CONNECTION_LOADING',
+        loading: true
+      });
       co(function *() {
         let { filterPredicate, orderByPredicate, limit, page } = query;
 
@@ -47,6 +51,10 @@ function getTableData(conn, db, table, query) {
           data: result.value
         });
         dispatch(getTableSize(conn, db, table));
+        dispatch({
+          type: 'SET_CONNECTION_LOADING',
+          loading: false
+        });
         resolve(result);
       })
         .catch(error => {
@@ -57,6 +65,10 @@ function getTableData(conn, db, table, query) {
             type: 'UPDATE_SELECTED_TABLE',
             queryError: error
           });
+          dispatch({
+            type: 'SET_CONNECTION_LOADING',
+            loading: false
+          });
           reject(error);
         });
     });
@@ -66,6 +78,10 @@ function getTableData(conn, db, table, query) {
 function getTableDataBetween(index, start, end, dbConnection, databaseName, tableName) {
   return dispatch => {
     return new Promise((resolve, reject) => {
+      dispatch({
+        type: 'SET_CONNECTION_LOADING',
+        loading: true
+      });
       const conn = dbConnection;
       const db = databaseName;
       const table = tableName;
@@ -82,13 +98,20 @@ function getTableDataBetween(index, start, end, dbConnection, databaseName, tabl
           data: result.value
         });
         dispatch(getTableSize(conn, db, table));
-
+        dispatch({
+          type: 'SET_CONNECTION_LOADING',
+          loading: false
+        });
         resolve(result);
 
       }).catch(function(error) {
         dispatch({
           type: 'UPDATE_SELECTED_TABLE',
           queryError: error
+        });
+        dispatch({
+          type: 'SET_CONNECTION_LOADING',
+          loading: false
         });
         reject(error);
       });
@@ -190,18 +213,11 @@ export function getTableSize(conn, dbName, tableName) {
 export function refreshExplorerBody() {
   return (dispatch, getState) => {
 
-    dispatch({
-      type: 'SET_CONNECTION_LOADING',
-      loading: true
-    });
     const conn = getState().main.dbConnection;
     const dbName = getState().main.selectedTable.databaseName;
     const tableName = getState().main.selectedTable.name;
     // Run last query to update view
-    dispatch({
-    type: 'SET_CONNECTION_LOADING',
-      loading: false
-    });
+
     return dispatch(queryTable(conn, dbName, tableName, getState().main.selectedTable.query));
 
   }
