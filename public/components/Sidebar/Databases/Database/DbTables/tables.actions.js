@@ -50,14 +50,26 @@ export function createTable(dbConnection, dbName, tableName) {
 export function deleteTable(conn, dbName, tableName) {
   return dispatch => {
     return new Promise((resolve, reject) => {
+      dispatch({
+        type: 'SET_CONNECTION_LOADING',
+        loading: true
+      });
       RethinkDbService.deleteTable(conn, dbName, tableName).then((results) => {
         dispatch({
           type: types.DELETE_TABLE,
           dbName,
           tableName
         });
+        dispatch({
+          type: 'SET_CONNECTION_LOADING',
+          loading: false
+        });
         resolve();
       }).catch((err) => {
+        dispatch({
+          type: 'SET_CONNECTION_LOADING',
+          loading: false
+        });
         reject(err);
       });
     });
