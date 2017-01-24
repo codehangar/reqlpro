@@ -189,13 +189,23 @@ export function getTableSize(conn, dbName, tableName) {
 
 export function refreshExplorerBody() {
   return (dispatch, getState) => {
+
+    dispatch({
+      type: 'SET_CONNECTION_LOADING',
+      loading: true
+    });
     const conn = getState().main.dbConnection;
     const dbName = getState().main.selectedTable.databaseName;
     const tableName = getState().main.selectedTable.name;
     // Run last query to update view
-
+    dispatch({
+    type: 'SET_CONNECTION_LOADING',
+      loading: false
+    });
     return dispatch(queryTable(conn, dbName, tableName, getState().main.selectedTable.query));
+
   }
+
 }
 
 export function deleteRow(row) {
