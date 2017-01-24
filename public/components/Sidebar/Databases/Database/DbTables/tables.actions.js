@@ -21,14 +21,26 @@ export function getDbTables(dbConnection, dbName) {
 export function createTable(dbConnection, dbName, tableName) {
   return dispatch => {
     return new Promise((resolve, reject) => {
+      dispatch({
+        type: 'SET_CONNECTION_LOADING',
+        loading: true
+      });
       RethinkDbService.createTable(dbConnection, dbName, tableName, 'id').then((results) => {
         dispatch({
           type: types.ADD_TO_TABLE_LIST,
           dbName,
           tableName
         });
+        dispatch({
+          type: 'SET_CONNECTION_LOADING',
+          loading: false
+        });
         resolve(results);
       }).catch(error => {
+        dispatch({
+          type: 'SET_CONNECTION_LOADING',
+          loading: true
+        });
         reject(error);
       });
     });
