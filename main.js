@@ -11,6 +11,8 @@ const ConfigService = require('./main/services/config.service.js');
 const co = require('co');
 // Communication between main and renderer
 const ipcMain = require('electron').ipcMain;
+const Menu = require('electron').Menu;
+const menuConfig = require('./menu.config');
 
 const packageDetails = require('./package.json');
 
@@ -51,6 +53,8 @@ function createWindow() {
       // Open the DevTools.
       mainWindow.webContents.openDevTools();
     }
+
+    Menu.setApplicationMenu(menuConfig.createMenu());
 
     // Emitted when the window is closed.
     mainWindow.on('closed', function() {
@@ -110,3 +114,5 @@ app.on('activate', function() {
     createWindow();
   }
 });
+
+

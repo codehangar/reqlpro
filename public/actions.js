@@ -1,6 +1,7 @@
 // import RethinkDbService from '../main/services/rethinkdb.service';
 import co from 'co';
 const RethinkDbService = require('../main/services/rethinkdb.service');
+const remote = window.nodeRequire('electron').remote;
 const configService = remote.require('./main/services/config.service');
 import ReQLEval from '../main/services/reql-eval.service';
 import { convertStringsToDates } from './services/date-type.service'
