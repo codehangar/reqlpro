@@ -1,9 +1,12 @@
-import React, { Component } from'react';
-import Segment from'../../services/segment.service.js';
+import React, { Component } from 'react';
+import Segment from '../../services/segment.service.js';
+import { Modal, Button } from 'react-bootstrap';
 import { Control, Form, Field, actions } from 'react-redux-form';
 import { connect } from 'react-redux';
 import store from '../../store';
 import { addConnection, updateConnection, deleteConnection } from '../Sidebar/Connections/connections.actions';
+
+
 
 class ConnectionForm extends Component {
   constructor(props) {
@@ -20,6 +23,7 @@ class ConnectionForm extends Component {
   render() {
     const {
       selectedConnection,
+      showConnectionForm = true, 
       isAdd,
       onCancel,
       onDelete,
@@ -28,74 +32,77 @@ class ConnectionForm extends Component {
     } = this.props;
 
     console.log('isAdd', isAdd); // eslint-disable-line no-console
+
+    
     return (
-      <div className="ConnectionForm">
-        <div className="panel panel-default">
-          <div className="panel-heading">
-            <strong>{ isAdd ? 'Add New' : 'Edit' } RethinkDB Connection</strong>
-          </div>
-          <Form model="forms.connection" onSubmit={(data) => isAdd ? onSave(data) : onUpdate(data)}>
-            <div className="panel-body">
-              <div className="row">
-                <div className="col-sm-12">
-                  <div>
-                    <label>Connection Name</label>
-                    <Field model=".name">
-                      <input className="form-control" type="text" id="name"
-                             ref={(input) => {
-                               this.nameInput = input;
-                             }}
-                             placeholder="i.e. TodoApp-local"/>
-                    </Field>
-                  </div>
-                  <div>
-                    <label>Host</label>
-                    <Field model=".host">
-                      <input className="form-control" type="text" id="host"
-                             placeholder="i.e. localhost"/>
-                    </Field>
-                  </div>
-                  <div>
-                    <label>Port</label>
-                    <Field model=".port">
-                      <input className="form-control" type="text" id="host"
-                             placeholder="i.e. 28015"/>
-                    </Field>
-                  </div>
-                  <div className="row">
-                    <div className="col-sm-6">
-                      <label>User</label>
-                      <Field model=".user">
-                        <input className="form-control" type="text" id="user"/>
+      <Modal show={showConnectionForm} onHide={onCancel}>
+        <Form model="forms.connection" onSubmit={(data) => isAdd ? onSave(data) : onUpdate(data)}>
+          <Modal.Header closeButton>
+            <Modal.Title>{isAdd ? 'Add New' : 'Edit'} RethinkDB Connection</Modal.Title>
+          </Modal.Header>  
+          <Modal.Body>
+              <div className="panel-body">
+                <div className="row">
+                  <div className="col-sm-12">
+                    <div>
+                      <label>Connection Name</label>
+                      <Field model=".name">
+                        <input className="form-control" type="text" id="name"
+                          ref={(input) => {
+                            this.nameInput = input;
+                          } }
+                          placeholder="i.e. TodoApp-local" />
                       </Field>
                     </div>
-                    <div className="col-sm-6">
-                      <label>Pass</label>
-                      <Field model=".pass">
-                        <input className="form-control" type="password" id="pass"/>
+                    <div>
+                      <label>Host</label>
+                      <Field model=".host">
+                        <input className="form-control" type="text" id="host"
+                          placeholder="i.e. localhost" />
                       </Field>
+                    </div>
+                    <div>
+                      <label>Port</label>
+                      <Field model=".port">
+                        <input className="form-control" type="text" id="host"
+                          placeholder="i.e. 28015" />
+                      </Field>
+                    </div>
+                    <div className="row">
+                      <div className="col-sm-6">
+                        <label>User</label>
+                        <Field model=".user">
+                          <input className="form-control" type="text" id="user" />
+                        </Field>
+                      </div>
+                      <div className="col-sm-6">
+                        <label>Pass</label>
+                        <Field model=".pass">
+                          <input className="form-control" type="password" id="pass" />
+                        </Field>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="panel-footer">
-              <button type="submit" className="btn btn-primary pull-right">Save</button>
-              <button type="button" onClick={onCancel} className="btn btn-default pull-left">Cancel</button>
-              {!isAdd ?
-                <button type="button" className="btn btn-default" onClick={() => onDelete(selectedConnection)}>
-                  Delete</button> : ''}
-              <div className="clearfix"/>
-            </div>
-          </Form>
-        </div>
-      </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <button type="submit" className="btn btn-primary pull-right">Save</button>
+            <button type="button" onClick={onCancel} className="btn btn-default pull-left">Cancel</button>
+            {!isAdd ?
+              <button type="button" className="btn btn-default" onClick={() => onDelete(selectedConnection)}>
+                Delete</button> : ''}
+            <div className="clearfix" />
+          </Modal.Footer>
+        </Form>
+      </Modal>
     );
   }
 }
 
 function mapStateToProps(state) {
   return {
+    showConnectionForm: state.connection.showConnectionForm,
     isAdd: typeof state.forms.connection.index === 'undefined',
     selectedConnection: state.connection.selected
   };
@@ -105,16 +112,23 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onCancel: () => {
       dispatch({
-        type: "HIDE_CONNECTION_FORM"
+        type: "HIDE_CONNECTION_FORM",
+        showConnectionForm: false
       })
     },
     onSave: (data) => {
       console.log('onSave data', data);
       dispatch(addConnection(data));
+      dispatch({
+        showConnectionForm: false
+      })
     },
     onUpdate: (data) => {
       console.log('onUpdate data', data);
       dispatch(updateConnection(data));
+       dispatch({
+        showConnectionForm: false
+      })
     },
     onDelete: (connection) => {
       if (confirm("Are you sure you want to delete the connection named " + connection.name)) {
