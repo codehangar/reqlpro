@@ -7,12 +7,12 @@ class OrderByPredicate extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      width: '107px'
+      width: '40px'
     };
   }
 
   setWidth(val) {
-    const width = ((val.length * 7.24) + 77) + 'px';
+    const width = ((val.length * 7.8) + 50) + 'px';
     this.setState({ width });
   }
 
@@ -41,20 +41,22 @@ class OrderByPredicate extends Component {
   render() {
     const { table } = this.props;
     return (
-      <div className="order-by-predicate" style={{ width: this.state.width }}>
+      <span className="order-by-predicate">
         <form onSubmit={this.onSubmit}>
           <span className="predicate-opener">.orderBy(</span>
-          <input className="form-control input-code" type="text"
+          <input className="input-code" type="text" style={{ width: this.state.width }}
                  value={table.query.orderByPredicate}
                  onChange={this.onChange}
                  ref={input => this.orderByInput = input}
           />
-          <span className="predicate-closer">)</span>
+          <span className="predicate-closer">)
+            <span className="filter-help-icon">
+              <i className="fa fa-info-circle clickable" onClick={this.helpClick}/>
+            </span>
+          </span>
         </form>
-        <span className="filter-help-icon">
-          <i className="fa fa-info-circle clickable" onClick={this.helpClick}/>
-        </span>
-      </div>
+
+      </span>
     )
   }
 }

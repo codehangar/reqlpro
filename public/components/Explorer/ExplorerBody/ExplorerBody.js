@@ -13,6 +13,7 @@ const ExplorerBody = ({
       <span className="fa fa-refresh fa-spin"/>
     </div>
   );
+
   const emptyTable = (
     <div className="explorer-container">
       <div className="explorer-full-message">
@@ -27,6 +28,7 @@ const ExplorerBody = ({
       </div>
     </div>
   );
+
   const queryError = (
     <div className="explorer-container">
       <div className="explorer-full-message">
@@ -40,6 +42,7 @@ const ExplorerBody = ({
   );
 
   let explorerBody;
+
   if (table.loading) {
     explorerBody = loading;
   } else if (table.queryError) {

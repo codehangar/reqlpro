@@ -7,7 +7,7 @@ class FilterPredicate extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      width: '100px'
+      width: '50px'
     };
   }
 
@@ -17,7 +17,7 @@ class FilterPredicate extends Component {
 
   onChange = (e) => {
     const len = e.target.value.length;
-    const width = ((len * 7.24) + 70) + 'px';
+    const width = ((len * 7.8) + 50) + 'px';
     this.setState({ width });
     this.props.setFilterPredicate(e.target.value);
   };
@@ -34,20 +34,23 @@ class FilterPredicate extends Component {
   render() {
     const { table } = this.props;
     return (
-      <div className="filter-predicate" style={{ width: this.state.width }}>
+      <span className="filter-predicate">
         <form onSubmit={this.onSubmit}>
           <span className="predicate-opener">.filter(</span>
-          <input className="form-control input-code" type="text"
+          <input className="input-code" type="text" style={{ width: this.state.width }}
                  value={table.filterPredicate}
                  onChange={this.onChange}
                  ref={input => this.predInput = input}
           />
-          <span className="predicate-closer">)</span>
+          <span className="predicate-closer">)
+            <span className="filter-help-icon">
+              <i className="fa fa-info-circle clickable" onClick={this.filterHelpClick}/>
+            </span>
+          </span>
+
         </form>
-        <span className="filter-help-icon">
-          <i className="fa fa-info-circle clickable" onClick={this.filterHelpClick}/>
-        </span>
-      </div>
+
+      </span>
     )
   }
 }

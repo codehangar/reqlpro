@@ -2,9 +2,9 @@ import React, { PropTypes } from 'react';
 
 const Breadcrumbs = ({ connection, table }) => {
 
-  const userCrumb = <span className="badge" style={{marginRight: '10px'}}><i className="fa fa-user"/> {connection.user || 'admin'} </span>;
-  const dbCrumb = <span><i className="fa fa-database"/> {table.databaseName} </span>;
-  const tableCrumb = <span><i className="fa fa-table"/> {table.name} </span>;
+  const userCrumb = <span><span className="crumb-icon"><i className="fa fa-user"/></span> {connection.user || 'admin'} </span>;
+  const dbCrumb = <span><span className="crumb-icon"><i className="fa fa-database"/></span> {table.databaseName} </span>;
+  const tableCrumb = <span><span className="crumb-icon"><i className="fa fa-table"/></span> {table.name} </span>;
 
   let actionCrumb;
   if (table.type === 'code') {
@@ -19,8 +19,9 @@ const Breadcrumbs = ({ connection, table }) => {
   return (
     <div className="breadcrumb-text-container">
       {userCrumb}
+      <span className="crumb-icon"><i className="fa fa-angle-right"/></span>
       {dbCrumb}
-      <i className="fa fa-angle-right"/>
+      <span className="crumb-icon"><i className="fa fa-angle-right"/></span>
       {tableCrumb}
       {actionCrumb}
     </div>

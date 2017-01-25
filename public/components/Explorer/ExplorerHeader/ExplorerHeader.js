@@ -66,7 +66,7 @@ const ExplorerHeader = ({
 
   return (
     <div className="explorer-header" id="explorer-header">
-      <div className="row bread-crumbs">
+      <div className="explorer-header-row">
         <Breadcrumbs connection={connection} table={table}/>
         <div className="pull-right">
           {(table.type === 'code') ? '' : rowsPerPage}
@@ -87,9 +87,11 @@ const ExplorerHeader = ({
         </div>
       </div>
 
-      <div className="row" style={{marginTop: '5px'}}>
-        {(table.type === 'code') ? '' : <FilterPredicate />}
-        {(table.type === 'code') ? '' : <OrderByPredicate />}
+      <div className="explorer-header-row">
+        <span className="query-builder">
+          {(table.type === 'code') ? '' : <FilterPredicate />}
+          {(table.type === 'code') ? '' : <OrderByPredicate />}
+        </span>
         <QueryProfile lastResult={table.lastResult}/>
       </div>
     </div>
