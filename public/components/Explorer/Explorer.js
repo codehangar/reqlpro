@@ -71,7 +71,7 @@ const Explorer = ({
       <div className="explorer-container">
         <ExplorerHeader table={selectedTable}/>
         <ExplorerBody table={selectedTable}/>
-        <ExplorerFooter table={selectedTable}/>
+        <ExplorerFooter/>
       </div>
     );
   }

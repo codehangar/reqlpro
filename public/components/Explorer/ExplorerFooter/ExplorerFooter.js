@@ -4,12 +4,12 @@ import ExplorerPagination from './ExplorerPagination';
 import Segment from '../../../services/segment.service';
 import ace from 'brace';
 import { connect } from "react-redux";
-import { saveRow } from '../../../actions';
+import { saveRow, queryTable } from '../../../actions';
 
 
 const ExplorerFooter = ({
   dbConnection,
-  selectedTable,
+  table,
   onCancelClick,
   prevPage,
   nextPage,
@@ -23,20 +23,21 @@ const ExplorerFooter = ({
       <ExplorerPagination
         prevPage={prevPage}
         nextPage={nextPage}
-        table={selectedTable}/>
+        dbConnection={dbConnection}
+        table={table}/>
     </div>
   );
 
-  if (selectedTable.type === 'code') {
+  if (table.type === 'code') {
     footerBody = (
       <div className="not-text-center pull-right">
         <span className="btn btn-default" onClick={onCancelClick} style={{ marginRight: '10px' }}>Cancel</span>
-        <span className="btn btn-primary" onClick={() => save(dbConnection, selectedTable)}>Save</span>
+        <span className="btn btn-primary" onClick={() => save(dbConnection, table)}>Save</span>
       </div>
     );
-  } else if (selectedTable.queryError) {
+  } else if (table.queryError) {
     footerBody = '';
-  } else if (!selectedTable.data.length) {
+  } else if (!table.data.length) {
     footerBody = '';
   }
 
@@ -50,7 +51,7 @@ const ExplorerFooter = ({
 
 const mapStateToProps = (state) => {
   return {
-    selectedTable: state.main.selectedTable,
+    table: state.main.selectedTable,
     dbConnection: state.main.dbConnection
   };
 };
@@ -67,35 +68,43 @@ const mapDispatchToProps = (dispatch) => {
         properties: {}
       });
     },
-    prevPage: function() {
-      const index = this.props.table.query.index;
-      const limit = this.props.table.query.limit;
-      const page = this.props.table.query.page - 1;
-      this.props.store.query({ index, limit, page });
+    prevPage: function(dbConnection, table) {
+      const query = {
+        filterPredicate: table.query.filterPredicate,
+        orderByPredicate: table.query.orderByPredicate,
+        limit: table.query.limit,
+        page: table.query.page - 1
+      };
 
-      Segment.track({
-        event: 'explorer.paginationClick',
-        properties: {
-          'type': 'prevPage',
-          'page': page,
-          'limit': limit
-        }
-      });
+      dispatch(queryTable(dbConnection, table.databaseName, table.name, query));
+
+      // Segment.track({
+      //   event: 'explorer.paginationClick',
+      //   properties: {
+      //     'type': 'prevPage',
+      //     'page': page,
+      //     'limit': limit
+      //   }
+      // });
     },
-    nextPage: function() {
-      const index = this.props.table.query.index;
-      const limit = this.props.table.query.limit;
-      const page = this.props.table.query.page + 1;
-      this.props.store.query({ index, limit, page });
+    nextPage: function(dbConnection, table) {
+      const query = {
+        filterPredicate: table.query.filterPredicate,
+        orderByPredicate: table.query.orderByPredicate,
+        limit: table.query.limit,
+        page: table.query.page + 1
+      };
 
-      Segment.track({
-        event: 'explorer.paginationClick',
-        properties: {
-          'type': 'nextPage',
-          'page': page,
-          'limit': limit
-        }
-      });
+      dispatch(queryTable(dbConnection, table.databaseName, table.name, query));
+
+      // Segment.track({
+      //   event: 'explorer.paginationClick',
+      //   properties: {
+      //     'type': 'nextPage',
+      //     'page': page,
+      //     'limit': limit
+      //   }
+      // });
     },
     prevPageBetween: function() {
       const index = this.props.table.query.index;
@@ -123,6 +132,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-const ExplorerFooterContainer = connect(mapStateToProps, mapDispatchToProps)(ExplorerFooter);
-
-export default ExplorerFooterContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(ExplorerFooter);

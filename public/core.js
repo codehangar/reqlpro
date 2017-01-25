@@ -111,6 +111,12 @@ export function updateSelectedTable(state, data, lastResult, queryError = null) 
   return newState;
 }
 
+
+export function setTableQuery(state, query) {
+  const selectedTable = Object.assign({}, state.selectedTable, { query });
+  return Object.assign({}, state, { selectedTable });
+}
+
 export function updateSelectedTablePageLimit(state, limit) {
   let queryCopy = Object.assign({}, state.selectedTable.query)
   queryCopy.limit = parseInt(limit);

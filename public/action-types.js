@@ -19,3 +19,4 @@ export const DELETE_DATABASE = 'DELETE_DATABASE';
 export const SET_DB_TABLES = 'SET_DB_TABLES';
 export const ADD_TO_TABLE_LIST = 'ADD_TO_TABLE_LIST';
 export const DELETE_TABLE = 'DELETE_TABLE';
+export const SET_TABLE_QUERY = 'SET_TABLE_QUERY';

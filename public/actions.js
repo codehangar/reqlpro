@@ -28,6 +28,10 @@ function getTableData(conn, db, table, query) {
         type: 'SET_CONNECTION_LOADING',
         loading: true
       });
+      dispatch({
+        type: 'SET_TABLE_QUERY',
+        query
+      });
       co(function *() {
         let { filterPredicate, orderByPredicate, limit, page } = query;
 

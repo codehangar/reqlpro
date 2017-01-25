@@ -18,6 +18,7 @@ import {
   setSelectedTable,
   removeSelectedTable,
   updateSelectedTable,
+  setTableQuery,
   updateSelectedTablePageLimit,
   updateSelectedTableSort,
   setSelectedTableSize,
@@ -66,6 +67,8 @@ export function main(state = {}, action) {
       return removeSelectedTable(state);
     case 'UPDATE_SELECTED_TABLE':
       return updateSelectedTable(state, action.data, action.lastResult, action.queryError);
+    case 'SET_TABLE_QUERY':
+      return setTableQuery(state, action.query);
     case 'SET_TABLE_PAGE_LIMIT':
       return updateSelectedTablePageLimit(state, action.limit);
     case 'SET_TABLE_SORT':
