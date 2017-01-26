@@ -4,6 +4,10 @@ import { Dropdown, MenuItem } from 'react-bootstrap';
 import { deleteConnection } from '../Connections/connections.actions';
 import { showConnectionForm } from '../Connections/selectedConnection.actions';
 
+const Toggle = ({ onClick }) => {
+  return <i className="fa fa-bars connection-action-menu-button" onClick={onClick}/>;
+};
+
 const DatabasesHeader = ({
   editConnection,
   addDatabase,
@@ -15,7 +19,7 @@ const DatabasesHeader = ({
       <div>
         <span className="title">{selectedConnection ? selectedConnection.name : ''}</span>
         <Dropdown id="connection-dropdown" className="pull-right">
-          <i bsRole="toggle" className="fa fa-bars connection-action-menu-button"/>
+          <Toggle bsRole="toggle"/>
           <Dropdown.Menu className="super-colors">
             <MenuItem onClick={addDatabase}>Add database</MenuItem>
             <MenuItem divider/>

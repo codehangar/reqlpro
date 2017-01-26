@@ -1,11 +1,10 @@
 'use strict';
 
-var r = window.nodeRequire('rethinkdb');
-// var r = require('rethinkdb');
-var co = require('co');
-var uuid = require('node-uuid');
+import r from 'rethinkdb';
+import co from 'co';
+import uuid from 'node-uuid';
 
-var RethinkDbService = function() {
+const RethinkDbService = function() {
 
 };
 
@@ -40,7 +39,7 @@ RethinkDbService.prototype.getConnection = function(connectionInfo) {
  * @returns {Promise}
  */
 RethinkDbService.prototype.getDatabaseConnection = function() {
-  var connectionInfo = {
+  const connectionInfo = {
     host: process.env.DATABASE_HOST,
     port: process.env.DATABASE_PORT,
     authKey: process.env.DATABASE_KEY,
@@ -64,11 +63,11 @@ RethinkDbService.prototype.getDatabaseConnection = function() {
  * @returns {Promise}
  */
 RethinkDbService.prototype.generateAuthKey = function() {
-  var connectionInfo = {
+  const connectionInfo = {
     host: process.env.DATABASE_HOST,
     port: process.env.DATABASE_PORT
   };
-  var authKey = uuid.v4();
+  const authKey = uuid.v4();
   return new Promise(function(resolve, reject) {
     r.connect(connectionInfo).then(function(conn) {
       r.db('rethinkdb').table('cluster_config').get('auth').update({
@@ -96,7 +95,7 @@ RethinkDbService.prototype.generateAuthKey = function() {
  * @returns {Promise}
  */
 RethinkDbService.prototype.resetAuthKey = function() {
-  var connectionInfo = {
+  const connectionInfo = {
     host: process.env.DATABASE_HOST,
     port: process.env.DATABASE_PORT,
     authKey: process.env.DATABASE_KEY
@@ -221,7 +220,7 @@ RethinkDbService.prototype.createIndex = function(conn, database, table, newInde
   return new Promise(function(resolve, reject) {
     co(function*() {
       // Get a list of indices on a table
-      var indexList = yield r.db(database).table(table).indexList().run(conn);
+      const indexList = yield r.db(database).table(table).indexList().run(conn);
       // If index does not exist in indexList array then create the index
       if (indexList.indexOf(newIndex) === -1) {
         yield r.db(database).table(table).indexCreate(newIndex).run(conn);
@@ -246,7 +245,7 @@ RethinkDbService.prototype.createIndex = function(conn, database, table, newInde
 RethinkDbService.prototype.getDbList = function(conn) {
   return new Promise(function(resolve, reject) {
     co(function*() {
-      var dbList = yield r.dbList().run(conn);
+      const dbList = yield r.dbList().run(conn);
       resolve(dbList);
     }).catch(function(err) {
       reject(err);
@@ -263,7 +262,7 @@ RethinkDbService.prototype.getDbList = function(conn) {
 RethinkDbService.prototype.getTableList = function(conn, db) {
   return new Promise(function(resolve, reject) {
     co(function*() {
-      var tableList = yield r.db(db).tableList().run(conn);
+      const tableList = yield r.db(db).tableList().run(conn);
       resolve(tableList);
     }).catch(function(err) {
       reject(err);

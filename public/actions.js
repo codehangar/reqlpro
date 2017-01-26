@@ -1,10 +1,8 @@
-// import RethinkDbService from '../main/services/rethinkdb.service';
 import co from 'co';
-const RethinkDbService = require('../main/services/rethinkdb.service');
-const remote = window.nodeRequire('electron').remote;
-const configService = remote.require('./main/services/config.service');
-import ReQLEval from '../main/services/reql-eval.service';
+import RethinkDbService from './services/rethinkdb.service';
+import ReQLEval from './services/reql-eval.service';
 import { convertStringsToDates } from './services/date-type.service'
+import configService from './services/config.service';
 
 // export function queryTable(queryParams = selectedTable.query) {
 // Todo: pull from passed in queryParams or default to selectedTable on state (or leave as is, not sure)

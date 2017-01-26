@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { refreshExplorerBody } from '../../../actions';
-const shell = window.nodeRequire('electron').shell;
+import { shell } from 'electron';
 
 class FilterPredicate extends Component {
   constructor(props) {

@@ -1,8 +1,6 @@
 'use strict';
 
-const electron = require('electron');
-// Module to control application life.
-const app = electron.app;
+const { remote } = require('electron');
 const fs = require('fs');
 
 /**
@@ -16,18 +14,12 @@ const fs = require('fs');
  * which by default it is the appData directory appended with your app's name.
  */
 
-const ConfigService = function() {
-  this.name = app.getName();
-  this.configPath = app.getPath('userData');
+const ConfigService = function(configPath) {
+  if (!configPath) throw new Error('ConfigService must supplied a path to the configuration');
+  this.configPath = configPath;
   this.configFileName = 'config.json';
   this.fullConfigPath = this.configPath + '/' + this.configFileName;
-
-  console.log("this.name", this.name);
-  console.log("app.getAppPath()", app.getAppPath());
-  console.log("app.getVersion()", app.getVersion());
   console.log("this.fullConfigPath", this.fullConfigPath);
-  // app.dock.bounce();
-  // app.dock.setBadge('text')
 };
 
 const defaultConfig = {
@@ -39,7 +31,7 @@ ConfigService.prototype.readConfigFile = function() {
     fs.readFile(this.fullConfigPath, {
       encoding: 'utf-8'
     }, (err, data) => {
-      console.log(" ***readConfigFile", data)
+      // console.log(" ***readConfigFile", data)
       if (err) {
         console.error('err', err);
 
@@ -52,7 +44,6 @@ ConfigService.prototype.readConfigFile = function() {
       } else if (!data) {
         resolve(this.writeConfigFile(defaultConfig));
       } else {
-        console.log('data', data);
 
         const config = JSON.parse(data);
 
@@ -79,7 +70,7 @@ ConfigService.prototype.writeConfigFile = function(data) {
       });
     }
     const wipedData = Object.assign({}, data, { connections: wipedConnections });
-    console.log(' ***      wipedData', wipedData); // eslint-disable-line no-console
+    // console.log(' ***      wipedData', wipedData); // eslint-disable-line no-console
 
     fs.writeFile(this.fullConfigPath, JSON.stringify(wipedData), (err) => {
       if (err) {
@@ -93,4 +84,15 @@ ConfigService.prototype.writeConfigFile = function(data) {
   });
 };
 
-module.exports = new ConfigService();
+const service = configPath => {
+  console.log('process.type', process.type); // eslint-disable-line no-console
+
+  if (global.configPath) {
+    return new ConfigService(global.configPath)
+  } else {
+    return new ConfigService(remote.getGlobal('configPath'));
+  }
+
+};
+
+module.exports = service();

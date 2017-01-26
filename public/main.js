@@ -3,14 +3,14 @@ require("../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss");
 require("../node_modules/font-awesome/scss/font-awesome.scss");
 require("./styles/index.scss");
 // Index template
-require.context('./', true, /index\.html$/);
+// require.context('./', true, /index\.html$/);
 // About template
-require.context('./', true, /about\.html$/);
+// require.context('./', true, /about\.html$/);
 // IMAGES
 require.context('./images', true, /^\.png\//);
 
 // Module needed to access global values from main process to any renderer process
-const remote = window.nodeRequire('remote');
+import { remote } from 'electron';
 
 // Segment
 import Segment from './services/segment.service';

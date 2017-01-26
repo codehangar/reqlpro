@@ -1,6 +1,6 @@
 'use strict';
 
-const r = window.nodeRequire('rethinkdb');
+import r from 'rethinkdb';
 import co from 'co';
 
 function ReQLEval(script) {
@@ -11,7 +11,7 @@ function ReQLEval(script) {
 
       const string = '"use strict"; var obj = ' + script + '; obj;';
 
-      const result = eval(string);
+      const result = ((r) => eval(string))(r);
       resolve(result);
     }).catch(function(err) {
       reject(err);

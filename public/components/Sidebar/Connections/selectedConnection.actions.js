@@ -1,4 +1,4 @@
-const RethinkDbService = require('../../../../main/services/rethinkdb.service');
+const RethinkDbService = require('../../../services/rethinkdb.service.js');
 import { getDbList } from '../Databases/databases.actions';
 import { actions } from 'react-redux-form';
 import * as types from '../../../action-types';

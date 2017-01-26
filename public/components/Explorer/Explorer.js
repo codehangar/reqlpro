@@ -3,6 +3,7 @@ import ExplorerHeader from'./ExplorerHeader/ExplorerHeader';
 import ExplorerBody from'./ExplorerBody/ExplorerBody';
 import ExplorerFooter from'./ExplorerFooter/ExplorerFooter';
 import { connect } from 'react-redux';
+import logo from '../../images/logo.png';
 
 const Explorer = ({
   connections,
@@ -59,7 +60,7 @@ const Explorer = ({
     content = (
       <div>
         <div className="text-center">
-          <div><img className="start-logo" src="images/logo.png"/></div>
+          <div><img className="start-logo" src={logo}/></div>
           <h2>No database connections added.</h2>
           <p>Click the <strong>"+"</strong> to add a RethinkDB connection.</p>
         </div>

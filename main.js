@@ -1,20 +1,20 @@
 'use strict';
 
-const electron = require('electron');
-// Module to control application life.
-const app = electron.app;
-// Module to create native browser window.
-const BrowserWindow = electron.BrowserWindow;
-// Module to manage config files
-const ConfigService = require('./main/services/config.service.js');
-// Module to use generators to handle async code better
 const co = require('co');
-// Communication between main and renderer
-const ipcMain = require('electron').ipcMain;
-const Menu = require('electron').Menu;
-const menuConfig = require('./menu.config');
+const { ipcMain, Menu, BrowserWindow, app } = require('electron');
+console.log("app.getName()", app.getName());
+console.log("app.getAppPath()", app.getAppPath());
+console.log("app.getVersion()", app.getVersion());
+// app.dock.bounce();
+// app.dock.setBadge('text')
+
+// Set the userConfig path
+global.configPath = app.getPath('userData');
+const ConfigService = require('./public/services/config.service.js');
 
 const packageDetails = require('./package.json');
+const menuConfig = require('./menu.config');
+
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -22,8 +22,10 @@ let mainWindow;
 
 function createWindow() {
   co(function*() {
+
     const userConfig = yield ConfigService.readConfigFile();
-    console.log("---> userConfig", userConfig)
+
+    console.log("---> userConfig", userConfig);
     global.userConfig = JSON.stringify(userConfig);
 
     global.appVersion = packageDetails.version;
@@ -35,18 +37,12 @@ function createWindow() {
       'min-height': 400
     });
 
-    // Setup file save events
-    ipcMain.on('writeConfigFile', function(event, args) {
-      co(function*() {
-        const userConfig = yield ConfigService.writeConfigFile(args);
-        global.userConfig = JSON.stringify(userConfig);
-      }).catch(function(err) {
-        console.error(err);
-      });
-    });
-
     // and load the index.html of the app.
-    mainWindow.loadURL('file://' + __dirname + '/dev/index.html');
+    if (process.env.NODE_ENV === 'development') {
+      mainWindow.loadURL('http://localhost:3001/index.html');
+    } else {
+      mainWindow.loadURL('file://' + __dirname + '/dev/index.html');
+    }
 
     // Open the DevTools (if dev flag is passed)
     if (process.argv.indexOf('--dev') > 1) {
