@@ -11,7 +11,7 @@ var spawn = require('child_process').spawn;
   child2.stdout.pipe(process.stdout);
   child2.stderr.pipe(process.stderr);
 
-  var child3 = spawn('webpack', ['--colors', '--watch'], { shell: true });
+  var child3 = spawn('webpack', ['-p --define process.env.NODE_ENV="\'dev\'"', '--colors', '--watch'], {shell: true });
   child3.stdout.pipe(process.stdout);
   child3.stderr.pipe(process.stderr);
 // });

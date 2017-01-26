@@ -3,7 +3,12 @@ const _ = require('lodash');
 const AnonId = require('./anon-id.service');
 const Analytics = window.nodeRequire('analytics-node');
 
-const analytics = new Analytics('lU0Oq54ABsjViXkKOcZe8YfeB18UbaNU', {
+let SegmentKey = 'lU0Oq54ABsjViXkKOcZe8YfeB18UbaNU';
+if (process.env.NODE_ENV === 'dev') {
+  SegmentKey = '';
+}
+
+const analytics = new Analytics(SegmentKey, {
   flushAt: 1
 });
 
