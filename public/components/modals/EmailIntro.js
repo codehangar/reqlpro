@@ -1,5 +1,5 @@
 const React = require('react');
-const Segment = require('../../services/segment.service.js');
+import Segment from '../../services/segment.service.js';
 import { connect } from 'react-redux';
 import { writeConfigFile } from '../../actions';
 
@@ -76,6 +76,24 @@ function mapDispatchToProps(dispatch) {
         email
       });
       dispatch(writeConfigFile());
+
+      Segment.alias(email);
+
+      Segment.identify({
+        userId: email,
+        traits: {
+          email: email,
+          // appopen: 0
+        }
+      });
+
+      Segment.track({
+        event: 'email.add',
+        properties: {
+          email: email
+        }
+      });
+
     }
   }
 }

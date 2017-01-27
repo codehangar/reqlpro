@@ -6,8 +6,6 @@ import { connect } from 'react-redux';
 import store from '../../store';
 import { addConnection, updateConnection, deleteConnection } from '../Sidebar/Connections/connections.actions';
 
-
-
 class ConnectionForm extends Component {
   constructor(props) {
     super(props);
@@ -119,9 +117,12 @@ const mapDispatchToProps = (dispatch) => {
     onSave: (data) => {
       console.log('onSave data', data);
       dispatch(addConnection(data));
-      dispatch({
-        showConnectionForm: false
-      })
+      Segment.track({
+        event: 'connection.save',
+        properties:{
+          userPermissions: !!data.user && !!data.pass
+        }
+      });
     },
     onUpdate: (data) => {
       console.log('onUpdate data', data);

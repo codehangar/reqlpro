@@ -143,6 +143,17 @@ const mapDispatchToProps = (dispatch) => {
         type: "TOGGLE_EXPLORER_BODY",
         key: key
       });
+      Segment.track({
+        event: 'explorer.toggleExplorerBody',
+        properties: {
+          key: key
+        }
+      });
+      if(key === 'code'){
+        Segment.track({
+          event: 'explorer.addRow',
+        });
+      }
     }
   };
 };

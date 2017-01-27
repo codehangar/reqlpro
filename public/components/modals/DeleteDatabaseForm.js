@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
 import { deleteDatabase } from '../../actions';
+import Segment from '../../services/segment.service.js';
 
 const DeleteDatabaseForm = ({
   showDeleteDatabaseForm,
@@ -66,6 +67,9 @@ const mapDispatchToProps = (dispatch) => {
         dispatch({
           type: "TOGGLE_DELETE_DATABASE_FORM",
           showDeleteDatabaseForm: false
+        });
+        Segment.track({
+          event: 'database.delete'
         });
       } else {
         //show error

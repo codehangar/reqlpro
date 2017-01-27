@@ -69,6 +69,9 @@ const mapDispatchToProps = (dispatch) => {
           database: selectedDatabase,
           tableToDelete: tableName
         });
+        Segment.track({
+          event: 'table.delete'
+        });
       } else {
         //show error
       }

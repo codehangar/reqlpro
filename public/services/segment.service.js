@@ -22,11 +22,15 @@ function Segment() {
 
   this.identify = function(payload) {
     AnonId.get(function(anonId) {
+      const traits = Object.assign(payload.traits, {
+        anonId: anonId
+      });
       _.extend(payload, {
         anonymousId: anonId,
         context: {
           userAgent: navigator.userAgent
-        }
+        },
+        traits: traits
       });
       analytics.identify(payload);
       console.log("[Segment] identify", payload)
@@ -40,6 +44,7 @@ function Segment() {
         userId: userId
       };
       analytics.alias(payload);
+      analytics.flush(); // flush the alias
       console.log("[Segment] alias", payload)
     });
   };

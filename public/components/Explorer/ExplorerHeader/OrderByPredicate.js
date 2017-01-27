@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { refreshExplorerBody } from '../../../actions';
 import { shell } from 'electron';
+import Segment from '../../../services/segment.service.js';
 
 class OrderByPredicate extends Component {
   constructor(props) {
@@ -36,6 +37,12 @@ class OrderByPredicate extends Component {
 
   helpClick() {
     shell.openExternal('https://www.rethinkdb.com/api/javascript/order_by/');
+    Segment.track({
+      event: 'query.orderBy',
+      properties:{
+        action:"help"
+      }
+    });
   }
 
   render() {
@@ -79,13 +86,21 @@ const mapDispatchToProps = (dispatch) => {
         type: "SET_ORDER_BY_PREDICATE",
         orderByPredicate
       });
+      // Segment.track({
+      //   event: 'query.orderBy',
+      //   properties:{
+      //     action:"set"
+      //   }
+      // });
     },
     submit: () => {
       dispatch(refreshExplorerBody());
-      // Segment.track({
-      //   event: 'explorer.setOrderByPredicate',
-      //   properties: {}
-      // });
+      Segment.track({
+        event: 'query.orderBy',
+        properties:{
+          action:"submit"
+        }
+      });
     }
   };
 };

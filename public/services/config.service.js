@@ -28,6 +28,7 @@ const defaultConfig = {
 
 ConfigService.prototype.readConfigFile = function() {
   return new Promise((resolve, reject) => {
+    console.log('(*&(*&(*& readConfigFile (*&^%&^(*')
     fs.readFile(this.fullConfigPath, {
       encoding: 'utf-8'
     }, (err, data) => {
@@ -77,7 +78,6 @@ ConfigService.prototype.writeConfigFile = function(data) {
         console.log(err);
         reject(err);
       } else {
-        global.userConfig = JSON.stringify(data);
         resolve(JSON.stringify(data));
       }
     });

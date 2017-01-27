@@ -10,7 +10,6 @@ console.log("app.getVersion()", app.getVersion());
 
 // Set the userConfig path
 global.configPath = app.getPath('userData');
-const ConfigService = require('./public/services/config.service.js');
 
 const packageDetails = require('./package.json');
 const menuConfig = require('./menu.config');
@@ -22,11 +21,6 @@ let mainWindow;
 
 function createWindow() {
   co(function*() {
-
-    const userConfig = yield ConfigService.readConfigFile();
-
-    console.log("---> userConfig", userConfig);
-    global.userConfig = JSON.stringify(userConfig);
 
     global.appVersion = packageDetails.version;
     // Create the browser window.

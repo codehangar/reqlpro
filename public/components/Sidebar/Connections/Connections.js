@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Favorite from './Connection';
 import AddFavorite from './AddConnection';
 import { showConnectionForm, selectConnection } from './selectedConnection.actions';
+import Segment from '../../../services/segment.service.js';
 
 const Connections = ({
   connections,
@@ -46,9 +47,15 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onClickAddConnection: () => {
       dispatch(showConnectionForm());
+      Segment.track({
+        event: 'connection.add'
+      });
     },
     onConnectionClick: (connection) => {
       dispatch(selectConnection(connection));
+      Segment.track({
+        event: 'connection.click'
+      });
     }
   }
 };

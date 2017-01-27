@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import { deleteConnection } from '../Connections/connections.actions';
 import { showConnectionForm } from '../Connections/selectedConnection.actions';
+import Segment from '../../../services/segment.service.js';
 
 const Toggle = ({ onClick }) => {
   return <i className="fa fa-bars connection-action-menu-button" onClick={onClick}/>;
@@ -46,16 +47,25 @@ const mapDispatchToProps = (dispatch) => {
   return {
     editConnection: function(connection) {
       dispatch(showConnectionForm(connection));
+      Segment.track({
+        event: 'connection.edit'
+      });
     },
     onDeleteConnection: function(connection) {
       if (confirm("Are you sure you want to delete the connection named " + connection.name)) {
         dispatch(deleteConnection(connection));
+        Segment.track({
+          event: 'connection.delete'
+        });
       }
     },
     addDatabase: function() {
       dispatch({
         type: "TOGGLE_DATABASE_FORM",
         showDatabaseForm: true
+      });
+      Segment.track({
+        event: 'database.add'
       });
     }
   }

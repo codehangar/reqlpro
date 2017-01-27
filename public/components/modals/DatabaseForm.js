@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
 import { createDatabase } from '../Sidebar/Databases/databases.actions';
+import Segment from '../../services/segment.service.js';
 
 const DatabaseForm = ({
   showDatabaseForm,
@@ -59,6 +60,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     onSave: (dbConnection, database) => {
       dispatch(createDatabase(dbConnection, database));
+      Segment.track({
+        event: 'database.save'
+      });
     }
   }
 };

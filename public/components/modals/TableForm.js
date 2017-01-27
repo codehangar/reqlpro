@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
 import { createTable } from '../../components/Sidebar/Databases/Database/DbTables/tables.actions';
+import Segment from '../../services/segment.service.js';
 
 const TableForm = ({
   showTableForm,
@@ -63,6 +64,9 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: "TOGGLE_TABLE_FORM",
         showTableForm: false
+      });
+      Segment.track({
+        event: 'table.save'
       });
     }
   }

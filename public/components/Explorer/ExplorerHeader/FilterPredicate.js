@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { refreshExplorerBody } from '../../../actions';
 import { shell } from 'electron';
+import Segment from '../../../services/segment.service.js';
 
 class FilterPredicate extends Component {
   constructor(props) {
@@ -29,6 +30,12 @@ class FilterPredicate extends Component {
 
   filterHelpClick() {
     shell.openExternal('https://www.rethinkdb.com/api/javascript/filter/');
+    Segment.track({
+      event: 'query.filter',
+      properties:{
+        action:"help"
+      }
+    });
   }
 
   render() {
@@ -73,9 +80,21 @@ const mapDispatchToProps = (dispatch) => {
         type: "SET_FILTER_PREDICATE",
         filterPredicate
       });
+      // Segment.track({
+      //   event: 'query.filter',
+      //   properties:{
+      //     action:"set"
+      //   }
+      // });
     },
     submit: (filterPredicate) => {
       dispatch(refreshExplorerBody());
+      Segment.track({
+        event: 'query.filter',
+        properties:{
+          action:"submit"
+        }
+      });
       // Segment.track({
       //   event: 'explorer.setFilterPredicate',
       //   properties: {}

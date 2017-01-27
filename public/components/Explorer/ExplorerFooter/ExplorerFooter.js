@@ -78,14 +78,14 @@ const mapDispatchToProps = (dispatch) => {
 
       dispatch(queryTable(dbConnection, table.databaseName, table.name, query));
 
-      // Segment.track({
-      //   event: 'explorer.paginationClick',
-      //   properties: {
-      //     'type': 'prevPage',
-      //     'page': page,
-      //     'limit': limit
-      //   }
-      // });
+      Segment.track({
+        event: 'explorer.paginationClick',
+        properties: {
+          'type': 'prevPage',
+          'page': table.query.page - 1,
+          'limit': table.query.limit
+        }
+      });
     },
     nextPage: function(dbConnection, table) {
       const query = {
@@ -97,14 +97,14 @@ const mapDispatchToProps = (dispatch) => {
 
       dispatch(queryTable(dbConnection, table.databaseName, table.name, query));
 
-      // Segment.track({
-      //   event: 'explorer.paginationClick',
-      //   properties: {
-      //     'type': 'nextPage',
-      //     'page': page,
-      //     'limit': limit
-      //   }
-      // });
+      Segment.track({
+        event: 'explorer.paginationClick',
+        properties: {
+          'type': 'nextPage',
+          'page': table.query.page + 1,
+          'limit': table.query.limit
+        }
+      });
     },
     prevPageBetween: function() {
       const index = this.props.table.query.index;

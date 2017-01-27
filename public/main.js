@@ -14,7 +14,7 @@ import { remote } from 'electron';
 
 // Segment
 import Segment from './services/segment.service';
-
+import ConfigService from './services/config.service';
 // React Specific libs/components
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -24,46 +24,58 @@ import reduxStore from './store';
 import { getDbConnection } from './components/Sidebar/Connections/selectedConnection.actions';
 
 function init() {
-  const userConfig = JSON.parse(remote.getGlobal('userConfig'));
-  console.log('userConfig', userConfig); // eslint-disable-line no-console
+  ConfigService.readConfigFile()
+    .then((userConfig) => {
 
-  if (userConfig) {
+      console.log('userConfig', userConfig); // eslint-disable-line no-console
 
-    let state = {
-      main: { email: userConfig.email || null },
-      connections: userConfig.connections || [],
-      connection: {}
-    };
+      if (userConfig) {
 
-    //if connections, set selectedConnection and getDbConnection
-    if (userConfig.connections && userConfig.connections[0]) {
-      state.connection.selected = userConfig.connections[0];
-    }
+        let state = {
+          main: { email: userConfig.email || null },
+          connections: userConfig.connections || [],
+          connection: {}
+        };
 
-    // Set Initial State
-    reduxStore.dispatch({
-      type: 'SET_STATE',
-      state
+        //if connections, set selectedConnection and getDbConnection
+        if (userConfig.connections && userConfig.connections[0]) {
+          state.connection.selected = userConfig.connections[0];
+        }
+
+        // Set Initial State
+        reduxStore.dispatch({
+          type: 'SET_STATE',
+          state
+        });
+
+        // If a connection exists, connect to it
+        if (state.connection.selected) {
+          reduxStore.dispatch(getDbConnection(state.connection.selected));
+        }
+      }
+
+
+      Segment.identify({
+        userId: userConfig.email,
+        traits: {
+          email: userConfig.email
+        }
+      });
+
+      Segment.track({
+        event: 'appopen',
+        properties: {}
+      });
+
+      // Render App Component
+      ReactDOM.render(
+        <Provider store={reduxStore}>
+          <App />
+        </Provider>,
+        document.getElementById('app')
+      );
     });
 
-    // If a connection exists, connect to it
-    if (state.connection.selected) {
-      reduxStore.dispatch(getDbConnection(state.connection.selected));
-    }
-  }
-
-  Segment.track({
-    event: 'app.open',
-    properties: {}
-  });
-
-  // Render App Component
-  ReactDOM.render(
-    <Provider store={reduxStore}>
-      <App />
-    </Provider>,
-    document.getElementById('app')
-  );
 }
 
 init();
