@@ -64,7 +64,7 @@ function init() {
 
       Segment.track({
         event: 'appopen',
-        properties: {}
+        userId: userConfig.email,
       });
 
       // Render App Component
