@@ -1,7 +1,8 @@
 'use strict';
 
 function createMenu() {
-  const ipc = require('electron').ipcRenderer;
+  // const { ipcRenderer, Menu, BrowserWindow, app } = require('electron');
+  const ipc = require('ipc-renderer');
   const Menu = require('electron').Menu;
 
   let quitMenuOption = {
@@ -25,7 +26,7 @@ function createMenu() {
       {
         label: 'About ReqlPro (Beta)',
         click: function() {
-          ipc.send('new-window', {
+          icp.send('new-window', {
             path: '/dev/about.html',
             width: 300,
             height: 200
@@ -36,7 +37,7 @@ function createMenu() {
         label: 'New Window',
         accelerator: 'Command+N',
         click: function() {
-          ipc.send('new-window', {});
+          icp.send('new-window', {});
         }
       },
       {
