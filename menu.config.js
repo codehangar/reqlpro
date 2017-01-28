@@ -26,7 +26,7 @@ function createMenu() {
       {
         label: 'About ReqlPro (Beta)',
         click: function() {
-          icp.send('new-window', {
+          ipc.send('new-window', {
             path: '/dev/about.html',
             width: 300,
             height: 200
@@ -37,7 +37,7 @@ function createMenu() {
         label: 'New Window',
         accelerator: 'Command+N',
         click: function() {
-          icp.send('new-window', {});
+          ipc.send('new-window', {});
         }
       },
       {
