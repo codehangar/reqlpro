@@ -13,7 +13,8 @@ const DatabasesHeader = ({
   editConnection,
   addDatabase,
   onDeleteConnection,
-  selectedConnection
+  selectedConnection,
+  connectionError
 }) => {
   return (
     <div className="databases-header">
@@ -22,7 +23,7 @@ const DatabasesHeader = ({
         <Dropdown id="connection-dropdown" className="pull-right">
           <Toggle bsRole="toggle"/>
           <Dropdown.Menu className="super-colors">
-            <MenuItem onClick={addDatabase}>Add database</MenuItem>
+            <MenuItem onClick={() => !!connectionError ? false : addDatabase} disabled={!!connectionError}>Add database</MenuItem>
             <MenuItem divider/>
             <MenuItem onClick={() => {
               editConnection(selectedConnection)
@@ -40,7 +41,8 @@ const DatabasesHeader = ({
 
 function mapStateToProps(state) {
   return {
-    selectedConnection: state.connection.selected
+    selectedConnection: state.connection.selected,
+    connectionError: state.main.connectionError
   };
 }
 const mapDispatchToProps = (dispatch) => {
