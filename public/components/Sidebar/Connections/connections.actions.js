@@ -39,9 +39,15 @@ export function deleteConnection(connection) {
     });
     dispatch(writeConfigFile());
 
-    if (shouldSelectNew) {
+    if (shouldSelectNew && getState().connections[0]) {
       // Grab the updated array of connections, and select the first one
       dispatch(selectConnection(getState().connections[0]));
+    }else{
+      //if there are no connections to select, clear connection error
+      dispatch({
+        type: 'SET_DB_CONNECTION_ERROR',
+        connectionError: null
+      });
     }
   }
 }
