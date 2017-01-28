@@ -83,7 +83,6 @@ function mapDispatchToProps(dispatch) {
         userId: email,
         traits: {
           email: email,
-          // appopen: 0
         }
       });
 

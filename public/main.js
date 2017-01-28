@@ -63,8 +63,7 @@ function init() {
       });
 
       Segment.track({
-        event: 'appopen',
-        userId: userConfig.email,
+        event: 'app.open'
       });
 
       // Render App Component

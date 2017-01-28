@@ -1,23 +1,40 @@
 import _ from 'lodash';
 import AnonId from './anon-id.service';
 import { remote } from 'electron';
-
+// import reduxStore from '../store';
+import ConfigService from './config.service';
 // Special import because it must run in Electron's "Main" process, not the "Renderer" process
 const analytics = remote.require('./public/services/segment.config');
 
 function Segment() {
 
+  // console.log('segment service store',reduxStore.getState());
+
   this.track = function(payload) {
-    AnonId.get(function(anonId) {
-      _.extend(payload, {
-        anonymousId: anonId,
-        context: {
-          userAgent: navigator.userAgent
+    ConfigService.readConfigFile()
+      .then((userConfig) => {
+        const properties = Object.assign(payload.properties || {}, {
+          platform: navigator.platform,
+        });
+        console.log('userConfig', userConfig); // eslint-disable-line no-console
+        let email;
+        if (userConfig) {
+          email = userConfig.email || null;
         }
+        AnonId.get(function(anonId) {
+          _.extend(payload, {
+            anonymousId: anonId,
+            userId: email,
+            context: {
+              userAgent: navigator.userAgent,
+              platform: navigator.platform
+            },
+            properties: properties
+          });
+          analytics.track(payload);
+          console.log('[Segment] track', payload);
+        });
       });
-      analytics.track(payload);
-      console.log('[Segment] track', payload);
-    });
   };
 
   this.identify = function(payload) {
