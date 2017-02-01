@@ -8,7 +8,7 @@ class OrderByPredicate extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      width: '40px'
+      width: ((props.table.query.orderByPredicate.length * 7.8) + 50) + 'px'
     };
   }
 
@@ -20,13 +20,11 @@ class OrderByPredicate extends Component {
   componentWillReceiveProps(props) {
     if (props.table.query.orderByPredicate) {
       this.setWidth(props.table.query.orderByPredicate);
-
     }
   }
 
   onChange = (e) => {
     this.setWidth(e.target.value);
-
     this.props.setOrderByPredicate(e.target.value);
   };
 

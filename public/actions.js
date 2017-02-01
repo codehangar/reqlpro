@@ -7,7 +7,7 @@ import configService from './services/config.service';
 // export function queryTable(queryParams = selectedTable.query) {
 // Todo: pull from passed in queryParams or default to selectedTable on state (or leave as is, not sure)
 export function queryTable(conn, db, table, query = {
-  filterPredicate: null,
+  filterPredicate: '',
   orderByPredicate: "r.asc('id')",
   limit: 5,
   page: 1
@@ -38,7 +38,11 @@ function getTableData(conn, db, table, query) {
         }
 
         const orderBy = yield orderByPredicate.split(',').map((p) => {
-          return ReQLEval(p);
+          if (p) {
+            return ReQLEval(p);
+          } else {
+            return '';
+          }
         });
 
         if (page < 1) {

@@ -8,8 +8,19 @@ class FilterPredicate extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      width: '50px'
+      width: ((props.table.query.filterPredicate.length * 7.8) + 50) + 'px'
     };
+  }
+
+  setWidth(val) {
+    const width = ((val.length * 7.8) + 50) + 'px';
+    this.setState({ width });
+  }
+
+  componentWillReceiveProps(props) {
+    if (props.table.query.filterPredicate) {
+      this.setWidth(props.table.query.filterPredicate);
+    }
   }
 
   componentDidMount() {
@@ -17,9 +28,7 @@ class FilterPredicate extends Component {
   }
 
   onChange = (e) => {
-    const len = e.target.value.length;
-    const width = ((len * 7.8) + 50) + 'px';
-    this.setState({ width });
+    this.setWidth(e.target.value);
     this.props.setFilterPredicate(e.target.value);
   };
 
@@ -32,8 +41,8 @@ class FilterPredicate extends Component {
     shell.openExternal('https://www.rethinkdb.com/api/javascript/filter/');
     Segment.track({
       event: 'query.filter',
-      properties:{
-        action:"help"
+      properties: {
+        action: "help"
       }
     });
   }
@@ -45,7 +54,7 @@ class FilterPredicate extends Component {
         <form onSubmit={this.onSubmit}>
           <span className="predicate-opener">.filter(</span>
           <input className="input-code" type="text" style={{ width: this.state.width }}
-                 value={table.filterPredicate}
+                 value={table.query.filterPredicate}
                  onChange={this.onChange}
                  ref={input => this.predInput = input}
           />
@@ -91,8 +100,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(refreshExplorerBody());
       Segment.track({
         event: 'query.filter',
-        properties:{
-          action:"submit"
+        properties: {
+          action: "submit"
         }
       });
       // Segment.track({
