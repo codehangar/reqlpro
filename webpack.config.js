@@ -26,6 +26,7 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: 'public/about.html',
+      inject: 'body',
       filename: 'about.html'
     }),
     new webpack.optimize.OccurenceOrderPlugin(),

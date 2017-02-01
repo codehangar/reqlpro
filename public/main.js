@@ -10,7 +10,7 @@ require("./styles/index.scss");
 require.context('./images', true, /^\.png\//);
 
 // Module needed to access global values from main process to any renderer process
-import { remote } from 'electron';
+import { remote, ipcRenderer } from 'electron';
 
 // Segment
 import Segment from './services/segment.service';
@@ -22,6 +22,10 @@ import App from './components/App/App';
 import { Provider } from 'react-redux';
 import reduxStore from './store';
 import { getDbConnection } from './components/Sidebar/Connections/selectedConnection.actions';
+
+ipcRenderer.on('launchFeedbackPopup', (event, message) => {
+  HS.beacon.open();
+});
 
 function init() {
   ConfigService.readConfigFile()

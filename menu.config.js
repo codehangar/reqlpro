@@ -1,9 +1,9 @@
 'use strict';
 
+const { createNewWindow, launchFeedbackPopup } = require('./main.electron-utils');
+const { Menu, shell }= require('electron');
+
 function createMenu() {
-  // const { ipcRenderer, Menu, BrowserWindow, app } = require('electron');
-  const ipc = require('ipc-renderer');
-  const Menu = require('electron').Menu;
 
   let quitMenuOption = {
     label: 'Quit',
@@ -26,8 +26,8 @@ function createMenu() {
       {
         label: 'About ReqlPro (Beta)',
         click: function() {
-          ipc.send('new-window', {
-            path: '/dev/about.html',
+          createNewWindow('new-window', {
+            path: '/about.html',
             width: 300,
             height: 200
           });
@@ -37,7 +37,7 @@ function createMenu() {
         label: 'New Window',
         accelerator: 'Command+N',
         click: function() {
-          ipc.send('new-window', {});
+          createNewWindow('new-window', {});
         }
       },
       {
@@ -125,13 +125,14 @@ function createMenu() {
       {
         label: 'Help Center',
         click: function() {
-          window.nodeRequire('electron').shell.openExternal('http://utils.codehangar.io/rethink/support')
+          shell.openExternal('http://utils.codehangar.io/rethink/support');
         }
       },
       {
         label: 'Feedback',
         click: function() {
-          HS.beacon.open();
+          launchFeedbackPopup();
+          // HS.beacon.open();
         }
       }
     ]

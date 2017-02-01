@@ -5,7 +5,6 @@
     <title>ReQLPro</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
   </head>
-  <script src="dist.js"></script>
   <body>
     <div class="container about-container">
       <img class="center-block" style="width:150px;margin-top: 15px;" src="images/logo.png"/>
@@ -15,7 +14,7 @@
   </body>
   <script>
     // Module needed to access global values from main process to any renderer process
-    var remote = require('remote');
+    var remote = require('electron').remote;
     document.getElementById('app-version').innerHTML = 'Version ' + remote.getGlobal('appVersion');
   </script>
 </html>
