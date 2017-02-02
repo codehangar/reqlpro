@@ -20,19 +20,21 @@ const DatabasesHeader = ({
     <div className="databases-header">
       <div>
         <span className="title">{selectedConnection ? selectedConnection.name : ''}</span>
-        <Dropdown id="connection-dropdown" className="pull-right">
-          <Toggle bsRole="toggle"/>
-          <Dropdown.Menu className="super-colors">
-            <MenuItem onClick={() => !!connectionError ? false : addDatabase} disabled={!!connectionError}>Add database</MenuItem>
-            <MenuItem divider/>
-            <MenuItem onClick={() => {
-              editConnection(selectedConnection)
-            }}>Edit Connection</MenuItem>
-            <MenuItem eventKey="3" onClick={() => {
-              onDeleteConnection(selectedConnection)
-            }}>Delete Connection</MenuItem>
-          </Dropdown.Menu>
-        </Dropdown>
+        {!selectedConnection ? '' :
+          <Dropdown id="connection-dropdown" className="pull-right">
+            <Toggle bsRole="toggle"/>
+            <Dropdown.Menu className="super-colors">
+              <MenuItem onClick={() => !!connectionError ? false : addDatabase} disabled={!!connectionError}>Add database</MenuItem>
+              <MenuItem divider/>
+              <MenuItem onClick={() => {
+                editConnection(selectedConnection)
+              }}>Edit Connection</MenuItem>
+              <MenuItem eventKey="3" onClick={() => {
+                onDeleteConnection(selectedConnection)
+              }}>Delete Connection</MenuItem>
+            </Dropdown.Menu>
+          </Dropdown>}
+
       </div>
     </div>
   );
