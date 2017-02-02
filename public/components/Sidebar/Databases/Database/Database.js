@@ -8,7 +8,7 @@ import Segment from '../../../../services/segment.service.js';
 
 const Database = React.createClass({
   render: function() {
-    const { database, tables, getDbTables, onAddTable, toggleTableVisibility, deleteDatabase, editDatabase, dbConnection } = this.props;
+    const { database, tables, getDbTables, onAddTable, toggleTableVisibility, deleteDatabase, dbConnection } = this.props;
 
     const onDbClick = () => {
       if (!database.showTables) {
@@ -31,7 +31,6 @@ const Database = React.createClass({
           <div className="delete-db btn-group" role="group">
             <button onClick={(e) => deleteDatabase(e, database.name)}
                     className="btn btn-default fa fa-trash"/>
-            <button onClick={(e) => editDatabase(e, database.name)} className="btn btn-default fa fa-pencil"/>
           </div>
         </div>
         {database.showTables ? tableNodes : ''}
@@ -85,9 +84,6 @@ const mapDispatchToProps = (dispatch) => {
         dbToDelete: dbName,
         showDeleteDatabaseForm: true
       });
-    },
-    editDatabase: function(dbName, e) {
-      e.stopPropagation();
     },
   }
 };
