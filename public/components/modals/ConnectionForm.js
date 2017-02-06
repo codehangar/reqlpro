@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Segment from '../../services/segment.service.js';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, FormGroup } from 'react-bootstrap';
 import { Control, Form, Field, actions } from 'react-redux-form';
 import { connect } from 'react-redux';
 import store from '../../store';
@@ -26,12 +26,23 @@ class ConnectionForm extends Component {
       onCancel,
       onDelete,
       onSave,
+      connectionError,
       onUpdate
     } = this.props;
 
     console.log('isAdd', isAdd); // eslint-disable-line no-console
+ 
+    let valStateUser = null;
+    let valStatePass = null; 
 
-    
+    if(connectionError){
+      if(connectionError.error.msg == 'Wrong password'){
+        valStatePass = "error"; 
+      } else if( connectionError.error.msg == 'Unknown user') {
+        valStateUser = "error"
+      }
+    }
+
     return (
       <Modal show={showConnectionForm} onHide={onCancel}>
         <Form model="forms.connection" onSubmit={(data) => isAdd ? onSave(data) : onUpdate(data)}>
@@ -70,13 +81,17 @@ class ConnectionForm extends Component {
                       <div className="col-sm-6">
                         <label>User</label>
                         <Field model=".user">
-                          <input className="form-control" type="text" id="user" />
+                          <FormGroup validationState={valStateUser}>
+                            <input className="form-control" type="text" id="user" />
+                          </FormGroup>
                         </Field>
                       </div>
                       <div className="col-sm-6">
                         <label>Pass</label>
                         <Field model=".pass">
-                          <input className="form-control" type="password" id="pass" />
+                          <FormGroup  validationState={valStatePass}>
+                            <input className="form-control" type="password" id="pass"/>
+                         </FormGroup>
                         </Field>
                       </div>
                     </div>
@@ -85,11 +100,11 @@ class ConnectionForm extends Component {
               </div>
           </Modal.Body>
           <Modal.Footer>
-            <button type="submit" className="btn btn-primary pull-right">Save</button>
+            <button type="submit" className="btn btn-primary pull-right">Save</button> 
             <button type="button" onClick={onCancel} className="btn btn-default pull-left">Cancel</button>
             {!isAdd ?
               <button type="button" className="btn btn-default" onClick={() => onDelete(selectedConnection)}>
-                Delete</button> : ''}
+                Delete</button> : ''} 
             <div className="clearfix" />
           </Modal.Footer>
         </Form>
@@ -102,7 +117,8 @@ function mapStateToProps(state) {
   return {
     showConnectionForm: state.connection.showConnectionForm,
     isAdd: typeof state.forms.connection.index === 'undefined',
-    selectedConnection: state.connection.selected
+    selectedConnection: state.connection.selected,
+    connectionError: state.main.connectionError
   };
 }
 

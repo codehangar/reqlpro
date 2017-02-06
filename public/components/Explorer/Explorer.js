@@ -4,20 +4,36 @@ import ExplorerBody from'./ExplorerBody/ExplorerBody';
 import ExplorerFooter from'./ExplorerFooter/ExplorerFooter';
 import { connect } from 'react-redux';
 import logo from '../../images/logo.png';
+import addConnection from '../Sidebar/Connections/AddConnection';   
+import { showConnectionForm } from '../Sidebar/Connections/selectedConnection.actions';
+import { Panel } from 'react-bootstrap';
+
 
 const Explorer = ({
   connections,
   connection,
   selectedTable,
-  connectionError
+  connectionError,
+  editConnection,
+  addConnection,
+  selectedConnection
 }) => {
 
   const HelpCenter = <a href="http://utils.codehangar.io/rethink/support" target="_blank">Help Center</a>;
+
+
   const SendMessage = (
     <a className="clickable" onClick={() => {
       HS.beacon.open();
     }}>send us a message</a>
   );
+
+  const TryAgain = (
+    <a className='clickable' onClick={() => {
+          editConnection(selectedConnection)
+    }}>Try Again</a>
+
+  ); 
 
   let content = (
     <div className="explorer-container">
@@ -33,6 +49,7 @@ const Explorer = ({
 
   const connectionErrors = ['ReqlAuthError', 'ReqlDriverError'];
 
+
   if (connection.loading) {
     content = (
       <div className="explorer-container">
@@ -42,13 +59,23 @@ const Explorer = ({
       </div>
     );
   } else if (connectionError && connectionError.connection.name == connection.selected.name) {
-    // console.log('show Explorer Error');
+     //console.log('show Explorer Error ', connectionError.error.msg);
+    const connError = (
+       connectionError.error.msg
+    ); 
+
     content = (
       <div className="explorer-container">
         <div className="explorer-full-message">
           <p className="super-large-text">Woops!</p>
           <p className="">Something isn't right. Check your connection details.</p>
-          <pre className="text-danger">{connectionError.error.msg}</pre>
+    
+         { (connectionError.error.msg == 'Unknown user' || connectionError.error.msg == 'Wrong password') ? 
+          <Panel header={connError} bsStyle="danger">
+                {TryAgain}
+           </Panel>
+
+           :  <pre className="text-danger">{connectionError.error.msg}</pre> }
           <p className="small-text">
             Still having trouble? Visit our {HelpCenter} or {SendMessage}.
           </p>
@@ -88,13 +115,19 @@ const mapStateToProps = (state) => {
   return {
     connections: state.connections || [],
     connection: state.connection,
+    selectedConnection: state.connection.selected,
     selectedTable: state.main.selectedTable,
-    connectionError: state.main.connectionError
+    connectionError: state.main.connectionError,
+    addConnection: state.main.addConnection
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+     editConnection: function(connection) {
+      dispatch(showConnectionForm(connection));
+     }
+  };
 };
 
 const ExplorerContainer = connect(mapStateToProps, mapDispatchToProps)(Explorer);
