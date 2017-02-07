@@ -61,12 +61,14 @@ describe('Application Logic', () => {
   });
 
   describe('setEmail', () => {
-    it('adds email to redux store', () => {
+    it('adds email and created to redux store', () => {
       const state = {};
       const email = 'cassie@codehangar.io';
-      let nextState = setEmail(state, email);
+      const created = 'new date'
+      let nextState = setEmail(state, email, created);
       expect(nextState).to.deep.equal({
-        email: 'cassie@codehangar.io'
+        email: 'cassie@codehangar.io',
+        created: 'new date'
       });
     });
   });

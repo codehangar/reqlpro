@@ -262,6 +262,7 @@ export function writeConfigFile() {
     const state = getState();
     return configService.writeConfigFile({
       email: state.main.email,
+      created: state.main.created,
       connections: state.connections
     });
   }

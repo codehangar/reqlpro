@@ -62,7 +62,9 @@ function init() {
       Segment.identify({
         userId: userConfig.email,
         traits: {
-          email: userConfig.email
+          email: userConfig.email,
+          created: userConfig.created,
+          connectionsCount: userConfig.connections.length
         }
       });
 

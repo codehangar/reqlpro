@@ -73,7 +73,8 @@ function mapDispatchToProps(dispatch) {
     onEmailSubmit: (email) => {
       dispatch({
         type: "SET_EMAIL",
-        email
+        email,
+        created: new Date().toDateString()
       });
       dispatch(writeConfigFile());
 

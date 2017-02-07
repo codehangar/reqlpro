@@ -39,9 +39,12 @@ function Segment() {
 
   this.identify = function(payload) {
     AnonId.get(function(anonId) {
+
       const traits = Object.assign(payload.traits, {
-        anonId: anonId
+        anonId: anonId,
+        platform: navigator.platform
       });
+
       _.extend(payload, {
         anonymousId: anonId,
         context: {
@@ -49,6 +52,7 @@ function Segment() {
         },
         traits: traits
       });
+
       analytics.identify(payload);
       console.log("[Segment] identify", payload)
     });

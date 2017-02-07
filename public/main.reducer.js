@@ -49,7 +49,7 @@ export function main(state = {}, action) {
     case 'SET_STATE':
       return action.state.main;
     case 'SET_EMAIL':
-      return setEmail(state, action.email);
+      return setEmail(state, action.email, action.created);
     case 'HIDE_OPEN_MENUS':
       return hideOpenMenus(state, action.props);
     case 'SET_DB_CONNECTION':
