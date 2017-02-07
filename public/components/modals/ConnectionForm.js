@@ -53,7 +53,7 @@ class ConnectionForm extends Component {
               <div className="panel-body">
                 <div className="row">
                   <div className="col-sm-12">
-                    <div>
+                    <div className="connection-row">
                       <label>Connection Name</label>
                       <Field model=".name">
                         <input className="form-control" type="text" id="name"
@@ -63,18 +63,24 @@ class ConnectionForm extends Component {
                           placeholder="i.e. TodoApp-local" />
                       </Field>
                     </div>
-                    <div>
+                    <div className="connection-row">
                       <label>Host</label>
                       <Field model=".host">
                         <input className="form-control" type="text" id="host"
                           placeholder="i.e. localhost" />
+                          <small className="text-muted">
+                            By default, RethinkDB binds to <strong>localhost</strong> if host is not specified.
+                          </small>
                       </Field>
                     </div>
-                    <div>
+                    <div className="connection-row">
                       <label>Port</label>
                       <Field model=".port">
                         <input className="form-control" type="text" id="host"
                           placeholder="i.e. 28015" />
+                           <small className="text-muted">
+                            By default, RethinkDB binds to port <strong>28015</strong> if port is not specified.
+                          </small>
                       </Field>
                     </div>
                     <div className="row">
