@@ -24,7 +24,7 @@ const DatabasesHeader = ({
           <Dropdown id="connection-dropdown" className="pull-right">
             <Toggle bsRole="toggle"/>
             <Dropdown.Menu className="super-colors">
-              <MenuItem onClick={() => !!connectionError ? false : addDatabase} disabled={!!connectionError}>Add database</MenuItem>
+              <MenuItem onClick={() => !!connectionError ? false : addDatabase()} disabled={!!connectionError}>Add database</MenuItem>
               <MenuItem divider/>
               <MenuItem onClick={() => {
                 editConnection(selectedConnection)
