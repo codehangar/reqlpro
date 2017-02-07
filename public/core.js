@@ -4,10 +4,11 @@ export function setState(state, newState) {
   return Object.assign({}, state, newState);
 }
 
-export function setEmail(state, email) {
+export function setEmail(state, email, created) {
   if (email) {
     return Object.assign({}, state, {
-      email
+      email,
+      created
     });
   }
   return state;
