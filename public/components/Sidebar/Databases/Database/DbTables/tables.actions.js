@@ -39,12 +39,19 @@ export function createTable(dbConnection, dbName, tableName) {
         } else {
           dispatch(queryTable(dbConnection, dbName, tableName));
         }
-
+        dispatch({
+          type: "TOGGLE_TABLE_FORM",
+          showTableForm: false
+        });
         resolve(results);
       }).catch(error => {
         dispatch({
           type: 'SET_CONNECTION_LOADING',
-          loading: true
+          loading: false
+        });
+        dispatch({
+          type: 'SET_ADD_TABLE_ERROR',
+          error
         });
         reject(error);
       });

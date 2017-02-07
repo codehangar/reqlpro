@@ -35,8 +35,11 @@ import {
   toggleConfirmRowDelete,
   setRowDeleteError,
   setConnectionError,
-  setColumnWidths
+  setColumnWidths,
+  setAddTableError
 } from './core';
+
+import * as types from './action-types';
 
 export function main(state = {}, action) {
   // console.log("-----------------------")
@@ -99,6 +102,8 @@ export function main(state = {}, action) {
       return setConnectionError(state, action.connectionError);
     case 'SET_TABLE_COLUMN_WIDTH':
       return setColumnWidths(state, action.databaseName, action.tableName, action.width);
+    case types.SET_ADD_TABLE_ERROR:
+      return setAddTableError(state, action.error);
   }
   return state;
 }

@@ -20,3 +20,4 @@ export const SET_DB_TABLES = 'SET_DB_TABLES';
 export const ADD_TO_TABLE_LIST = 'ADD_TO_TABLE_LIST';
 export const DELETE_TABLE = 'DELETE_TABLE';
 export const SET_TABLE_QUERY = 'SET_TABLE_QUERY';
+export const SET_ADD_TABLE_ERROR = 'SET_ADD_TABLE_ERROR';

@@ -9,7 +9,8 @@ const TableForm = ({
   dbConnection,
   dbToEdit,
   onClose,
-  onSave
+  onSave,
+  addTableError
 }) => {
   let nameInput;
   const submit = (e) => {
@@ -23,6 +24,9 @@ const TableForm = ({
       </Modal.Header>
       <Modal.Body>
         <form onSubmit={submit}>
+          <div>
+            {addTableError ? addTableError.msg : " " }
+          </div>
           <div>
             <label>Name</label>
             <input className="form-control" id="name" type="text" ref={(input) => {
@@ -48,6 +52,7 @@ const mapStateToProps = (state) => {
     showTableForm: state.main.showTableForm,
     dbToEdit: state.main.dbToEdit,
     dbConnection: state.main.dbConnection,
+    addTableError: state.main.addTableError,
   };
 };
 
@@ -55,16 +60,18 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onClose: () => {
       dispatch({
-        type: "TOGGLE_TABLE_FORM",
-        showTableForm: false
+      type: 'SET_ADD_TABLE_ERROR',
+      error: ' '
       });
-    },
-    onSave: (dbConnection, database, table) => {
-      dispatch(createTable(dbConnection, database.name, table));
       dispatch({
         type: "TOGGLE_TABLE_FORM",
         showTableForm: false
       });
+
+    },
+    onSave: (dbConnection, database, table) => {
+      dispatch(createTable(dbConnection, database.name, table));
+
       Segment.track({
         event: 'table.save'
       });

@@ -276,5 +276,12 @@ export function setColumnWidths(state, database, table, width) {
 
   // }
 
+
   return Object.assign({}, state, { columnWidths: columnWidthsCopy })
+}
+
+export function setAddTableError(state, error) {
+  return Object.assign({}, state, {
+    addTableError: error
+  });
 }
