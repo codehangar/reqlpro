@@ -54,7 +54,7 @@ const ExplorerHeader = ({
   const rowsPerPage = (
     <span className="rows-per-page-selector">Rows per page:
       <select onChange={(e) => onUpdatePageLimit(e, dbConnection, table.databaseName, table.name, selectedTable)}
-              className="page-select" value={table.query.limit}>
+              className="page-select" value={table.query.limit} disabled={table.queryError}>
         <option value="5">5</option>
         <option value="10">10</option>
         <option value="25">25</option>
@@ -74,14 +74,14 @@ const ExplorerHeader = ({
             <span onClick={refreshExplorerBody} className={buttonClasses.refresh}/>
           </OverlayTrigger>
           <OverlayTrigger placement="bottom" overlay={addRecordTooltip}>
-            <span onClick={() => toggleExplorerBody('code')} className={buttonClasses.code}/>
+            <span onClick={() => toggleExplorerBody('code')} className={buttonClasses.code} disabled={table.queryError}/>
           </OverlayTrigger>
           <div className="btn-group" role="group">
             <OverlayTrigger placement="bottom" overlay={treeViewTooltip}>
-              <span onClick={() => toggleExplorerBody('tree')} className={buttonClasses.tree}/>
+              <span onClick={() => toggleExplorerBody('tree')} className={buttonClasses.tree} disabled={table.queryError}/>
             </OverlayTrigger>
             <OverlayTrigger placement="bottom" overlay={tableViewTooltip}>
-              <span onClick={() => toggleExplorerBody('table')} className={buttonClasses.table}/>
+              <span onClick={() => toggleExplorerBody('table')} className={buttonClasses.table} disabled={table.queryError}/>
             </OverlayTrigger>
           </div>
         </div>
