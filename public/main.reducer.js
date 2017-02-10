@@ -36,7 +36,8 @@ import {
   setRowDeleteError,
   setConnectionError,
   setColumnWidths,
-  setAddTableError
+  setAddTableError,
+  setDeleteDatabaseError
 } from './core';
 
 import * as types from './action-types';
@@ -104,6 +105,8 @@ export function main(state = {}, action) {
       return setColumnWidths(state, action.databaseName, action.tableName, action.width);
     case types.SET_ADD_TABLE_ERROR:
       return setAddTableError(state, action.error);
+    case 'SET_DELETE_DATABASE_ERROR':
+      return setDeleteDatabaseError(state, action.deleteDatabaseError);
   }
   return state;
 }

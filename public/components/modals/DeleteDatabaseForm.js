@@ -9,7 +9,8 @@ const DeleteDatabaseForm = ({
   dbConnection,
   dbToDelete,
   onClose,
-  onDelete
+  onDelete,
+  deleteDatabaseError
 }) => {
   let nameInput;
   return (
@@ -18,6 +19,7 @@ const DeleteDatabaseForm = ({
         <Modal.Title>Delete Database</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        <div className="alert alert-warning">Deleting the database will delete all the tables in it. This action cannot be undone. Please type the name of the database to confirm.</div>
         <form onSubmit={(e) => {
           e.preventDefault();
           onDelete(dbConnection, dbToDelete, nameInput.value)
@@ -32,6 +34,7 @@ const DeleteDatabaseForm = ({
               }
             }}/>
           </div>
+          {deleteDatabaseError ? <p className="text-danger" style={{marginTop:16}}>The name you typed does not match the name of the database you are trying to delete.</p> : ''}
         </form>
       </Modal.Body>
       <Modal.Footer>
@@ -48,7 +51,8 @@ const mapStateToProps = (state) => {
     showDeleteDatabaseForm: state.main.showDeleteDatabaseForm,
     selectedDatabase: state.main.selectedDatabase,
     dbConnection: state.main.dbConnection,
-    dbToDelete: state.main.dbToDelete
+    dbToDelete: state.main.dbToDelete,
+    deleteDatabaseError: state.main.deleteDatabaseError
   };
 };
 
@@ -59,6 +63,10 @@ const mapDispatchToProps = (dispatch) => {
         type: "TOGGLE_DELETE_DATABASE_FORM",
         showDeleteDatabaseForm: false
       });
+      dispatch({
+        type:"SET_DELETE_DATABASE_ERROR",
+        deleteDatabaseError: false
+      })
     },
     onDelete: (dbConnection, dbName, confirmName) => {
       if (dbName == confirmName) {
@@ -72,6 +80,11 @@ const mapDispatchToProps = (dispatch) => {
           event: 'database.delete'
         });
       } else {
+        console.log('dispatch SET_DELETE_DATABASE_ERROR')
+        dispatch({
+          type:"SET_DELETE_DATABASE_ERROR",
+          deleteDatabaseError: true
+        })
         //show error
       }
     }
