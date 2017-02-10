@@ -291,3 +291,8 @@ export function setDeleteDatabaseError(state, err) {
   console.log('setDeleteDatabaseError', err)
   return Object.assign({}, state, { deleteDatabaseError: err })
 }
+
+export function setDeleteTableError(state, err) {
+  console.log('setDeleteTableError', err)
+  return Object.assign({}, state, { deleteTableError: err })
+}

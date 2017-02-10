@@ -80,12 +80,10 @@ const mapDispatchToProps = (dispatch) => {
           event: 'database.delete'
         });
       } else {
-        console.log('dispatch SET_DELETE_DATABASE_ERROR')
         dispatch({
           type:"SET_DELETE_DATABASE_ERROR",
           deleteDatabaseError: true
         })
-        //show error
       }
     }
   }

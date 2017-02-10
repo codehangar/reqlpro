@@ -9,7 +9,8 @@ const DeleteTableForm = ({
   dbConnection,
   tableToDelete,
   onClose,
-  onDelete
+  onDelete,
+  deleteTableError
 }) => {
   let nameInput;
   const submit = (e) => {
@@ -24,6 +25,7 @@ const DeleteTableForm = ({
       <Modal.Body>
         <form onSubmit={submit}>
           <div>
+            <div className="alert alert-warning">This action cannot be undone. Please type the name of the table to confirm.</div>
             <label>Type in the name of the table to permanently delete it. This action cannot be undone.</label>
             <input className="form-control" id="name" type="text" ref={(input) => {
               nameInput = input;
@@ -32,6 +34,7 @@ const DeleteTableForm = ({
               }
             }}/>
           </div>
+          {deleteTableError ? <p className="text-danger" style={{marginTop:16}}>The name you typed does not match the name of the table you are trying to delete.</p> : ''}
         </form>
       </Modal.Body>
       <Modal.Footer>
@@ -48,7 +51,8 @@ function mapStateToProps(state) {
     showDeleteTableForm: state.main.showDeleteTableForm,
     selectedDatabase: state.main.selectedDatabase,
     dbConnection: state.main.dbConnection,
-    tableToDelete: state.main.tableToDelete
+    tableToDelete: state.main.tableToDelete,
+    deleteTableError: state.main.deleteTableError
   };
 }
 
@@ -59,6 +63,10 @@ const mapDispatchToProps = (dispatch) => {
         type: "TOGGLE_DELETE_TABLE_FORM",
         showDeleteTableForm: false
       });
+      dispatch({
+        type:"SET_DELETE_TABLE_ERROR",
+        deleteTableError: false
+      })
     },
     onDelete: (dbConnection, selectedDatabase, tableName, confirmName) => {
       if (tableName == confirmName) {
@@ -73,7 +81,10 @@ const mapDispatchToProps = (dispatch) => {
           event: 'table.delete'
         });
       } else {
-        //show error
+        dispatch({
+          type:"SET_DELETE_TABLE_ERROR",
+          deleteTableError: true
+        })
       }
     }
   }
