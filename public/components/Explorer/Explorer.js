@@ -1,4 +1,5 @@
 import React from 'react';
+import {Button} from 'react-bootstrap';
 import ExplorerHeader from'./ExplorerHeader/ExplorerHeader';
 import ExplorerBody from'./ExplorerBody/ExplorerBody';
 import ExplorerFooter from'./ExplorerFooter/ExplorerFooter';
@@ -19,8 +20,9 @@ const Explorer = ({
   selectedConnection
 }) => {
 
-  const HelpCenter = <a href="http://utils.codehangar.io/rethink/support" target="_blank">Help Center</a>;
+  const passwordError = connectionError ? connectionError.error.msg == 'Unknown user' || connectionError.error.msg == 'Wrong password':null;
 
+  const HelpCenter = <a href="http://utils.codehangar.io/rethink/support" target="_blank">Help Center</a>;
 
   const SendMessage = (
     <a className="clickable" onClick={() => {
@@ -29,11 +31,8 @@ const Explorer = ({
   );
 
   const TryAgain = (
-    <a className='clickable' onClick={() => {
-          editConnection(selectedConnection)
-    }}>Try Again</a>
-
-  ); 
+    <Button bsSize="large" style={{margin:16}} onClick={() => {editConnection(selectedConnection) }}>Re-enter my Password</Button>
+  );
 
   let content = (
     <div className="explorer-container">
@@ -67,15 +66,20 @@ const Explorer = ({
     content = (
       <div className="explorer-container">
         <div className="explorer-full-message">
-          <p className="super-large-text">Woops!</p>
-          <p className="">Something isn't right. Check your connection details.</p>
-    
-         { (connectionError.error.msg == 'Unknown user' || connectionError.error.msg == 'Wrong password') ? 
-          <Panel header={connError} bsStyle="danger">
-                {TryAgain}
-           </Panel>
 
-           :  <pre className="text-danger">{connectionError.error.msg}</pre> }
+         { passwordError ?
+           <span>
+             <p className="super-large-text">Disconnected!</p>
+             <p className="">Please re-enter your password to connect.</p>
+             {TryAgain}
+           </span>
+
+           :
+           <span>
+             <p className="super-large-text">Woops!</p>
+
+             <pre className="text-danger">{connectionError.error.msg}</pre>
+           </span>}
           <p className="small-text">
             Still having trouble? Visit our {HelpCenter} or {SendMessage}.
           </p>
