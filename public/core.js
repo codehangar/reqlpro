@@ -296,3 +296,9 @@ export function setDeleteTableError(state, err) {
   console.log('setDeleteTableError', err)
   return Object.assign({}, state, { deleteTableError: err })
 }
+
+export function setDropTableError(state, error) {
+  return Object.assign({}, state, {
+    dropTableError: error
+  });
+}

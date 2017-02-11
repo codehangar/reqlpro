@@ -38,7 +38,8 @@ import {
   setColumnWidths,
   setAddTableError,
   setDeleteDatabaseError,
-  setDeleteTableError
+  setDeleteTableError,
+  setDropTableError
 } from './core';
 
 import * as types from './action-types';
@@ -110,6 +111,8 @@ export function main(state = {}, action) {
       return setDeleteDatabaseError(state, action.deleteDatabaseError);
     case 'SET_DELETE_TABLE_ERROR':
       return setDeleteTableError(state, action.deleteTableError);
+    case types.SET_DROP_TABLE_ERROR:
+      return setDropTableError(state, action.error);
   }
   return state;
 }

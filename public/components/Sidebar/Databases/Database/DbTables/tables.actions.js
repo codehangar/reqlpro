@@ -79,8 +79,16 @@ export function deleteTable(conn, dbName, tableName) {
         resolve();
       }).catch((err) => {
         dispatch({
+          type: "TOGGLE_DELETE_TABLE_FORM",
+          showDeleteTableForm: true
+        });
+        dispatch({
           type: 'SET_CONNECTION_LOADING',
           loading: false
+        });
+        dispatch({
+          type: 'SET_DROP_TABLE_ERROR',
+          error: err
         });
         reject(err);
       });

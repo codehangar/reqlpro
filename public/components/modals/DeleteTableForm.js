@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
 import { deleteTable } from '../../components/Sidebar/Databases/Database/DbTables/tables.actions';
+import Segment from '../../services/segment.service.js';
 
 const DeleteTableForm = ({
   showDeleteTableForm,
@@ -10,7 +11,8 @@ const DeleteTableForm = ({
   tableToDelete,
   onClose,
   onDelete,
-  deleteTableError
+  deleteTableError,
+  dropTableError
 }) => {
   let nameInput;
   const submit = (e) => {
@@ -24,6 +26,9 @@ const DeleteTableForm = ({
       </Modal.Header>
       <Modal.Body>
         <form onSubmit={submit}>
+          <div>
+            {dropTableError ? dropTableError.msg: " "}
+          </div>
           <div>
             <div className="alert alert-warning">This action cannot be undone. Please type the name of the table to confirm.</div>
             <label>Type in the name of the table to permanently delete it. This action cannot be undone.</label>
@@ -52,7 +57,8 @@ function mapStateToProps(state) {
     selectedDatabase: state.main.selectedDatabase,
     dbConnection: state.main.dbConnection,
     tableToDelete: state.main.tableToDelete,
-    deleteTableError: state.main.deleteTableError
+    deleteTableError: state.main.deleteTableError,
+    dropTableError: state.main.dropTableError
   };
 }
 
@@ -66,7 +72,11 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type:"SET_DELETE_TABLE_ERROR",
         deleteTableError: false
-      })
+      });
+      dispatch({
+        type: 'SET_DROP_TABLE_ERROR',
+        error: ' '
+      });
     },
     onDelete: (dbConnection, selectedDatabase, tableName, confirmName) => {
       if (tableName == confirmName) {
@@ -77,6 +87,7 @@ const mapDispatchToProps = (dispatch) => {
           database: selectedDatabase,
           tableToDelete: tableName
         });
+
         Segment.track({
           event: 'table.delete'
         });
@@ -84,7 +95,7 @@ const mapDispatchToProps = (dispatch) => {
         dispatch({
           type:"SET_DELETE_TABLE_ERROR",
           deleteTableError: true
-        })
+        });
       }
     }
   }
