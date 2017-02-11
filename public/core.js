@@ -289,7 +289,8 @@ export function setAddTableError(state, error) {
 
 export function setDeleteDatabaseError(state, err) {
   console.log('setDeleteDatabaseError', err)
-  return Object.assign({}, state, { deleteDatabaseError: err })
+  return Object.assign({}, state, {
+    deleteDatabaseError: err });
 }
 
 export function setDeleteTableError(state, err) {
@@ -301,4 +302,10 @@ export function setDropTableError(state, error) {
   return Object.assign({}, state, {
     dropTableError: error
   });
+}
+
+export function setDropDatabaseError(state, error) {
+  console.log('setDropDatabaseError', error);
+  return Object.assign({}, state, {
+    dropDatabaseError: error });
 }

@@ -10,7 +10,8 @@ const DeleteDatabaseForm = ({
   dbToDelete,
   onClose,
   onDelete,
-  deleteDatabaseError
+  deleteDatabaseError,
+  dropDatabaseError
 }) => {
   let nameInput;
   return (
@@ -34,7 +35,9 @@ const DeleteDatabaseForm = ({
               }
             }}/>
           </div>
+          <div>{dropDatabaseError ? dropDatabaseError.msg : ' '}
           {deleteDatabaseError ? <p className="text-danger" style={{marginTop:16}}>The name you typed does not match the name of the database you are trying to delete.</p> : ''}
+        </div>
         </form>
       </Modal.Body>
       <Modal.Footer>
@@ -52,7 +55,8 @@ const mapStateToProps = (state) => {
     selectedDatabase: state.main.selectedDatabase,
     dbConnection: state.main.dbConnection,
     dbToDelete: state.main.dbToDelete,
-    deleteDatabaseError: state.main.deleteDatabaseError
+    deleteDatabaseError: state.main.deleteDatabaseError,
+    dropDatabaseError: state.main.dropDatabaseError
   };
 };
 
@@ -66,7 +70,12 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type:"SET_DELETE_DATABASE_ERROR",
         deleteDatabaseError: false
-      })
+      });
+      dispatch({
+        type:'SET_DATABASE_DROP_ERROR',
+        dropDatabaseError: ' '
+      });
+
     },
     onDelete: (dbConnection, dbName, confirmName) => {
       if (dbName == confirmName) {
@@ -83,7 +92,7 @@ const mapDispatchToProps = (dispatch) => {
         dispatch({
           type:"SET_DELETE_DATABASE_ERROR",
           deleteDatabaseError: true
-        })
+        });
       }
     }
   }

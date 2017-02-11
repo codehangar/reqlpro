@@ -135,6 +135,14 @@ export function deleteDatabase(conn, dbName) {
         });
         resolve();
       }).catch((err) => {
+        dispatch({
+          type: "TOGGLE_DELETE_DATABASE_FORM",
+          showDeleteDatabaseForm: true
+        });
+        dispatch({
+          type:'SET_DATABASE_DROP_ERROR',
+          dropDatabaseError: err
+        });
         reject(err);
       });
     });
