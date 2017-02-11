@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Segment from '../../services/segment.service.js';
 import { Modal, Button, FormGroup } from 'react-bootstrap';
-import { Control, Form, Field, actions } from 'react-redux-form';
+import { Control, Form, Field, actions, Errors } from 'react-redux-form';
 import { connect } from 'react-redux';
 import store from '../../store';
 import { addConnection, updateConnection, deleteConnection } from '../Sidebar/Connections/connections.actions';
@@ -31,10 +31,11 @@ class ConnectionForm extends Component {
     } = this.props;
 
     console.log('isAdd', isAdd); // eslint-disable-line no-console
- 
-    let valStateUser = null;
-    let valStatePass = null; 
 
+    const isRequired = (val) => val && val.length > 0;
+    let valStateUser = null;
+    let valStatePass = null;
+  
     if(connectionError){
       if(connectionError.error.msg == 'Wrong password'){
         valStatePass = "error"; 
@@ -45,7 +46,7 @@ class ConnectionForm extends Component {
 
     return (
       <Modal show={showConnectionForm} onHide={onCancel}>
-        <Form model="forms.connection" onSubmit={(data) => isAdd ? onSave(data) : onUpdate(data)}>
+        <Form model="forms.connection" validators={{ name : {isRequired} }} onSubmit={(data) => isAdd ? onSave(data) : onUpdate(data)}>
           <Modal.Header closeButton>
             <Modal.Title>{isAdd ? 'Add New' : 'Edit'} RethinkDB Connection</Modal.Title>
           </Modal.Header>  
@@ -55,12 +56,21 @@ class ConnectionForm extends Component {
                   <div className="col-sm-12">
                     <div className="connection-row">
                       <label>Connection Name</label>
-                      <Field model=".name">
+                      <Field model=".name" type="name">
                         <input className="form-control" type="text" id="name"
                           ref={(input) => {
                             this.nameInput = input;
                           } }
                           placeholder="i.e. TodoApp-local" />
+                      <Errors
+                        className="errors"
+                        wrapper="span"
+                        show={{ touched: true, focus: false }}
+                        model=".name"
+                        messages={{
+                          isRequired: 'Please provide a connection name.',
+                        }}
+                      />
                       </Field>
                     </div>
                     <div className="connection-row">
@@ -81,29 +91,29 @@ class ConnectionForm extends Component {
                            <small className="text-muted">
                             By default, RethinkDB binds to port <strong>28015</strong> if port is not specified.
                           </small>
+                    </Field>
+                  </div>
+                  <div className="row">
+                    <div className="col-sm-6">
+                      <label>User</label>
+                      <Field model=".user">
+                        <FormGroup validationState={valStateUser}>
+                          <input className="form-control" type="text" id="user" />
+                        </FormGroup>
                       </Field>
-                    </div>
-                    <div className="row">
-                      <div className="col-sm-6">
-                        <label>User</label>
-                        <Field model=".user">
-                          <FormGroup validationState={valStateUser}>
-                            <input className="form-control" type="text" id="user" />
-                          </FormGroup>
-                        </Field>
-                      </div>
-                      <div className="col-sm-6">
-                        <label>Pass</label>
-                        <Field model=".pass">
-                          <FormGroup  validationState={valStatePass}>
-                            <input className="form-control" type="password" id="pass"/>
-                         </FormGroup>
-                        </Field>
-                      </div>
+                  </div>
+                  <div className="col-sm-6">
+                      <label>Pass</label>
+                      <Field model=".pass">
+                        <FormGroup  validationState={valStatePass}>
+                          <input className="form-control" type="password" id="pass"/>
+                        </FormGroup>
+                      </Field>
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
           </Modal.Body>
           <Modal.Footer>
             <button type="submit" className="btn btn-primary pull-right">Save</button> 
