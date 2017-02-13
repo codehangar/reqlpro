@@ -1,12 +1,13 @@
 import freeze from 'deep-freeze-node';
 import * as reducer from './databases.reducer';
 import * as types from '../../../action-types';
+import RethinkDbService from '../../../services/rethinkdb.service'
 
-let dispatch;
-let RethinkDbService;
+// let dispatch;
+// let RethinkDbService;
 const FALSE_SUCCESS_ERROR = new Error('This promise should have failed');
 
-describe('databases', () => {
+describe.only('databases', () => {
 
   afterEach(function() {
     mockery.deregisterAll();
@@ -17,19 +18,18 @@ describe('databases', () => {
 
     beforeEach(function() {
 
+      // console.log(this)
+
       mockery.enable({
         warnOnReplace: false,
         warnOnUnregistered: false,
         useCleanCache: true
       });
 
-      dispatch = sinon.stub();
-
-      // Mock the rethinkdb service
-      RethinkDbService = sinon.stub();
+      // dispatch = sinon.stub();
 
       // replace the require() module `rethinkdb` with a stub object
-      mockery.registerMock('../../../../main/services/rethinkdb.service', RethinkDbService);
+      mockery.registerMock('../../../../main/services/rethinkdb.service', this.RethinkDbService);
 
       // replace the require() module `ReQLEval` with a stub object
       const ReQLEval = sinon.stub();
@@ -38,29 +38,28 @@ describe('databases', () => {
 
 
     describe('getDbList', () => {
-
+      const { getDbList } = require('./databases.actions');
       const state = {
         dbConnection: { stuff: 'stuff' }
       };
       const databases = ['dbName1', 'dbName2'];
+      let dispatch;
 
       describe('success', () => {
         beforeEach(function() {
+          dispatch = sinon.spy();
           RethinkDbService.getDbList = sinon.stub().returns(new Promise(function(resolve, reject) {
             resolve(databases);
           }));
         });
 
         it('get list of databases from dbConnection', (done) => {
-          const { getDbList } = require('./databases.actions');
           const promise = getDbList(state.dbConnection)(dispatch);
           promise
             .then(function() {
               expect(RethinkDbService.getDbList.callCount).to.equal(1);
               expect(RethinkDbService.getDbList.calledWith(state.dbConnection)).to.equal(true);
               expect(dispatch.callCount).to.equal(1);
-              // const dCall = dispatch.getCall(0);
-              // console.log('dCall.args[0].databases', dCall.args[0].databases);
               expect(dispatch.calledWith({
                 type: 'SET_DB_LIST',
                 databases: [
@@ -76,15 +75,15 @@ describe('databases', () => {
       });
 
       describe('failure', () => {
-
         beforeEach(function() {
+          dispatch = sinon.spy();
           RethinkDbService.getDbList = sinon.stub().returns(new Promise(function(resolve, reject) {
             reject('im a dbList fetching error');
           }));
         });
 
         it('handles failed connection info from RethinkDB', (done) => {
-          const { getDbList } = require('./databases.actions');
+
           const promise = getDbList(state.dbConnection)(dispatch);
           promise
             .then(function() {
@@ -109,19 +108,20 @@ describe('databases', () => {
     });
 
     describe('createDatabase', () => {
-
+      const { createDatabase } = require('./databases.actions');
       const dbConnection = { stuff: 'stuff' };
       const dbName = 'dbName1';
+      let dispatch;
 
       describe('success', () => {
         beforeEach(function() {
+          dispatch = sinon.spy();
           RethinkDbService.createDb = sinon.stub().returns(new Promise(function(resolve, reject) {
             resolve('ok was successfully created.');
           }));
         });
 
         it('should add a new database to the list of databases', (done) => {
-          const { createDatabase } = require('./databases.actions');
           const promise = createDatabase(dbConnection, dbName)(dispatch);
           promise
             .then(function() {
@@ -146,26 +146,25 @@ describe('databases', () => {
       });
 
       describe('failure', () => {
-
         beforeEach(function() {
+          dispatch = sinon.spy();
           RethinkDbService.createDb = sinon.stub().returns(new Promise(function(resolve, reject) {
             reject('im a db create error');
           }));
         });
 
         it('handles failed create database info from RethinkDB', (done) => {
-          const { createDatabase } = require('./databases.actions');
           const promise = createDatabase(dbConnection, dbName)(dispatch);
           promise
             .then(function() {
               done(FALSE_SUCCESS_ERROR);
             })
             .catch(function(er) {
+              console.log(er)
+
               expect(RethinkDbService.createDb.callCount).to.equal(1);
-              // const dCall = RethinkDbService.createDb.getCall(0);
-              // console.log('dCall.args', dCall.args);
               expect(RethinkDbService.createDb.calledWith(dbConnection, dbName)).to.equal(true);
-              // expect(dispatch.callCount).to.equal(1);
+              expect(dispatch.callCount).to.equal(0);
               // expect(dispatch.calledWith({
               //   type: 'ADD_TO_DB_LIST',
               //   database: 'im a db create error'
