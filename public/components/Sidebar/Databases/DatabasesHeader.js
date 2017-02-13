@@ -12,6 +12,7 @@ const Toggle = ({ onClick }) => {
 const DatabasesHeader = ({
   editConnection,
   addDatabase,
+  connections,
   onDeleteConnection,
   selectedConnection,
   connectionError
@@ -19,8 +20,8 @@ const DatabasesHeader = ({
   return (
     <div className="databases-header">
       <div>
-        <span className="title">{selectedConnection ? selectedConnection.name : ''}</span>
-        {!selectedConnection ? '' :
+        <span className="title">{selectedConnection && connections.length > 0 ? selectedConnection.name : ''}</span>
+         { selectedConnection && connections.length > 0 ? 
           <Dropdown id="connection-dropdown" className="pull-right">
             <Toggle bsRole="toggle"/>
             <Dropdown.Menu className="super-colors">
@@ -33,7 +34,7 @@ const DatabasesHeader = ({
                 onDeleteConnection(selectedConnection)
               }}>Delete Connection</MenuItem>
             </Dropdown.Menu>
-          </Dropdown>}
+          </Dropdown> : ''}
 
       </div>
     </div>
@@ -44,7 +45,8 @@ const DatabasesHeader = ({
 function mapStateToProps(state) {
   return {
     selectedConnection: state.connection.selected,
-    connectionError: state.main.connectionError
+    connectionError: state.main.connectionError,
+    connections: state.connections || [],
   };
 }
 const mapDispatchToProps = (dispatch) => {

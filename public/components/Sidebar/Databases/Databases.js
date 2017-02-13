@@ -5,11 +5,13 @@ import Database from './Database/Database';
 
 const Databases = ({
   databases,
-  connectionError
+  connectionError,
+  connections,
+  dbConnection
 }) => {
   let databaseNodes;
 
-  if (databases && !connectionError) {
+  if (databases && !(!!connectionError) && connections.length > 0) {
     databaseNodes = databases.map((database) => {
       return (
         <Database
@@ -36,7 +38,8 @@ const mapStateToProps = (state) => {
   return {
     databases: state.databases,
     dbConnection: state.main.dbConnection,
-    connectionError: state.main.connectionError
+    connectionError: state.main.connectionError,
+    connections: state.connections || [],
   };
 };
 
