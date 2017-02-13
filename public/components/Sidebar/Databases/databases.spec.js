@@ -7,7 +7,7 @@ import RethinkDbService from '../../../services/rethinkdb.service'
 // let RethinkDbService;
 const FALSE_SUCCESS_ERROR = new Error('This promise should have failed');
 
-describe.only('databases', () => {
+describe('databases', () => {
 
   afterEach(function() {
     mockery.deregisterAll();
