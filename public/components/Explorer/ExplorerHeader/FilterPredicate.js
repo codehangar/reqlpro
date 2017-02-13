@@ -89,25 +89,15 @@ const mapDispatchToProps = (dispatch) => {
         type: "SET_FILTER_PREDICATE",
         filterPredicate
       });
-      // Segment.track({
-      //   event: 'query.filter',
-      //   properties:{
-      //     action:"set"
-      //   }
-      // });
     },
     submit: (filterPredicate) => {
       dispatch(refreshExplorerBody());
       Segment.track({
-        event: 'query.filter',
+        event: 'table.query',
         properties: {
-          action: "submit"
+          type: "filter"
         }
       });
-      // Segment.track({
-      //   event: 'explorer.setFilterPredicate',
-      //   properties: {}
-      // });
     }
   };
 };

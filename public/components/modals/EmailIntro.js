@@ -84,6 +84,7 @@ function mapDispatchToProps(dispatch) {
         userId: email,
         traits: {
           email: email,
+          created: new Date().toDateString()
         }
       });
 

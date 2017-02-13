@@ -47,7 +47,7 @@ const mapDispatchToProps = (dispatch) => {
       }
       // dispatch(getTableSize(dbConnection, databaseName, tableName));
       Segment.track({
-        event: 'table.click'
+        event: 'table.select'
       });
     },
     deleteTable: (e, database, table) => {

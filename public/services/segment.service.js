@@ -15,6 +15,7 @@ function Segment() {
       .then((userConfig) => {
         const properties = Object.assign(payload.properties || {}, {
           platform: navigator.platform,
+          userAgent: navigator.userAgent,
         });
         console.log('userConfig', userConfig); // eslint-disable-line no-console
         let email;
