@@ -29,16 +29,7 @@ export function createTable(dbConnection, dbName, tableName) {
           dbName,
           tableName
         });
-        const selectedTable = dispatch({
-          type: 'SET_SELECTED_TABLE',
-          dbName,
-          tableName
-        });
-        if (selectedTable){
-          dispatch(queryTable(dbConnection, dbName, tableName, selectedTable.query));
-        } else {
-          dispatch(queryTable(dbConnection, dbName, tableName));
-        }
+        
         dispatch({
           type: "TOGGLE_TABLE_FORM",
           showTableForm: false
