@@ -56,7 +56,7 @@ function getTableData(conn, db, table, query) {
           lastResult: result,
           data: result.value
         });
-        dispatch(getTableSize(conn, db, table));
+        dispatch(getTableSize(conn, db, table, filterPredicate));
         dispatch({
           type: 'SET_CONNECTION_LOADING',
           loading: false
@@ -208,10 +208,10 @@ function handleResult(dispatch, result) {
   }
 }
 
-export function getTableSize(conn, dbName, tableName) {
+export function getTableSize(conn, dbName, tableName, filter) {
   return dispatch => {
     return new Promise((resolve, reject) => {
-      RethinkDbService.getTableSize(conn, dbName, tableName).then((size) => {
+      RethinkDbService.getTableSize(conn, dbName, tableName, filter).then((size) => {
         dispatch({
           type: "SET_TABLE_SIZE",
           size

@@ -1,6 +1,6 @@
 import React from'react';
 import { connect } from 'react-redux';
-import { queryTable, getTableSize } from '../../../../../actions';
+import { queryTable } from '../../../../../actions';
 import Segment from '../../../../../services/segment.service.js';
 
 const DbTable = ({

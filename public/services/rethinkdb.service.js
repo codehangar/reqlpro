@@ -357,10 +357,15 @@ RethinkDbService.prototype.getTableDataBetween = function(conn, db, table, index
  * @param {String} Table name
  * @returns {Promise}
  */
-RethinkDbService.prototype.getTableSize = function(conn, db, table) {
+RethinkDbService.prototype.getTableSize = function(conn, db, table, filter) {
   return new Promise(function(resolve, reject) {
     co(function*() {
-      const tableSize = yield r.db(db).table(table).count().run(conn);
+
+      if (!filter) {
+        filter = true;
+      }
+
+      const tableSize = yield r.db(db).table(table).filter(filter).count().run(conn);
       resolve(tableSize);
     }).catch(function(err) {
       reject(err);
