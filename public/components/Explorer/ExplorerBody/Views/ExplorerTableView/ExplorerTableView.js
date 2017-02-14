@@ -129,11 +129,8 @@ function mapDispatchToProps(dispatch) {
       dispatch(refreshExplorerBody());
     },
     setColumnWidth: (newColumnWidth, columnKey, selectedTable) => {
-      console.log(newColumnWidth, columnKey, selectedTable)
-
       let width = {};
       width[columnKey] = newColumnWidth;
-      console.log(width);
 
       dispatch({
         type: "SET_TABLE_COLUMN_WIDTH",
@@ -142,25 +139,21 @@ function mapDispatchToProps(dispatch) {
         width
       });
 
-      // const onColumnResizeEndCallback = (newColumnWidth, columnKey) => {
-
-
-      // Update local state
-      // this.setState(({columnWidths}) => ({
-      //   columnWidths: _.extend({}, columnWidths, width)
-      // }));
-
-      // Also back up in the store to maintain across paging
-      // var cWs = _.extend({}, selectedTable.columnWidths, width)
-      // console.log(cWs);
-      // this.state.store.setColumnWidths(cWs);
-      // };
+      Segment.track({
+        event: 'tableview.resizeColumn',
+        properties: {}
+      });
     },
     onEditClick: (row) => {
       dispatch({
         type: "SET_ROW_EDIT",
         row
-      })
+      });
+
+      Segment.track({
+        event: 'tableview.row.editBtn',
+        properties: {}
+      });
     },
     onDeleteClick: (rowToDelete) => {
       dispatch({
