@@ -28,11 +28,12 @@ describe('tables', () => {
       RethinkDbService = sinon.stub();
 
       // replace the require() module `rethinkdb` with a stub object
-      mockery.registerMock('../../../../../../main/services/rethinkdb.service', RethinkDbService);
+      mockery.registerMock('../../../../../services/rethinkdb.service', RethinkDbService);
 
       // replace the require() module `ReQLEval` with a stub object
-      const ReQLEval = sinon.stub();
-      mockery.registerMock('../main/services/reql-eval.service', ReQLEval);
+      const Actions = sinon.stub();
+      Actions.queryTable = sinon.stub();
+      mockery.registerMock('../../../../../actions', Actions);
     });
 
     describe('getDbTables', () => {
@@ -121,7 +122,7 @@ describe('tables', () => {
             .then(function() {
               expect(RethinkDbService.createTable.callCount).to.equal(1);
               expect(RethinkDbService.createTable.calledWith(dbConnection, dbName, tableName)).to.equal(true);
-              expect(dispatch.callCount).to.equal(1);
+              expect(dispatch.callCount).to.equal(4);
               expect(dispatch.calledWith({
                 type: 'ADD_TO_TABLE_LIST',
                 dbName,

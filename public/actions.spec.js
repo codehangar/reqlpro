@@ -27,15 +27,15 @@ describe('Action Creators', () => {
     RethinkDbService = sinon.stub();
 
     // replace the require() module `rethinkdb` with a stub object
-    mockery.registerMock('../main/services/rethinkdb.service', RethinkDbService);
+    mockery.registerMock('./services/rethinkdb.service', RethinkDbService);
 
     // replace the require() module `ReQLEval` with a stub object
     ReQLEval = () => Promise.resolve('ReQLEvalResult');
-    mockery.registerMock('../main/services/reql-eval.service', ReQLEval);
+    mockery.registerMock('./services/reql-eval.service', ReQLEval);
 
     // replace the require() module `configService` with a stub object
     configService = sinon.stub();
-    mockery.registerMock('./main/services/config.service', configService);
+    mockery.registerMock('./services/config.service', configService);
 
   });
 
@@ -64,8 +64,8 @@ describe('Action Creators', () => {
         promise
           .then(function() {
             expect(RethinkDbService.getTableData.callCount).to.equal(1);
-            expect(RethinkDbService.getTableData.calledWithExactly(dbConnection, databaseName, tableName, null, ['ReQLEvalResult'], 5, 1)).to.equal(true);
-            expect(dispatch.callCount).to.equal(2);
+            expect(RethinkDbService.getTableData.calledWithExactly(dbConnection, databaseName, tableName, '', ['ReQLEvalResult'], 5, 1)).to.equal(true);
+            expect(dispatch.callCount).to.equal(5);
             expect(dispatch.calledWith({
               type: 'UPDATE_SELECTED_TABLE',
               lastResult: { value: [{ name: 'Bob' }, { name: 'Jim' }] },
@@ -84,7 +84,7 @@ describe('Action Creators', () => {
           .then(function() {
             expect(RethinkDbService.getTableDataBetween.callCount).to.equal(1);
             expect(RethinkDbService.getTableDataBetween.calledWithExactly(dbConnection, databaseName, tableName, 'name', 7, 8)).to.equal(true);
-            expect(dispatch.callCount).to.equal(2);
+            expect(dispatch.callCount).to.equal(4);
             expect(dispatch.calledWith({
               type: 'UPDATE_SELECTED_TABLE',
               lastResult: { value: [{ name: 'Jim' }, { name: 'Bob' }] },
@@ -113,16 +113,9 @@ describe('Action Creators', () => {
             done(FALSE_SUCCESS_ERROR);
           })
           .catch(function() {
-            console.log('catching'); // eslint-disable-line no-console
             expect(RethinkDbService.getTableData.callCount).to.equal(1);
-            expect(RethinkDbService.getTableData.calledWithExactly(dbConnection, databaseName, tableName, null, ['ReQLEvalResult'], 5, 1)).to.equal(true);
-            // expect(dispatch.callCount).to.equal(1);
-            // expect(dispatch.calledWith({
-            //   type: 'UPDATE_SELECTED_TABLE',
-            //   lastResult: 'im a query table error',
-            //   data: 'im a query table error',
-            //   loading: false
-            // })).to.equal(true);
+            expect(RethinkDbService.getTableData.calledWithExactly(dbConnection, databaseName, tableName, '', ['ReQLEvalResult'], 5, 1)).to.equal(true);
+            expect(dispatch.callCount).to.equal(4);
             done();
           })
           .catch(done);
@@ -201,6 +194,7 @@ describe('Action Creators', () => {
       }],
       main: {
         email: 'cassie@codehangar.io',
+        created: '',
         dbConnection: { stuff: 'stuff' },
         connection: {
           selected: {
@@ -247,6 +241,7 @@ describe('Action Creators', () => {
             expect(configService.writeConfigFile.callCount).to.equal(1);
             expect(configService.writeConfigFile.calledWithExactly({
               email: 'cassie@codehangar.io',
+              created: '',
               connections: [{
                 authKey: "",
                 database: "",

@@ -5,6 +5,7 @@ import * as types from '../../../action-types';
 
 let RethinkDbService;
 let dispatch;
+let DatabaseActions;
 const FALSE_SUCCESS_ERROR = new Error('This promise should have failed');
 
 describe('selectedConnection', () => {
@@ -28,11 +29,11 @@ describe('selectedConnection', () => {
 
       // Mock the rethinkdb service
       RethinkDbService = sinon.stub();
-      mockery.registerMock('../../../../main/services/rethinkdb.service', RethinkDbService);
-      mockery.registerMock('../main/services/rethinkdb.service', RethinkDbService);
+      mockery.registerMock('../../../services/rethinkdb.service', RethinkDbService);
 
-      mockery.registerMock('../main/services/reql-eval.service', sinon.stub());
-      mockery.registerMock('./main/services/config.service', sinon.stub());
+      DatabaseActions = sinon.stub();
+      DatabaseActions.getDbList = sinon.stub().returns(() => {});
+      mockery.registerMock('../Databases/databases.actions', DatabaseActions);
     });
 
     describe('getDbConnection', () => {
