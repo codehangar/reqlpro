@@ -5,6 +5,7 @@ import { remote } from 'electron';
 import ConfigService from './config.service';
 // Special import because it must run in Electron's "Main" process, not the "Renderer" process
 const analytics = remote.require('./public/services/segment.config');
+const appVer = remote.getGlobal('appVersion');
 
 function Segment() {
 
@@ -16,6 +17,7 @@ function Segment() {
         const properties = Object.assign(payload.properties || {}, {
           platform: navigator.platform,
           userAgent: navigator.userAgent,
+          appVersion: appVer
         });
         console.log('userConfig', userConfig); // eslint-disable-line no-console
         let email;
@@ -28,7 +30,8 @@ function Segment() {
             userId: email,
             context: {
               userAgent: navigator.userAgent,
-              platform: navigator.platform
+              platform: navigator.platform,
+              appVersion: appVer
             },
             properties: properties
           });
@@ -43,13 +46,16 @@ function Segment() {
 
       const traits = Object.assign(payload.traits, {
         anonId: anonId,
-        platform: navigator.platform
+        platform: navigator.platform,
+        appVersion: appVer
       });
 
       _.extend(payload, {
         anonymousId: anonId,
         context: {
-          userAgent: navigator.userAgent
+          userAgent: navigator.userAgent,
+          platform: navigator.platform,
+          appVersion: appVer
         },
         traits: traits
       });
