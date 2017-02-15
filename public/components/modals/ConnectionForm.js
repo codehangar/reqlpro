@@ -65,7 +65,7 @@ class ConnectionForm extends Component {
                       <Errors
                         className="errors"
                         wrapper="span"
-                        show={{ touched: true, focus: false }}
+                        show="touched"
                         model=".name"
                         messages={{
                           isRequired: 'Please provide a connection name.',
