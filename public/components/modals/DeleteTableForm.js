@@ -26,7 +26,7 @@ const DeleteTableForm = ({
       </Modal.Header>
       <Modal.Body>
         <form onSubmit={submit}>
-          <div>
+          <div className="text-danger" style={{marginBottom:16}}>
             {dropTableError ? dropTableError.msg: " "}
           </div>
           <div>

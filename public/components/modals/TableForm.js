@@ -24,7 +24,7 @@ const TableForm = ({
       </Modal.Header>
       <Modal.Body>
         <form onSubmit={submit}>
-          <div>
+          <div className="text-danger" style={{marginBottom:16}}>
             {addTableError ? addTableError.msg : " " }
           </div>
           <div>

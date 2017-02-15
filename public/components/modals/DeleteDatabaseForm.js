@@ -35,7 +35,7 @@ const DeleteDatabaseForm = ({
               }
             }}/>
           </div>
-          <div>{dropDatabaseError ? dropDatabaseError.msg : ' '}
+          <div className="text-danger" style={{marginTop:16}}>{dropDatabaseError ? dropDatabaseError.msg : ' '}
           {deleteDatabaseError ? <p className="text-danger" style={{marginTop:16}}>The name you typed does not match the name of the database you are trying to delete.</p> : ''}
         </div>
         </form>

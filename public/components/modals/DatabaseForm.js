@@ -8,7 +8,8 @@ const DatabaseForm = ({
   showDatabaseForm,
   dbConnection,
   onClose,
-  onSave
+  onSave,
+  dropDatabaseError
 }) => {
   let nameInput;
   return (
@@ -30,6 +31,9 @@ const DatabaseForm = ({
               }
             }}/>
           </div>
+          <div className="text-danger" style={{marginTop:16}}>
+            {dropDatabaseError ? dropDatabaseError.msg : ' '}
+          </div>
         </form>
       </Modal.Body>
       <Modal.Footer>
@@ -47,6 +51,7 @@ const mapStateToProps = (state) => {
   return {
     showDatabaseForm: state.main.showDatabaseForm,
     dbConnection: state.main.dbConnection,
+    dropDatabaseError: state.main.dropDatabaseError
   };
 };
 
@@ -56,6 +61,10 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: "TOGGLE_DATABASE_FORM",
         showDatabaseForm: false
+      });
+      dispatch({
+        type:'SET_DATABASE_DROP_ERROR',
+        dropDatabaseError: ' '
       });
     },
     onSave: (dbConnection, database) => {

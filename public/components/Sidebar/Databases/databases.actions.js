@@ -33,6 +33,14 @@ export function createDatabase(dbConnection, dbName) {
         dispatch({ type: types.TOGGLE_DATABASE_FORM });
         resolve(results);
       }).catch(error => {
+        dispatch({
+          type: "TOGGLE_DATABASE_FORM",
+          showDatabaseForm: true
+        });
+        dispatch({
+          type:'SET_DATABASE_DROP_ERROR',
+          dropDatabaseError: error
+        });
         reject(error);
       });
     });
