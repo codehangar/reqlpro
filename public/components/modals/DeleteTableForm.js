@@ -22,7 +22,7 @@ const DeleteTableForm = ({
   return (
     <Modal show={showDeleteTableForm} onHide={onClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Delete Table</Modal.Title>
+        <Modal.Title>Delete Table {tableToDelete} </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <form onSubmit={submit}>
@@ -31,7 +31,7 @@ const DeleteTableForm = ({
           </div>
           <div>
             <div className="alert alert-warning">This action cannot be undone. Please type the name of the table to confirm.</div>
-            <label>Type in the name of the table to permanently delete it. This action cannot be undone.</label>
+            <p>Type in the name of the table (<strong>{tableToDelete}</strong>) to permanently delete it. This action cannot be undone.</p>
             <input className="form-control" id="name" type="text" ref={(input) => {
               nameInput = input;
               if (nameInput) {

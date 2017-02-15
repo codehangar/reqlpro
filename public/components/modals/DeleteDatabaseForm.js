@@ -17,7 +17,7 @@ const DeleteDatabaseForm = ({
   return (
     <Modal show={showDeleteDatabaseForm} onHide={onClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Delete Database</Modal.Title>
+        <Modal.Title>Delete Database {dbToDelete}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <div className="alert alert-warning">Deleting the database will delete all the tables in it. This action cannot be undone. Please type the name of the database to confirm.</div>
@@ -26,8 +26,8 @@ const DeleteDatabaseForm = ({
           onDelete(dbConnection, dbToDelete, nameInput.value)
         }}>
           <div>
-            <label>Type in the name of the database ({dbToDelete}) to permanently delete it. This action cannot be
-              undone.</label>
+            <p>Type in the name of the database (<strong>{dbToDelete}</strong>) to permanently delete it. This action cannot be
+              undone.</p>
             <input className="form-control" id="name" type="text" ref={(input) => {
               nameInput = input;
               if (input) {
