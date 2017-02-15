@@ -3,9 +3,8 @@ import RethinkDbService from './services/rethinkdb.service';
 import ReQLEval from './services/reql-eval.service';
 import { convertStringsToDates } from './services/date-type.service'
 import configService from './services/config.service';
+import * as types from './action-types';
 
-// export function queryTable(queryParams = selectedTable.query) {
-// Todo: pull from passed in queryParams or default to selectedTable on state (or leave as is, not sure)
 export function queryTable(conn, db, table, query = {
   filterPredicate: '',
   orderByPredicate: "r.asc('id')",
@@ -136,12 +135,12 @@ export function deleteDatabase(conn, dbName) {
         resolve();
       }).catch((err) => {
         dispatch({
-          type: "TOGGLE_DELETE_DATABASE_FORM",
+          type: types.TOGGLE_DELETE_DATABASE_FORM,
           showDeleteDatabaseForm: true
         });
         dispatch({
-          type:'SET_DATABASE_DROP_ERROR',
-          dropDatabaseError: err
+          type: types.SET_DATABASE_FORM_ERROR,
+          databaseFormError: err
         });
         reject(err);
       });

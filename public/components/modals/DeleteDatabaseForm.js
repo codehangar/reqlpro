@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
 import { deleteDatabase } from '../../actions';
 import Segment from '../../services/segment.service.js';
+import * as types from '../../action-types';
 
 const DeleteDatabaseForm = ({
   showDeleteDatabaseForm,
@@ -10,10 +11,11 @@ const DeleteDatabaseForm = ({
   dbToDelete,
   onClose,
   onDelete,
-  deleteDatabaseError,
-  dropDatabaseError
+  deleteDatabaseConfirmError,
+  databaseFormError
 }) => {
   let nameInput;
+  const confirmationErrMsg = 'The name you typed does not match the name of the database you are trying to delete.';
   return (
     <Modal show={showDeleteDatabaseForm} onHide={onClose}>
       <Modal.Header closeButton>
@@ -35,9 +37,8 @@ const DeleteDatabaseForm = ({
               }
             }}/>
           </div>
-          <div className="text-danger" style={{marginTop:16}}>{dropDatabaseError ? dropDatabaseError.msg : ' '}
-          {deleteDatabaseError ? <p className="text-danger" style={{marginTop:16}}>The name you typed does not match the name of the database you are trying to delete.</p> : ''}
-        </div>
+          <div className="errors">{deleteDatabaseConfirmError ? confirmationErrMsg : ''}</div>
+          <div className="errors">{databaseFormError ? databaseFormError.msg : ''}</div>
         </form>
       </Modal.Body>
       <Modal.Footer>
@@ -55,8 +56,8 @@ const mapStateToProps = (state) => {
     selectedDatabase: state.main.selectedDatabase,
     dbConnection: state.main.dbConnection,
     dbToDelete: state.main.dbToDelete,
-    deleteDatabaseError: state.main.deleteDatabaseError,
-    dropDatabaseError: state.main.dropDatabaseError
+    deleteDatabaseConfirmError: state.main.deleteDatabaseConfirmError,
+    databaseFormError: state.main.databaseFormError
   };
 };
 
@@ -64,34 +65,34 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onClose: () => {
       dispatch({
-        type: "TOGGLE_DELETE_DATABASE_FORM",
+        type: types.TOGGLE_DELETE_DATABASE_FORM,
         showDeleteDatabaseForm: false
       });
       dispatch({
-        type:"SET_DELETE_DATABASE_ERROR",
-        deleteDatabaseError: false
+        type: types.SET_DELETE_DATABASE_CONFIRM_ERROR,
+        deleteDatabaseConfirmError: false
       });
       dispatch({
-        type:'SET_DATABASE_DROP_ERROR',
-        dropDatabaseError: ' '
+        type: types.SET_DATABASE_FORM_ERROR,
+        databaseFormError: ''
       });
-
     },
     onDelete: (dbConnection, dbName, confirmName) => {
       if (dbName == confirmName) {
-        console.log('deleeeeeeting', dbConnection, dbName, confirmName)
         dispatch(deleteDatabase(dbConnection, dbName));
         dispatch({
-          type: "TOGGLE_DELETE_DATABASE_FORM",
+          type: types.TOGGLE_DELETE_DATABASE_FORM,
           showDeleteDatabaseForm: false
         });
-        Segment.track({
-          event: 'database.delete'
+        dispatch({
+          type: types.SET_DELETE_DATABASE_CONFIRM_ERROR,
+          deleteDatabaseConfirmError: false
         });
+        Segment.track({ event: 'database.delete' });
       } else {
         dispatch({
-          type:"SET_DELETE_DATABASE_ERROR",
-          deleteDatabaseError: true
+          type: types.SET_DELETE_DATABASE_CONFIRM_ERROR,
+          deleteDatabaseConfirmError: true
         });
       }
     }

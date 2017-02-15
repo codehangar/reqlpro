@@ -236,8 +236,7 @@ export function setColumnWidths(state, database, table, width) {
   let columnWidthsCopy;
 
   if (state.columnWidths) {
-    // columnWidthsCopy = state.columnWidths.slice();
-    columnWidthsCopy = Object.assign({}, state.columnWidths)
+    columnWidthsCopy = Object.assign({}, state.columnWidths);
     if (!columnWidthsCopy[database]) {
       let obj = {};
       obj[table] = width;
@@ -253,59 +252,28 @@ export function setColumnWidths(state, database, table, width) {
   } else {
     newColumnWidth[database] = {};
     newColumnWidth[database][table] = width;
-    console.log(newColumnWidth)
     columnWidthsCopy = newColumnWidth;
   }
-  //   if(columnWidthsCopy[database]){
-  //     cwdb = Object.assign({},columnWidthsCopy[database]);
-  //     if(cwdb[table]){
-  //       cwt = Object.assign({},cwdb[table]);
-  //     }else{
-  //
-  //       columnWidthsCopy = Object.assign({},columnWidthsCopy,newColumnWidth)
-  //     }
-  //
-  //   }else{
-  //     newColumnWidth[database] = {};
-  //     newColumnWidth[database][table] = width;
-  //     console.log(newColumnWidth)
-  //     columnWidthsCopy = Object.assign({},columnWidthsCopy,newColumnWidth)
-  //   }
-  //   // console.log(state.columnWidths)
-  //   // let columnWidths = Object.assign({}, state.columnWidths, newColumnWidth);
-  // }else{
-
-  // }
-
 
   return Object.assign({}, state, { columnWidths: columnWidthsCopy })
 }
 
 export function setAddTableError(state, error) {
-  return Object.assign({}, state, {
-    addTableError: error
-  });
+  return Object.assign({}, state, { addTableError: error });
 }
 
-export function setDeleteDatabaseError(state, err) {
-  console.log('setDeleteDatabaseError', err)
-  return Object.assign({}, state, {
-    deleteDatabaseError: err });
+export function setDeleteDatabaseConfirmError(state, deleteDatabaseConfirmError) {
+  return Object.assign({}, state, { deleteDatabaseConfirmError });
 }
 
-export function setDeleteTableError(state, err) {
-  console.log('setDeleteTableError', err)
-  return Object.assign({}, state, { deleteTableError: err })
+export function setDeleteTableConfirmError(state, deleteTableConfirmError) {
+  return Object.assign({}, state, { deleteTableConfirmError })
 }
 
-export function setDropTableError(state, error) {
-  return Object.assign({}, state, {
-    dropTableError: error
-  });
+export function setTableFormError(state, tableFormError) {
+  return Object.assign({}, state, { tableFormError });
 }
 
-export function setDropDatabaseError(state, error) {
-  console.log('setDropDatabaseError', error);
-  return Object.assign({}, state, {
-    dropDatabaseError: error });
+export function setDatabaseFormError(state, databaseFormError) {
+  return Object.assign({}, state, { databaseFormError });
 }

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
 import { createTable } from '../../components/Sidebar/Databases/Database/DbTables/tables.actions';
 import Segment from '../../services/segment.service.js';
+import * as types from '../../action-types';
 
 const TableForm = ({
   showTableForm,
@@ -10,7 +11,7 @@ const TableForm = ({
   dbToEdit,
   onClose,
   onSave,
-  addTableError
+  tableFormError
 }) => {
   let nameInput;
   const submit = (e) => {
@@ -24,9 +25,6 @@ const TableForm = ({
       </Modal.Header>
       <Modal.Body>
         <form onSubmit={submit}>
-          <div className="text-danger" style={{marginBottom:16}}>
-            {addTableError ? addTableError.msg : " " }
-          </div>
           <div>
             <label>Name</label>
             <input className="form-control" id="name" type="text" ref={(input) => {
@@ -36,6 +34,7 @@ const TableForm = ({
               }
             }}/>
           </div>
+          <div className="errors">{tableFormError ? tableFormError.msg : '' }</div>
         </form>
       </Modal.Body>
       <Modal.Footer>
@@ -52,7 +51,7 @@ const mapStateToProps = (state) => {
     showTableForm: state.main.showTableForm,
     dbToEdit: state.main.dbToEdit,
     dbConnection: state.main.dbConnection,
-    addTableError: state.main.addTableError,
+    tableFormError: state.main.tableFormError,
   };
 };
 
@@ -60,11 +59,11 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onClose: () => {
       dispatch({
-      type: 'SET_ADD_TABLE_ERROR',
-      error: ' '
+        type: types.SET_TABLE_FORM_ERROR,
+        tableFormError: ''
       });
       dispatch({
-        type: "TOGGLE_TABLE_FORM",
+        type: types.TOGGLE_TABLE_FORM,
         showTableForm: false
       });
 

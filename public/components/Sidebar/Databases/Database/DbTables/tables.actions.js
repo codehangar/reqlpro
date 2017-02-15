@@ -29,9 +29,9 @@ export function createTable(dbConnection, dbName, tableName) {
           dbName,
           tableName
         });
-        
+
         dispatch({
-          type: "TOGGLE_TABLE_FORM",
+          type: types.TOGGLE_TABLE_FORM,
           showTableForm: false
         });
         resolve(results);
@@ -41,8 +41,8 @@ export function createTable(dbConnection, dbName, tableName) {
           loading: false
         });
         dispatch({
-          type: 'SET_ADD_TABLE_ERROR',
-          error
+          type: types.SET_TABLE_FORM_ERROR,
+          tableFormError: error
         });
         reject(error);
       });
@@ -78,8 +78,8 @@ export function deleteTable(conn, dbName, tableName) {
           loading: false
         });
         dispatch({
-          type: 'SET_DROP_TABLE_ERROR',
-          error: err
+          type: types.SET_TABLE_FORM_ERROR,
+          tableFormError: err
         });
         reject(err);
       });

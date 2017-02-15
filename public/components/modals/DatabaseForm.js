@@ -3,13 +3,14 @@ import { connect } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
 import { createDatabase } from '../Sidebar/Databases/databases.actions';
 import Segment from '../../services/segment.service.js';
+import * as types from '../../action-types';
 
 const DatabaseForm = ({
   showDatabaseForm,
   dbConnection,
   onClose,
   onSave,
-  dropDatabaseError
+  databaseFormError
 }) => {
   let nameInput;
   return (
@@ -31,9 +32,7 @@ const DatabaseForm = ({
               }
             }}/>
           </div>
-          <div className="text-danger" style={{marginTop:16}}>
-            {dropDatabaseError ? dropDatabaseError.msg : ' '}
-          </div>
+          <span className="errors">{databaseFormError ? databaseFormError.msg : ' '}</span>
         </form>
       </Modal.Body>
       <Modal.Footer>
@@ -51,7 +50,7 @@ const mapStateToProps = (state) => {
   return {
     showDatabaseForm: state.main.showDatabaseForm,
     dbConnection: state.main.dbConnection,
-    dropDatabaseError: state.main.dropDatabaseError
+    databaseFormError: state.main.databaseFormError
   };
 };
 
@@ -59,19 +58,17 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onClose: () => {
       dispatch({
-        type: "TOGGLE_DATABASE_FORM",
+        type: types.TOGGLE_DATABASE_FORM,
         showDatabaseForm: false
       });
       dispatch({
-        type:'SET_DATABASE_DROP_ERROR',
-        dropDatabaseError: ' '
+        type: types.SET_DATABASE_FORM_ERROR,
+        databaseFormError: ''
       });
     },
     onSave: (dbConnection, database) => {
       dispatch(createDatabase(dbConnection, database));
-      Segment.track({
-        event: 'database.save'
-      });
+      Segment.track({ event: 'database.save' });
     }
   }
 };
