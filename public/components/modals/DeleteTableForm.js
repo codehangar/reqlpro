@@ -31,7 +31,6 @@ const DeleteTableForm = ({
           <div>
             <div className="alert alert-warning">This action cannot be undone. Please type the name of the table to confirm.</div>
             <p>Type in the name of the table (<strong>{tableToDelete}</strong>) to permanently delete it. This action cannot be undone.</p>
-            </div>
             <input className="form-control" id="name" type="text" ref={(input) => {
               nameInput = input;
               if (nameInput) {
