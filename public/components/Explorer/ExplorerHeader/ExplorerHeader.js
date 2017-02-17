@@ -71,17 +71,17 @@ const ExplorerHeader = ({
         <div className="pull-right">
           {(table.type === 'code') ? '' : rowsPerPage}
           <OverlayTrigger placement="bottom" overlay={refreshTooltip}>
-            <span onClick={refreshExplorerBody} className={buttonClasses.refresh}/>
+            <button onClick={refreshExplorerBody} className={buttonClasses.refresh}/>
           </OverlayTrigger>
           <OverlayTrigger placement="bottom" overlay={addRecordTooltip}>
-            <span onClick={() => toggleExplorerBody('code')} className={buttonClasses.code} disabled={table.queryError}/>
+            <button onClick={() => toggleExplorerBody('code')} className={buttonClasses.code} disabled={!!table.queryError}/>
           </OverlayTrigger>
           <div className="btn-group" role="group">
             <OverlayTrigger placement="bottom" overlay={treeViewTooltip}>
-              <span onClick={() => toggleExplorerBody('tree')} className={buttonClasses.tree} disabled={table.queryError}/>
+              <button onClick={() => toggleExplorerBody('tree')} className={buttonClasses.tree} disabled={table.queryError}/>
             </OverlayTrigger>
             <OverlayTrigger placement="bottom" overlay={tableViewTooltip}>
-              <span onClick={() => toggleExplorerBody('table')} className={buttonClasses.table} disabled={table.queryError}/>
+              <button onClick={() => toggleExplorerBody('table')} className={buttonClasses.table} disabled={table.queryError}/>
             </OverlayTrigger>
           </div>
         </div>
