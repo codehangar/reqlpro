@@ -69,8 +69,13 @@ const mapDispatchToProps = (dispatch) => {
 
     },
     onSave: (dbConnection, database, table) => {
-      dispatch(createTable(dbConnection, database.name, table));
-
+    dispatch(createTable(dbConnection, database.name, table));
+    
+    //gets rid of error, if validation error ocurred in a previous attempt to create a table
+      dispatch({
+        type: types.SET_TABLE_FORM_ERROR,
+        tableFormError: ''
+      });
       Segment.track({
         event: 'table.save'
       });

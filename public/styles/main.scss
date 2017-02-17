@@ -17,6 +17,8 @@ html, body, .main-content {
 ::-webkit-scrollbar{
   display:none;
 }
+
+
 /*https://css-tricks.com/custom-scrollbars-in-webkit/*/
 
 @font-face {
@@ -31,6 +33,9 @@ html, body, .main-content {
     font-style: bold;
     font-weight: 700;
     src: url(../fonts/Inconsolata/Inconsolata-Bold.ttf);
+}
+strong{
+    font-family: sans-serif;
 }
 
 .cursor-pointer, .clickable {
