@@ -1,8 +1,6 @@
 'use strict';
 
-const co = require('co');
 const { BrowserWindow } = require('electron');
-
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -13,33 +11,28 @@ function getMainWindow() {
 }
 
 function createWindow() {
-  co(function*() {
+  // Create the browser window.
+  mainWindow = new BrowserWindow({
+    width: 1600,
+    height: 1200,
+    'min-width': 600,
+    'min-height': 400
+  });
 
-    // Create the browser window.
-    mainWindow = new BrowserWindow({
-      width: 1600,
-      height: 1200,
-      'min-width': 600,
-      'min-height': 400
-    });
+  // and load the index.html of the app.
+  if (process.env.NODE_ENV === 'development') {
+    mainWindow.loadURL('http://localhost:3001/index.html');
+    mainWindow.webContents.openDevTools();
+  } else {
+    mainWindow.loadURL('file://' + __dirname + '/dist/index.html');
+  }
 
-    // and load the index.html of the app.
-    if (process.env.NODE_ENV === 'development') {
-      mainWindow.loadURL('http://localhost:3001/index.html');
-      mainWindow.webContents.openDevTools();
-    } else {
-      mainWindow.loadURL('file://' + __dirname + '/dev/index.html');
-    }
-
-    // Emitted when the window is closed.
-    mainWindow.on('closed', function() {
-      // Dereference the window object, usually you would store windows
-      // in an array if your app supports multi windows, this is the time
-      // when you should delete the corresponding element.
-      mainWindow = null;
-    });
-  }).catch(function(err) {
-    console.error(err);
+  // Emitted when the window is closed.
+  mainWindow.on('closed', function() {
+    // Dereference the window object, usually you would store windows
+    // in an array if your app supports multi windows, this is the time
+    // when you should delete the corresponding element.
+    mainWindow = null;
   });
 }
 
@@ -55,7 +48,7 @@ function createNewWindow(event, config) {
     win.loadURL('http://localhost:3001' + (config.path || '/index.html'));
     win.webContents.openDevTools();
   } else {
-    win.loadURL('file://' + __dirname + (config.path || '/index.html'));
+    win.loadURL('file://' + __dirname + '/dist' + (config.path || '/index.html'));
   }
 
   win.on('closed', function() {

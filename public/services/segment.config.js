@@ -1,4 +1,5 @@
-const Analytics = require('analytics-node');
+import { remote } from 'electron';
+const Analytics = remote.require('analytics-node');
 
 let SegmentKey = 'lU0Oq54ABsjViXkKOcZe8YfeB18UbaNU';
 if (process.env.NODE_ENV === 'development') {
@@ -10,5 +11,5 @@ const analytics = new Analytics(SegmentKey, {
   flushAt: 1
 });
 
-// export default analytics;
-module.exports = analytics;
+export default analytics;
+// module.exports = analytics;

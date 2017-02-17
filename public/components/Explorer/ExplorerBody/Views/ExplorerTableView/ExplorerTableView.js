@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table, Column, Cell } from 'fixed-data-table';
+import 'fixed-data-table/dist/fixed-data-table.css';
 import JSONTree from 'react-json-tree';
 import _ from 'lodash';
 import classNames from 'classnames';

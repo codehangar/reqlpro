@@ -43,11 +43,11 @@ module.exports = {
   },
   module: {
     loaders: [{
-      test: /\.js$/,
+      test: /\.js?$/,
       loader: "babel",
       exclude: /node_modules/
     }, {
-      test: /\.scss$/,
+      test: /\.(css|scss)$/,
       loaders: ["style", "css", "sass"]
     }, {
       test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,

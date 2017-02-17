@@ -4,7 +4,7 @@ import { remote } from 'electron';
 // import reduxStore from '../store';
 import ConfigService from './config.service';
 // Special import because it must run in Electron's "Main" process, not the "Renderer" process
-const analytics = remote.require('./public/services/segment.config');
+import analytics from './segment.config';
 const appVer = remote.getGlobal('appVersion');
 
 function Segment() {

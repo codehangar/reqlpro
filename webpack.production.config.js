@@ -3,7 +3,6 @@
 var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var StatsPlugin = require('stats-webpack-plugin');
 
 module.exports = {
@@ -12,9 +11,9 @@ module.exports = {
     path.join(__dirname, 'public/main.js')
   ],
   output: {
-    path: path.join(__dirname, '/dev/'),
+    path: path.join(__dirname, '/dist/'),
     filename: 'dist-[hash].js',
-    publicPath: '/'
+    publicPath: ''
   },
   plugins: [
     // webpack gives your modules and chunks ids to identify them. Webpack can vary the
@@ -34,10 +33,6 @@ module.exports = {
       template: 'public/about.html',
       filename: 'about.html'
     }),
-    // extracts the css from the js files and puts them on a separate .css file. this is for
-    // performance and is used in prod environments. Styles load faster on their own .css
-    // file as they dont have to wait for the JS to load.
-    new ExtractTextPlugin('[name]-[hash].min.css'),
     // handles uglifying js
     new webpack.optimize.UglifyJsPlugin({
       compressor: {
@@ -55,43 +50,28 @@ module.exports = {
       'process.env.NODE_ENV': JSON.stringify('production')
     })
   ],
-
-  // ESLint options
-  eslint: {
-    configFile: '.eslintrc',
-    failOnWarning: false,
-    failOnError: true
-  },
   module: {
-    // Runs before loaders
-    preLoaders: [{
-      test: /\.js$/,
-      exclude: /node_modules/,
-      loader: 'eslint'
-    }],
     // loaders handle the assets, like transforming sass to css or jsx to js.
     loaders: [{
       test: /\.js?$/,
-      exclude: /node_modules/,
-      loader: 'babel'
-    }, {
-      test: /(^mock-api-data)\.json?$/,
-      loader: 'json'
-    }, {
-      // This will copy over json files from the mock-api-data folder
-      test: /mock-api-data.*json/,
-      loader: 'file?name=[path][name].[ext]'
+      loader: 'babel',
+      exclude: /node_modules/
     }, {
       test: /\.(css|scss)$/,
-      // we extract the styles into their own .css file instead of having
-      // them inside the js.
-      loader: ExtractTextPlugin.extract('css?modules&localIdentName=[local]!sass')
+      loaders: ["style", "css", "sass"]
     }, {
-      test: /\.woff(2)?(\?[a-z0-9#=&.]+)?$/,
-      loader: 'url?limit=10000&mimetype=application/font-woff'
+      test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+      loader: "url-loader?name=./dist_files/[hash].[ext]&limit=10000&mimetype=application/font-woff"
     }, {
-      test: /\.(ttf|eot|svg|png)(\?[a-z0-9#=&.]+)?$/,
-      loader: 'file'
+      test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+      loader: "file-loader?name=./dist_files/[name].[ext]"
+    }, {
+      test: /\.(jpg|jpeg|gif|png|ico|svg|xml)$/,
+      exclude: /node_modules/,
+      loader: 'file-loader?name=[path][name].[ext]&context=./public'
+    }, {
+      test: /\.(json)$/,
+      loader: 'json-loader'
     }]
   }
 };

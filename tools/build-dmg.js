@@ -12,10 +12,10 @@ var ee = appdmg({
     "title": "ReQLPro_" + package.version,
 
     // Path to your icon, which will be shown when mounted
-    "icon": "../public/reqlpro.icns",
+    "icon": "../public/images/reqlpro.icns",
 
     // Path to your background
-    "background": "../public/background.png",
+    "background": "../public/images/background.png",
 
     // Size of all the icons inside the DMG
     "icon-size": 80,
@@ -40,7 +40,7 @@ var ee = appdmg({
         "x": 200,
         "y": 344,
         "type": "file",
-        "path": "../build/ReQLPro-darwin-x64/ReQLPro.app"
+        "path": "../apps/ReQLPro-darwin-x64/ReQLPro.app"
       }
 
     ]

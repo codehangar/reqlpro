@@ -1,0 +1,31 @@
+{
+  "name": "reqlpro",
+  "productName": "ReQLPro",
+  "version": "0.1.0",
+  "engine": "node 6.9.4",
+  "description": "A simple desktop client to connect to RethinkDB servers to work with data.",
+  "main": "main.js",
+  "scripts": {
+    "package-mac": "electron-packager . ReQLPro --platform=darwin --arch=x64 --out=../apps --asar --icon=../public/images/reqlpro.icns",
+    "package-windows": "electron-packager . ReQLPro --platform=win32 --arch=x64 --out=../apps --asar --icon=../public/images/reql-icon.ico",
+    "package-linux": "electron-packager . ReQLPro --platform=linux --arch=x64 --out=../apps --asar --icon=../public/images/reql-icon.ico",
+    "build-dmg": "node ../tools/build-dmg.js",
+    "build-windows-installer": "node ../tools/build-windows-installer.js"
+  },
+  "repository": {},
+  "keywords": [
+    "RethinkDB"
+  ],
+  "author": "CodeHangar, Inc",
+  "license": "",
+  "bugs": {},
+  "homepage": "http://codehangar.io",
+  "dependencies": {
+    "analytics-node": "^2.1.0"
+  },
+  "devDependencies": {
+    "appdmg": "^0.4.0",
+    "asar": "^0.13.0",
+    "electron-winstaller": "^2.3.1"
+  }
+}
