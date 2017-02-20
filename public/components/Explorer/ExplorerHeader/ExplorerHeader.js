@@ -109,7 +109,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onUpdatePageLimit: (e, dbConnection, databaseName, tableName, selectedTable) => {
-      console.log('onUpdatePageLimit e', e.target.value);
+      console.log('onUpdatePageLimit e', selectedTable);
       dispatch({
         type: "SET_TABLE_PAGE_LIMIT",
         limit: e.target.value
@@ -119,9 +119,10 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(queryTable(dbConnection, databaseName, tableName, params));
 
       Segment.track({
-        event: 'explorer.updatePageLimit',
+        event: 'Set Rows per Page',
         properties: {
-          'limit': e.target.value
+          'limit': e.target.value,
+          'table size': selectedTable.size
         }
       });
     },
