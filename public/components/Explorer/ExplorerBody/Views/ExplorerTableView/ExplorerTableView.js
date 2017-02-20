@@ -9,6 +9,7 @@ import ExplorerTableCell from './ExplorerTableCell.js';
 import Segment from '../../../../../services/segment.service';
 import { refreshExplorerBody } from '../../../../../actions';
 import { getColumnNames, getColumnWidth } from './explorer-table-view-utils';
+import { saveRow } from '../../../../../actions';
 
 const ExplorerTableView = ({
   width,
@@ -18,7 +19,9 @@ const ExplorerTableView = ({
   onUpdateTableSort,
   onEditClick,
   onDeleteClick,
-  setColumnWidth
+  setColumnWidth,
+  dbConnection,
+  saveRow
 }) => {
 
   // console.log('selectedTable----->', selectedTable);
@@ -30,13 +33,7 @@ const ExplorerTableView = ({
   };
 
   const rowChanged = (row) => {
-    // console.log("rowChanged row", row)
-    // this.state.store.update(row);
-
-    // Segment.track({
-    //   event: 'selectedTableview.row.inlineEdit',
-    //   properties: {}
-    // });
+    saveRow(dbConnection, selectedTable, row);
   };
 
   const actionColumn = (
@@ -114,6 +111,7 @@ function mapStateToProps(state) {
   return {
     selectedTable: state.main.selectedTable,
     columnWidths: state.main.columnWidths,
+    dbConnection: state.main.dbConnection
   };
 }
 
@@ -167,6 +165,22 @@ function mapDispatchToProps(dispatch) {
 
       Segment.track({
         event: 'tableview.row.deleteBtn',
+        properties: {}
+      });
+    },
+    saveRow: (dbConnection, selectedTable, row) => {
+
+
+      const string = JSON.stringify(row);
+
+      console.log("rowChanged row", row, string, selectedTable.codeAction);
+
+      selectedTable.codeAction = 'update';
+
+      dispatch(saveRow(dbConnection, selectedTable, string));
+
+      Segment.track({
+        event: 'Inline Edit Field',
         properties: {}
       });
     }
