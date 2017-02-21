@@ -1,98 +1,67 @@
-import _ from 'lodash';
-import AnonId from './anon-id.service';
 import { remote } from 'electron';
-// import reduxStore from '../store';
+import AnonId from './anon-id.service';
 import ConfigService from './config.service';
-// Special import because it must run in Electron's "Main" process, not the "Renderer" process
 import analytics from './segment.config';
-const appVer = remote.getGlobal('appVersion');
+
+const context = {
+  userAgent: navigator.userAgent,
+  platform: navigator.platform,
+  appVersion: remote.getGlobal('appVersion')
+};
 
 function Segment() {
 
-  // console.log('segment service store',reduxStore.getState());
-
-  this.track = function(payload) {
-    ConfigService.readConfigFile()
-      .then((userConfig) => {
-        const properties = Object.assign(payload.properties || {}, {
-          platform: navigator.platform,
-          userAgent: navigator.userAgent,
-          appVersion: appVer
-        });
-        console.log('userConfig', userConfig); // eslint-disable-line no-console
-        let email;
-        if (userConfig) {
-          email = userConfig.email || null;
-        }
-        AnonId.get(function(anonId) {
-          _.extend(payload, {
-            anonymousId: anonId,
-            userId: email,
-            context: {
-              userAgent: navigator.userAgent,
-              platform: navigator.platform,
-              appVersion: appVer
-            },
-            properties: properties
-          });
-          analytics.track(payload);
-          analytics.track({
-            event: "User Interaction",
-            anonymousId: anonId,
-            userId: email,
-            context: {
-              userAgent: navigator.userAgent,
-              platform: navigator.platform,
-              appVersion: appVer
-            },
-            properties: {
-              platform: navigator.platform,
-              userAgent: navigator.userAgent,
-              appVersion: appVer
-            }
-          });
-          console.log('[Segment] track', payload);
-        });
-      });
-  };
-
-  this.identify = function(payload) {
-    AnonId.get(function(anonId) {
-
-      const traits = Object.assign(payload.traits, {
-        anonId: anonId,
+  this.track = async function(payload) {
+    const userConfig = await ConfigService.readConfigFile();
+    const email = userConfig.email || null;
+    const anonId = await AnonId.get();
+    const properties = Object.assign({}, payload.properties, context);
+    const finalPayload = Object.assign({}, payload, {
+      anonymousId: anonId,
+      userId: email,
+      context,
+      properties
+    });
+    console.log('[Segment] track', finalPayload);
+    analytics.track(finalPayload);
+    analytics.track({
+      event: "User Interaction",
+      anonymousId: anonId,
+      userId: email,
+      context,
+      properties: {
         platform: navigator.platform,
-        appVersion: appVer
-      });
-
-      _.extend(payload, {
-        anonymousId: anonId,
-        context: {
-          userAgent: navigator.userAgent,
-          platform: navigator.platform,
-          appVersion: appVer
-        },
-        traits: traits
-      });
-
-      analytics.identify(payload);
-      console.log("[Segment] identify", payload)
+        userAgent: navigator.userAgent,
+        appVersion: remote.getGlobal('appVersion')
+      }
     });
+
   };
 
-  this.alias = function(userId) {
-    AnonId.get(function(anonId) {
-      const payload = {
-        previousId: anonId,
-        userId: userId
-      };
-      analytics.alias(payload);
-      analytics.flush(); // flush the alias
-      console.log("[Segment] alias", payload)
+  this.identify = async function(payload) {
+    const anonId = await AnonId.get();
+    const traits = Object.assign(payload.traits, context, { anonId });
+    const finalPayload = Object.assign({}, payload, {
+      anonymousId: anonId,
+      context,
+      traits
     });
+    console.log("[Segment] identify", finalPayload)
+    analytics.identify(finalPayload);
+  };
+
+  this.alias = async function(userId) {
+    const anonId = await AnonId.get();
+    const payload = {
+      previousId: anonId,
+      userId: userId
+    };
+    console.log("[Segment] alias", payload)
+    analytics.alias(payload);
+    analytics.flush(); // flush the alias
   };
 
   return this;
-
 }
+
 export default new Segment();
