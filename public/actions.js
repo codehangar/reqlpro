@@ -148,6 +148,17 @@ export function deleteDatabase(conn, dbName) {
   }
 }
 
+export function saveInlineEdit(originalRow, row) {
+  return (dispatch, getState) => {
+    dispatch({
+      type: 'SET_ROW_INLINE_EDIT',
+      row: originalRow
+    });
+    const { dbConnection, selectedTable } = getState().main;
+    dispatch(saveRow(dbConnection, selectedTable, row));
+  }
+}
+
 export function saveRow(conn, selectedTable, row) {
   return dispatch => {
     return new Promise((resolve, reject) => {

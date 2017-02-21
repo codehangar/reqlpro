@@ -68,6 +68,8 @@ export function main(state = {}, action) {
     // ------------------------------------
     case 'SET_ROW_EDIT':
       return core.startRowEdit(state, action.row);
+    case 'SET_ROW_INLINE_EDIT':
+      return core.startRowInlineEdit(state, action.row);
     case 'CANCEL_ROW_EDIT':
       return core.cancelRowEdit(state, action.row);
     case 'SET_CODE_BODY_ERROR':

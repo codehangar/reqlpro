@@ -167,6 +167,16 @@ export function startRowEdit(state, record) {
   return Object.assign({}, state, { selectedTable: newSelectedTable });
 }
 
+export function startRowInlineEdit(state, editingRecord) {
+  const newFields = {
+    codeAction: 'update',
+    editingRecord,
+    codeBodyError: null
+  };
+  const selectedTable = Object.assign({}, state.selectedTable, newFields);
+  return Object.assign({}, state, { selectedTable });
+}
+
 export function cancelRowEdit(state) {
   const newFields = {
     codeAction: 'add',
