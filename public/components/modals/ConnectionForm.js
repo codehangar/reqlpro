@@ -150,9 +150,9 @@ const mapDispatchToProps = (dispatch) => {
       console.log('onSave data', data);
       dispatch(addConnection(data));
       Segment.track({
-        event: 'connection.save',
+        event: 'Add Connection',
         properties:{
-          userPermissions: !!data.user && !!data.pass
+          'Uses Permissions': !!data.user
         }
       });
     },
@@ -162,6 +162,12 @@ const mapDispatchToProps = (dispatch) => {
        dispatch({
         showConnectionForm: false
       })
+      Segment.track({
+        event: 'Update Connection',
+        properties:{
+          'Uses Permissions': !!data.user
+        }
+      });
     },
     onDelete: (connection) => {
       if (confirm("Are you sure you want to delete the connection named " + connection.name)) {

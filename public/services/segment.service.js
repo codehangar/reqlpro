@@ -36,6 +36,21 @@ function Segment() {
             properties: properties
           });
           analytics.track(payload);
+          analytics.track({
+            event: "User Interaction",
+            anonymousId: anonId,
+            userId: email,
+            context: {
+              userAgent: navigator.userAgent,
+              platform: navigator.platform,
+              appVersion: appVer
+            },
+            properties: {
+              platform: navigator.platform,
+              userAgent: navigator.userAgent,
+              appVersion: appVer
+            }
+          });
           console.log('[Segment] track', payload);
         });
       });

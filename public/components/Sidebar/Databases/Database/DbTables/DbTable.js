@@ -1,7 +1,6 @@
 import React from'react';
 import { connect } from 'react-redux';
 import { queryTable } from '../../../../../actions';
-import Segment from '../../../../../services/segment.service.js';
 
 const DbTable = ({
   dbConnection,
@@ -46,9 +45,6 @@ const mapDispatchToProps = (dispatch) => {
         dispatch(queryTable(dbConnection, databaseName, tableName));
       }
       // dispatch(getTableSize(dbConnection, databaseName, tableName));
-      Segment.track({
-        event: 'table.select'
-      });
     },
     deleteTable: (e, database, table) => {
       e.stopPropagation();

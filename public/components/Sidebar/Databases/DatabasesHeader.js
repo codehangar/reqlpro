@@ -53,15 +53,12 @@ const mapDispatchToProps = (dispatch) => {
   return {
     editConnection: function(connection) {
       dispatch(showConnectionForm(connection));
-      Segment.track({
-        event: 'connection.edit'
-      });
     },
     onDeleteConnection: function(connection) {
       if (confirm("Are you sure you want to delete the connection named " + connection.name)) {
         dispatch(deleteConnection(connection));
         Segment.track({
-          event: 'connection.delete'
+          event: 'Delete Connection'
         });
       }
     },
@@ -69,9 +66,6 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: "TOGGLE_DATABASE_FORM",
         showDatabaseForm: true
-      });
-      Segment.track({
-        event: 'database.add'
       });
     }
   }

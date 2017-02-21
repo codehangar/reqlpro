@@ -58,18 +58,21 @@ function init() {
         }
       }
 
-
+      const usesPerms = userConfig.connections.reduce((a, b) => !!a.user || !!b.user,false);
+      console.log('userConfig',userConfig);
+      console.log('usesPerms',usesPerms);
       Segment.identify({
         userId: userConfig.email,
         traits: {
           email: userConfig.email,
           created: userConfig.created,
-          connectionsCount: userConfig.connections.length
+          connectionsCount: userConfig.connections.length,
+          'Uses Permissions': usesPerms
         }
       });
 
       Segment.track({
-        event: 'app.open'
+        event: 'Open App'
       });
 
       // Render App Component

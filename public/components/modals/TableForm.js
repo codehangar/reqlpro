@@ -77,7 +77,7 @@ const mapDispatchToProps = (dispatch) => {
         tableFormError: ''
       });
       Segment.track({
-        event: 'table.save'
+        event: 'Add Table'
       });
     }
   }

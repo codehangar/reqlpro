@@ -47,15 +47,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onClickAddConnection: () => {
       dispatch(showConnectionForm());
-      Segment.track({
-        event: 'connection.add'
-      });
     },
     onConnectionClick: (connection) => {
       dispatch(selectConnection(connection));
-      Segment.track({
-        event: 'connection.click'
-      });
     }
   }
 };

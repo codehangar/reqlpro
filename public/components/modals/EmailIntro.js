@@ -89,7 +89,7 @@ function mapDispatchToProps(dispatch) {
       });
 
       Segment.track({
-        event: 'email.add',
+        event: 'Add Email',
         properties: {
           email: email
         }

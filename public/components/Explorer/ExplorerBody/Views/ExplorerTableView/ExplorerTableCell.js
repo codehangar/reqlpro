@@ -12,11 +12,14 @@ var ExplorerTableCell = React.createClass({
     const data = row[fieldName];
 
     if (typeof data === 'string') {
-      return <RIEInput value={data} change={this.dataChanged} propName={fieldName} shouldBlockWhileLoading={true} classLoading="loading-cell" classEditing="form-control" />;
+      return <RIEInput value={data} change={this.dataChanged} propName={fieldName} shouldBlockWhileLoading={true}
+                       classLoading="loading-cell" classEditing="form-control"/>;
     } else if (typeof data === 'number') {
-      return <RIENumber value={data} change={this.dataChanged} propName={fieldName} shouldBlockWhileLoading={true} classLoading="loading-cell" classEditing="form-control" />;
+      return <RIENumber value={data} change={this.dataChanged} propName={fieldName} shouldBlockWhileLoading={true}
+                        classLoading="loading-cell" classEditing="form-control"/>;
     } else {
       if (data) {
+
         if (Object.keys(data).length) {
           return '{Object ...}';
         } else {
@@ -26,7 +29,8 @@ var ExplorerTableCell = React.createClass({
         return JSON.stringify(data);
       }
     }
-  },
+  }
+  ,
   render: function() {
     if (this.props.row.id === '11698a1f-f9db-4f9c-9fb8-4c27d75e1990' && this.props.fieldName === 'name') {
       console.log("    --> ExplorerTableCell render")
