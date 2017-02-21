@@ -28,13 +28,13 @@ const defaultConfig = {
 
 ConfigService.prototype.readConfigFile = function() {
   return new Promise((resolve, reject) => {
-    console.log('(*&(*&(*& readConfigFile (*&^%&^(*')
+    console.log('************ READ config.json File ************');
     fs.readFile(this.fullConfigPath, {
       encoding: 'utf-8'
     }, (err, data) => {
       // console.log(" ***readConfigFile", data)
       if (err) {
-        console.error('err', err);
+        console.log('No config.json File Found', err);
 
         resolve(this.writeConfigFile(defaultConfig));
 
@@ -78,7 +78,7 @@ ConfigService.prototype.writeConfigFile = function(data) {
         console.log(err);
         reject(err);
       } else {
-        resolve(JSON.stringify(data));
+        resolve(wipedData);
       }
     });
   });
