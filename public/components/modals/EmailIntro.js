@@ -1,9 +1,9 @@
-const React = require('react');
+import React from 'react';
 import Segment from '../../services/segment.service.js';
 import { connect } from 'react-redux';
 import { writeConfigFile } from '../../actions';
 
-const ConnectionForm = ({
+const EmailIntro = ({
   email,
   onEmailSubmit
 }) => {
@@ -99,6 +99,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-const ConnectionFormContainer = connect(mapStateToProps, mapDispatchToProps)(ConnectionForm);
-
-export default ConnectionFormContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(EmailIntro);

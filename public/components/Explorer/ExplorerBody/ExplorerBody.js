@@ -11,38 +11,31 @@ class ExplorerBody extends React.Component {
       let isNested;
       console.log('props.table.type', props.table.type); // eslint-disable-line no-console
       console.log('props.table.codeAction', props.table.codeAction); // eslint-disable-line no-console
-      if (props.table.type === 'code') {
-        if (props.table.codeAction === 'update') {
-          if (typeof props.table.editingRecord === 'object' && Object.keys(props.table.editingRecord).length) {
-            isNested = true;
-          }
-        }
-      } else {
+      if (props.table.type === 'table' || props.table.type === 'tree') {
         if (props.table.data.length > 0) {
           isNested = false;
         }
         props.table.data.forEach(row => {
           if (typeof row === 'object') {
             Object.keys(row).forEach(field => {
-              console.log('field', field); // eslint-disable-line no-console
-              console.log('typeof field', typeof field); // eslint-disable-line no-console
               if (typeof row[field] === 'object' && Object.keys(row[field]).length) {
                 isNested = true;
+                console.log('b'); // eslint-disable-line no-console
               }
             });
           }
         });
+        console.log('------------------------'); // eslint-disable-line no-console
+        console.log('isNested', isNested);
+        console.log('------------------------'); // eslint-disable-line no-console
+        Segment.track({
+          event: 'View Data',
+          properties: {
+            view: props.table.type,
+            isNested
+          }
+        });
       }
-      console.log('------------------------'); // eslint-disable-line no-console
-      console.log('isNested', isNested);
-      console.log('------------------------'); // eslint-disable-line no-console
-      Segment.track({
-        event: 'View Data',
-        properties: {
-          view: props.table.type,
-          isNested
-        }
-      });
     }
   }
 
