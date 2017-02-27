@@ -123,6 +123,10 @@ function mapDispatchToProps(dispatch) {
         orderByPredicate: `r.${direction}('${field}')`
       });
       dispatch(refreshExplorerBody());
+      Segment.track({
+        event: 'Sort Table Column',
+        properties: {}
+      });
     },
     setColumnWidth: (newColumnWidth, columnKey, selectedTable) => {
       let width = {};
@@ -136,7 +140,7 @@ function mapDispatchToProps(dispatch) {
       });
 
       Segment.track({
-        event: 'tableview.resizeColumn',
+        event: 'Resize Table Column',
         properties: {}
       });
     },
@@ -146,10 +150,10 @@ function mapDispatchToProps(dispatch) {
         row
       });
 
-      Segment.track({
-        event: 'tableview.row.editBtn',
-        properties: {}
-      });
+      // Segment.track({
+      //   event: 'tableview.row.editBtn',
+      //   properties: {}
+      // });
     },
     onDeleteClick: (rowToDelete) => {
       dispatch({
@@ -157,10 +161,10 @@ function mapDispatchToProps(dispatch) {
         rowToDelete
       });
 
-      Segment.track({
-        event: 'tableview.row.deleteBtn',
-        properties: {}
-      });
+      // Segment.track({
+      //   event: 'tableview.row.deleteBtn',
+      //   properties: {}
+      // });
     },
     saveRowInline: (originalRow, row) => {
       const string = JSON.stringify(row);

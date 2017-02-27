@@ -4,7 +4,6 @@ import AddDbTable from './DbTables/AddDbTable';
 import { connect } from 'react-redux';
 import { deleteDatabase } from '../../../../actions';
 import { getDbTables } from './DbTables/tables.actions';
-import Segment from '../../../../services/segment.service.js';
 
 const Database = React.createClass({
   render: function() {
@@ -12,6 +11,7 @@ const Database = React.createClass({
 
     const onDbClick = () => {
       if (!database.showTables) {
+        console.log('onDbClick');
         getDbTables(dbConnection, database.name);
       }
       toggleTableVisibility(database);
@@ -57,9 +57,6 @@ const mapDispatchToProps = (dispatch) => {
         type: 'SET_DB_TO_EDIT',
         database
       });
-      Segment.track({
-        event: 'table.add'
-      });
     },
     toggleTableVisibility: (database) => {
       dispatch({
@@ -67,15 +64,9 @@ const mapDispatchToProps = (dispatch) => {
         dbName: database.name,
         showTables: !database.showTables
       });
-      Segment.track({
-        event: 'database.click'
-      });
     },
     getDbTables: (dbConnection, database) => {
       dispatch(getDbTables(dbConnection, database));
-      Segment.track({
-        event: 'database.getTables'
-      });
     },
     deleteDatabase: function(e, dbName) {
       e.stopPropagation();

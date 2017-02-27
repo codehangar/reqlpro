@@ -7,44 +7,44 @@ import Segment from '../../../services/segment.service.js';
 
 class ExplorerBody extends React.Component {
 
-  shouldComponentUpdate(nextProps) {
-    console.log('nextProps.tableData ', nextProps.tableData); // eslint-disable-line no-console
-    console.log('this.props.tableData', this.props.tableData); // eslint-disable-line no-console
-    return nextProps.tableData !== this.props.tableData;
-  }
-
-  componentWillReceiveProps(props) {
-    if (props.tableData) {
-      let isNested;
-      console.log('props.table.type', props.tableType); // eslint-disable-line no-console
-      console.log('props.codeAction', props.codeAction); // eslint-disable-line no-console
-      if (props.tableType === 'table' || props.tableType === 'tree') {
-        if (props.tableData.length > 0) {
-          isNested = false;
-        }
-        props.tableData.forEach(row => {
-          if (typeof row === 'object') {
-            Object.keys(row).forEach(field => {
-              if (typeof row[field] === 'object' && Object.keys(row[field]).length) {
-                isNested = true;
-                console.log('b'); // eslint-disable-line no-console
-              }
-            });
-          }
-        });
-        console.log('------------------------'); // eslint-disable-line no-console
-        console.log('isNested', isNested);
-        console.log('------------------------'); // eslint-disable-line no-console
-        Segment.track({
-          event: 'View Data',
-          properties: {
-            view: props.tableType,
-            isNested
-          }
-        });
-      }
-    }
-  }
+  // shouldComponentUpdate(nextProps) {
+  //   console.log('nextProps.tableData ', nextProps.tableData); // eslint-disable-line no-console
+  //   console.log('this.props.tableData', this.props.tableData); // eslint-disable-line no-console
+  //   return nextProps.tableData !== this.props.tableData;
+  // }
+  //
+  // componentWillReceiveProps(props) {
+  //   if (props.tableData) {
+  //     let isNested;
+  //     console.log('props.table.type', props.tableType); // eslint-disable-line no-console
+  //     console.log('props.codeAction', props.codeAction); // eslint-disable-line no-console
+  //     if (props.tableType === 'table' || props.tableType === 'tree') {
+  //       if (props.tableData.length > 0) {
+  //         isNested = false;
+  //       }
+  //       props.tableData.forEach(row => {
+  //         if (typeof row === 'object') {
+  //           Object.keys(row).forEach(field => {
+  //             if (typeof row[field] === 'object' && Object.keys(row[field]).length) {
+  //               isNested = true;
+  //               console.log('b'); // eslint-disable-line no-console
+  //             }
+  //           });
+  //         }
+  //       });
+  //       console.log('------------------------'); // eslint-disable-line no-console
+  //       console.log('isNested', isNested);
+  //       console.log('------------------------'); // eslint-disable-line no-console
+  //       Segment.track({
+  //         event: 'View Data',
+  //         properties: {
+  //           view: props.tableType,
+  //           isNested
+  //         }
+  //       });
+  //     }
+  //   }
+  // }
 
   render() {
     const { width, tableData, tableType, queryError, loading } = this.props;
@@ -122,6 +122,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
+  return {};
 };
 
 

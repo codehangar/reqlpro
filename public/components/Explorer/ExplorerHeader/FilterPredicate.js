@@ -93,7 +93,7 @@ const mapDispatchToProps = (dispatch) => {
     submit: (filterPredicate) => {
       dispatch(refreshExplorerBody());
       Segment.track({
-        event: 'table.query',
+        event: 'Custom Query',
         properties: {
           type: "filter"
         }

@@ -4,6 +4,7 @@ import * as types from '../../../../../action-types';
 // Helpers
 // ------------------------------------
 function setDbTables(state, dbName, tables) {
+  console.log('setDbTables', state, dbName, tables);
   return Object.assign({}, state, {
     [dbName]: tables
   });
@@ -31,6 +32,7 @@ const initialState = {};
 export function tables(state = initialState, action) {
   switch (action.type) {
     case types.SET_DB_TABLES:
+      console.log('SET_DB_TABLES')
       return setDbTables(state, action.dbName, action.tables);
     case types.ADD_TO_TABLE_LIST:
       return addTable(state, action.dbName, action.tableName);

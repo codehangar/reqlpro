@@ -27,6 +27,7 @@ const App = React.createClass({
     window.onresize = null;
   },
   render: function() {
+    console.log('explorer connection', this.props.connection)
     return (
       <div className="content-wrapper">
         <EmailIntroContainer />
@@ -37,7 +38,7 @@ const App = React.createClass({
         <TableForm />
         <DeleteTableForm />
         <ConfirmRowDelete />
-        <ExplorerContainer />
+        <ExplorerContainer connection={this.props.connection}/>
         <DevTools />
       </div>
     );

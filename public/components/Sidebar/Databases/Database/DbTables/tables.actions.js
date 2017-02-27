@@ -3,6 +3,7 @@ import * as types from '../../../../../action-types';
 import { queryTable } from '../../../../../actions';
 
 export function getDbTables(dbConnection, dbName) {
+  console.log('getDbTables', dbConnection, dbName);
   return dispatch => {
     return new Promise((resolve, reject) => {
       RethinkDbService.getTableList(dbConnection, dbName).then(tables => {

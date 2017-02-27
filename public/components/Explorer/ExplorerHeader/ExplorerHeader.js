@@ -19,6 +19,8 @@ const ExplorerHeader = ({
   toggleExplorerBody
 }) => {
 
+  console.log('ExplorerHeader');
+
   let buttonClasses = {
     tree: classNames({
       'btn btn-default btn-sm': true,
@@ -67,7 +69,7 @@ const ExplorerHeader = ({
   return (
     <div className="explorer-header" id="explorer-header">
       <div className="explorer-header-row">
-        <Breadcrumbs connection={connection} table={table}/>
+        <Breadcrumbs connection={connection} table={selectedTable}/>
         <div className="pull-right">
           {(selectedTable.type === 'code') ? '' : rowsPerPage}
           <OverlayTrigger placement="bottom" overlay={refreshTooltip}>
@@ -144,17 +146,17 @@ const mapDispatchToProps = (dispatch) => {
         type: "TOGGLE_EXPLORER_BODY",
         key: key
       });
-      Segment.track({
-        event: 'explorer.toggleExplorerBody',
-        properties: {
-          key: key
-        }
-      });
-      if(key === 'code'){
-        Segment.track({
-          event: 'explorer.addRow',
-        });
-      }
+      // Segment.track({
+      //   event: 'explorer.toggleExplorerBody',
+      //   properties: {
+      //     key: key
+      //   }
+      // });
+      // if(key === 'code'){
+      //   Segment.track({
+      //     event: 'explorer.addRow',
+      //   });
+      // }
     }
   };
 };

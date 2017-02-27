@@ -75,6 +75,16 @@ function init() {
         event: 'Open App'
       });
 
+      window.onerror = function (message, file, line, col, error) {
+        Segment.track({
+          event: 'Error',
+          properties:{
+            message,
+            error
+          }
+        });
+      };
+
       // Render App Component
       ReactDOM.render(
         <Provider store={reduxStore}>

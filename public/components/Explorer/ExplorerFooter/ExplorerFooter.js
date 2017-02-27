@@ -125,7 +125,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(saveRow(dbConnection, selectedTable, string));
 
       Segment.track({
-        event: 'explorer.saveRow',
+        event: 'Save Record',
         properties: {}
       });
     }

@@ -94,9 +94,9 @@ const mapDispatchToProps = (dispatch) => {
     submit: () => {
       dispatch(refreshExplorerBody());
       Segment.track({
-        event: 'query.orderBy',
-        properties:{
-          action:"submit"
+        event: 'Custom Query',
+        properties: {
+          type: "orderBy"
         }
       });
     }

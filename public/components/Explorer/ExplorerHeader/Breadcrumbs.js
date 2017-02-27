@@ -9,10 +9,10 @@ const Breadcrumbs = ({ connection, table }) => {
   let actionCrumb;
   if (table.type === 'code') {
     if (table.codeAction === 'update') {
-      actionCrumb = <span><i className="fa fa-angle-right"/> Edit (Replace)</span>;
+      actionCrumb = <span><span className="crumb-icon"><i className="fa fa-angle-right"/></span> Edit (Replace)</span>;
     }
     if (table.codeAction === 'add') {
-      actionCrumb = <span><i className="fa fa-angle-right"/> Insert</span>;
+      actionCrumb = <span><span className="crumb-icon"><i className="fa fa-angle-right"/></span> Insert</span>;
     }
   }
 
