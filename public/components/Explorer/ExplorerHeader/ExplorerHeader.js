@@ -24,25 +24,25 @@ const ExplorerHeader = ({
       'btn btn-default btn-sm': true,
       'fa': true,
       'fa-tree': true,
-      'active': table.type === 'tree'
+      'active': selectedTable.type === 'tree'
     }),
     table: classNames({
       'btn btn-default btn-sm': true,
       'fa': true,
       'fa-th': true,
-      'active': table.type === 'table'
+      'active': selectedTable.type === 'table'
     }),
     code: classNames({
       'btn btn-default btn-sm': true,
       'fa': true,
       'fa-plus': true,
-      'active': table.type === 'code'
+      'active': selectedTable.type === 'code'
     }),
     refresh: classNames({
       'btn btn-default btn-sm': true,
       'fa': true,
       'fa-refresh': true,
-      'hidden': table.type === 'code'
+      'hidden': selectedTable.type === 'code'
     })
   };
 
@@ -53,8 +53,8 @@ const ExplorerHeader = ({
 
   const rowsPerPage = (
     <span className="rows-per-page-selector">Rows per page:
-      <select onChange={(e) => onUpdatePageLimit(e, dbConnection, table.databaseName, table.name, selectedTable)}
-              className="page-select" value={table.query.limit} disabled={table.queryError}>
+      <select onChange={(e) => onUpdatePageLimit(e, dbConnection, selectedTable.databaseName, selectedTable.name, selectedTable)}
+              className="page-select" value={selectedTable.query.limit} disabled={selectedTable.queryError}>
         <option value="5">5</option>
         <option value="10">10</option>
         <option value="25">25</option>
@@ -69,19 +69,19 @@ const ExplorerHeader = ({
       <div className="explorer-header-row">
         <Breadcrumbs connection={connection} table={table}/>
         <div className="pull-right">
-          {(table.type === 'code') ? '' : rowsPerPage}
+          {(selectedTable.type === 'code') ? '' : rowsPerPage}
           <OverlayTrigger placement="bottom" overlay={refreshTooltip}>
             <button onClick={refreshExplorerBody} className={buttonClasses.refresh}/>
           </OverlayTrigger>
           <OverlayTrigger placement="bottom" overlay={addRecordTooltip}>
-            <button onClick={() => toggleExplorerBody('code')} className={buttonClasses.code} disabled={!!table.queryError}/>
+            <button onClick={() => toggleExplorerBody('code')} className={buttonClasses.code} disabled={!!selectedTable.queryError}/>
           </OverlayTrigger>
           <div className="btn-group" role="group">
             <OverlayTrigger placement="bottom" overlay={treeViewTooltip}>
-              <button onClick={() => toggleExplorerBody('tree')} className={buttonClasses.tree} disabled={table.queryError}/>
+              <button onClick={() => toggleExplorerBody('tree')} className={buttonClasses.tree} disabled={selectedTable.queryError}/>
             </OverlayTrigger>
             <OverlayTrigger placement="bottom" overlay={tableViewTooltip}>
-              <button onClick={() => toggleExplorerBody('table')} className={buttonClasses.table} disabled={table.queryError}/>
+              <button onClick={() => toggleExplorerBody('table')} className={buttonClasses.table} disabled={selectedTable.queryError}/>
             </OverlayTrigger>
           </div>
         </div>
@@ -89,10 +89,10 @@ const ExplorerHeader = ({
 
       <div className="explorer-header-row">
         <span className="query-builder">
-          {(table.type === 'code') ? '' : <FilterPredicate />}
-          {(table.type === 'code') ? '' : <OrderByPredicate />}
+          {(selectedTable.type === 'code') ? '' : <FilterPredicate />}
+          {(selectedTable.type === 'code') ? '' : <OrderByPredicate />}
         </span>
-        <QueryProfile lastResult={table.lastResult}/>
+        <QueryProfile lastResult={selectedTable.lastResult}/>
       </div>
     </div>
   );
@@ -102,7 +102,7 @@ const mapStateToProps = (state) => {
   return {
     connection: state.connection.selected,
     dbConnection: state.main.dbConnection,
-    selectedTable: state.main.selectedTable
+    selectedTable: state.main.selectedTable || {}
   };
 };
 

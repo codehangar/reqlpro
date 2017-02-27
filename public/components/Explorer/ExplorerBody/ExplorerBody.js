@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import ExplorerTreeView from './Views/ExplorerTreeView';
 import ExplorerTableView from './Views/ExplorerTableView/ExplorerTableView';
 import ExplorerCodeView from './Views/ExplorerCodeView';
@@ -6,16 +7,22 @@ import Segment from '../../../services/segment.service.js';
 
 class ExplorerBody extends React.Component {
 
+  shouldComponentUpdate(nextProps) {
+    console.log('nextProps.tableData ', nextProps.tableData); // eslint-disable-line no-console
+    console.log('this.props.tableData', this.props.tableData); // eslint-disable-line no-console
+    return nextProps.tableData !== this.props.tableData;
+  }
+
   componentWillReceiveProps(props) {
-    if (props.table.data) {
+    if (props.tableData) {
       let isNested;
-      console.log('props.table.type', props.table.type); // eslint-disable-line no-console
-      console.log('props.table.codeAction', props.table.codeAction); // eslint-disable-line no-console
-      if (props.table.type === 'table' || props.table.type === 'tree') {
-        if (props.table.data.length > 0) {
+      console.log('props.table.type', props.tableType); // eslint-disable-line no-console
+      console.log('props.codeAction', props.codeAction); // eslint-disable-line no-console
+      if (props.tableType === 'table' || props.tableType === 'tree') {
+        if (props.tableData.length > 0) {
           isNested = false;
         }
-        props.table.data.forEach(row => {
+        props.tableData.forEach(row => {
           if (typeof row === 'object') {
             Object.keys(row).forEach(field => {
               if (typeof row[field] === 'object' && Object.keys(row[field]).length) {
@@ -31,7 +38,7 @@ class ExplorerBody extends React.Component {
         Segment.track({
           event: 'View Data',
           properties: {
-            view: props.table.type,
+            view: props.tableType,
             isNested
           }
         });
@@ -40,9 +47,9 @@ class ExplorerBody extends React.Component {
   }
 
   render() {
-    const { width, table } = this.props;
+    const { width, tableData, tableType, queryError, loading } = this.props;
 
-    const loading = (
+    const loadingElm = (
       <div className="explorer-loading">
         <span className="fa fa-refresh fa-spin"/>
       </div>
@@ -63,13 +70,13 @@ class ExplorerBody extends React.Component {
       </div>
     );
 
-    const queryError = (
+    const queryErrorElm = (
       <div className="explorer-container">
         <div className="explorer-full-message">
           <p className="super-large-text">Oh No!</p>
           <p className="">There was an error running your query</p>
           <pre className="text-danger">
-          {table.queryError ? table.queryError.name + '\n' + table.queryError.msg : ''}
+          {queryError ? queryError.name + '\n' + queryError.msg : ''}
           </pre>
         </div>
       </div>
@@ -77,18 +84,18 @@ class ExplorerBody extends React.Component {
 
     let explorerBody;
 
-    if (table.loading) {
-      explorerBody = loading;
-    } else if (table.queryError) {
-      explorerBody = queryError;
+    if (loading) {
+      explorerBody = loadingElm;
+    } else if (queryError) {
+      explorerBody = queryErrorElm;
     } else {
-      if (table.data.length || table.type === 'code') {
-        if (table.type === 'tree') {
-          explorerBody = <ExplorerTreeView table={table}/>;
-        } else if (table.type === 'table') {
-          explorerBody = <ExplorerTableView table={table} className="data-table-main"/>;
-        } else if (table.type === 'code') {
-          explorerBody = <ExplorerCodeView table={table}/>;
+      if (tableData.length || tableType === 'code') {
+        if (tableType === 'tree') {
+          explorerBody = <ExplorerTreeView tableData={tableData}/>;
+        } else if (tableType === 'table') {
+          explorerBody = <ExplorerTableView className="data-table-main"/>;
+        } else if (tableType === 'code') {
+          explorerBody = <ExplorerCodeView />;
         }
       } else {
         explorerBody = emptyTable;
@@ -101,4 +108,21 @@ class ExplorerBody extends React.Component {
   }
 }
 
-export default ExplorerBody;
+
+const mapStateToProps = (state) => {
+  console.log('------------------------'); // eslint-disable-line no-console
+  console.log('state.main.selectedTable.data', state.main.selectedTable.data); // eslint-disable-line no-console
+  return {
+    tableData: state.main.selectedTable.data,
+    tableType: state.main.selectedTable.type,
+    queryError: state.main.selectedTable.queryError,
+    loading: state.main.selectedTable.loading,
+    codeAction: state.main.selectedTable.codeAction
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(ExplorerBody);

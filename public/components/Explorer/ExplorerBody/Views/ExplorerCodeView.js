@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import ace from 'brace';
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 
 // Looks weird, but this is necessary to apply the theme to ace editor
 require('brace/mode/json');
@@ -109,12 +109,14 @@ const ExplorerCodeView = React.createClass({
         <div className={toastClasses}>
           <div className="row">
             <i className="btn fa fa-close pull-right" onClick={this.props.clearCodeBodyError}/>
-            <pre style={{margin: '5px'}}>{this.props.selectedTable.codeBodyError}</pre>
+            <pre style={{ margin: '5px' }}>{this.props.selectedTable.codeBodyError}</pre>
           </div>
         </div>
         <div id="editor"></div>
-        <div className="fixedDataTableLayout_topShadow public_fixedDataTable_topShadow" style={this.state.topShadowStyle}></div>
-        <div className="fixedDataTableLayout_bottomShadow public_fixedDataTable_bottomShadow" style={this.state.bottomShadowStyle}></div>
+        <div className="fixedDataTableLayout_topShadow public_fixedDataTable_topShadow"
+             style={this.state.topShadowStyle}></div>
+        <div className="fixedDataTableLayout_bottomShadow public_fixedDataTable_bottomShadow"
+             style={this.state.bottomShadowStyle}></div>
       </div>
     );
   }
@@ -143,6 +145,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-const ExplorerCodeViewContainer = connect(mapStateToProps, mapDispatchToProps)(ExplorerCodeView);
-
-module.exports = ExplorerCodeViewContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(ExplorerCodeView);

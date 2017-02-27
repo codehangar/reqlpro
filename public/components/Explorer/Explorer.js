@@ -1,11 +1,11 @@
 import React from 'react';
-import {Button} from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import ExplorerHeader from'./ExplorerHeader/ExplorerHeader';
 import ExplorerBody from'./ExplorerBody/ExplorerBody';
 import ExplorerFooter from'./ExplorerFooter/ExplorerFooter';
 import { connect } from 'react-redux';
 import logo from '../../images/logo.png';
-import addConnection from '../Sidebar/Connections/AddConnection';   
+import addConnection from '../Sidebar/Connections/AddConnection';
 import { showConnectionForm } from '../Sidebar/Connections/selectedConnection.actions';
 import { Panel } from 'react-bootstrap';
 
@@ -13,14 +13,14 @@ import { Panel } from 'react-bootstrap';
 const Explorer = ({
   connections,
   connection,
-  selectedTable,
+  tableData,
   connectionError,
   editConnection,
   addConnection,
   selectedConnection
 }) => {
 
-  const passwordError = connectionError ? connectionError.error.msg == 'Unknown user' || connectionError.error.msg == 'Wrong password':null;
+  const passwordError = connectionError ? connectionError.error.msg == 'Unknown user' || connectionError.error.msg == 'Wrong password' : null;
 
   const HelpCenter = <a href="http://utils.codehangar.io/rethink/support" target="_blank">Help Center</a>;
 
@@ -31,7 +31,9 @@ const Explorer = ({
   );
 
   const TryAgain = (
-    <Button bsSize="large" style={{margin:16}} onClick={() => {editConnection(selectedConnection) }}>Re-enter my Password</Button>
+    <Button bsSize="large" style={{ margin: 16 }} onClick={() => {
+      editConnection(selectedConnection)
+    }}>Re-enter my Password</Button>
   );
 
   let content = (
@@ -58,24 +60,24 @@ const Explorer = ({
       </div>
     );
   } else if (connectionError && connectionError.connection.name == connection.selected.name) {
-     //console.log('show Explorer Error ', connectionError.error.msg);
+    //console.log('show Explorer Error ', connectionError.error.msg);
     const connError = (
-       connectionError.error.msg
-    ); 
+      connectionError.error.msg
+    );
 
     content = (
       <div className="explorer-container">
         <div className="explorer-full-message">
 
-         { passwordError ?
-           <span>
+          { passwordError ?
+            <span>
              <p className="super-large-text">Disconnected!</p>
              <p className="">Please re-enter your password to connect.</p>
-             {TryAgain}
+              {TryAgain}
            </span>
 
-           :
-           <span>
+            :
+            <span>
              <p className="super-large-text">Woops!</p>
 
              <pre className="text-danger">{connectionError.error.msg}</pre>
@@ -97,12 +99,12 @@ const Explorer = ({
         </div>
       </div>
     );
-  } else if (selectedTable) {
+  } else if (tableData) {
     // console.log('show Table Data');
     content = (
       <div className="explorer-container">
-        <ExplorerHeader table={selectedTable}/>
-        <ExplorerBody table={selectedTable}/>
+        <ExplorerHeader/>
+        <ExplorerBody/>
         <ExplorerFooter/>
       </div>
     );
@@ -120,7 +122,7 @@ const mapStateToProps = (state) => {
     connections: state.connections || [],
     connection: state.connection,
     selectedConnection: state.connection.selected,
-    selectedTable: state.main.selectedTable,
+    tableData: state.main.selectedTable ? state.main.selectedTable.data : null,
     connectionError: state.main.connectionError,
     addConnection: state.main.addConnection
   };
@@ -128,12 +130,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-     editConnection: function(connection) {
+    editConnection: function(connection) {
       dispatch(showConnectionForm(connection));
-     }
+    }
   };
 };
 
-const ExplorerContainer = connect(mapStateToProps, mapDispatchToProps)(Explorer);
-
-export default ExplorerContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(Explorer);

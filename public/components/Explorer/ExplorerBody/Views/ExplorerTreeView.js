@@ -1,5 +1,4 @@
-var React = require('react');
-var classNames = require('classnames');
+import React from 'react';
 import JSONTree from 'react-json-tree';
 
 // More theme files can be found at this link
@@ -25,14 +24,12 @@ const theme = {
   base0F: '#3971ED'
 };
 
-var ExplorerTreeView = React.createClass({
-  render: function() {
-    return (
-      <div className="explorer-tree-view">
-        <JSONTree data={this.props.table.data} theme={theme} />
-      </div>
-    );
-  }
-});
+const ExplorerTreeView = () => {
+  return (
+    <div className="explorer-tree-view">
+      <JSONTree data={this.props.tableData} theme={theme}/>
+    </div>
+  );
+};
 
-module.exports = ExplorerTreeView;
+export default ExplorerTreeView;
