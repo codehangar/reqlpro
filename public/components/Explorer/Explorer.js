@@ -17,6 +17,7 @@ const Explorer = ({
   connectionError,
   editConnection,
   addConnection,
+  selectedTable,
   selectedConnection
 }) => {
 
@@ -100,7 +101,7 @@ const Explorer = ({
         </div>
       </div>
     );
-  } else if (tableData) {
+  } else if (selectedTable) {
     console.log('show Table Data');
     content = (
       <div className="explorer-container">
@@ -124,6 +125,7 @@ const mapStateToProps = (state) => {
     // connection: state.connection,
     selectedConnection: state.connection.selected,
     tableData: state.main.selectedTable ? state.main.selectedTable.data : null,
+    selectedTable: state.main.selectedTable,
     connectionError: state.main.connectionError,
     addConnection: state.main.addConnection
   };
