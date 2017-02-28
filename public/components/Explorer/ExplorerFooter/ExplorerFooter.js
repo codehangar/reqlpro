@@ -62,11 +62,6 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: 'CANCEL_ROW_EDIT'
       });
-
-      Segment.track({
-        event: 'explorer.cancelEdit',
-        properties: {}
-      });
     },
     prevPage: function(dbConnection, table) {
       const query = {
@@ -79,7 +74,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(queryTable(dbConnection, table.databaseName, table.name, query));
 
       Segment.track({
-        event: 'explorer.paginationClick',
+        event: 'Paginate',
         properties: {
           'type': 'prevPage',
           'page': table.query.page - 1,
@@ -98,7 +93,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(queryTable(dbConnection, table.databaseName, table.name, query));
 
       Segment.track({
-        event: 'explorer.paginationClick',
+        event: 'Paginate',
         properties: {
           'type': 'nextPage',
           'page': table.query.page + 1,

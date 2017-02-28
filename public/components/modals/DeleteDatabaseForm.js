@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
 import { deleteDatabase } from '../../actions';
-import Segment from '../../services/segment.service.js';
 import * as types from '../../action-types';
 
 const DeleteDatabaseForm = ({
@@ -22,7 +21,9 @@ const DeleteDatabaseForm = ({
         <Modal.Title>Delete Database</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <div className="alert alert-warning">Deleting the database will delete all the tables in it. This action <strong>cannot</strong> be undone.</div>
+        <div className="alert alert-warning">Deleting the database will delete all the tables in it. This action
+          <strong>cannot</strong> be undone.
+        </div>
         <form onSubmit={(e) => {
           e.preventDefault();
           onDelete(dbConnection, dbToDelete, nameInput.value)
@@ -87,7 +88,6 @@ const mapDispatchToProps = (dispatch) => {
           type: types.SET_DELETE_DATABASE_CONFIRM_ERROR,
           deleteDatabaseConfirmError: false
         });
-        Segment.track({ event: 'database.delete' });
       } else {
         dispatch({
           type: types.SET_DELETE_DATABASE_CONFIRM_ERROR,

@@ -11,7 +11,6 @@ const Database = React.createClass({
 
     const onDbClick = () => {
       if (!database.showTables) {
-        console.log('onDbClick');
         getDbTables(dbConnection, database.name);
       }
       toggleTableVisibility(database);
