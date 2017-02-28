@@ -80,6 +80,9 @@ function init() {
           event: 'Error',
           properties:{
             message,
+            file,
+            line,
+            col,
             error
           }
         });
