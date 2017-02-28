@@ -1,21 +1,23 @@
-var appdmg = require('appdmg');
-var package = require('../package.json');
+const appdmg = require('appdmg');
+const packageConfig = require('../package.json');
+const path = require('path');
 
-// console.log("package", package)
+const projectRoot = path.join(__dirname, '../..');
+const target = path.join(projectRoot, 'apps/ReQLPro_' + packageConfig.version + '.dmg');
 
-var ee = appdmg({
-  target: 'ReQLPro_' + package.version + '.dmg',
-  basepath: __dirname,
+const ee = appdmg({
+  target: target,
+  basepath: projectRoot,
   specification: {
 
     // The title of the produced DMG, which will be shown when mounted
-    "title": "ReQLPro_" + package.version,
+    "title": "ReQLPro_" + packageConfig.version,
 
     // Path to your icon, which will be shown when mounted
-    "icon": "../public/images/reqlpro.icns",
+    "icon": "public/images/reqlpro.icns",
 
     // Path to your background
-    "background": "../public/images/background.png",
+    "background": "public/images/background.png",
 
     // Size of all the icons inside the DMG
     "icon-size": 80,
@@ -40,7 +42,7 @@ var ee = appdmg({
         "x": 200,
         "y": 344,
         "type": "file",
-        "path": "../apps/ReQLPro-darwin-x64/ReQLPro.app"
+        "path": "apps/ReQLPro-darwin-x64/ReQLPro.app"
       }
 
     ]
@@ -68,5 +70,5 @@ ee.on('finish', function() {
 
 ee.on('error', function(err) {
   console.log("err", err)
-    // An error occurred
+  // An error occurred
 });

@@ -42,15 +42,22 @@ npm run package-mac
 npm run package-windows
 npm run package-linux
 
-# Npm install build/dev dependencies
-echo 'npm install build/dev dependencies'
+# Copy tools over to builds folder
+echo 'Copy tools over to builds folder'
+cp -R ../tools/ ./tools/
+
+# Npm install builds/dev dependencies
+echo 'npm install builds/dev dependencies'
 npm install
 
 # Build Mac OS DMG
 echo 'Build DMG for Mac OSX app package'
 npm run build-dmg
 
-# # Build Windows Installer
-echo 'Build windows installer for windows package'
-#npm run build-windows-installer
+# Build ZIP archives for Windows and Linux
+echo 'Build ZIP archives for Windows and Linux'
+npm run build-zips
 
+# Build Windows Installer
+#echo 'Build windows installer for windows package'
+#npm run build-windows-installer
