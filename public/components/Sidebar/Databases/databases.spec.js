@@ -164,7 +164,7 @@ describe('databases', () => {
 
               expect(RethinkDbService.createDb.callCount).to.equal(1);
               expect(RethinkDbService.createDb.calledWith(dbConnection, dbName)).to.equal(true);
-              expect(dispatch.callCount).to.equal(0);
+              expect(dispatch.callCount).to.equal(2);
               // expect(dispatch.calledWith({
               //   type: 'ADD_TO_DB_LIST',
               //   database: 'im a db create error'
