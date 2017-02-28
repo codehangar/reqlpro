@@ -24,10 +24,10 @@ const theme = {
   base0F: '#3971ED'
 };
 
-const ExplorerTreeView = () => {
+const ExplorerTreeView = ({tableData}) => {
   return (
     <div className="explorer-tree-view">
-      <JSONTree data={this.props.tableData} theme={theme}/>
+      <JSONTree data={tableData} theme={theme}/>
     </div>
   );
 };
