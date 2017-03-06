@@ -52,7 +52,7 @@ ConfigService.prototype.readConfigFile = function() {
         if (config.favorites) {
           config.connections = config.favorites;
           delete config.favorites;
-          this.writeConfigFile(config);
+          resolve(this.writeConfigFile(config));
         } else {
           resolve(config);
         }
