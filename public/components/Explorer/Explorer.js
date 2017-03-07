@@ -51,9 +51,7 @@ const Explorer = ({
 
   const connectionErrors = ['ReqlAuthError', 'ReqlDriverError'];
 
-
   if (connection.loading) {
-    console.log('connection.loading',connection)
     content = (
       <div className="explorer-container">
         <div className="explorer-loading">
@@ -62,7 +60,6 @@ const Explorer = ({
       </div>
     );
   } else if (connectionError && connectionError.connection.name == connection.selected.name) {
-    console.log('show Explorer Error ', connectionError.error.msg);
     const connError = (
       connectionError.error.msg
     );
@@ -91,7 +88,6 @@ const Explorer = ({
       </div>
     );
   } else if (connections.length === 0) {
-    console.log('show add a RethinkDB connection message');
     content = (
       <div>
         <div className="text-center">
@@ -101,7 +97,7 @@ const Explorer = ({
         </div>
       </div>
     );
-  } else if (selectedTable) {
+  } else if (tableData) {
     console.log('show Table Data');
     content = (
       <div className="explorer-container">
@@ -122,7 +118,7 @@ const Explorer = ({
 const mapStateToProps = (state) => {
   return {
     connections: state.connections || [],
-    // connection: state.connection,
+    connection: state.connection,
     selectedConnection: state.connection.selected,
     tableData: state.main.selectedTable ? state.main.selectedTable.data : null,
     selectedTable: state.main.selectedTable,

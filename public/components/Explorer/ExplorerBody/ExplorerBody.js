@@ -110,8 +110,6 @@ class ExplorerBody extends React.Component {
 
 
 const mapStateToProps = (state) => {
-  console.log('------------------------'); // eslint-disable-line no-console
-  console.log('state.main.selectedTable.data', state.main.selectedTable.data); // eslint-disable-line no-console
   return {
     tableData: state.main.selectedTable.data,
     tableType: state.main.selectedTable.type,

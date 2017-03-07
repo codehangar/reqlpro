@@ -19,8 +19,6 @@ const ExplorerHeader = ({
   toggleExplorerBody
 }) => {
 
-  console.log('ExplorerHeader');
-
   let buttonClasses = {
     tree: classNames({
       'btn btn-default btn-sm': true,
@@ -55,8 +53,9 @@ const ExplorerHeader = ({
 
   const rowsPerPage = (
     <span className="rows-per-page-selector">Rows per page:
-      <select onChange={(e) => onUpdatePageLimit(e, dbConnection, selectedTable.databaseName, selectedTable.name, selectedTable)}
-              className="page-select" value={selectedTable.query.limit} disabled={selectedTable.queryError}>
+      <select
+        onChange={(e) => onUpdatePageLimit(e, dbConnection, selectedTable.databaseName, selectedTable.name, selectedTable)}
+        className="page-select" value={selectedTable.query.limit} disabled={selectedTable.queryError}>
         <option value="5">5</option>
         <option value="10">10</option>
         <option value="25">25</option>
@@ -76,14 +75,17 @@ const ExplorerHeader = ({
             <button onClick={refreshExplorerBody} className={buttonClasses.refresh}/>
           </OverlayTrigger>
           <OverlayTrigger placement="bottom" overlay={addRecordTooltip}>
-            <button onClick={() => toggleExplorerBody('code')} className={buttonClasses.code} disabled={!!selectedTable.queryError}/>
+            <button onClick={() => toggleExplorerBody('code')} className={buttonClasses.code}
+                    disabled={!!selectedTable.queryError}/>
           </OverlayTrigger>
           <div className="btn-group" role="group">
             <OverlayTrigger placement="bottom" overlay={treeViewTooltip}>
-              <button onClick={() => toggleExplorerBody('tree')} className={buttonClasses.tree} disabled={selectedTable.queryError}/>
+              <button onClick={() => toggleExplorerBody('tree')} className={buttonClasses.tree}
+                      disabled={selectedTable.queryError}/>
             </OverlayTrigger>
             <OverlayTrigger placement="bottom" overlay={tableViewTooltip}>
-              <button onClick={() => toggleExplorerBody('table')} className={buttonClasses.table} disabled={selectedTable.queryError}/>
+              <button onClick={() => toggleExplorerBody('table')} className={buttonClasses.table}
+                      disabled={selectedTable.queryError}/>
             </OverlayTrigger>
           </div>
         </div>
@@ -111,14 +113,11 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onUpdatePageLimit: (e, dbConnection, databaseName, tableName, selectedTable) => {
-      console.log('onUpdatePageLimit e', selectedTable);
       dispatch({
         type: "SET_TABLE_PAGE_LIMIT",
         limit: e.target.value
       });
-      let params = Object.assign({}, selectedTable.query)
-      params.limit = e.target.value;
-      dispatch(queryTable(dbConnection, databaseName, tableName, params));
+      dispatch(refreshExplorerBody());
 
       Segment.track({
         event: 'Set Rows per Page',
@@ -129,7 +128,6 @@ const mapDispatchToProps = (dispatch) => {
       });
     },
     refreshExplorerBody: () => {
-      console.log('refreshExplorerBody e');
       dispatch(refreshExplorerBody());
 
       Segment.track({
@@ -138,7 +136,6 @@ const mapDispatchToProps = (dispatch) => {
       });
     },
     toggleExplorerBody: (key) => {
-      console.log('toggleExplorerBody e', key);
       dispatch({
         type: "HIDE_CONNECTION_FORM"
       });
@@ -146,17 +143,6 @@ const mapDispatchToProps = (dispatch) => {
         type: "TOGGLE_EXPLORER_BODY",
         key: key
       });
-      // Segment.track({
-      //   event: 'explorer.toggleExplorerBody',
-      //   properties: {
-      //     key: key
-      //   }
-      // });
-      // if(key === 'code'){
-      //   Segment.track({
-      //     event: 'explorer.addRow',
-      //   });
-      // }
     }
   };
 };

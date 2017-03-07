@@ -122,7 +122,7 @@ describe('tables', () => {
             .then(function() {
               expect(RethinkDbService.createTable.callCount).to.equal(1);
               expect(RethinkDbService.createTable.calledWith(dbConnection, dbName, tableName)).to.equal(true);
-              expect(dispatch.callCount).to.equal(4);
+              expect(dispatch.callCount).to.equal(2);
               expect(dispatch.calledWith({
                 type: 'ADD_TO_TABLE_LIST',
                 dbName,

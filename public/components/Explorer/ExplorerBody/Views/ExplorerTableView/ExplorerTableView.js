@@ -72,7 +72,7 @@ const ExplorerTableView = ({
           return (
             <Cell>
               <ExplorerTableCell row={selectedTable.data[props.rowIndex]} fieldName={fieldName}
-                                 rowChanged={saveRowInline}/>
+                                 rowChange={saveRowInline}/>
             </Cell>
           );
         }}
