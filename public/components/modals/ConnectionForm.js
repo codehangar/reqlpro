@@ -159,9 +159,6 @@ const mapDispatchToProps = (dispatch) => {
     onUpdate: (data) => {
       console.log('onUpdate data', data);
       dispatch(updateConnection(data));
-       dispatch({
-        showConnectionForm: false
-      })
       Segment.track({
         event: 'Update Connection',
         properties:{
