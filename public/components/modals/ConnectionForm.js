@@ -30,8 +30,6 @@ class ConnectionForm extends Component {
       onUpdate
     } = this.props;
 
-    console.log('isAdd', isAdd); // eslint-disable-line no-console
-
     const isRequired = (val) => val && val.length > 0;
     let valStateUser = null;
     let valStatePass = null;
@@ -147,7 +145,6 @@ const mapDispatchToProps = (dispatch) => {
       })
     },
     onSave: (data) => {
-      console.log('onSave data', data);
       dispatch(addConnection(data));
       Segment.track({
         event: 'Add Connection',
@@ -157,7 +154,6 @@ const mapDispatchToProps = (dispatch) => {
       });
     },
     onUpdate: (data) => {
-      console.log('onUpdate data', data);
       dispatch(updateConnection(data));
       Segment.track({
         event: 'Update Connection',

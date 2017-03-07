@@ -160,8 +160,6 @@ describe('databases', () => {
               done(FALSE_SUCCESS_ERROR);
             })
             .catch(function(er) {
-              console.log(er)
-
               expect(RethinkDbService.createDb.callCount).to.equal(1);
               expect(RethinkDbService.createDb.calledWith(dbConnection, dbName)).to.equal(true);
               expect(dispatch.callCount).to.equal(2);

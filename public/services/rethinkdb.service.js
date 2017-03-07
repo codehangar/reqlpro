@@ -74,12 +74,8 @@ RethinkDbService.prototype.generateAuthKey = function() {
         auth_key: authKey
       }).run(conn, function(err, results) {
         if (err) {
-          console.log(err);
           reject(err);
         } else {
-          console.log('New authkey has been generated and set!');
-          console.log('Add the following key to the respective Environment');
-          console.log(authKey);
           conn.close();
           resolve(true);
         }
@@ -106,10 +102,8 @@ RethinkDbService.prototype.resetAuthKey = function() {
         auth_key: null
       }).run(conn, function(err, results) {
         if (err) {
-          console.log(err);
           reject(err);
         } else {
-          console.log('Authkey has been reset back to null, no authKey is required to connect now');
           conn.close();
           resolve(true);
         }
@@ -130,7 +124,6 @@ RethinkDbService.prototype.createDb = function(conn, newDatabase) {
   return new Promise(function(resolve, reject) {
     r.dbList().run(conn, function(err, results) {
       if (err) {
-        console.log(err);
         reject(err);
       } else {
         if (results.indexOf(newDatabase) === -1) {
@@ -160,7 +153,6 @@ RethinkDbService.prototype.deleteDb = function(conn, dbName) {
   return new Promise(function(resolve, reject) {
     r.dbDrop(dbName).run(conn, function(err, results) {
       if (err) {
-        console.log(err);
         reject(err);
       } else {
         resolve();
@@ -180,7 +172,6 @@ RethinkDbService.prototype.deleteTable = function(conn, dbName, tableName) {
   return new Promise(function(resolve, reject) {
     r.db(dbName).tableDrop(tableName).run(conn, function(err, results) {
       if (err) {
-        console.log(err);
         reject(err);
       } else {
         resolve();
@@ -224,10 +215,8 @@ RethinkDbService.prototype.createIndex = function(conn, database, table, newInde
       // If index does not exist in indexList array then create the index
       if (indexList.indexOf(newIndex) === -1) {
         yield r.db(database).table(table).indexCreate(newIndex).run(conn);
-        console.log(newIndex + ' index on table ' + table + ' was created successfully.');
         resolve(newIndex + ' index on table ' + table + ' was created successfully.');
       } else {
-        console.log(newIndex + ' index on table ' + table + ' already existed.');
         resolve(newIndex + ' index on table ' + table + ' already existed.');
       }
 
@@ -341,8 +330,6 @@ RethinkDbService.prototype.getTableDataBetween = function(conn, db, table, index
           index: index || 'id'
         }).limit(5).run(conn);
       }
-
-      console.log("tableData", tableData)
       resolve(tableData);
     }).catch(function(err) {
       reject(err);

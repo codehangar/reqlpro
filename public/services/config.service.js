@@ -19,7 +19,6 @@ const ConfigService = function(configPath) {
   this.configPath = configPath;
   this.configFileName = 'config.json';
   this.fullConfigPath = this.configPath + '/' + this.configFileName;
-  console.log("this.fullConfigPath", this.fullConfigPath);
 };
 
 const defaultConfig = {
@@ -28,13 +27,11 @@ const defaultConfig = {
 
 ConfigService.prototype.readConfigFile = function() {
   return new Promise((resolve, reject) => {
-    console.log('************ READ config.json File ************');
     fs.readFile(this.fullConfigPath, {
       encoding: 'utf-8'
     }, (err, data) => {
       // console.log(" ***readConfigFile", data)
       if (err) {
-        console.log('No config.json File Found', err);
 
         resolve(this.writeConfigFile(defaultConfig));
 
@@ -75,7 +72,6 @@ ConfigService.prototype.writeConfigFile = function(data) {
 
     fs.writeFile(this.fullConfigPath, JSON.stringify(wipedData), (err) => {
       if (err) {
-        console.log(err);
         reject(err);
       } else {
         resolve(wipedData);
@@ -85,7 +81,6 @@ ConfigService.prototype.writeConfigFile = function(data) {
 };
 
 const service = configPath => {
-  console.log('process.type', process.type); // eslint-disable-line no-console
 
   if (global.configPath) {
     return new ConfigService(global.configPath)

@@ -112,7 +112,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     onUpdateTableSort: (sort, field, direction) => {
-      console.log('direction', direction, sort === field);
       if (sort === field) {
         direction = direction === 'asc' ? 'desc' : 'asc';
       } else {

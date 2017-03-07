@@ -19,7 +19,6 @@ const AnonId = function(configPath) {
   this.configPath = configPath;
   this.configFileName = 'anon-id.json';
   this.fullAnonIdPath = this.configPath + '/' + this.configFileName;
-  console.log("this.fullAnonIdPath", this.fullAnonIdPath);
 
   this.anonId = null;
   this.get = () => {
@@ -32,12 +31,10 @@ const AnonId = function(configPath) {
 
 AnonId.prototype.readAnonIdFile = function() {
   return new Promise((resolve, reject) => {
-    console.log('************ READ anon-id.json File ************');
     fs.readFile(this.fullAnonIdPath, {
       encoding: 'utf-8'
     }, (err, data) => {
       if (err) {
-        console.log('No anon-id.json File Found', err);
 
         resolve(this.writeAnonIdFile());
 
@@ -48,7 +45,6 @@ AnonId.prototype.readAnonIdFile = function() {
       } else if (!data) {
         resolve(this.writeAnonIdFile());
       } else {
-        console.log(`************ anon-id.json: ${data} ************`);
         resolve(data);
       }
     });
@@ -58,13 +54,10 @@ AnonId.prototype.readAnonIdFile = function() {
 AnonId.prototype.writeAnonIdFile = function() {
   return new Promise((resolve, reject) => {
     const uuid = UUID.generate();
-    console.log('GENERATING AnonId', uuid); // eslint-disable-line no-console
     fs.writeFile(this.fullAnonIdPath, uuid, (err) => {
       if (err) {
-        console.log(err);
         reject(err);
       } else {
-        console.log(`************ anon-id.json: ${uuid} ************`);
         resolve(uuid);
       }
     });
@@ -72,7 +65,6 @@ AnonId.prototype.writeAnonIdFile = function() {
 };
 
 const service = configPath => {
-  console.log('process.type', process.type); // eslint-disable-line no-console
 
   if (global.configPath) {
     return new AnonId(global.configPath)
