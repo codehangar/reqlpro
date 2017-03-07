@@ -97,7 +97,7 @@ const Explorer = ({
         </div>
       </div>
     );
-  } else if (tableData) {
+  } else if (selectedTable) {
     console.log('show Table Data');
     content = (
       <div className="explorer-container">
