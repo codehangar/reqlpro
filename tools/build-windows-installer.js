@@ -1,9 +1,11 @@
-var electronInstaller = require('electron-winstaller');
+const electronInstaller = require('electron-winstaller');
+const packageConfig = require('../package.json');
 
 resultPromise = electronInstaller.createWindowsInstaller({
-    appDirectory: '../build/ReQLPro-win32-x64',
-    authors: 'Code Hangar, Inc.',
-    exe: 'ReQLPro.exe'
-  });
+  appDirectory: '../apps/ReQLPro-win32-x64',
+  outputDirectory: '../apps',
+  authors: 'Code Hangar, Inc.',
+  exe: '../apps/ReQLPro_' + packageConfig.version + '.exe'
+});
 
 resultPromise.then(() => console.log("It worked!"), (e) => console.log(`No dice: ${e.message}`));

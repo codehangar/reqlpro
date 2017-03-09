@@ -1,5 +1,17 @@
+import chai from 'chai';
+import chaiAsPromised from 'chai-as-promised';
+
+chai.use(chaiAsPromised);
+
 beforeEach(function() {
-    global.expect = require('chai').expect;
-    global.sinon = require('sinon');
-    global.mockery = require('mockery');
+
+  // const window = {};
+
+  global.expect = chai.expect;
+  global.sinon = require('sinon');
+  global.mockery = require('mockery');
+
+  global.remote = {
+    require: require
+  }
 });

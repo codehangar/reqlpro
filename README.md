@@ -1,11 +1,17 @@
-# RethinkDB Client
+# ReQLPro
+
+## Test Status
+
+`develop`  
+- [![CircleCI](https://circleci.com/gh/codehangar/reqlpro/tree/develop.svg?style=shield&circle-token=1e39f63fbc10770fa2ae80e841f43faf5f39f59b)](https://circleci.com/gh/codehangar/reqlpro/tree/develop)
+
+`master`
+- [![CircleCI](https://circleci.com/gh/codehangar/reqlpro/tree/master.svg?style=shield&circle-token=1e39f63fbc10770fa2ae80e841f43faf5f39f59b)](https://circleci.com/gh/codehangar/reqlpro/tree/master) 
 
 ## Setup
 
 - npm install
 - npm start
-
-You have to stop and start the process on code changes, until we get a live reload type solution setup.
 
 ## Code Structure
 
@@ -23,5 +29,13 @@ The rethinkdb.client.js file is the the source of the truth for all the applicat
 - npm run package (makes an archive of the app folder)
 - delete Appfolder/AppName.app/Contents/Resources/app (this is so people cant see the source code of the app)
 
-## Installing Wine for building Windows distributions on Mac
-https://www.davidbaumgold.com/tutorials/wine-mac/#part-2:-install-homebrew-cask
+## Mac Packaging
+- You will need to install this npm package locally. We cannot add to this package.json because it fails in linux npm installs (i.e. our CI server)
+- https://www.npmjs.com/package/appdmg
+
+## Testing and Code Coverage
+- npm test
+- npm run test-coverage
+
+To see the results of the test coverage, view the `coverage/lcov-report/index.html` file in your browser
+

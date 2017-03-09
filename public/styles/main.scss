@@ -17,6 +17,8 @@ html, body, .main-content {
 ::-webkit-scrollbar{
   display:none;
 }
+
+
 /*https://css-tricks.com/custom-scrollbars-in-webkit/*/
 
 @font-face {
@@ -32,8 +34,11 @@ html, body, .main-content {
     font-weight: 700;
     src: url(../fonts/Inconsolata/Inconsolata-Bold.ttf);
 }
+strong{
+    font-family: sans-serif;
+}
 
-.cursor-pointer{
+.cursor-pointer, .clickable {
   cursor:pointer;
 }
 
@@ -116,27 +121,6 @@ html, body, .main-content {
   }
 }
 
-.ConnectionForm {
-  width: 600px;
-  height: 300px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-top: -150px;
-  margin-left: -300px;
-  // z-index: 1;
-}
-
-.EntityForm {
-  width: 600px;
-  height: 300px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-top: -150px;
-  margin-left: -300px;
-  // z-index: 1;
-}
 
 .ConfirmRowDelete {
   width: 450px;
@@ -170,8 +154,6 @@ html, body, .main-content {
 
 .breadcrumb-text-container {
   display: inline;
-  position: relative;
-  top: 6px;
 }
 
 .breadcrumb-text-container span {
@@ -179,12 +161,12 @@ html, body, .main-content {
   /*font-size: 1.5em;*/
 }
 
-.bread-crumbs .fa-arrow-right {
+.bread-crumbs .fa-angle-right {
   /*color: #FFF;*/
   /*font-size: 1.5em;*/
   /*display: inline;*/
-  /*padding-left: 10px;*/
-  /*padding-right: 10px;*/
+  padding-left: 5px;
+  padding-right: 10px;
 }
 
 .empty-table {
@@ -282,4 +264,15 @@ html, body, .main-content {
                                   not supported by any browser */
 }
 
+/* Add connection modal styles */
 
+.connection-row {
+  padding-bottom: 10px; 
+}
+
+.errors {
+  font-size: 12px;
+  color: #EE0000;
+  margin-top: 5px;
+
+}

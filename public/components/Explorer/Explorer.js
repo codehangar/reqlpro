@@ -1,80 +1,138 @@
-const React = require('react');
-const ExplorerHeader = require('../ExplorerHeader/ExplorerHeader');
-const ExplorerBody = require('../ExplorerBody/ExplorerBody');
-const ExplorerFooter = require('../ExplorerFooter/ExplorerFooter');
+import React from 'react';
+import { Button } from 'react-bootstrap';
+import ExplorerHeader from'./ExplorerHeader/ExplorerHeader';
+import ExplorerBody from'./ExplorerBody/ExplorerBody';
+import ExplorerFooter from'./ExplorerFooter/ExplorerFooter';
+import { connect } from 'react-redux';
+import logo from '../../images/logo.png';
+import addConnection from '../Sidebar/Connections/AddConnection';
+import { showConnectionForm } from '../Sidebar/Connections/selectedConnection.actions';
+import { Panel } from 'react-bootstrap';
 
-const Explorer = React.createClass({
-  getInitialState: function() {
-    return this.context.store;
-  },
-  componentDidMount: function() {
-    this.setupEvents();
-  },
-  setupEvents: function() {
-    this.state.on('updateSelectedTable', () => {
-      // console.log("   --> ExplorerBody updateSelectedTable")
-      this.forceUpdate();
-    });
-  },
-  render: function() {
-    let content = (
+
+const Explorer = ({
+  connections,
+  connection,
+  tableData,
+  connectionError,
+  editConnection,
+  addConnection,
+  selectedTable,
+  selectedConnection
+}) => {
+
+  const passwordError = connectionError ? connectionError.error.msg == 'Unknown user' || connectionError.error.msg == 'Wrong password' : null;
+
+  const HelpCenter = <a href="http://utils.codehangar.io/rethink/support" target="_blank">Help Center</a>;
+
+  const SendMessage = (
+    <a className="clickable" onClick={() => {
+      HS.beacon.open();
+    }}>send us a message</a>
+  );
+
+  const TryAgain = (
+    <Button bsSize="large" style={{ margin: 16 }} onClick={() => {
+      editConnection(selectedConnection)
+    }}>Re-enter my Password</Button>
+  );
+
+  let content = (
+    <div className="explorer-container">
+      <div className="explorer-full-message">
+        <p className="super-large-text">Connected!</p>
+        <p className="">Start browsing your data by clicking on a database.</p>
+        <p className="small-text">
+          Having trouble? Visit our {HelpCenter} or {SendMessage}.
+        </p>
+      </div>
+    </div>
+  );
+
+  const connectionErrors = ['ReqlAuthError', 'ReqlDriverError'];
+
+  if (connection.loading) {
+    content = (
       <div className="explorer-container">
-        <div className="explorer-full-message">
-          <p className="super-large-text">Connected!</p>
-          <p className="">Start browsing your data by clicking on a database.</p>
-          <p className="small-text">Having trouble? Visit our <a href="http://utils.codehangar.io/rethink/support" target="_blank">Help Center</a> or <a onClick={function() { HS.beacon.open(); }}>send us a message</a>.</p>
-          {/* <p className="text-danger small-text">{this.state.selectedFavorite.dbConnection.msg}</p> */}
+        <div className="explorer-loading">
+          <span className="fa fa-refresh fa-spin"/>
         </div>
       </div>
     );
+  } else if (connectionError && connectionError.connection.name == connection.selected.name) {
+    const connError = (
+      connectionError.error.msg
+    );
 
-    if (this.state.userConfig.favorites.length === 0) {
-      content = (
-        <div className="panel panel-default">
-          <div className="panel-body text-center">
-            <div><img className="start-logo" src="images/logo.png"/></div>
-            <h2>No database connections added.</h2>
-            <p>Click the <strong>"+"</strong> to add a RethinkDB connection.</p>
-          </div>
-        </div>
-      );
-    } else if (this.state.selectedTable !== null) {
-      // console.log("this.state.selectedTable", this.state.selectedTable)
-      content = (
-        <div className="explorer-container">
-          <ExplorerHeader table={this.state.selectedTable} store={this.state} />
-          <ExplorerBody table={this.state.selectedTable} width={this.props.width} />
-          <ExplorerFooter table={this.state.selectedTable} store={this.state} />
-        </div>
-      );
-    } else if (this.state.selectedFavorite.dbConnection !== null) {
-      try {
-        if (this.state.selectedFavorite.dbConnection && this.state.selectedFavorite.dbConnection.name === 'ReqlDriverError') {
-          content = (
-            <div className="explorer-container">
-              <div className="explorer-full-message">
-                <p className="super-large-text">Woops!</p>
-                <p className="">Something isn't right. Check your connection details.</p>
-                <p className="small-text">Still having trouble? Visit our <a href="http://utils.codehangar.io/rethink/support" target="_blank">Help Center</a> or <a onClick={function() { HS.beacon.open(); }}>send us a message</a>.</p>
-                <p className="text-danger small-text">{this.state.selectedFavorite.dbConnection.msg}</p>
-              </div>
-            </div>
-          );
-        }
-      } catch (e) {
-        console.error(e);
-      }
-    }
+    content = (
+      <div className="explorer-container">
+        <div className="explorer-full-message">
 
-    return (
-      <div className="body-content-col">
-          {content}
+          { passwordError ?
+            <span>
+             <p className="super-large-text">Disconnected!</p>
+             <p className="">Please re-enter your password to connect.</p>
+              {TryAgain}
+           </span>
+
+            :
+            <span>
+             <p className="super-large-text">Woops!</p>
+
+             <pre className="text-danger">{connectionError.error.msg}</pre>
+           </span>}
+          <p className="small-text">
+            Still having trouble? Visit our {HelpCenter} or {SendMessage}.
+          </p>
+        </div>
+      </div>
+    );
+  } else if (connections.length === 0) {
+    content = (
+      <div>
+        <div className="text-center">
+          <div><img className="start-logo" src={logo}/></div>
+          <h2>No database connections added.</h2>
+          <p>Click the <strong>"+"</strong> to add a RethinkDB connection.</p>
+        </div>
+      </div>
+    );
+  } else if (selectedTable) {
+    console.log('show Table Data');
+    content = (
+      <div className="explorer-container">
+        <ExplorerHeader/>
+        <ExplorerBody/>
+        <ExplorerFooter/>
       </div>
     );
   }
-});
-Explorer.contextTypes = {
-  store: React.PropTypes.object
+
+  return (
+    <div className="body-content-col">
+      {content}
+    </div>
+  );
 };
 
-module.exports = Explorer;
+const mapStateToProps = (state) => {
+  return {
+    connections: state.connections || [],
+    connection: state.connection,
+    selectedConnection: state.connection.selected,
+    tableData: state.main.selectedTable ? state.main.selectedTable.data : null,
+    selectedTable: state.main.selectedTable,
+    connectionError: state.main.connectionError,
+    addConnection: state.main.addConnection
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    editConnection: function(connection) {
+      dispatch(showConnectionForm(connection));
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Explorer);

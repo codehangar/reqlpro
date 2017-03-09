@@ -1,17 +1,18 @@
 console.log('start');
+const spawn = require('child_process').spawn;
+const env = Object.assign({}, process.env, {
+  HOT: 1,
+  NODE_ENV: 'development'
+});
 
-var spawn = require('child_process').spawn;
+const child1 = spawn('node', ['server'], { shell: true });
+child1.stdout.pipe(process.stdout);
+child1.stderr.pipe(process.stderr);
 
-// var child = spawn('webpack', ['--colors']);
-// child.stderr.pipe(process.stderr);
-// child.stdout.pipe(process.stdout);
-// child.stdout.on('data', function(chunk) {
+const child2 = spawn('electron', ['./main.js', '--dev'], {
+  shell: true,
+  env: env
+});
+child2.stdout.pipe(process.stdout);
+child2.stderr.pipe(process.stderr);
 
-  var child2 = spawn('electron', ['main.js', '--dev']);
-  child2.stdout.pipe(process.stdout);
-  child2.stderr.pipe(process.stderr);
-
-  var child3 = spawn('webpack', ['--colors', '--watch']);
-  child3.stdout.pipe(process.stdout);
-  child3.stderr.pipe(process.stderr);
-// });

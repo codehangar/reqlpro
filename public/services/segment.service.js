@@ -1,51 +1,67 @@
-// var Analytics = require("analytics-node");
-var _ = require('lodash');
-var AnonId = require('./anon-id.service');
+import { remote } from 'electron';
+import AnonId from './anon-id.service';
+import ConfigService from './config.service';
+import analytics from './segment.config';
 
-var analytics = new Analytics('lU0Oq54ABsjViXkKOcZe8YfeB18UbaNU', {
-  flushAt: 1
-});
+const context = {
+  userAgent: navigator.userAgent,
+  platform: navigator.platform,
+  appVersion: remote.getGlobal('appVersion')
+};
 
 function Segment() {
 
-  this.track = function(payload) {
-    AnonId.get(function(anonId) {
-      _.extend(payload, {
-        anonymousId: anonId,
-        context: {
-          userAgent: navigator.userAgent
-        }
-      });
-      analytics.track(payload);
-      console.log('[Segment] track', payload);
+  this.track = async function(payload) {
+    const userConfig = await ConfigService.readConfigFile();
+    const email = userConfig.email || null;
+    const anonId = await AnonId.get();
+    const properties = Object.assign({}, payload.properties, context);
+    const finalPayload = Object.assign({}, payload, {
+      anonymousId: anonId,
+      userId: email,
+      context,
+      properties
     });
+    console.log('[Segment] track', finalPayload);
+    analytics.track(finalPayload);
+    analytics.track({
+      event: "User Interaction",
+      anonymousId: anonId,
+      userId: email,
+      context,
+      properties: {
+        platform: navigator.platform,
+        userAgent: navigator.userAgent,
+        appVersion: remote.getGlobal('appVersion')
+      }
+    });
+
   };
 
-  this.identify = function(payload) {
-    AnonId.get(function(anonId) {
-      _.extend(payload, {
-        anonymousId: anonId,
-        context: {
-          userAgent: navigator.userAgent
-        }
-      });
-      analytics.identify(payload);
-      console.log("[Segment] identify", payload)
+  this.identify = async function(payload) {
+    const anonId = await AnonId.get();
+    const traits = Object.assign(payload.traits, context, { anonId });
+    const finalPayload = Object.assign({}, payload, {
+      anonymousId: anonId,
+      context,
+      traits
     });
+    console.log("[Segment] identify", finalPayload)
+    analytics.identify(finalPayload);
   };
 
-  this.alias = function(userId) {
-    AnonId.get(function(anonId) {
-      var payload = {
-        previousId: anonId,
-        userId: userId
-      };
-      analytics.alias(payload);
-      console.log("[Segment] alias", payload)
-    });
+  this.alias = async function(userId) {
+    const anonId = await AnonId.get();
+    const payload = {
+      previousId: anonId,
+      userId: userId
+    };
+    console.log("[Segment] alias", payload)
+    analytics.alias(payload);
+    analytics.flush(); // flush the alias
   };
 
   return this;
-
 }
-module.exports = new Segment();
+
+export default new Segment();

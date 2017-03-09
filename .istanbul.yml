@@ -1,0 +1,9 @@
+instrumentation:
+  extension: .js
+  root: ./public
+  include-all-sources: true
+  verbose: true
+  save-baseline: true
+  excludes: ["**/*.spec.js" ]
+reporting:
+  dir: "coverage"

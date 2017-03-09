@@ -1,22 +1,23 @@
-const React = require('react');
-const Sidebar = require('../Sidebar/Sidebar');
-const Explorer = require('../Explorer/Explorer');
-const ConnectionForm = require('../ConnectionForm/ConnectionForm');
-const EntityForm = require('../EntityForm/EntityForm');
-const ConfirmRowDelete = require('../ConfirmRowDelete/ConfirmRowDelete');
-const EmailIntro = require('../EmailIntro/EmailIntro');
+import React from 'react';
+import { connect } from 'react-redux';
+import Sidebar from '../Sidebar/Sidebar';
+import ExplorerContainer from '../Explorer/Explorer';
+import ConnectionFormContainer from '../modals/ConnectionForm';
+import ConfirmRowDelete from '../modals/ConfirmRowDelete';
+import EmailIntroContainer from '../modals/EmailIntro';
+import DatabaseForm from '../modals/DatabaseForm';
+import DeleteDatabaseForm from '../modals/DeleteDatabaseForm';
+import DeleteTableForm from '../modals/DeleteTableForm';
+import TableForm from '../modals/TableForm';
+import DevTools from '../DevTools';
 
 const App = React.createClass({
-  getInitialState: function() {
-    return this.context.store;
-  },
   componentDidMount: function() {
-    this.setupEvents();
     this.resizeTimeoutFunction = () => {
       this.resizeTimeout = setTimeout(() => {
         this.forceUpdate();
       }, 100);
-    }
+    };
     window.onresize = () => {
       clearTimeout(this.resizeTimeout)
       this.resizeTimeoutFunction();
@@ -25,40 +26,33 @@ const App = React.createClass({
   componentWillUnmount: function() {
     window.onresize = null;
   },
-  setupEvents: function() {
-
-    // Event for toggling connection form
-    this.state.on('showConnectionForm', () => {
-      this.forceUpdate();
-    });
-    this.state.on('hideConnectionForm', () => {
-      this.forceUpdate();
-    });
-
-    this.state.on('toggleEntityForm', () => {
-      this.forceUpdate();
-    });
-
-    // Event for updating selected favorite
-    this.state.on('updateRehinkDbClient', () => {
-      this.forceUpdate();
-    });
-  },
   render: function() {
     return (
       <div className="content-wrapper">
-        <EmailIntro />
-        <Sidebar  />
-        <Explorer />
-        <ConnectionForm />
-        <EntityForm />
+        <EmailIntroContainer />
+        <Sidebar />
+        {this.props.connection && this.props.connection.showForm ? <ConnectionFormContainer /> : ''}
+        <DatabaseForm />
+        <DeleteDatabaseForm />
+        <TableForm />
+        <DeleteTableForm />
         <ConfirmRowDelete />
+        <ExplorerContainer />
+        <DevTools />
       </div>
     );
   }
 });
-App.contextTypes = {
-  store: React.PropTypes.object
+
+
+function mapStateToProps(state) {
+  return {
+    connection: state.connection
+  };
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
 };
 
-module.exports = App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);

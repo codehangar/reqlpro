@@ -1,5 +1,12 @@
 node_modules
 npm-debug.log
-dev
-build
-ReQLPro-darwin-x64
+dist
+builds
+apps
+
+# WebStorm Settings
+.idea/**
+!.idea/codeStyleSettings.xml
+
+# Generated Coverage Report
+coverage/

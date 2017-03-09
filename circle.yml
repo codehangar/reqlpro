@@ -1,0 +1,37 @@
+## Customize the test machine
+machine:
+
+  # Version of node to use
+  node:
+    version: 6.9.2
+
+  # Override /etc/hosts
+  hosts:
+    circlehost: 127.0.0.1
+    dev.mycompany.com: 127.0.0.1
+
+  # Add some environment variables
+  environment:
+    CIRCLE_ENV: test
+
+## Customize general stuff
+general:
+  artifacts:
+    - "artifacts/$CIRCLE_PROJECT_REPONAME-$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM.tar" # relative to the build directory
+
+## Customize test commands
+test:
+  override:
+    - npm run test-circle:
+        environment:
+          MOCHA_FILE: $CIRCLE_TEST_REPORTS/junit/test-results.xml
+  post:
+    - npm run test-coverage
+    # Move the coverage report to the artifacts folder
+    - mv coverage/ $CIRCLE_ARTIFACTS/coverage
+
+## Custom notifications
+notify:
+  webhooks:
+    # A list of hashes representing hooks. Only the url field is supported.
+    # - url: https://someurl.com/hooks/circle
