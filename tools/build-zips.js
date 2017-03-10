@@ -25,7 +25,7 @@ function archiveDirectory(outputFile, sourceDir) {
   archive.pipe(output);
 
   // append files from a directory
-  archive.directory(sourceDir);
+  archive.directory(sourceDir, 'ReQLPro');
 
   // finalize the archive (ie we are done appending files but streams have to finish yet)
   archive.finalize();
