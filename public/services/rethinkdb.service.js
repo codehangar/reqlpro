@@ -409,10 +409,8 @@ RethinkDbService.prototype.update = function(conn, db, table, record) {
 RethinkDbService.prototype.replace = function(conn, db, table, record) {
   return new Promise(function(resolve, reject) {
     co(function*() {
-      if (!record.id) {
-        throw new Error('Record must have an id');
-      }
-      const result = yield r.db(db).table(table).get(record.id).replace(record).run(conn, { profile: true });
+      const config = yield r.db(db).table(table).config().run(conn);
+      const result = yield r.db(db).table(table).get(record[config.primary_key]).replace(record).run(conn, { profile: true });
       resolve(result);
     }).catch(function(err) {
       reject(err);
