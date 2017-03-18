@@ -17,15 +17,18 @@ const ExplorerTableCell = ({
     const data = row[fieldName];
 
     if (typeof data === 'string') {
-      return <RIEInput value={data} change={dataChangedString} propName={fieldName} shouldBlockWhileLoading={true}
+      return <RIEInput value={data} change={dataChangedString} propName={fieldName}
+                       shouldBlockWhileLoading={true} className="inline-edit"
                        classLoading="loading-cell" classEditing="form-control"/>;
     } else if (typeof data === 'number') {
       return <RIENumber value={data + ''} change={dataChangedNumber} propName={fieldName}
-                        shouldBlockWhileLoading={true}
+                        shouldBlockWhileLoading={true} className="inline-edit"
                         classLoading="loading-cell" classEditing="form-control"/>;
+    } else if (typeof data === 'undefined') {
+      return <RIEInput value={''} change={dataChangedString} propName={fieldName} shouldBlockWhileLoading={true}
+                       classLoading="loading-cell" classEditing="form-control" className="empty-cell"/>;
     } else {
       if (data) {
-
         if (Object.keys(data).length) {
           return '{Object ...}';
         } else {
