@@ -32,6 +32,10 @@
   position: relative;
   overflow: scroll;
   // border: 1px solid red;
+  .fixedDataTableLayout_horizontalScrollbar.public_fixedDataTable_horizontalScrollbar {
+    position: fixed;
+    bottom: 50px;
+  }
 }
 
 .explorer-footer {

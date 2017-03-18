@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Table, Column, Cell } from 'fixed-data-table';
 import 'fixed-data-table/dist/fixed-data-table.css';
 import JSONTree from 'react-json-tree';
@@ -11,95 +11,116 @@ import { refreshExplorerBody } from '../../../../../actions';
 import { getColumnNames, getColumnWidth } from './explorer-table-view-utils';
 import { saveRow, saveInlineEdit } from '../../../../../actions';
 
-const ExplorerTableView = ({
-  columnWidths,
-  selectedTable,
-  onUpdateTableSort,
-  onEditClick,
-  onDeleteClick,
-  setColumnWidth,
-  dbConnection,
-  saveRowInline
-}) => {
+class ExplorerTableView extends Component {
 
-  // console.log('selectedTable----->', selectedTable);
+  constructor(props) {
+    super(props);
+  }
 
-  let columnNames = getColumnNames(selectedTable.data);
 
-  const setColumnWidthCallback = (newColumnWidth, columnKey) => {
-    setColumnWidth(newColumnWidth, columnKey, selectedTable)
-  };
-
-  const actionColumn = (
-    <Column
-      key="actions"
-      header={<Cell>Action</Cell>}
-      columnKey="action"
-      cell={(props) => {
-        const row = selectedTable.data[props.rowIndex];
-        return (
-          <Cell className="action-buttons">
-            <span className="btn btn-sm btn-primary fa fa-pencil" onClick={() => onEditClick(row)}/>
-            <span className="btn btn-sm btn-danger fa fa-trash" onClick={() => onDeleteClick(row)}/>
-          </Cell>
-        );
-      }}
-      width={100}/>
-  );
-
-  const dynamicColumns = columnNames.map((fieldName, index) => {
-    const iconClasses = `fa fa-sort-${selectedTable.query.direction} pull-right`;
-    let iconBody = '';
-    if (selectedTable.query.sort === fieldName) {
-      iconBody = <i className={iconClasses}/>;
+  componentDidMount() {
+    this.resizeTimeoutFunction = () => {
+      this.resizeTimeout = setTimeout(() => {
+        this.forceUpdate();
+      }, 100);
+    };
+    window.onresize = () => {
+      clearTimeout(this.resizeTimeout);
+      this.resizeTimeoutFunction();
     }
-    const header = (
-      <Cell className="tableview-header"
-            onClick={() => onUpdateTableSort(selectedTable.query.sort, fieldName, selectedTable.query.direction)}>
-        {fieldName}{iconBody}
-      </Cell>
-    );
-    return (
+  }
+
+  componentWillUnmount() {
+    window.onresize = null;
+  }
+
+  render() {
+
+    const {
+      columnWidths,
+      selectedTable,
+      onUpdateTableSort,
+      onEditClick,
+      onDeleteClick,
+      setColumnWidth,
+      dbConnection,
+      saveRowInline
+    } = this.props;
+
+    const columnNames = getColumnNames(selectedTable.data);
+
+    const setColumnWidthCallback = (newColumnWidth, columnKey) => {
+      setColumnWidth(newColumnWidth, columnKey, selectedTable)
+    };
+
+    const actionColumn = (
       <Column
-        key={index}
-        header={header}
-        isResizable={true}
-        columnKey={fieldName}
+        key="actions"
+        header={<Cell>Action</Cell>}
+        columnKey="action"
         cell={(props) => {
-          if (selectedTable.data[props.rowIndex].id === '11698a1f-f9db-4f9c-9fb8-4c27d75e1990' && fieldName === 'name') {
-            // console.log("   --> ExplorerTableView cell render", this.props.table.data[props.rowIndex][fieldName])
-          }
+          const row = selectedTable.data[props.rowIndex];
           return (
-            <Cell>
-              <ExplorerTableCell row={selectedTable.data[props.rowIndex]} fieldName={fieldName}
-                                 rowChanged={saveRowInline}/>
+            <Cell className="action-buttons">
+              <span className="btn btn-sm btn-primary fa fa-pencil" onClick={() => onEditClick(row)}/>
+              <span className="btn btn-sm btn-danger fa fa-trash" onClick={() => onDeleteClick(row)}/>
             </Cell>
           );
         }}
-        width={getColumnWidth(columnWidths, selectedTable, fieldName)}
-      />
+        width={100}/>
     );
-  });
 
-  const columnNodes = [actionColumn].concat(dynamicColumns);
+    const dynamicColumns = columnNames.map((fieldName, index) => {
+      const iconClasses = `fa fa-sort-${selectedTable.query.direction} pull-right`;
+      let iconBody = '';
+      if (selectedTable.query.sort === fieldName) {
+        iconBody = <i className={iconClasses}/>;
+      }
+      const header = (
+        <Cell className="tableview-header"
+              onClick={() => onUpdateTableSort(selectedTable.query.sort, fieldName, selectedTable.query.direction)}>
+          {fieldName}{iconBody}
+        </Cell>
+      );
+      return (
+        <Column
+          key={index}
+          header={header}
+          isResizable={true}
+          columnKey={fieldName}
+          cell={(props) => {
+            return (
+              <Cell>
+                <ExplorerTableCell row={selectedTable.data[props.rowIndex]} fieldName={fieldName}
+                                   rowChanged={saveRowInline}/>
+              </Cell>
+            );
+          }}
+          width={getColumnWidth(columnWidths, selectedTable, fieldName)}
+        />
+      );
+    });
 
-  return (
-    <div style={{ position: 'relative' }}>
-      <div className="table-view-container">
-        <Table
-          rowsCount={selectedTable.data.length}
-          rowHeight={50}
-          headerHeight={30}
-          onColumnResizeEndCallback={setColumnWidthCallback}
-          isColumnResizing={false}
-          width={window.innerWidth - 360}
-          height={window.innerHeight - 105}>
-          {columnNodes}
-        </Table>
+    const columnNodes = [actionColumn].concat(dynamicColumns);
+
+    return (
+      <div style={{ position: 'relative' }}>
+        <div className="table-view-container">
+          <Table
+            rowsCount={selectedTable.data.length}
+            rowHeight={50}
+            headerHeight={30}
+            onColumnResizeEndCallback={setColumnWidthCallback}
+            isColumnResizing={false}
+            width={window.innerWidth - 360}
+            height={window.innerHeight - 148}>
+            {columnNodes}
+          </Table>
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
+}
 
 function mapStateToProps(state) {
   return {
@@ -148,22 +169,12 @@ function mapDispatchToProps(dispatch) {
         type: "SET_ROW_EDIT",
         row
       });
-
-      // Segment.track({
-      //   event: 'tableview.row.editBtn',
-      //   properties: {}
-      // });
     },
     onDeleteClick: (rowToDelete) => {
       dispatch({
         type: 'TOGGLE_CONFIRM_ROW_DELETE',
         rowToDelete
       });
-
-      // Segment.track({
-      //   event: 'tableview.row.deleteBtn',
-      //   properties: {}
-      // });
     },
     saveRowInline: (originalRow, row) => {
       const string = JSON.stringify(row);
