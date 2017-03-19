@@ -90,7 +90,6 @@ export function setSelectedTable(state, databaseName, tableName) {
     codeBodyError: null,
     // Todo: maintain query from previous selectedTable
     query: {
-      orderByPredicate: "r.asc('id')",
       limit: 5,
       page: 1,
       sort: 'id',

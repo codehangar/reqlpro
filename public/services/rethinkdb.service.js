@@ -282,12 +282,17 @@ RethinkDbService.prototype.getTableData = function(conn, db, table, filter, orde
 
       const minval = ((page - 1) * limit);
       const maxval = page * limit;
+      let result;
+      // If no orderBy query is given, skip the orderBy statement for big performance gains
+      if (orderBy && orderBy.length && orderBy[0]) {
+        result = yield r.db(db).table(table).filter(filter).orderBy(...orderBy).slice(minval, maxval).run(conn, { profile: true });
+      } else {
+        const res = yield r.db(db).table(table).filter(filter).slice(minval, maxval).run(conn, { profile: true });
+        const value = yield res.value.toArray();
+        result = Object.assign(res, { value });
+      }
 
-      let tableData;
-      tableData = yield r.db(db).table(table).filter(filter).orderBy(...orderBy).slice(minval, maxval).run(conn, { profile: true });
-
-      // console.log("tableData", tableData)
-      resolve(tableData);
+      resolve(result);
     }).catch(function(err) {
       reject(err);
     });

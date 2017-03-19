@@ -7,7 +7,7 @@ import * as types from './action-types';
 
 export function queryTable(conn, db, table, query = {
   filterPredicate: '',
-  orderByPredicate: "r.asc('id')",
+  orderByPredicate: '',
   limit: 25,
   page: 1
 }) {
