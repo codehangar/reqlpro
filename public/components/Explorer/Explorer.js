@@ -5,9 +5,8 @@ import ExplorerBody from'./ExplorerBody/ExplorerBody';
 import ExplorerFooter from'./ExplorerFooter/ExplorerFooter';
 import { connect } from 'react-redux';
 import logo from '../../images/logo.png';
-import addConnection from '../Sidebar/Connections/AddConnection';
+import { HelpCenter, SendMessage } from '../generic/support-links';
 import { showConnectionForm } from '../Sidebar/Connections/selectedConnection.actions';
-import { Panel } from 'react-bootstrap';
 
 
 const Explorer = ({
@@ -21,75 +20,64 @@ const Explorer = ({
   selectedConnection
 }) => {
 
-  const passwordError = connectionError ? connectionError.error.msg == 'Unknown user' || connectionError.error.msg == 'Wrong password' : null;
+  const isPasswordError = connectionError ? connectionError.error.msg === 'Unknown user' || connectionError.error.msg === 'Wrong password' : null;
+  const connError = connectionError ? connectionError.error.msg || connectionError.error.message : '';
 
-  const HelpCenter = <a href="http://utils.codehangar.io/rethink/support" target="_blank">Help Center</a>;
+  let content;
 
-  const SendMessage = (
-    <a className="clickable" onClick={() => {
-      HS.beacon.open();
-    }}>send us a message</a>
+  const Loading = (
+    <div className="explorer-container">
+      <div className="explorer-loading">
+        <span className="fa fa-refresh fa-spin"/>
+      </div>
+    </div>
   );
 
-  const TryAgain = (
-    <Button bsSize="large" style={{ margin: 16 }} onClick={() => {
-      editConnection(selectedConnection)
-    }}>Re-enter my Password</Button>
-  );
-
-  let content = (
+  const Connected = (
     <div className="explorer-container">
       <div className="explorer-full-message">
         <p className="super-large-text">Connected!</p>
         <p className="">Start browsing your data by clicking on a database.</p>
         <p className="small-text">
-          Having trouble? Visit our {HelpCenter} or {SendMessage}.
+          Having trouble? Visit our <HelpCenter/> or <SendMessage/>.
         </p>
       </div>
     </div>
   );
 
-  const connectionErrors = ['ReqlAuthError', 'ReqlDriverError'];
+  const ReEnterPassword = (
+    <div>
+      <p className="super-large-text">Disconnected!</p>
+      <p className="">Please re-enter your password to connect.</p>
+      <Button bsSize="large" style={{ margin: 16 }} onClick={() => {
+        editConnection(selectedConnection)
+      }}>Re-enter my Password</Button>
+    </div>
+  );
+
+  const GenericConnectionError = (
+    <div>
+      <p className="super-large-text">Oops!</p>
+      <pre className="text-danger">{connError}</pre>
+    </div>
+  );
 
   if (connection.loading) {
-    content = (
-      <div className="explorer-container">
-        <div className="explorer-loading">
-          <span className="fa fa-refresh fa-spin"/>
-        </div>
-      </div>
-    );
+    content = Loading;
   } else if (connectionError && connectionError.connection.name == connection.selected.name) {
-    const connError = (
-      connectionError.error.msg
-    );
-
     content = (
       <div className="explorer-container">
         <div className="explorer-full-message">
-
-          { passwordError ?
-            <span>
-             <p className="super-large-text">Disconnected!</p>
-             <p className="">Please re-enter your password to connect.</p>
-              {TryAgain}
-           </span>
-
-            :
-            <span>
-             <p className="super-large-text">Woops!</p>
-
-             <pre className="text-danger">{connectionError.error.msg}</pre>
-           </span>}
+          { isPasswordError ? ReEnterPassword : GenericConnectionError }
           <p className="small-text">
-            Still having trouble? Visit our {HelpCenter} or {SendMessage}.
+            Still having trouble? Visit our <HelpCenter/> or <SendMessage/>.
           </p>
         </div>
       </div>
     );
   } else if (connections.length === 0) {
     content = (
-      <div>
+      <div className="explorer-container">
         <div className="text-center">
           <div><img className="start-logo" src={logo}/></div>
           <h2>No database connections added.</h2>
@@ -98,7 +86,6 @@ const Explorer = ({
       </div>
     );
   } else if (selectedTable) {
-    console.log('show Table Data');
     content = (
       <div className="explorer-container">
         <ExplorerHeader/>
@@ -106,6 +93,8 @@ const Explorer = ({
         <ExplorerFooter/>
       </div>
     );
+  } else {
+    content = Connected;
   }
 
   return (

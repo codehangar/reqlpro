@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import ExplorerTreeView from './Views/ExplorerTreeView';
 import ExplorerTableView from './Views/ExplorerTableView/ExplorerTableView';
 import ExplorerCodeView from './Views/ExplorerCodeView';
+import { HelpCenter, SendMessage } from '../../generic/support-links';
 import Segment from '../../../services/segment.service.js';
 
 class ExplorerBody extends React.Component {
@@ -60,12 +61,7 @@ class ExplorerBody extends React.Component {
         <div className="explorer-full-message">
           <p className="super-large-text">Empty!</p>
           <p className="">Your table has no data. Try adding a new record.</p>
-          <p className="small-text">Having trouble? Visit our <a href="http://utils.codehangar.io/rethink/support"
-                                                                 target="_blank">Help Center</a> or <a
-            onClick={function() {
-              HS.beacon.open();
-            }}>send us a message</a>.</p>
-          {/* <p className="text-danger small-text">{this.state.selectedFavorite.dbConnection.msg}</p> */}
+          <p className="small-text">Having trouble? Visit our <HelpCenter/> or <SendMessage/>.</p>
         </div>
       </div>
     );

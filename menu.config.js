@@ -1,7 +1,7 @@
 'use strict';
 
 const { createNewWindow, launchFeedbackPopup } = require('./main.electron-utils');
-const { Menu, shell }= require('electron');
+const { Menu, shell } = require('electron');
 
 function createMenu() {
 
@@ -125,7 +125,7 @@ function createMenu() {
       {
         label: 'Help Center',
         click: function() {
-          shell.openExternal('http://utils.codehangar.io/rethink/support');
+          shell.openExternal('http://reqlpro.com/support');
         }
       },
       {
