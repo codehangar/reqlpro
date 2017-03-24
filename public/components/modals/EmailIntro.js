@@ -2,9 +2,11 @@ import React from 'react';
 import Segment from '../../services/segment.service.js';
 import { connect } from 'react-redux';
 import { writeConfigFile } from '../../actions';
+import { HelpCenter, SendMessage } from '../generic/support-links';
 
 const EmailIntro = ({
   email,
+  onSkipEmail,
   onEmailSubmit
 }) => {
   let nameInput;
@@ -46,14 +48,13 @@ const EmailIntro = ({
                   </div>
                 </form>
               </div>
-              <p className="email-built-by">ReQLPro was built with <i className="fa fa-heart"/> by <a
-                href="http://www.codehangar.io" target="_blank">Code Hangar, Inc.</a></p>
+              <p className="col-xs-10 col-xs-offset-1 text-center email-built-by">ReQLPro was built with <i className="fa fa-heart"/> by <a
+                href="http://www.codehangar.io" target="_blank">Code Hangar, Inc.</a>
+                <span className="email-skip-btn" onClick={onSkipEmail}>Skip</span>
+              </p>
             </div>
             <div className="panel-footer text-center">
-              Have a question? Visit our <a href="http://utils.codehangar.io/rethink/support" target="_blank">Help
-              Center</a> or <a className="cursor-pointer" onClick={function() {
-              HS.beacon.open();
-            }}>send us a message</a>.
+              Have a question? Visit our <HelpCenter/> or <SendMessage/>.
             </div>
           </div>
         </div>
@@ -70,6 +71,13 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    onSkipEmail: () => {
+      dispatch({
+        type: "SET_EMAIL",
+        email: 'none',
+        created: new Date().toDateString()
+      });
+    },
     onEmailSubmit: (email) => {
       dispatch({
         type: "SET_EMAIL",
