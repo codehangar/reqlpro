@@ -64,7 +64,7 @@ describe('Action Creators', () => {
         promise
           .then(function() {
             expect(RethinkDbService.getTableData.callCount).to.equal(1);
-            expect(RethinkDbService.getTableData.calledWithExactly(dbConnection, databaseName, tableName, '', ['ReQLEvalResult'], 25, 1)).to.equal(true);
+            expect(RethinkDbService.getTableData.calledWithExactly(dbConnection, databaseName, tableName, '', [''], 25, 1)).to.equal(true);
             expect(dispatch.callCount).to.equal(5);
             expect(dispatch.calledWith({
               type: 'UPDATE_SELECTED_TABLE',
@@ -114,7 +114,7 @@ describe('Action Creators', () => {
           })
           .catch(function() {
             expect(RethinkDbService.getTableData.callCount).to.equal(1);
-            expect(RethinkDbService.getTableData.calledWithExactly(dbConnection, databaseName, tableName, '', ['ReQLEvalResult'], 25, 1)).to.equal(true);
+            expect(RethinkDbService.getTableData.calledWithExactly(dbConnection, databaseName, tableName, '', [''], 25, 1)).to.equal(true);
             expect(dispatch.callCount).to.equal(4);
             done();
           })

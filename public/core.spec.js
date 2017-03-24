@@ -281,7 +281,6 @@ describe('Application Logic', () => {
           codeAction: 'add',
           codeBodyError: null,
           query: {
-            orderByPredicate: "r.asc('id')",
             page: 1,
             limit: 5,
             sort: 'id',
