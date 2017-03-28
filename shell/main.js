@@ -1,9 +1,9 @@
 'use strict';
 
 const { ipcMain, Menu, app } = require('electron');
-const { createWindow, createNewWindow, getMainWindow } = require('./main.electron-utils');
-const packageDetails = require('./package.json');
-const menuConfig = require('./menu.config');
+const { createWindow, createNewWindow, getMainWindow } = require('./main.electron-utils.js');
+const packageDetails = require('./../package.json');
+const menuConfig = require('./menu.config.js');
 
 console.log("App Name: ", app.getName());
 console.log("App Path: ", app.getAppPath());

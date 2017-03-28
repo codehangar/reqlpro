@@ -1,10 +1,11 @@
 'use strict';
 
-const { createNewWindow, launchFeedbackPopup } = require('./main.electron-utils');
+const { createNewWindow, launchFeedbackPopup } = require('./main.electron-utils.js');
 const { Menu, shell } = require('electron');
 
 function createMenu() {
 
+  // Menu Option
   let quitMenuOption = {
     label: 'Quit',
     accelerator: 'CmdOrCtrl+W',
@@ -12,6 +13,7 @@ function createMenu() {
     role: 'close'
   };
 
+  // Menu Option Alternative
   if (process.platform === 'darwin') {
     quitMenuOption = {
       label: 'Quit',
@@ -20,6 +22,7 @@ function createMenu() {
     }
   }
 
+  // Submenus
   const mainSubMenu = {
     label: 'ReqlPro (Beta)',
     submenu: [

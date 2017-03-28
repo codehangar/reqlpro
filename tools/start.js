@@ -5,11 +5,11 @@ const env = Object.assign({}, process.env, {
   NODE_ENV: 'development'
 });
 
-const child1 = spawn('node', ['server'], { shell: true });
+const child1 = spawn('node', ['webpack.server'], { shell: true });
 child1.stdout.pipe(process.stdout);
 child1.stderr.pipe(process.stderr);
 
-const child2 = spawn('electron', ['./main.js', '--dev'], {
+const child2 = spawn('electron', ['./shell/main.js', '--dev'], {
   shell: true,
   env: env
 });
