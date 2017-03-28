@@ -36,7 +36,13 @@ The rethinkdb.client.js file is the the source of the truth for all the applicat
 ## Testing and Code Coverage
 - npm test
 - npm run test-coverage
+
+### Test with Nyan Cat Reporter >^.w.^<
 - npm run test-nyan (for Nyan Cat reporter)
+
+### Run a Single Test
+- mocha --compilers js:babel-core/register --grep testName
+
 
 To see the results of the test coverage, view the `coverage/lcov-report/index.html` file in your browser
 
