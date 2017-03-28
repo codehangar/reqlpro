@@ -16,7 +16,8 @@ function createWindow() {
     width: 1600,
     height: 1200,
     'min-width': 600,
-    'min-height': 400
+    'min-height': 400,
+    backgroundColor: '#073642'
   });
 
   // and load the index.html of the app.
