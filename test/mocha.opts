@@ -1,4 +1,4 @@
 test
-./app/**/*.spec.js
+./**/*.spec.js
 -R spec
 -u bdd
