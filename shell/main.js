@@ -5,46 +5,61 @@ const { createWindow, createNewWindow, getMainWindow } = require('./main.electro
 const packageDetails = require('./../package.json');
 const menuConfig = require('./menu.config.js');
 
-console.log("App Name: ", app.getName());
-console.log("App Path: ", app.getAppPath());
-console.log("App Version: ", app.getVersion());
+// Initialize Electron App Shell
+const initShell = () => {
 
-// ------------------------------------
-// Set Global Values for App
-// ------------------------------------
-global.configPath = app.getPath('userData');
-global.appVersion = packageDetails.version;
+  // Debug Info About the Current Electron App
+  // console.log("App Name: ", app.getName());
+  // console.log("App Path: ", app.getAppPath());
+  // console.log("App Version: ", app.getVersion());
 
-// ------------------------------------
-// Listen for Renderer (Browser-side) Events
-// ------------------------------------
-ipcMain.on('new-window', createNewWindow);
-ipcMain.on('about-window', createNewWindow);
+  // ------------------------------------
+  // Set Application Values Globally for React App
+  // They are available...
+  // ------------------------------------
+  global.configPath = app.getPath('userData');
+  global.appVersion = packageDetails.version;
 
-// ------------------------------------
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// ------------------------------------
-app.on('ready', () => {
-  Menu.setApplicationMenu(menuConfig.createMenu());
-  createWindow();
-});
+  // ------------------------------------
+  // Set Up  Renderer (Browser-side) Events Listeners
+  // For Creating Windows
+  // TODO: refactor these into one function
+  // ------------------------------------
+  ipcMain.on('new-window', createNewWindow);
+  ipcMain.on('about-window', createNewWindow);
 
-// Quit when all windows are closed.
-app.on('window-all-closed', function() {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
-
-app.on('activate', function() {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (getMainWindow() === null) {
+  // ------------------------------------
+  // This method will be called when Electron has finished
+  // initialization and is ready to create browser windows.
+  // Set Application Menu
+  // Open Application Window
+  // To Begin App Experience
+  // ------------------------------------
+  app.on('ready', () => {
+    Menu.setApplicationMenu(menuConfig.createMenu());
     createWindow();
-  }
-});
+  });
+
+  // Quit Application when all windows are closed.
+  app.on('window-all-closed', function() {
+    // On OS X it is common for applications and their menu bar
+    // to stay active until the user quits explicitly with Cmd + Q
+    if (process.platform !== 'darwin') {
+      app.quit();
+    }
+  });
+
+  // Open Application Window on Dock Icon Click
+  app.on('activate', function() {
+    // On OS X it's common to re-create a window in the app when the
+    // dock icon is clicked and there are no other windows open.
+    if (getMainWindow() === null) {
+      createWindow();
+    }
+  });
+};
+
+initShell();
+
 
 
