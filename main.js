@@ -5,14 +5,12 @@ const { createWindow, createNewWindow, getMainWindow } = require('./main.electro
 const packageDetails = require('./package.json');
 const menuConfig = require('./menu.config');
 
-console.log("app.getName()", app.getName());
-console.log("app.getAppPath()", app.getAppPath());
-console.log("app.getVersion()", app.getVersion());
-// app.dock.bounce();
-// app.dock.setBadge('text')
+console.log("App Name: ", app.getName());
+console.log("App Path: ", app.getAppPath());
+console.log("App Version: ", app.getVersion());
 
 // ------------------------------------
-// Set Global Values
+// Set Global Values for App
 // ------------------------------------
 global.configPath = app.getPath('userData');
 global.appVersion = packageDetails.version;
