@@ -8,7 +8,7 @@ var StatsPlugin = require('stats-webpack-plugin');
 module.exports = {
   target: 'electron-renderer',
   entry: [
-    path.join(__dirname, 'public/main.js')
+    path.join(__dirname, 'app/main.js')
   ],
   output: {
     path: path.join(__dirname, '/dist/'),
@@ -25,12 +25,12 @@ module.exports = {
     // change name because the hash part changes. We want hash name changes to bust cache
     // on client browsers.
     new HtmlWebpackPlugin({
-      template: 'public/index.html',
+      template: 'app/index.html',
       inject: 'body',
       filename: 'index.html'
     }),
     new HtmlWebpackPlugin({
-      template: 'public/about.html',
+      template: 'app/about.html',
       filename: 'about.html'
     }),
     // handles uglifying js
@@ -68,7 +68,7 @@ module.exports = {
     }, {
       test: /\.(jpg|jpeg|gif|png|ico|svg|xml)$/,
       exclude: /node_modules/,
-      loader: 'file-loader?name=[path][name].[ext]&context=./public'
+      loader: 'file-loader?name=[path][name].[ext]&context=./app'
     }, {
       test: /\.(json)$/,
       loader: 'json-loader'

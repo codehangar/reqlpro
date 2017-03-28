@@ -1,6 +1,6 @@
 instrumentation:
   extension: .js
-  root: ./public
+  root: ./app
   include-all-sources: true
   verbose: true
   save-baseline: true

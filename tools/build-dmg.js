@@ -14,10 +14,10 @@ const ee = appdmg({
     "title": "ReQLPro_" + packageConfig.version,
 
     // Path to your icon, which will be shown when mounted
-    "icon": "public/images/reqlpro.icns",
+    "icon": "app/images/reqlpro.icns",
 
     // Path to your background
-    "background": "public/images/background.png",
+    "background": "app/images/background.png",
 
     // Size of all the icons inside the DMG
     "icon-size": 80,

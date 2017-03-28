@@ -11,7 +11,7 @@ module.exports = {
     'webpack-dev-server/client?http://localhost:3001',
     'webpack/hot/only-dev-server',
     'react-hot-loader/patch',
-    path.join(__dirname, 'public/main.js')
+    path.join(__dirname, 'app/main.js')
   ],
   output: {
     path: path.join(__dirname, '/dev/'),
@@ -20,12 +20,12 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'public/index.html',
+      template: 'app/index.html',
       inject: 'body',
       filename: 'index.html'
     }),
     new HtmlWebpackPlugin({
-      template: 'public/about.html',
+      template: 'app/about.html',
       inject: 'body',
       filename: 'about.html'
     }),
@@ -58,7 +58,7 @@ module.exports = {
     }, {
       test: /\.(jpg|jpeg|gif|png|ico|svg|xml)$/,
       exclude: /node_modules/,
-      loader: 'file-loader?name=[path][name].[ext]&context=./public'
+      loader: 'file-loader?name=[path][name].[ext]&context=./app'
     }, {
       test: /\.(json)$/,
       loader: 'json-loader'

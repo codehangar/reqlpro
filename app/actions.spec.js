@@ -4,7 +4,7 @@ import md5 from 'md5';
 // Can't use import syntax when we need to mock
 // import {
 // getDbConnection,
-// } from '../public/actions';
+// } from '../app/actions';
 
 let RethinkDbService, configService, ReQLEval;
 let dispatch;

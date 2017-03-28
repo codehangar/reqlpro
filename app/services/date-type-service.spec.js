@@ -3,7 +3,7 @@ import {convertStringsToDates} from './date-type.service';
 describe('DateTypeService Tests', function() {
 
   beforeEach(function() {
-    // dateTypeService = require('../../../../public/services/date-type.service');
+    // dateTypeService = require('../../../../app/services/date-type.service');
   });
 
   describe('convertStringsToDates', function() {
