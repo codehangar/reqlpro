@@ -6,6 +6,7 @@ const packageDetails = require('./../package.json');
 const menuConfig = require('./menu.config.js');
 
 // Initialize Electron App Shell
+
 const initShell = () => {
 
   // Debug Info About the Current Electron App
