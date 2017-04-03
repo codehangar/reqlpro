@@ -30,6 +30,7 @@ export function selectConnection(connection) {
   }
 }
 
+// receive connection
 export function getDbConnection(connection) {
   return dispatch => {
     return new Promise((resolve, reject) => {

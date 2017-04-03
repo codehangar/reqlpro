@@ -1,8 +1,8 @@
 
-let ConfigService, Segment, electron, store;
+let ConfigService, Segment, electron, store, HS;
 // let remote;
 require.context = function(){};
-describe('initApp', () => {
+describe.only('main', () => {
 
   beforeEach(() => {
     mockery.enable({
@@ -16,7 +16,9 @@ describe('initApp', () => {
     mockery.registerMock('./services/config.service', ConfigService);
     ConfigService.readConfigFile = sinon.stub().returns(new Promise(function(){}));
 
-    Segment = sinon.stub();
+    Segment = {
+      identify: sinon.spy()
+    };
     mockery.registerMock('./services/segment.service', Segment);
 
     store = sinon.stub();
@@ -31,8 +33,29 @@ describe('initApp', () => {
     mockery.registerMock("./styles/index.scss", sinon.stub());
 
     electron = sinon.stub();
-    electron.ipcRenderer = {on:sinon.stub()};
+    electron.ipcRenderer = {
+      on: function(message, callback){
+        this.callback = callback;
+      },
+      send: function(message){
+        this.callback();
+      }
+    };
     mockery.registerMock('electron', electron);
+
+  });
+
+
+  describe('initApp', () => {
+
+    it('should call ConfigService.readConfigFile', () => {
+      require('./main');
+      expect(ConfigService.readConfigFile.callCount).to.equal(1);
+    });
+
+    it('should call segment identify after ConfigService.readConfigFile resolves');
+
+    it('should call HS.beacon.open if triggered');
 
   });
 
@@ -42,7 +65,7 @@ describe('initApp', () => {
       const { createInitialState } = require('./main');
       let fakeConfigFile, fakeState, actual;
 
-      // test 1 no config file
+      ////// test 1 no config file
       fakeConfigFile ={};
       fakeState = {
         connection: {},
@@ -54,7 +77,7 @@ describe('initApp', () => {
       actual = createInitialState(fakeConfigFile);
       expect(actual).to.eql(fakeState);
 
-      //test 2 config with connections
+      ////// test 2 config with connections
       fakeConfigFile =  {
         email: 'cassie@codehangar.io',
         connections: [
@@ -73,7 +96,7 @@ describe('initApp', () => {
       actual = createInitialState(fakeConfigFile);
       expect(actual).to.eql(fakeState);
 
-      //test 3 config without connections
+      ////// test 3 config without connections
       fakeConfigFile = {
         email: 'cassie@codehangar.io',
       };
