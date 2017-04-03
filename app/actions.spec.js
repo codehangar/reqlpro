@@ -22,10 +22,8 @@ describe('Action Creators', () => {
     });
 
     dispatch = sinon.stub();
-
     // Mock the rethinkdb service
     RethinkDbService = sinon.stub();
-
     // replace the require() module `rethinkdb` with a stub object
     mockery.registerMock('./services/rethinkdb.service', RethinkDbService);
 
@@ -144,6 +142,40 @@ describe('Action Creators', () => {
           .catch(done);
       });
 
+    });
+  });
+
+  describe('getTableData', () => {
+
+    const dbConnection = { stuff: 'stuff' };
+    const databaseName = 'dbName1';
+    const tableName = 'table1';
+    const queryParams = {
+      filterPredicate: '',
+      orderByPredicate: '',
+      limit: 25,
+      page: 1
+    };
+
+    describe('before promise', () => {
+      beforeEach(function() {
+        const promise = Promise.resolve({ value: [{ name: 'Bob' }, { name: 'Jim' }] });
+        RethinkDbService.getTableData = sinon.stub().returns(promise);
+      });
+
+      it('should set state.connection.loading to true', (done) => {
+        const { getTableData } = require('./actions');
+        const promise = getTableData(dbConnection, databaseName, tableName, queryParams)(dispatch);
+        expect(dispatch.called).to.be.true;
+        expect(dispatch.callCount).to.equal(2);
+        expect(dispatch.getCall(0).args[0].type).to.equal('SET_CONNECTION_LOADING');
+        expect(dispatch.getCall(1).args[0].type).to.equal('SET_TABLE_QUERY');
+        promise
+          .then(function() {
+            done();
+          })
+          .catch(done);
+      })
     });
   });
 

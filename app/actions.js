@@ -18,17 +18,17 @@ export function queryTable(conn, db, table, query = {
   }
 }
 
-function getTableData(conn, db, table, query) {
+export function getTableData(conn, db, table, query) {
   return dispatch => {
+    dispatch({
+      type: 'SET_CONNECTION_LOADING',
+      loading: true
+    });
+    dispatch({
+      type: 'SET_TABLE_QUERY',
+      query
+    });
     return new Promise((resolve, reject) => {
-      dispatch({
-        type: 'SET_CONNECTION_LOADING',
-        loading: true
-      });
-      dispatch({
-        type: 'SET_TABLE_QUERY',
-        query
-      });
       co(function *() {
         let { filterPredicate, orderByPredicate, limit, page } = query;
 

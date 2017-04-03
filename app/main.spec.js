@@ -2,7 +2,7 @@
 let ConfigService, Segment, electron, store, HS;
 // let remote;
 require.context = function(){};
-describe.only('main', () => {
+describe('main', () => {
 
   beforeEach(() => {
     mockery.enable({
