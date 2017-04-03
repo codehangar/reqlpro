@@ -2,6 +2,7 @@ import jdenticon from 'jdenticon';
 import md5 from 'md5';
 import freeze from 'deep-freeze-node';
 import {
+  setState,
   setEmail,
   addConnection,
   updateConnection,
@@ -58,6 +59,19 @@ describe('Application Logic', () => {
     // replace the require() module `rethinkdb` with a stub object
     mockery.registerMock('../main/services/rethinkdb.service', RethinkDbService);
 
+  });
+
+  describe('setState', () => {
+    it('merges provided state with current state', () => {
+      const originalState = { a: 1, b:2 };
+      const newState = { b:5, c:0 };
+      let nextState = setState(originalState, newState);
+      expect(nextState).to.deep.equal({
+        a: 1,
+        b: 5,
+        c: 0
+      });
+    });
   });
 
   describe('setEmail', () => {
