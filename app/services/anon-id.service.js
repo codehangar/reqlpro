@@ -1,5 +1,4 @@
 const UUID = require('./uuid.service');
-
 const { remote } = require('electron');
 const fs = require('fs');
 
