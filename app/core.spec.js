@@ -1,42 +1,7 @@
 import jdenticon from 'jdenticon';
 import md5 from 'md5';
 import freeze from 'deep-freeze-node';
-import {
-  setState,
-  setEmail,
-  addConnection,
-  updateConnection,
-  deleteConnection,
-  setConnection,
-  setDbList,
-  setDbTables,
-  hideOpenMenus,
-  toggleDatabaseForm,
-  toggleDeleteDatabaseForm,
-  toggleTableForm,
-  toggleDeleteTableForm,
-  addDatabase,
-  addTable,
-  toggleTableVisibility,
-  setDbToEdit,
-  setSelectedTable,
-  updateSelectedTable,
-  updateSelectedTablePageLimit,
-  updateSelectedTableSort,
-  setSelectedTableSize,
-  startRowEdit,
-  cancelRowEdit,
-  toggleExplorerBody,
-  deleteDatabase,
-  deleteTable,
-  setCodeBodyError,
-  setCodeBody,
-  setLastDbResult,
-  toggleConfirmRowDelete,
-  setRowDeleteError,
-  setConnectionError,
-  setColumnWidths
-} from './core';
+import * as core from './core';
 
 let RethinkDbService;
 
@@ -65,7 +30,7 @@ describe('Application Logic', () => {
     it('merges provided state with current state', () => {
       const originalState = { a: 1, b:2 };
       const newState = { b:5, c:0 };
-      let nextState = setState(originalState, newState);
+      let nextState = core.setState(originalState, newState);
       expect(nextState).to.deep.equal({
         a: 1,
         b: 5,
@@ -79,7 +44,7 @@ describe('Application Logic', () => {
       const state = {};
       const email = 'cassie@codehangar.io';
       const created = 'new date'
-      let nextState = setEmail(state, email, created);
+      let nextState = core.setEmail(state, email, created);
       expect(nextState).to.deep.equal({
         email: 'cassie@codehangar.io',
         created: 'new date'
@@ -96,7 +61,7 @@ describe('Application Logic', () => {
       }
       const statePropsToUpdate = ['showConnectionActionMenu', 'showAddConnectionForm']
 
-      const nextState = hideOpenMenus(state, statePropsToUpdate);
+      const nextState = core.hideOpenMenus(state, statePropsToUpdate);
 
       expect(nextState).to.deep.equal({
         email: 'ian@codehangar.io',
@@ -113,7 +78,7 @@ describe('Application Logic', () => {
       }
       const statePropsToUpdate = ['showConnectionActionMenu', 'showAddConnectionForm']
 
-      const nextState = hideOpenMenus(state);
+      const nextState = core.hideOpenMenus(state);
 
       expect(nextState).to.deep.equal({
         email: 'ian@codehangar.io',
@@ -131,7 +96,7 @@ describe('Application Logic', () => {
         showDatabaseForm: false
       };
 
-      const nextState = toggleDatabaseForm(state, true);
+      const nextState = core.toggleDatabaseForm(state, true);
 
       expect(nextState).to.deep.equal({
         email: 'ian@codehangar.io',
@@ -145,7 +110,7 @@ describe('Application Logic', () => {
         showDatabaseForm: true
       };
 
-      const nextState = toggleDatabaseForm(state, false);
+      const nextState = core.toggleDatabaseForm(state, false);
 
       expect(nextState).to.deep.equal({
         email: 'ian@codehangar.io',
@@ -161,7 +126,7 @@ describe('Application Logic', () => {
         showDeleteDatabaseForm: false
       };
 
-      const nextState = toggleDeleteDatabaseForm(state, true, 'test');
+      const nextState = core.toggleDeleteDatabaseForm(state, true, 'test');
 
       expect(nextState).to.deep.equal({
         email: 'ian@codehangar.io',
@@ -176,7 +141,7 @@ describe('Application Logic', () => {
         showDeleteDatabaseForm: true
       };
 
-      const nextState = toggleDeleteDatabaseForm(state, false);
+      const nextState = core.toggleDeleteDatabaseForm(state, false);
 
       expect(nextState).to.deep.equal({
         email: 'ian@codehangar.io',
@@ -192,7 +157,7 @@ describe('Application Logic', () => {
         showDeleteTableForm: false
       };
 
-      const nextState = toggleDeleteTableForm(state, true, {database: 'database'}, 'test');
+      const nextState = core.toggleDeleteTableForm(state, true, {database: 'database'}, 'test');
 
       expect(nextState).to.deep.equal({
         email: 'cassie@codehangar.io',
@@ -208,7 +173,7 @@ describe('Application Logic', () => {
         showDeleteTableForm: true
       };
 
-      const nextState = toggleDeleteTableForm(state, false);
+      const nextState = core.toggleDeleteTableForm(state, false);
 
       expect(nextState).to.deep.equal({
         email: 'cassie@codehangar.io',
@@ -224,7 +189,7 @@ describe('Application Logic', () => {
         showTableForm: false
       };
 
-      const nextState = toggleTableForm(state, true);
+      const nextState = core.toggleTableForm(state, true);
 
       expect(nextState).to.deep.equal({
         email: 'ian@codehangar.io',
@@ -238,7 +203,7 @@ describe('Application Logic', () => {
         showTableForm: true
       };
 
-      const nextState = toggleTableForm(state, false);
+      const nextState = core.toggleTableForm(state, false);
 
       expect(nextState).to.deep.equal({
         email: 'ian@codehangar.io',
@@ -253,7 +218,7 @@ describe('Application Logic', () => {
       const database = {
         name: 'ReQL'
       }
-      const nextState = setDbToEdit(state, database);
+      const nextState = core.setDbToEdit(state, database);
       expect(nextState).to.deep.equal({
         dbToEdit: {
           name: 'ReQL'
@@ -282,7 +247,7 @@ describe('Application Logic', () => {
         }
       };
 
-      const nextState = setSelectedTable(state, 'databaseName', 'tableName');
+      const nextState = core.setSelectedTable(state, 'databaseName', 'tableName');
 
       expect(nextState).to.deep.equal({
         selectedTable: {
@@ -333,7 +298,7 @@ describe('Application Logic', () => {
         }]
       };
 
-      const nextState = updateSelectedTable(state, data, lastResult);
+      const nextState = core.updateSelectedTable(state, data, lastResult);
 
       expect(nextState).to.deep.equal({
         selectedTable: {
@@ -384,7 +349,7 @@ describe('Application Logic', () => {
         }
       }
       const limit = '10'
-      const nextState = updateSelectedTablePageLimit(state, limit);
+      const nextState = core.updateSelectedTablePageLimit(state, limit);
       expect(nextState).to.deep.equal({
         selectedTable: {
           databaseName: 'databaseName',
@@ -427,7 +392,7 @@ describe('Application Logic', () => {
         }
       }
       const sort = 'name'
-      const nextState = updateSelectedTableSort(state, sort);
+      const nextState = core.updateSelectedTableSort(state, sort);
       expect(nextState).to.deep.equal({
         selectedTable: {
           databaseName: 'databaseName',
@@ -468,7 +433,7 @@ describe('Application Logic', () => {
         }
       }
       const sort = 'name'
-      const nextState = updateSelectedTableSort(state, sort);
+      const nextState = core.updateSelectedTableSort(state, sort);
       expect(nextState).to.deep.equal({
         selectedTable: {
           databaseName: 'databaseName',
@@ -511,7 +476,7 @@ describe('Application Logic', () => {
         }
       }
       const size = 27;
-      const nextState = setSelectedTableSize(state, size);
+      const nextState = core.setSelectedTableSize(state, size);
       expect(nextState).to.deep.equal({
         selectedTable: {
           databaseName: 'databaseName',
@@ -560,7 +525,7 @@ describe('Application Logic', () => {
         fieldA: 'some field',
       };
 
-      const nextState = startRowEdit(state, record);
+      const nextState = core.startRowEdit(state, record);
       expect(nextState).to.deep.equal({
         selectedTable: {
           databaseName: 'databaseName',
@@ -615,7 +580,7 @@ describe('Application Logic', () => {
         fieldA: 'some field',
       };
 
-      const nextState = cancelRowEdit(state, record);
+      const nextState = core.cancelRowEdit(state, record);
       expect(nextState).to.deep.equal({
         selectedTable: {
           databaseName: 'databaseName',
@@ -647,7 +612,7 @@ describe('Application Logic', () => {
         }
       };
 
-      const nextState = toggleExplorerBody(state, 'tree');
+      const nextState = core.toggleExplorerBody(state, 'tree');
       expect(nextState).to.deep.equal({
         selectedTable: {
           type: 'tree',
@@ -663,7 +628,7 @@ describe('Application Logic', () => {
         }
       };
 
-      const nextState = toggleExplorerBody(state, 'table');
+      const nextState = core.toggleExplorerBody(state, 'table');
       expect(nextState).to.deep.equal({
         selectedTable: {
           type: 'table',
@@ -679,7 +644,7 @@ describe('Application Logic', () => {
         }
       };
 
-      const nextState = toggleExplorerBody(state, 'code');
+      const nextState = core.toggleExplorerBody(state, 'code');
       expect(nextState).to.deep.equal({
         selectedTable: {
           type: 'code',
@@ -716,7 +681,7 @@ describe('Application Logic', () => {
       state = freeze(state);
       const codeBodyError = "It's illegal to insert new rows into the `rethinkdb.cluster_config` table.";
 
-      const nextState = setCodeBodyError(state, codeBodyError);
+      const nextState = core.setCodeBodyError(state, codeBodyError);
       expect(nextState).to.deep.equal({
         selectedTable: {
           databaseName: 'databaseName',
@@ -762,7 +727,7 @@ describe('Application Logic', () => {
       state = freeze(state);
       const codeBody = "{\n  name: 'bob'\n}";
 
-      const nextState = setCodeBody(state, codeBody);
+      const nextState = core.setCodeBody(state, codeBody);
       expect(nextState).to.deep.equal({
         selectedTable: {
           databaseName: 'databaseName',
@@ -822,7 +787,7 @@ describe('Application Logic', () => {
         }
       };
 
-      const nextState = setLastDbResult(state, lastResult);
+      const nextState = core.setLastDbResult(state, lastResult);
       expect(nextState).to.deep.equal({
         selectedTable: {
           databaseName: 'databaseName',
@@ -867,7 +832,7 @@ describe('Application Logic', () => {
         id: '1a12c625-de63-44af-88a7-1a59030ec757',
         name: 'bob'
       };
-      const nextState = toggleConfirmRowDelete(state, rowToDelete);
+      const nextState = core.toggleConfirmRowDelete(state, rowToDelete);
       expect(nextState).to.deep.equal({
         showConfirmRowDelete: true,
         rowToDelete: {
@@ -886,7 +851,7 @@ describe('Application Logic', () => {
         }
       };
       state = freeze(state);
-      const nextState = toggleConfirmRowDelete(state);
+      const nextState = core.toggleConfirmRowDelete(state);
       expect(nextState).to.deep.equal({
         showConfirmRowDelete: false
       });
@@ -902,7 +867,7 @@ describe('Application Logic', () => {
         rowDeleteError: "It's illegal to delete rows from the `rethinkdb.cluster_config` table."
       };
       state = freeze(state);
-      const nextState = toggleConfirmRowDelete(state);
+      const nextState = core.toggleConfirmRowDelete(state);
       expect(nextState).to.deep.equal({
         showConfirmRowDelete: false
       });
@@ -914,7 +879,7 @@ describe('Application Logic', () => {
       let state = {};
       state = freeze(state);
       const rowDeleteError = "It's illegal to delete rows from the `rethinkdb.cluster_config` table."
-      const nextState = setRowDeleteError(state, rowDeleteError);
+      const nextState = core.setRowDeleteError(state, rowDeleteError);
       expect(nextState).to.deep.equal({
         rowDeleteError: "It's illegal to delete rows from the `rethinkdb.cluster_config` table."
       });
@@ -926,7 +891,7 @@ describe('Application Logic', () => {
       let state = {};
       state = freeze(state);
       const connectionError = {message:'you have fucked up'};
-      let nextState = setConnectionError(state, connectionError);
+      let nextState = core.setConnectionError(state, connectionError);
       expect(nextState).to.deep.equal({
           connectionError: {message:'you have fucked up'}
       })
@@ -949,10 +914,10 @@ describe('Application Logic', () => {
       const width4 = {name:"sam"};
       const table4 = "logs2";
       const database4 = "rethinkdb2";
-      let nextState = setColumnWidths(state, database1, table1, width1);
-      nextState = setColumnWidths(nextState, database2, table2, width2);
-      nextState = setColumnWidths(nextState, database3, table3, width3);
-      nextState = setColumnWidths(nextState, database4, table4, width4);
+      let nextState = core.setColumnWidths(state, database1, table1, width1);
+      nextState = core.setColumnWidths(nextState, database2, table2, width2);
+      nextState = core.setColumnWidths(nextState, database3, table3, width3);
+      nextState = core.setColumnWidths(nextState, database4, table4, width4);
 
       expect(nextState).to.deep.equal({
         columnWidths:{
