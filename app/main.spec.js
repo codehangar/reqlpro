@@ -1,5 +1,9 @@
+import * as core from './core';
+import { main } from './main.reducer';
+import store from './store';
 
-let ConfigService, Segment, electron, store, HS;
+
+let ConfigService, Segment, electron, HS, _store;
 // let remote;
 require.context = function(){};
 describe('main', () => {
@@ -21,9 +25,9 @@ describe('main', () => {
     };
     mockery.registerMock('./services/segment.service', Segment);
 
-    store = sinon.stub();
-    store.dispatch = sinon.stub();
-    mockery.registerMock('./store', store);
+    // store = sinon.stub();
+    // store.dispatch = sinon.stub();
+    // mockery.registerMock('./store', store);
 
     mockery.registerMock('./components/Sidebar/Connections/selectedConnection.actions', sinon.stub());
     mockery.registerMock('./components/App/App', sinon.stub());
@@ -48,6 +52,12 @@ describe('main', () => {
 
   describe('initApp', () => {
 
+    beforeEach(function(){
+      _store = sinon.stub();
+      _store.dispatch = sinon.stub();
+      mockery.registerMock('./store', _store);
+    });
+
     it('should call ConfigService.readConfigFile', () => {
       require('./main');
       expect(ConfigService.readConfigFile.callCount).to.equal(1);
@@ -60,6 +70,11 @@ describe('main', () => {
   });
 
   describe('createInitialState', () => {
+    beforeEach(function(){
+      _store = sinon.stub();
+      _store.dispatch = sinon.stub();
+      mockery.registerMock('./store', _store);
+    });
     it('should take the user config file and return initial app state object', () => {
 
       const { createInitialState } = require('./main');
@@ -108,6 +123,20 @@ describe('main', () => {
       actual = createInitialState(fakeConfigFile);
       expect(actual).to.eql(fakeState);
 
+    });
+  });
+  //
+  describe('main.reducer', () => {
+  //
+    it('should call core.setEmail for dispatch type SET_EMAIL', () => {
+  //     core.setEmail = sinon.spy();
+  //     console.log(store.getState());
+  //     store.dispatch({
+  //       type: 'SET_EMAIL',
+  //       email: 'cassie@codehangar.io',
+  //       created: '1/1/17'
+  //     });
+  //     expect(core.setEmail.callCount).to.equal(1);
     });
   });
 
