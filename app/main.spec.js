@@ -1,12 +1,10 @@
-// import { remote, ipcRenderer } from 'electron';
-// import { createInitialState } from './main';
 
-let ConfigService,  electron, Segment, global, AnonIdStub;
-
+let ConfigService, Segment, electron, store;
+// let remote;
+require.context = function(){};
 describe('initApp', () => {
 
   beforeEach(() => {
-
     mockery.enable({
       warnOnReplace: false,
       warnOnUnregistered: false,
@@ -16,32 +14,29 @@ describe('initApp', () => {
     // Mock dependencies
     ConfigService = sinon.stub();
     mockery.registerMock('./services/config.service', ConfigService);
-    ConfigService.readConfigFile = sinon.stub().returns(Promise.resolve({}));
-
-    electron = {};
-    mockery.registerMock('electron', electron);
-    electron.remote = sinon.stub();
-    electron.remote.getGlobal = sinon.stub();
+    ConfigService.readConfigFile = sinon.stub().returns(new Promise(function(){}));
 
     Segment = sinon.stub();
     mockery.registerMock('./services/segment.service', Segment);
 
-    var stub = sinon.stub();
-    AnonIdStub = sinon.createStubInstance(stub);
-    mockery.registerMock('./services/anon-id.service', AnonIdStub);
+    store = sinon.stub();
+    store.dispatch = sinon.stub();
+    mockery.registerMock('./store', store);
 
-    // var AnonId = sinon.createStubInstance();
+    mockery.registerMock('./components/Sidebar/Connections/selectedConnection.actions', sinon.stub());
+    mockery.registerMock('./components/App/App', sinon.stub());
 
-    global = {};
-    global.configPath = '';
+    mockery.registerMock("../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss", sinon.stub());
+    mockery.registerMock("../node_modules/font-awesome/scss/font-awesome.scss", sinon.stub());
+    mockery.registerMock("./styles/index.scss", sinon.stub());
 
-    // import AnonId from './anon-id.service';
+    electron = sinon.stub();
+    electron.ipcRenderer = {on:sinon.stub()};
+    mockery.registerMock('electron', electron);
 
   });
 
   describe('createInitialState', () => {
-
-
     it('should take the user config file and return initial app state object', () => {
 
       const { createInitialState } = require('./main');

@@ -1,3 +1,4 @@
+console.log('HEY I SHOULDNT BE HERE');
 import { remote } from 'electron';
 import AnonId from './anon-id.service';
 import ConfigService from './config.service';

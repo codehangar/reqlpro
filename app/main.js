@@ -2,7 +2,7 @@
 require("../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss");
 require("../node_modules/font-awesome/scss/font-awesome.scss");
 require("./styles/index.scss");
-require.context('./images', true, /^\.png\//);
+// require.context('./images', true, /^\.png\//);
 
 // // Module needed to access global values from main process to any renderer process
 import { remote, ipcRenderer } from 'electron';
@@ -43,16 +43,16 @@ function initApp() {
 
       console.log('userConfig', userConfig); // eslint-disable-line no-console
       const initialState = createInitialState(userConfig);
-
+      console.log('initialState',initialState);
       // Set Initial State
       reduxStore.dispatch({
         type: 'SET_STATE',
-        initialState
+        state: initialState
       });
 
       // If a connection exists, connect to it
-      if (state.connection.selected) {
-        reduxStore.dispatch(getDbConnection(state.connection.selected));
+      if (initialState.connection.selected) {
+        reduxStore.dispatch(getDbConnection(initialState.connection.selected));
       }
       // }
 

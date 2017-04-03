@@ -1,3 +1,4 @@
+console.log('HEY I SHOULDNT BE HERE 1');
 const UUID = require('./uuid.service');
 
 const { remote } = require('electron');
