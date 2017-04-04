@@ -12,13 +12,21 @@ const RethinkDbService = function() {
  * Generate a RethinkDB client connection
  * @returns {Promise}
  */
-RethinkDbService.prototype.getConnection = function(connectionInfo) {
-  connectionInfo = {
-    host: connectionInfo.host || process.env.DATABASE_HOST,
-    port: connectionInfo.port || process.env.DATABASE_HOST,
-    authKey: connectionInfo.authkey || process.env.DATABASE_KEY,
-    user: connectionInfo.user || void 0,
-    password: connectionInfo.pass || void 0
+RethinkDbService.prototype.getConnection = function(connection) {
+  let ssl;
+  if (connection.ca) {
+    ssl = {
+      ca: connection.ca || void 0,
+      rejectUnauthorized: connection.rejectUnauthorized || void 0
+    };
+  }
+  const connectionInfo = {
+    host: connection.host || process.env.DATABASE_HOST,
+    port: connection.port || process.env.DATABASE_HOST,
+    authKey: connection.authkey || process.env.DATABASE_KEY,
+    user: connection.user || void 0,
+    password: connection.pass || void 0,
+    ssl: ssl
   };
   return new Promise(function(resolve, reject) {
     r.connect(connectionInfo).then(function(conn) {

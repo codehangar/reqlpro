@@ -64,7 +64,7 @@ ConfigService.prototype.writeConfigFile = function(data) {
     let wipedConnections;
     if (data.connections) {
       wipedConnections = data.connections.map(c => {
-        return Object.assign({}, c, { pass: void 0 });
+        return Object.assign({}, c, { pass: void 0, ca: void 0 });
       });
     }
     const wipedData = Object.assign({}, data, { connections: wipedConnections });
