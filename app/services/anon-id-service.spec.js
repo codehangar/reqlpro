@@ -1,81 +1,101 @@
 let UUID, electron, fs, remote, global;
 
-describe.only('anonIDService Tests', function() {
+describe('anonIDService Tests', function() {
 
-  beforeEach(function(){
+  beforeEach(function() {
     mockery.enable({
       warnOnReplace: false,
       warnOnUnregistered: false,
       useCleanCache: true
     });
-    UUID = {
-      generate: function(){
-        return 'random anon id';
-      }
-    }
+    UUID = sinon.stub();
+    UUID.generate = sinon.stub().returns('random anon id');
     mockery.registerMock('./uuid.service', UUID);
     electron = {
-      remote: {getGlobal: sinon.stub().returns('path')}
+      remote: { getGlobal: sinon.stub().returns('path') }
     };
     mockery.registerMock('electron', electron);
     fs = sinon.stub();
+    fs.readFile = sinon.stub().yields();
+    fs.writeFile = sinon.stub().yields();
     mockery.registerMock('fs', fs);
   });
 
-  // describe('anonID', function() {
-  //   it('should be an function', function() {
-  //     const AnonId = require('./anon-id.service').default;
-  //     expect(AnonId).to.be.a('function');
-  //   });
-  //   it('should throw an error if no configPath provided', function() {
-  //     const AnonId = require('./anon-id.service').default;
-  //     expect(()=>{AnonId()}).to.throw(Error);
-  //   });
-  //   it('should not throw an error if configPath provided', function() {
-  //     const AnonId = require('./anon-id.service').default;
-  //     expect(()=>{AnonId('path')}).to.not.throw(Error);
-  //   });
-  // });
   describe('getAnonId', function() {
     it('should be an function', function() {
-      const {getAnonId} = require('./anon-id.service');
+      const { getAnonId } = require('./anon-id.service');
       expect(getAnonId).to.be.a('function');
     });
     it('should throw an error if no configPath provided', function() {
-      const {getAnonId} = require('./anon-id.service');
-      expect(()=>{getAnonId()}).to.throw(Error);
+      const { getAnonId } = require('./anon-id.service');
+      expect(() => {
+        getAnonId()
+      }).to.throw(Error);
     });
     it('should not throw an error if configPath is provided', function() {
-      const {getAnonId} = require('./anon-id.service');
-      expect(()=>{getAnonId('path')}).to.not.throw(Error);
+      const { getAnonId } = require('./anon-id.service');
+      fs.readFile = sinon.stub().yields();
+      expect(() => {
+        getAnonId('path')
+      }).to.not.throw(Error);
     });
-    it('should return existing anonID if one does exist', function() {
-      const {getAnonId} = require('./anon-id.service');
-      const readAnonIdFileFake = sinon.stub().returns(new Promise()).yields('existing anonId');
-      const result = getAnonId('path');
-      expect(result).to.equal('existing anonId');
-    });
-    it('should return a new anonID if one does not exist in the anonIdFile', function() {
-      const {getAnonId} = require('./anon-id.service');
-      const result = getAnonId('path');
-      expect(result).to.equal('random anon id');
-    });
-    it('should return a string', function() {
 
+    it('accepts anonId file path and returns existing anonId if one exists', function(done) {
+      const { getAnonId } = require('./anon-id.service');
+      fs.readFile = sinon.stub().yields('error', 'existing anonId');
+       getAnonId('path').then((data) => {
+        expect(data).to.equal('existing anonId');
+        done();
+      })
+    });
+
+    it('should accept path and return a new anonID if one does not exist', function(done) {
+      const { getAnonId } = require('./anon-id.service');
+      fs.readFile = sinon.stub().yields('error', undefined);
+      getAnonId('path').then((data) => {
+        expect(data).to.equal('random anon id');
+        done();
+      })
+    });
+    it('should return a string', function(done) {
+      const { getAnonId } = require('./anon-id.service');
+      fs.readFile = sinon.stub().yields('error', undefined);
+      getAnonId('path').then((data) => {
+        expect(data).to.be.a('string');
+        done();
+      })
     });
   });
-  describe('anonID.set', function() {
-    it('should not overwrite existing anonID', function() {
-
+  describe('setAnonId', function() {
+    it('should be a function', function() {
+      const { setAnonId } = require('./anon-id.service');
+      fs.readFile = sinon.stub().yields('err', 'data');
+      expect(setAnonId).to.be.a('function');
+    });
+    it('should call fs.writeFile if no file data', function(done) {
+      const { setAnonId } = require('./anon-id.service');
+      fs.readFile = sinon.stub().yields('err', undefined);
+      setAnonId('path','UUID').then(data => {
+        expect(fs.writeFile.called).to.be.true;
+        done();
+      })
+    });
+    it('should not overwrite existing anonID', function(done) {
+      const { setAnonId } = require('./anon-id.service');
+      fs.readFile = sinon.stub().yields('error', 'existing anon id');
+      setAnonId('path','UUID').then(data => {
+        expect(fs.readFile.called).to.be.true;
+        done();
+      })
     });
   });
   describe('anonID.readAnonIdFile', function() {
-    it('should return anonIDfile contents', function() {
+    it('should return anonIdFile contents', function() {
 
     });
   });
   describe('anonID.writeAnonIdFile', function() {
-    it('should return anonIDfile contents', function() {
+    it('should return anonIdFile contents', function() {
 
     });
   });

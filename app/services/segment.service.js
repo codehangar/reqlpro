@@ -1,5 +1,5 @@
 import { remote } from 'electron';
-import AnonId from './anon-id.service';
+import {getAnonId} from './anon-id.service';
 import ConfigService from './config.service';
 import analytics from './segment.config';
 
@@ -9,12 +9,19 @@ const context = {
   appVersion: remote.getGlobal('appVersion')
 };
 
+let anonIdConfigPath;
+if (global.configPath) {
+  anonIdConfigPath = `${global.configPath}/anon-id.json`;
+} else {
+  anonIdConfigPath = `${remote.getGlobal('configPath')}/anon-id.json`;
+}
+
 function Segment() {
 
   this.track = async function(payload) {
     const userConfig = await ConfigService.readConfigFile();
     const email = userConfig.email || null;
-    const anonId = await AnonId.get();
+    const anonId = await getAnonId(anonIdConfigPath);
     const properties = Object.assign({}, payload.properties, context);
     const finalPayload = Object.assign({}, payload, {
       anonymousId: anonId,
@@ -39,7 +46,7 @@ function Segment() {
   };
 
   this.identify = async function(payload) {
-    const anonId = await AnonId.get();
+    const anonId = await getAnonId(anonIdConfigPath);
     const traits = Object.assign(payload.traits, context, { anonId });
     const finalPayload = Object.assign({}, payload, {
       anonymousId: anonId,
@@ -51,7 +58,7 @@ function Segment() {
   };
 
   this.alias = async function(userId) {
-    const anonId = await AnonId.get();
+    const anonId = await etAnonId(anonIdConfigPath);
     const payload = {
       previousId: anonId,
       userId: userId
