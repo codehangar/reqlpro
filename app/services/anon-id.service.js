@@ -43,19 +43,14 @@ const readAnonIdFile = function(configPath) {
   return new Promise((resolve, reject) => {
     fs.readFile(configPath, { encoding: 'utf-8' }, (err, data) => {
       resolve(data);
-//       if (err) {
-//         resolve(writeAnonIdFile());
-// //         // TODO: Research File not found errors
-// //         // This works on mac, but not windows
-// //         if (err && err.errno === -2) {
-// //         }
-// //         ;
-//       } else if (!data) {
-//         resolve()
-//         // resolve(writeAnonIdFile());
-//       } else {
-//         resolve(data);
-//       }
+      // if (err) {
+      //   resolve(writeAnonIdFile());
+      //   // TODO: Research File not found errors
+      //   // This works on mac, but not windows
+      //   if (err && err.errno === -2) {
+      //   }
+      //   ;
+      // }
     });
   });
 };
