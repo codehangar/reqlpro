@@ -4,6 +4,10 @@ import r from 'rethinkdb';
 import co from 'co';
 
 function ReQLEval(script) {
+  if (typeof script !== 'string') {
+    throw new Error('Script must be passed in as a string');
+  }
+
   return new Promise(function(resolve, reject) {
     co(function*() {
       // Wipe out global variables for the context of eval
