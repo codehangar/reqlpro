@@ -11,6 +11,11 @@ import DeleteTableForm from '../modals/DeleteTableForm';
 import TableForm from '../modals/TableForm';
 import DevTools from '../DevTools';
 
+let devTools = '';
+if (process.env.NODE_ENV === 'development') {
+  devTools = <DevTools/>;
+}
+
 const App = React.createClass({
   componentDidMount: function() {
     this.resizeTimeoutFunction = () => {
@@ -38,7 +43,7 @@ const App = React.createClass({
         <DeleteTableForm />
         <ConfirmRowDelete />
         <ExplorerContainer />
-        <DevTools />
+        {devTools}
       </div>
     );
   }
