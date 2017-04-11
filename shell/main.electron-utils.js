@@ -28,7 +28,6 @@ function createWindow() {
     mainWindow.webContents.openDevTools();
   } else {
     mainWindow.loadURL('file://' + appRoot + '/dist/index.html');
-    mainWindow.webContents.openDevTools();
   }
 
   // Emitted when the window is closed.
@@ -53,7 +52,6 @@ function createNewWindow(event, config) {
     win.webContents.openDevTools();
   } else {
     win.loadURL('file://' + appRoot + '/dist' + (config.path || '/index.html'));
-    win.webContents.openDevTools();
   }
 
   win.on('closed', function() {
