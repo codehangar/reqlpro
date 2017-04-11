@@ -403,7 +403,8 @@ RethinkDbService.prototype.insert = function(conn, db, table, record) {
 RethinkDbService.prototype.update = function(conn, db, table, record) {
   return new Promise(function(resolve, reject) {
     co(function*() {
-      const result = yield r.db(db).table(table).get(record.id).update(record).run(conn, { profile: true });
+      const config = yield r.db(db).table(table).config().run(conn);
+      const result = yield r.db(db).table(table).get(record[config.primary_key]).update(record).run(conn, { profile: true });
       resolve(result);
     }).catch(function(err) {
       reject(err);
@@ -442,7 +443,8 @@ RethinkDbService.prototype.replace = function(conn, db, table, record) {
 RethinkDbService.prototype.delete = function(conn, db, table, record) {
   return new Promise(function(resolve, reject) {
     co(function*() {
-      const result = yield r.db(db).table(table).get(record.id).delete().run(conn, { profile: true });
+      const config = yield r.db(db).table(table).config().run(conn);
+      const result = yield r.db(db).table(table).get(record[config.primary_key]).delete().run(conn, { profile: true });
       resolve(result);
     }).catch(function(err) {
       reject(err);
