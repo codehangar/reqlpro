@@ -1,6 +1,8 @@
 'use strict';
 
 const { BrowserWindow } = require('electron');
+const path = require('path');
+const appRoot = path.join(__dirname, '..');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -25,7 +27,8 @@ function createWindow() {
     mainWindow.loadURL('http://localhost:3001/index.html');
     mainWindow.webContents.openDevTools();
   } else {
-    mainWindow.loadURL('file://' + __dirname + '/dist/index.html');
+    mainWindow.loadURL('file://' + appRoot + '/dist/index.html');
+    mainWindow.webContents.openDevTools();
   }
 
   // Emitted when the window is closed.
@@ -49,7 +52,8 @@ function createNewWindow(event, config) {
     win.loadURL('http://localhost:3001' + (config.path || '/index.html'));
     win.webContents.openDevTools();
   } else {
-    win.loadURL('file://' + __dirname + '/dist' + (config.path || '/index.html'));
+    win.loadURL('file://' + appRoot + '/dist' + (config.path || '/index.html'));
+    win.webContents.openDevTools();
   }
 
   win.on('closed', function() {
