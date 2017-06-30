@@ -53,6 +53,7 @@ class ExplorerBody extends React.Component {
     const loadingElm = (
       <div className="explorer-loading">
         <span className="fa fa-refresh fa-spin"/>
+        <p>Loading...</p>
       </div>
     );
 
