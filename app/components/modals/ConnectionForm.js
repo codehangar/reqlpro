@@ -132,7 +132,7 @@ class ConnectionForm extends Component {
           </Modal.Body>
           <Modal.Footer>
             <button type="submit" className="btn btn-primary pull-right">Save</button>
-            <button type="button" onClick={onCancel} className="btn btn-default pull-left">Cancel</button>
+            <span onClick={onCancel} className="btn btn-default pull-left">Cancel</span>
             {!isAdd ?
               <button type="button" className="btn btn-default" onClick={() => onDelete(selectedConnection)}>
                 Delete</button> : ''}
