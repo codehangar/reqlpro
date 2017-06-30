@@ -1,4 +1,4 @@
-import { writeConfigFile } from '../../../actions';
+import { writeConfigFile, addKey } from '../../../actions';
 import * as types from '../../../action-types';
 import { selectConnection } from './selectedConnection.actions';
 
@@ -9,7 +9,8 @@ export function addConnection(connection) {
       connection: connection
     });
     dispatch(writeConfigFile());
-
+    dispatch(addKey('ReQLPro', connection.user, connection.password));
+    dispatch(addKey('ReQLPro', connection.host, connection.ca));
     // Grab the connection from the updated array of connections, which will have the index property
     const conns = getState().connections;
     dispatch(selectConnection(conns[conns.length - 1]));

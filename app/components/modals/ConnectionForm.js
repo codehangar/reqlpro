@@ -103,7 +103,7 @@ class ConnectionForm extends Component {
                   </Field>
                 </div>
                 <div className="col-sm-6">
-                  <label>Pass</label>
+                  <label>Password</label>
                   <Field model=".pass">
                     <FormGroup validationState={valStatePass}>
                       <input className="form-control" type="password" id="pass"/>

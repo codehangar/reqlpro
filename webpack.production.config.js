@@ -72,6 +72,9 @@ module.exports = {
     }, {
       test: /\.(json)$/,
       loader: 'json-loader'
+    }, {
+      test: /\.node$/,
+      loader: 'node-loader'
     }]
   }
 };

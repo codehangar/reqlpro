@@ -1,4 +1,5 @@
 import co from 'co';
+import keytar from 'keytar';
 import RethinkDbService from './services/rethinkdb.service';
 import ReQLEval from './services/reql-eval.service';
 import { convertStringsToDates } from './services/date-type.service'
@@ -283,5 +284,17 @@ export function writeConfigFile() {
       created: state.main.created,
       connections: state.connections
     });
+  }
+}
+
+export function addKey(service, account, password) {
+  return (dispatch, getState) => {
+    keytar.addPassword(service, account, password);
+    // const state = getState();
+    // return configService.writeConfigFile({
+    //   email: state.main.email,
+    //   created: state.main.created,
+    //   connections: state.connections
+    // });
   }
 }
