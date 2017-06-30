@@ -3,6 +3,7 @@
 const { BrowserWindow } = require('electron');
 const path = require('path');
 const appRoot = path.join(__dirname, '..');
+const packageJSON = require('./../package.build.json');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -19,8 +20,10 @@ function createWindow() {
     height: 1200,
     'min-width': 600,
     'min-height': 400,
-    backgroundColor: '#073642'
+    backgroundColor: '#073642',
   });
+
+  mainWindow.setTitle(packageJSON.productName + ' (' + packageJSON.version + ')');
 
   // and load the index.html of the app.
   if (process.env.NODE_ENV === 'development') {
