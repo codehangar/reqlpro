@@ -2,7 +2,7 @@ import * as core from './core';
 import { main } from './main.reducer';
 import store from './store';
 
-let ConfigService, Segment, electron, HS, _store;
+let ConfigService, Segment, electron, HS, _store, KeychainService;
 // let remote;
 require.context = function() {
 };
@@ -36,7 +36,10 @@ describe('main', () => {
     mockery.registerMock("../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss", sinon.stub());
     mockery.registerMock("../node_modules/font-awesome/scss/font-awesome.scss", sinon.stub());
     mockery.registerMock("./styles/index.scss", sinon.stub());
-    mockery.registerMock("./services/keychain.service", sinon.stub());
+
+    KeychainService = sinon.stub();
+    KeychainService.getKeysForConnection = sinon.stub().returns(Promise.resolve({ pass: '', ca: '' }));
+    mockery.registerMock("./services/keychain.service", KeychainService);
 
     electron = sinon.stub();
     electron.ipcRenderer = {
@@ -115,16 +118,16 @@ describe('main', () => {
       const fakeConfigFile = {
         email: 'cassie@codehangar.io',
         connections: [
-          'connection1', 'connection2'
+          { name: 'connection1' }, { name: 'connection2' }
         ]
       };
       const fakeState = {
         main: { email: 'cassie@codehangar.io' },
         connections: [
-          'connection1', 'connection2'
+          { name: 'connection1', pass: '', ca: '' }, { name: 'connection2', pass: '', ca: '' }
         ],
         connection: {
-          selected: 'connection1'
+          selected: { name: 'connection1', pass: '', ca: '' }
         }
       };
       createInitialState(fakeConfigFile)
