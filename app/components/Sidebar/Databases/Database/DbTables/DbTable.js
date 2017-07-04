@@ -39,7 +39,7 @@ const mapDispatchToProps = (dispatch) => {
         databaseName,
         tableName
       });
-      if (selectedTable) {
+      if (selectedTable && selectedTable.name == tableName) {
         dispatch(queryTable(dbConnection, databaseName, tableName, selectedTable.query));
       } else {
         dispatch(queryTable(dbConnection, databaseName, tableName));
