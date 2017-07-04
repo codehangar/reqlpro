@@ -44,7 +44,7 @@ describe('ReQLEval Tests', function() {
         ReQLEval("{ name: 'test' }")
       }).to.not.throw(Error);
     });
-    it('should handle errors', function() {
+    it('should handle errors', function(done) {
       ReQLEval("undefinedThing").catch((err) => {
         expect(err instanceof ReferenceError).to.be.true;
         expect(err.message).to.equal('undefinedThing is not defined');

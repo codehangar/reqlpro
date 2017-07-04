@@ -2,10 +2,10 @@ import * as core from './core';
 import { main } from './main.reducer';
 import store from './store';
 
-
 let ConfigService, Segment, electron, HS, _store;
 // let remote;
-require.context = function(){};
+require.context = function() {
+};
 describe('main', () => {
 
   beforeEach(() => {
@@ -18,7 +18,8 @@ describe('main', () => {
     // Mock dependencies
     ConfigService = sinon.stub();
     mockery.registerMock('./services/config.service', ConfigService);
-    ConfigService.readConfigFile = sinon.stub().returns(new Promise(function(){}));
+    ConfigService.readConfigFile = sinon.stub().returns(new Promise(function() {
+    }));
 
     Segment = {
       identify: sinon.spy()
@@ -35,13 +36,14 @@ describe('main', () => {
     mockery.registerMock("../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss", sinon.stub());
     mockery.registerMock("../node_modules/font-awesome/scss/font-awesome.scss", sinon.stub());
     mockery.registerMock("./styles/index.scss", sinon.stub());
+    mockery.registerMock("./services/keychain.service", sinon.stub());
 
     electron = sinon.stub();
     electron.ipcRenderer = {
-      on: function(message, callback){
+      on: function(message, callback) {
         this.callback = callback;
       },
-      send: function(message){
+      send: function(message) {
         this.callback();
       }
     };
@@ -52,7 +54,7 @@ describe('main', () => {
 
   describe('initApp', () => {
 
-    beforeEach(function(){
+    beforeEach(function() {
       _store = sinon.stub();
       _store.dispatch = sinon.stub();
       mockery.registerMock('./store', _store);
@@ -70,36 +72,53 @@ describe('main', () => {
   });
 
   describe('createInitialState', () => {
-    beforeEach(function(){
+    beforeEach(function() {
       _store = sinon.stub();
       _store.dispatch = sinon.stub();
       mockery.registerMock('./store', _store);
     });
-    it('should take the user config file and return initial app state object', () => {
-
+    it('should take empty user config file and return initial app state object', (done) => {
       const { createInitialState } = require('./main');
-      let fakeConfigFile, fakeState, actual;
-
-      ////// test 1 no config file
-      fakeConfigFile ={};
-      fakeState = {
+      const fakeConfigFile = {};
+      const fakeState = {
         connection: {},
         connections: [],
         main: {
           email: null
         }
       };
-      actual = createInitialState(fakeConfigFile);
-      expect(actual).to.eql(fakeState);
 
-      ////// test 2 config with connections
-      fakeConfigFile =  {
+      createInitialState(fakeConfigFile)
+        .then((actual) => {
+          expect(actual).to.eql(fakeState);
+          done();
+        });
+    });
+    it('should take user config file with email and no connections and return initial app state object', (done) => {
+      const { createInitialState } = require('./main');
+      const fakeConfigFile = {
+        email: 'cassie@codehangar.io',
+      };
+      const fakeState = {
+        main: { email: 'cassie@codehangar.io' },
+        connections: [],
+        connection: {}
+      };
+      createInitialState(fakeConfigFile)
+        .then((actual) => {
+          expect(actual).to.eql(fakeState);
+          done();
+        });
+    });
+    it('should take user config file with email and connections and return initial app state object', (done) => {
+      const { createInitialState } = require('./main');
+      const fakeConfigFile = {
         email: 'cassie@codehangar.io',
         connections: [
           'connection1', 'connection2'
         ]
       };
-      fakeState = {
+      const fakeState = {
         main: { email: 'cassie@codehangar.io' },
         connections: [
           'connection1', 'connection2'
@@ -108,35 +127,25 @@ describe('main', () => {
           selected: 'connection1'
         }
       };
-      actual = createInitialState(fakeConfigFile);
-      expect(actual).to.eql(fakeState);
-
-      ////// test 3 config without connections
-      fakeConfigFile = {
-        email: 'cassie@codehangar.io',
-      };
-      fakeState = {
-        main: { email: 'cassie@codehangar.io' },
-        connections: [],
-        connection: {}
-      };
-      actual = createInitialState(fakeConfigFile);
-      expect(actual).to.eql(fakeState);
-
+      createInitialState(fakeConfigFile)
+        .then((actual) => {
+          expect(actual).to.eql(fakeState);
+          done();
+        });
     });
   });
   //
   describe('main.reducer', () => {
-  //
+    //
     it('should call core.setEmail for dispatch type SET_EMAIL', () => {
-  //     core.setEmail = sinon.spy();
-  //     console.log(store.getState());
-  //     store.dispatch({
-  //       type: 'SET_EMAIL',
-  //       email: 'cassie@codehangar.io',
-  //       created: '1/1/17'
-  //     });
-  //     expect(core.setEmail.callCount).to.equal(1);
+      //     core.setEmail = sinon.spy();
+      //     console.log(store.getState());
+      //     store.dispatch({
+      //       type: 'SET_EMAIL',
+      //       email: 'cassie@codehangar.io',
+      //       created: '1/1/17'
+      //     });
+      //     expect(core.setEmail.callCount).to.equal(1);
     });
   });
 

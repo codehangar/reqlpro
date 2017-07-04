@@ -1,5 +1,4 @@
 import co from 'co';
-import keytar from 'keytar';
 import RethinkDbService from './services/rethinkdb.service';
 import ReQLEval from './services/reql-eval.service';
 import { convertStringsToDates } from './services/date-type.service'
@@ -163,7 +162,7 @@ export function saveInlineEdit(originalRow, row) {
 export function saveRow(conn, selectedTable, row) {
   return dispatch => {
     return new Promise((resolve, reject) => {
-      ReQLEval(row).then(async(rowObj) => {
+      ReQLEval(row).then(async (rowObj) => {
         row = convertStringsToDates(selectedTable.editingRecord, rowObj);
         selectedTable.codeBodyError = null;
 
@@ -284,17 +283,5 @@ export function writeConfigFile() {
       created: state.main.created,
       connections: state.connections
     });
-  }
-}
-
-export function addKey(service, account, password) {
-  return (dispatch, getState) => {
-    keytar.addPassword(service, account, password);
-    // const state = getState();
-    // return configService.writeConfigFile({
-    //   email: state.main.email,
-    //   created: state.main.created,
-    //   connections: state.connections
-    // });
   }
 }

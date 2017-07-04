@@ -5,6 +5,7 @@ import * as reducer from './connections.reducer';
 import * as types from '../../../action-types';
 
 let RethinkDbService;
+let KeychainService;
 let dispatch;
 let getState;
 
@@ -42,6 +43,9 @@ describe('connections', () => {
       const actions = sinon.stub();
       actions.writeConfigFile = sinon.stub().returns('testingWriteConfigFileCall');
       mockery.registerMock('../../../actions', actions);
+
+      const KeychainService = sinon.stub();
+      mockery.registerMock('../../../services/keychain.service', KeychainService);
     });
 
     describe('deleteConnection', () => {

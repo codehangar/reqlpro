@@ -6,6 +6,7 @@
   "description": "A simple desktop client to connect to RethinkDB servers to work with data.",
   "main": "main.js",
   "scripts": {
+    "postinstall": "electron-rebuild --version=1.4.15",
     "start": "node ./tools/start",
     "serve": "node server",
     "test": "mocha --compilers js:babel-core/register",
@@ -49,6 +50,7 @@
     "electron": "^1.4.15",
     "electron-packager": "^8.5.1",
     "electron-prebuilt": "^1.4.13",
+    "electron-rebuild": "^1.5.11",
     "electron-winstaller": "^2.3.1",
     "file-loader": "^0.9.0",
     "html-webpack-plugin": "2.16.1",
