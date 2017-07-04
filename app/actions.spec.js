@@ -57,12 +57,13 @@ describe('Action Creators', () => {
       });
 
       it('should query the table for data with default params', (done) => {
-        const { queryTable } = require('./actions');
+        const { queryTable, refreshExplorerBody } = require('./actions');
         const promise = queryTable(dbConnection, databaseName, tableName)(dispatch);
         promise
           .then(function() {
+            const defaultQueryOpts = { filterPredicate: '', orderByPredicate: [''], limit: 25, page: 1 };
             expect(RethinkDbService.getTableData.callCount).to.equal(1);
-            expect(RethinkDbService.getTableData.calledWithExactly(dbConnection, databaseName, tableName, '', [''], 25, 1)).to.equal(true);
+            expect(RethinkDbService.getTableData.calledWith(dbConnection, databaseName, tableName, defaultQueryOpts)).to.equal(true);
             expect(dispatch.callCount).to.equal(5);
             expect(dispatch.calledWith({
               type: 'UPDATE_SELECTED_TABLE',
@@ -111,8 +112,9 @@ describe('Action Creators', () => {
             done(FALSE_SUCCESS_ERROR);
           })
           .catch(function() {
+            const defaultQueryOpts = { filterPredicate: '', orderByPredicate: [''], limit: 25, page: 1 };
             expect(RethinkDbService.getTableData.callCount).to.equal(1);
-            expect(RethinkDbService.getTableData.calledWithExactly(dbConnection, databaseName, tableName, '', [''], 25, 1)).to.equal(true);
+            expect(RethinkDbService.getTableData.calledWith(dbConnection, databaseName, tableName, defaultQueryOpts)).to.equal(true);
             expect(dispatch.callCount).to.equal(4);
             done();
           })

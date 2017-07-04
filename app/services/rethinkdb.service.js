@@ -267,6 +267,7 @@ RethinkDbService.prototype.getTableList = function(conn, db) {
   });
 };
 
+let feed;
 /**
  * Get table data
  * @param {Object} RethinkDb Connection
@@ -276,28 +277,40 @@ RethinkDbService.prototype.getTableList = function(conn, db) {
  * @param {String} Index value to start from for pagination
  * @returns {Promise}
  */
-RethinkDbService.prototype.getTableData = function(conn, db, table, filter, orderBy, limit, page) {
+RethinkDbService.prototype.getTableData = function(conn, db, table, query, onUpdate) {
   return new Promise(function(resolve, reject) {
     co(function*() {
 
-      if (page < 1) {
+      if (query.page < 1) {
         throw new Error('page cannot be less than 1');
       }
 
+      let filter = query.filterPredicate;
       if (!filter) {
         filter = true;
       }
 
-      const minval = ((page - 1) * limit);
-      const maxval = page * limit;
+      const minval = ((query.page - 1) * query.limit);
+      const maxval = query.page * query.limit;
       let result;
       // If no orderBy query is given, skip the orderBy statement for big performance gains
-      if (orderBy && orderBy.length && orderBy[0]) {
-        result = yield r.db(db).table(table).filter(filter).orderBy(...orderBy).slice(minval, maxval).run(conn, { profile: true });
+      if (query.orderByPredicate && query.orderByPredicate.length && query.orderByPredicate[0]) {
+        result = yield r.db(db).table(table).filter(filter).orderBy(...query.orderByPredicate).slice(minval, maxval).run(conn, { profile: true });
       } else {
         const res = yield r.db(db).table(table).filter(filter).slice(minval, maxval).run(conn, { profile: true });
         const value = yield res.value.toArray();
         result = Object.assign(res, { value });
+      }
+
+      if (feed) {
+        yield feed.close();
+      }
+      if (onUpdate) {
+        feed = yield r.db(db).table(table).filter(filter).changes().run(conn);
+        feed.on('data', changes => {
+          console.log('changes', changes); // eslint-disable-line no-console
+          onUpdate();
+        });
       }
 
       resolve(result);

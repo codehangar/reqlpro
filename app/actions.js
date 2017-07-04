@@ -18,6 +18,38 @@ export function queryTable(conn, db, table, query = {
   }
 }
 
+function cleanseQuerySettings(query) {
+  return new Promise((resolve, reject) => {
+    co(function *() {
+      let { filterPredicate, orderByPredicate, page } = query;
+
+      if (filterPredicate) {
+        filterPredicate = yield ReQLEval(filterPredicate);
+      }
+
+      orderByPredicate = yield orderByPredicate.split(',')
+        .map((p) => {
+          if (p) {
+            return ReQLEval(p);
+          } else {
+            return '';
+          }
+        });
+
+      if (page < 1) {
+        page = 1;
+      }
+
+      resolve({
+        ...query,
+        filterPredicate,
+        orderByPredicate,
+        page
+      });
+    });
+  });
+}
+
 export function getTableData(conn, db, table, query) {
   return dispatch => {
     dispatch({
@@ -30,32 +62,17 @@ export function getTableData(conn, db, table, query) {
     });
     return new Promise((resolve, reject) => {
       co(function *() {
-        let { filterPredicate, orderByPredicate, limit, page } = query;
+        const queryOpts = yield cleanseQuerySettings(query);
+        const onUpdate = () => dispatch(refreshExplorerBody());
 
-        if (filterPredicate) {
-          filterPredicate = yield ReQLEval(filterPredicate);
-        }
-
-        const orderBy = yield orderByPredicate.split(',').map((p) => {
-          if (p) {
-            return ReQLEval(p);
-          } else {
-            return '';
-          }
-        });
-
-        if (page < 1) {
-          page = 1;
-        }
-
-        const result = yield RethinkDbService.getTableData(conn, db, table, filterPredicate, orderBy, limit, page);
+        const result = yield RethinkDbService.getTableData(conn, db, table, queryOpts, onUpdate);
 
         dispatch({
           type: 'UPDATE_SELECTED_TABLE',
           lastResult: result,
           data: result.value
         });
-        dispatch(getTableSize(conn, db, table, filterPredicate));
+        dispatch(getTableSize(conn, db, table, queryOpts.filterPredicate));
         dispatch({
           type: 'SET_CONNECTION_LOADING',
           loading: false
@@ -236,14 +253,14 @@ export function getTableSize(conn, dbName, tableName, filter) {
 
 export function refreshExplorerBody() {
   return (dispatch, getState) => {
+    // Run last query to update view
 
     const conn = getState().main.dbConnection;
     const dbName = getState().main.selectedTable.databaseName;
     const tableName = getState().main.selectedTable.name;
-    // Run last query to update view
+    const query = getState().main.selectedTable.query;
 
-    return dispatch(queryTable(conn, dbName, tableName, getState().main.selectedTable.query));
-
+    return dispatch(queryTable(conn, dbName, tableName, query));
   }
 
 }
