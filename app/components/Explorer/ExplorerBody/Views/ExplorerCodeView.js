@@ -2,6 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import ace from 'brace';
 import { connect } from "react-redux";
+import Segment from '../../../../services/segment.service';
+import { saveRow } from '../../../../actions';
 
 // Looks weird, but this is necessary to apply the theme to ace editor
 require('brace/mode/json');
@@ -42,8 +44,14 @@ const ExplorerCodeView = React.createClass({
     });
 
     this.editor.getSession().on('changeScrollTop', this.handleScroll);
+    this.editor.commands.addCommand({
+      name: "submit",
+      bindKey: { win: "Ctrl-Enter", mac: "Command-Enter" },
+      exec: (editor) =>{
+        this.props.save(this.props.dbConnection, this.props.selectedTable, editor.getValue());
+      }
+    });
     this.handleScroll(0);
-
   },
   handleScroll: function(scrollPos) {
 
@@ -105,18 +113,19 @@ const ExplorerCodeView = React.createClass({
       <div className="explorer-code-view" style={{
         'height': window.innerHeight - 105,
         'width': '100%'
-      }}>
+      }}
+           onKeyUp={this.handleKeyPress}>
         <div className={toastClasses}>
           <div className="row">
             <i className="btn fa fa-close pull-right" onClick={this.props.clearCodeBodyError}/>
             <pre style={{ margin: '5px' }}>{this.props.selectedTable.codeBodyError}</pre>
           </div>
         </div>
-        <div id="editor"></div>
+        <div id="editor"/>
         <div className="fixedDataTableLayout_topShadow public_fixedDataTable_topShadow"
-             style={this.state.topShadowStyle}></div>
+             style={this.state.topShadowStyle}/>
         <div className="fixedDataTableLayout_bottomShadow public_fixedDataTable_bottomShadow"
-             style={this.state.bottomShadowStyle}></div>
+             style={this.state.bottomShadowStyle}/>
       </div>
     );
   }
@@ -124,7 +133,8 @@ const ExplorerCodeView = React.createClass({
 
 const mapStateToProps = (state) => {
   return {
-    selectedTable: state.main.selectedTable
+    selectedTable: state.main.selectedTable,
+    dbConnection: state.main.dbConnection
   };
 };
 
@@ -140,6 +150,14 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: 'SET_CODE_BODY',
         codeBody
+      });
+    },
+    save: (dbConnection, selectedTable, string) => {
+      dispatch(saveRow(dbConnection, selectedTable, string));
+
+      Segment.track({
+        event: 'Save Record',
+        properties: {}
       });
     }
   };
