@@ -1,6 +1,10 @@
 ## Customize the test machine
 machine:
 
+  dependencies:
+    pre:
+      - sudo apt-get update; sudo apt-get install libsecret-1-dev
+
   # Version of node to use
   node:
     version: 6.10.3
