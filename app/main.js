@@ -84,23 +84,27 @@ export function initApp() {
     });
 }
 
+const getConnectionsWithPasswords = (connections) => {
+  return Promise.all(connections.map(async (conn) => {
+    const { pass, ca } = await getKeysForConnection(conn);
+    return {...conn, pass, ca};
+  }));
+}
+
 export function createInitialState(config) {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
+    let connections = [];
     if (config.connections && config.connections.length > 0) {
-      config.connections.forEach(async (conn) => {
-        const keys = await getKeysForConnection(conn);
-        conn.pass = keys.pass;
-        conn.ca = keys.ca;
-      });
+      connections = await getConnectionsWithPasswords(config.connections);
     }
 
     let state = {
       main: { email: config.email || null },
-      connections: config.connections || [],
+      connections: connections,
       connection: {}
     };
-    if (config.connections && config.connections[0]) {
-      state.connection.selected = config.connections[0];
+    if (connections && connections[0]) {
+      state.connection.selected = connections[0];
     }
     resolve(state);
   });
