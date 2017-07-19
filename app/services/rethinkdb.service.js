@@ -270,11 +270,11 @@ RethinkDbService.prototype.getTableList = function(conn, db) {
 let feed;
 /**
  * Get table data
- * @param {Object} RethinkDb Connection
- * @param {String} Database name
- * @param {String} Table name
- * @param {String} Index name
- * @param {String} Index value to start from for pagination
+ * @param {Object} conn RethinkDb Connection
+ * @param {String} db Database name
+ * @param {String} table Table name
+ * @param {Object} query Query Object
+ * @param {Function} onUpdate function for autoRefresh
  * @returns {Promise}
  */
 RethinkDbService.prototype.getTableData = function(conn, db, table, query, onUpdate) {

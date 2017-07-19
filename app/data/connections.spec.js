@@ -2,7 +2,7 @@ import freeze from 'deep-freeze-node';
 import jdenticon from 'jdenticon';
 import md5 from 'md5';
 import * as reducer from './connections.reducer';
-import * as types from '../../../action-types';
+import * as types from '../action-types';
 
 let RethinkDbService;
 let KeychainService;
@@ -36,16 +36,16 @@ describe('connections', () => {
 
       // Mock the rethinkdb service
       RethinkDbService = sinon.stub();
-      mockery.registerMock('../../../../main/services/rethinkdb.service', RethinkDbService);
-      mockery.registerMock('../main/services/rethinkdb.service', RethinkDbService);
+      mockery.registerMock('../services/rethinkdb.service', RethinkDbService);
+      mockery.registerMock('../services/rethinkdb.service', RethinkDbService);
 
       // Mock related actions
       const actions = sinon.stub();
       actions.writeConfigFile = sinon.stub().returns('testingWriteConfigFileCall');
-      mockery.registerMock('../../../actions', actions);
+      mockery.registerMock('../actions', actions);
 
       const KeychainService = sinon.stub();
-      mockery.registerMock('../../../services/keychain.service', KeychainService);
+      mockery.registerMock('../services/keychain.service', KeychainService);
     });
 
     describe('deleteConnection', () => {

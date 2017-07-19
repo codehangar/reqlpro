@@ -1,5 +1,5 @@
-const RethinkDbService = require('../../../services/rethinkdb.service.js');
-import * as types from '../../../action-types';
+const RethinkDbService = require('../services/rethinkdb.service.js');
+import * as types from '../action-types';
 
 export function getDbList(dbConnection) {
   return dispatch => {

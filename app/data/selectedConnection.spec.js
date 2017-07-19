@@ -1,7 +1,7 @@
 import jdenticon from 'jdenticon';
 import md5 from 'md5';
 import * as reducer from './selectedConnection.reducer';
-import * as types from '../../../action-types';
+import * as types from '../action-types';
 
 let RethinkDbService;
 let dispatch;
@@ -29,11 +29,11 @@ describe('selectedConnection', () => {
 
       // Mock the rethinkdb service
       RethinkDbService = sinon.stub();
-      mockery.registerMock('../../../services/rethinkdb.service', RethinkDbService);
+      mockery.registerMock('../services/rethinkdb.service', RethinkDbService);
 
       DatabaseActions = sinon.stub();
       DatabaseActions.getDbList = sinon.stub().returns(() => {});
-      mockery.registerMock('../Databases/databases.actions', DatabaseActions);
+      mockery.registerMock('./databases.actions', DatabaseActions);
     });
 
     describe('getDbConnection', () => {

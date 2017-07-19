@@ -4,7 +4,7 @@ import { Modal, Button, FormGroup } from 'react-bootstrap';
 import { Control, Form, Field, actions, Errors } from 'react-redux-form';
 import { connect } from 'react-redux';
 import store from '../../store';
-import { addConnection, updateConnection, deleteConnection } from '../Sidebar/Connections/connections.actions';
+import { addConnection, updateConnection, deleteConnection } from '../../data/connections.actions';
 
 class ConnectionForm extends Component {
   constructor(props) {

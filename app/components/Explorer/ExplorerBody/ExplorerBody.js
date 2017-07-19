@@ -17,7 +17,7 @@ class ExplorerBody extends React.Component {
   // componentWillReceiveProps(props) {
   //   if (props.tableData) {
   //     let isNested;
-  //     console.log('props.table.type', props.tableType); // eslint-disable-line no-console
+  //     console.log('props.table.view.current', props.tableType); // eslint-disable-line no-console
   //     console.log('props.codeAction', props.codeAction); // eslint-disable-line no-console
   //     if (props.tableType === 'table' || props.tableType === 'tree') {
   //       if (props.tableData.length > 0) {
@@ -108,11 +108,11 @@ class ExplorerBody extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    tableData: state.main.selectedTable.data,
-    tableType: state.main.selectedTable.type,
-    queryError: state.main.selectedTable.queryError,
-    loading: state.main.selectedTable.loading,
-    codeAction: state.main.selectedTable.codeAction
+    tableData: state.selectedTable.data,
+    tableType: state.selectedTable.view.current,
+    queryError: state.selectedTable.queryError,
+    loading: state.selectedTable.loading,
+    codeAction: state.selectedTable.code.action
   };
 };
 

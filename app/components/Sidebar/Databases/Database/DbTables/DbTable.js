@@ -27,7 +27,7 @@ const DbTable = ({
 const mapStateToProps = (state) => {
   return {
     dbConnection: state.main.dbConnection,
-    selectedTable: state.main.selectedTable || null
+    selectedTable: state.selectedTable || null
   };
 };
 

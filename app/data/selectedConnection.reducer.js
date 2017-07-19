@@ -1,4 +1,4 @@
-import * as types from '../../../action-types';
+import * as types from '../action-types';
 
 function showConnectionForm(state) {
   return Object.assign({}, state, {

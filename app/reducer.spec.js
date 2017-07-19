@@ -21,6 +21,30 @@ describe('reducer', () => {
       main: {
         email: 'cassie@codehangar.io',
       },
+      selectedTable: {
+        name: '',
+        databaseName: '',
+        loading: false,
+        view: { current: 'table', prev: null },
+        data: [],
+        editingRecord: null,
+        lastResult: {},
+        size: null,
+        queryError: null,
+        code: {
+          body: "{\n  \n}",
+          action: 'add',
+          error: null
+        },
+        query: {
+          page: 1,
+          limit: 5,
+          sort: 'id',
+          direction: 'asc',
+          filterPredicate: '',
+          orderByPredicate: ''
+        }
+      },
       connections: [],
       connection: {},
       databases: [],

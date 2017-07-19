@@ -9,7 +9,7 @@ import Segment from './services/segment.service';
 import ConfigService from './services/config.service';
 import { getKeysForConnection } from './services/keychain.service';
 import store from './store';
-import { getDbConnection } from './components/Sidebar/Connections/selectedConnection.actions';
+import { getDbConnection } from './data/selectedConnection.actions';
 
 // Require our sass files
 require("../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss");

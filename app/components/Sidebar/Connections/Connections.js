@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Favorite from './Connection';
 import AddFavorite from './AddConnection';
-import { showConnectionForm, selectConnection } from './selectedConnection.actions';
+import { showConnectionForm, selectConnection } from '../../../data/selectedConnection.actions';
 import Segment from '../../../services/segment.service.js';
 
 const Connections = ({

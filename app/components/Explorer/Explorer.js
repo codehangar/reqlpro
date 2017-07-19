@@ -6,7 +6,7 @@ import ExplorerFooter from'./ExplorerFooter/ExplorerFooter';
 import { connect } from 'react-redux';
 import logo from '../../images/logo.png';
 import { HelpCenter, SendMessage } from '../generic/support-links';
-import { showConnectionForm } from '../Sidebar/Connections/selectedConnection.actions';
+import { showConnectionForm } from '../../data/selectedConnection.actions';
 
 
 const Explorer = ({
@@ -110,8 +110,8 @@ const mapStateToProps = (state) => {
     connections: state.connections || [],
     connection: state.connection,
     selectedConnection: state.connection.selected,
-    tableData: state.main.selectedTable ? state.main.selectedTable.data : null,
-    selectedTable: state.main.selectedTable,
+    tableData: state.selectedTable ? state.selectedTable.data : null,
+    selectedTable: state.selectedTable,
     connectionError: state.main.connectionError,
     addConnection: state.main.addConnection
   };

@@ -1,7 +1,7 @@
-const RethinkDbService = require('../../../services/rethinkdb.service');
-import { getDbList } from '../Databases/databases.actions';
 import { actions } from 'react-redux-form';
-import * as types from '../../../action-types';
+const RethinkDbService = require('../services/rethinkdb.service');
+import { getDbList } from './databases.actions';
+import * as types from '../action-types';
 
 export function showConnectionForm(connection = {}) {
   return dispatch => {

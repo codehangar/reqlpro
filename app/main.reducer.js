@@ -36,48 +36,13 @@ export function main(state = {}, action) {
       return core.toggleDeleteTableForm(state, action.showDeleteTableForm, action.database, action.tableToDelete);
     case types.TOGGLE_TABLE_FORM:
       return core.toggleTableForm(state, action.showTableForm);
-    case types.SET_SELECTED_TABLE:
-      return core.setSelectedTable(state, action.databaseName, action.tableName);
-    case types.REMOVE_SELECTED_TABLE:
-      return core.removeSelectedTable(state);
-    case types.UPDATE_SELECTED_TABLE:
-      return core.updateSelectedTable(state, action.data, action.lastResult, action.queryError);
     case types.SET_DELETE_TABLE_CONFIRM_ERROR:
       return core.setDeleteTableConfirmError(state, action.deleteTableConfirmError);
     case types.SET_TABLE_FORM_ERROR:
       return core.setTableFormError(state, action.tableFormError);
     // ------------------------------------
-    // Query
-    // ------------------------------------
-    case 'SET_TABLE_QUERY':
-      return core.setTableQuery(state, action.query);
-    case 'SET_TABLE_PAGE_LIMIT':
-      return core.updateSelectedTablePageLimit(state, action.limit);
-    case 'SET_TABLE_SORT':
-      return core.updateSelectedTableSort(state, action.field);
-    case 'SET_TABLE_SIZE':
-      return core.setSelectedTableSize(state, action.size);
-    case 'SET_FILTER_PREDICATE':
-      return core.setFilterPredicate(state, action.filterPredicate);
-    case 'SET_ORDER_BY_PREDICATE':
-      return core.setOrderByPredicate(state, action.orderByPredicate);
-    case 'TOGGLE_EXPLORER_BODY':
-      return core.toggleExplorerBody(state, action.key);
-    // ------------------------------------
     // Record / Row Actions
     // ------------------------------------
-    case 'SET_ROW_EDIT':
-      return core.startRowEdit(state, action.row);
-    case 'SET_ROW_INLINE_EDIT':
-      return core.startRowInlineEdit(state, action.row);
-    case 'CANCEL_ROW_EDIT':
-      return core.cancelRowEdit(state, action.row);
-    case 'SET_CODE_BODY_ERROR':
-      return core.setCodeBodyError(state, action.codeBodyError);
-    case 'SET_CODE_BODY':
-      return core.setCodeBody(state, action.codeBody);
-    case 'SET_LAST_DB_RESULT':
-      return core.setLastDbResult(state, action.lastResult);
     case 'TOGGLE_CONFIRM_ROW_DELETE':
       return core.toggleConfirmRowDelete(state, action.rowToDelete);
     case 'SET_ROW_DELETE_ERROR':

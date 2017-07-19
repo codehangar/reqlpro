@@ -1,7 +1,7 @@
 import freeze from 'deep-freeze-node';
 import * as reducer from './databases.reducer';
-import * as types from '../../../action-types';
-import RethinkDbService from '../../../services/rethinkdb.service'
+import * as types from '../action-types';
+import RethinkDbService from '../services/rethinkdb.service'
 
 // let dispatch;
 // let RethinkDbService;
@@ -29,11 +29,7 @@ describe('databases', () => {
       // dispatch = sinon.stub();
 
       // replace the require() module `rethinkdb` with a stub object
-      mockery.registerMock('../../../../main/services/rethinkdb.service', this.RethinkDbService);
-
-      // replace the require() module `ReQLEval` with a stub object
-      const ReQLEval = sinon.stub();
-      mockery.registerMock('../main/services/reql-eval.service', ReQLEval);
+      mockery.registerMock('../services/rethinkdb.service', this.RethinkDbService);
     });
 
 

@@ -10,6 +10,7 @@ import Segment from '../../../../../services/segment.service';
 import { refreshExplorerBody } from '../../../../../actions';
 import { getColumnNames, getColumnWidth } from './explorer-table-view-utils';
 import { saveRow, saveInlineEdit } from '../../../../../actions';
+import * as types from '../../../../../action-types';
 
 class ExplorerTableView extends Component {
 
@@ -78,7 +79,7 @@ class ExplorerTableView extends Component {
       }
       const header = (
         <Cell className="tableview-header"
-              onClick={() => onUpdateTableSort(selectedTable.query.sort, fieldName, selectedTable.query.direction)}>
+              onClick={() => onUpdateTableSort(fieldName)}>
           {fieldName}{iconBody}
         </Cell>
       );
@@ -124,7 +125,7 @@ class ExplorerTableView extends Component {
 
 function mapStateToProps(state) {
   return {
-    selectedTable: state.main.selectedTable,
+    selectedTable: state.selectedTable,
     columnWidths: state.main.columnWidths,
     dbConnection: state.main.dbConnection
   };
@@ -132,15 +133,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    onUpdateTableSort: (sort, field, direction) => {
-      if (sort === field) {
-        direction = direction === 'asc' ? 'desc' : 'asc';
-      } else {
-        direction = 'desc'
-      }
+    onUpdateTableSort: (field) => {
       dispatch({
-        type: "SET_ORDER_BY_PREDICATE",
-        orderByPredicate: `r.${direction}('${field}')`
+        type: types.SET_TABLE_SORT,
+        field
       });
       dispatch(refreshExplorerBody());
       Segment.track({

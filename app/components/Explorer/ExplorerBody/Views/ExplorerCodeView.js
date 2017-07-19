@@ -34,7 +34,7 @@ const ExplorerCodeView = React.createClass({
 
     this.editor.setShowInvisibles(true);
     this.editor.setHighlightActiveLine(false);
-    this.editor.setValue(this.props.selectedTable.codeBody, -1);
+    this.editor.setValue(this.props.selectedTable.code.body, -1);
     this.editor.gotoLine(2, 2);
     this.editor.focus();
 
@@ -106,7 +106,7 @@ const ExplorerCodeView = React.createClass({
     const toastClasses = classNames({
       'toast-container': true,
       'bg-danger': true,
-      'hide': this.props.selectedTable.codeBodyError === null
+      'hide': this.props.selectedTable.code.error === null
     });
 
     return (
@@ -118,7 +118,7 @@ const ExplorerCodeView = React.createClass({
         <div className={toastClasses}>
           <div className="row">
             <i className="btn fa fa-close pull-right" onClick={this.props.clearCodeBodyError}/>
-            <pre style={{ margin: '5px' }}>{this.props.selectedTable.codeBodyError}</pre>
+            <pre style={{ margin: '5px' }}>{this.props.selectedTable.code.error}</pre>
           </div>
         </div>
         <div id="editor"/>
@@ -133,7 +133,7 @@ const ExplorerCodeView = React.createClass({
 
 const mapStateToProps = (state) => {
   return {
-    selectedTable: state.main.selectedTable,
+    selectedTable: state.selectedTable,
     dbConnection: state.main.dbConnection
   };
 };

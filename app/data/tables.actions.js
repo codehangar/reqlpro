@@ -1,6 +1,6 @@
-const RethinkDbService = require('../../../../../services/rethinkdb.service');
-import * as types from '../../../../../action-types';
-import { queryTable } from '../../../../../actions';
+const RethinkDbService = require('../services/rethinkdb.service');
+import * as types from '../action-types';
+import { queryTable } from '../actions';
 
 export function getDbTables(dbConnection, dbName) {
   return dispatch => {

@@ -3,7 +3,7 @@ import DbTables from './DbTables/DbTables';
 import AddDbTable from './DbTables/AddDbTable';
 import { connect } from 'react-redux';
 import { deleteDatabase } from '../../../../actions';
-import { getDbTables } from './DbTables/tables.actions';
+import { getDbTables } from '../../../../data/tables.actions';
 
 const Database = React.createClass({
   render: function() {

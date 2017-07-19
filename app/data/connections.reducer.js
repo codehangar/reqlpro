@@ -1,4 +1,4 @@
-import * as types from '../../../action-types';
+import * as types from '../action-types';
 import jdenticon from 'jdenticon';
 import md5 from 'md5';
 

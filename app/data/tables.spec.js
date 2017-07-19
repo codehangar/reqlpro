@@ -1,6 +1,6 @@
 import freeze from 'deep-freeze-node';
 import * as reducer from './tables.reducer';
-import * as types from '../../../../../action-types';
+import * as types from '../action-types';
 
 let dispatch;
 let RethinkDbService;
@@ -28,12 +28,12 @@ describe('tables', () => {
       RethinkDbService = sinon.stub();
 
       // replace the require() module `rethinkdb` with a stub object
-      mockery.registerMock('../../../../../services/rethinkdb.service', RethinkDbService);
+      mockery.registerMock('../services/rethinkdb.service', RethinkDbService);
 
       // replace the require() module `ReQLEval` with a stub object
       const Actions = sinon.stub();
       Actions.queryTable = sinon.stub();
-      mockery.registerMock('../../../../../actions', Actions);
+      mockery.registerMock('../actions', Actions);
     });
 
     describe('getDbTables', () => {

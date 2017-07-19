@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import Segment from '../../../services/segment.service';
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { OverlayTrigger, Tooltip, Checkbox } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { queryTable, refreshExplorerBody } from '../../../actions';
 import Breadcrumbs from './Breadcrumbs';
@@ -10,39 +10,39 @@ import OrderByPredicate from './OrderByPredicate';
 import QueryProfile from './QueryProfile';
 
 const ExplorerHeader = ({
-  table,
-  connection,
-  dbConnection,
-  selectedTable,
-  onUpdatePageLimit,
-  refreshExplorerBody,
-  toggleExplorerBody
-}) => {
+                          table,
+                          connection,
+                          dbConnection,
+                          selectedTable,
+                          onUpdatePageLimit,
+                          refreshExplorerBody,
+                          toggleExplorerBody
+                        }) => {
 
   let buttonClasses = {
     tree: classNames({
       'btn btn-default btn-sm': true,
       'fa': true,
       'fa-tree': true,
-      'active': selectedTable.type === 'tree'
+      'active': selectedTable.view.current === 'tree'
     }),
     table: classNames({
       'btn btn-default btn-sm': true,
       'fa': true,
       'fa-th': true,
-      'active': selectedTable.type === 'table'
+      'active': selectedTable.view.current === 'table'
     }),
     code: classNames({
       'btn btn-default btn-sm': true,
       'fa': true,
       'fa-plus': true,
-      'active': selectedTable.type === 'code'
+      'active': selectedTable.view.current === 'code'
     }),
     refresh: classNames({
       'btn btn-default btn-sm': true,
       'fa': true,
       'fa-refresh': true,
-      'hidden': selectedTable.type === 'code'
+      'hidden': selectedTable.view.current === 'code'
     })
   };
 
@@ -70,14 +70,17 @@ const ExplorerHeader = ({
       <div className="explorer-header-row">
         <Breadcrumbs connection={connection} table={selectedTable}/>
         <div className="pull-right">
-          {(selectedTable.type === 'code') ? '' : rowsPerPage}
-          <OverlayTrigger placement="bottom" overlay={refreshTooltip}>
-            <button onClick={refreshExplorerBody} className={buttonClasses.refresh}/>
-          </OverlayTrigger>
+          {(selectedTable.view.current === 'code') ? '' : rowsPerPage}
           <OverlayTrigger placement="bottom" overlay={addRecordTooltip}>
             <button onClick={() => toggleExplorerBody('code')} className={buttonClasses.code}
                     disabled={!!selectedTable.queryError}/>
           </OverlayTrigger>
+          <OverlayTrigger placement="bottom" overlay={refreshTooltip}>
+            <button onClick={refreshExplorerBody} className={buttonClasses.refresh} style={{ marginLeft: '10px' }}/>
+          </OverlayTrigger>
+          {/*<Checkbox inline checked inputRef={ref => this.input = ref} style={{ marginLeft: '10px' }}>*/}
+            {/*Auto Refresh*/}
+          {/*</Checkbox>*/}
           <div className="btn-group" role="group">
             <OverlayTrigger placement="bottom" overlay={treeViewTooltip}>
               <button onClick={() => toggleExplorerBody('tree')} className={buttonClasses.tree}
@@ -93,8 +96,8 @@ const ExplorerHeader = ({
 
       <div className="explorer-header-row">
         <span className="query-builder">
-          {(selectedTable.type === 'code') ? '' : <FilterPredicate />}
-          {(selectedTable.type === 'code') ? '' : <OrderByPredicate />}
+          {(selectedTable.view.current === 'code') ? '' : <FilterPredicate />}
+          {(selectedTable.view.current === 'code') ? '' : <OrderByPredicate />}
         </span>
         <QueryProfile lastResult={selectedTable.lastResult}/>
       </div>
@@ -106,7 +109,7 @@ const mapStateToProps = (state) => {
   return {
     connection: state.connection.selected,
     dbConnection: state.main.dbConnection,
-    selectedTable: state.main.selectedTable || {}
+    selectedTable: state.selectedTable || {}
   };
 };
 
@@ -134,6 +137,9 @@ const mapDispatchToProps = (dispatch) => {
         event: 'explorer.refreshExplorerBody',
         properties: {}
       });
+    },
+    refreshExplorerBody: () => {
+      dispatch(toggleAutoRrefresh());
     },
     toggleExplorerBody: (key) => {
       dispatch({

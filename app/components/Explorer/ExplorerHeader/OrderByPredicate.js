@@ -73,7 +73,7 @@ OrderByPredicate.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    table: state.main.selectedTable
+    table: state.selectedTable
   };
 };
 

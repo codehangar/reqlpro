@@ -28,7 +28,7 @@ const ExplorerFooter = ({
     </div>
   );
 
-  if (table.type === 'code') {
+  if (table.view.current === 'code') {
     footerBody = (
       <div className="not-text-center pull-right">
         <span className="btn btn-default" onClick={onCancelClick} style={{ marginRight: '10px' }}>Cancel</span>
@@ -51,7 +51,7 @@ const ExplorerFooter = ({
 
 const mapStateToProps = (state) => {
   return {
-    table: state.main.selectedTable,
+    table: state.selectedTable,
     dbConnection: state.main.dbConnection
   };
 };

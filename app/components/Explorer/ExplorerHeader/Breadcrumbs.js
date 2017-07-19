@@ -7,7 +7,7 @@ const Breadcrumbs = ({ connection, table }) => {
   const tableCrumb = <span><span className="crumb-icon"><i className="fa fa-table"/></span> {table.name} </span>;
 
   let actionCrumb;
-  if (table.type === 'code') {
+  if (table.view.current === 'code') {
     if (table.codeAction === 'update') {
       actionCrumb = <span><span className="crumb-icon"><i className="fa fa-angle-right"/></span> Edit (Replace)</span>;
     }

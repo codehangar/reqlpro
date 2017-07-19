@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
-import { deleteTable } from '../../components/Sidebar/Databases/Database/DbTables/tables.actions';
+import { deleteTable } from '../../data/tables.actions';
 import Segment from '../../services/segment.service.js';
 import * as types from '../../action-types';
 

@@ -1,6 +1,6 @@
-import { writeConfigFile } from '../../../actions';
-import { updateKeysForConnection } from '../../../services/keychain.service';
-import * as types from '../../../action-types';
+import { writeConfigFile } from '../actions';
+import { updateKeysForConnection } from '../services/keychain.service';
+import * as types from '../action-types';
 import { selectConnection } from './selectedConnection.actions';
 
 export function addConnection(connection) {

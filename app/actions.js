@@ -46,49 +46,55 @@ function cleanseQuerySettings(query) {
         orderByPredicate,
         page
       });
-    });
+    })
+      .catch(reject);
   });
 }
 
 export function getTableData(conn, db, table, query) {
   return dispatch => {
     dispatch({
-      type: 'SET_CONNECTION_LOADING',
+      type: types.SET_CONNECTION_LOADING,
       loading: true
     });
     dispatch({
-      type: 'SET_TABLE_QUERY',
+      type: types.SET_TABLE_QUERY,
       query
     });
     return new Promise((resolve, reject) => {
       co(function *() {
         const queryOpts = yield cleanseQuerySettings(query);
-        const onUpdate = () => dispatch(refreshExplorerBody());
 
-        const result = yield RethinkDbService.getTableData(conn, db, table, queryOpts, onUpdate);
+        // TODO: Use this to enable auto refreshing
+        // const onUpdate = () => dispatch(refreshExplorerBody());
 
+        // const result = yield RethinkDbService.getTableData(conn, db, table, queryOpts, onUpdate);
+        const result = yield RethinkDbService.getTableData(conn, db, table, queryOpts);
+
+        console.log('result', result); // eslint-disable-line no-console
         dispatch({
-          type: 'UPDATE_SELECTED_TABLE',
+          type: types.UPDATE_SELECTED_TABLE,
           lastResult: result,
           data: result.value
         });
         dispatch(getTableSize(conn, db, table, queryOpts.filterPredicate));
         dispatch({
-          type: 'SET_CONNECTION_LOADING',
+          type: types.SET_CONNECTION_LOADING,
           loading: false
         });
         resolve(result);
       })
         .catch(error => {
+          console.log('error', error); // eslint-disable-line no-console
           if (!error.msg) {
             error.msg = error.message;
           }
           dispatch({
-            type: 'UPDATE_SELECTED_TABLE',
+            type: types.UPDATE_SELECTED_TABLE,
             queryError: error
           });
           dispatch({
-            type: 'SET_CONNECTION_LOADING',
+            type: types.SET_CONNECTION_LOADING,
             loading: false
           });
           reject(error);
@@ -181,9 +187,9 @@ export function saveRow(conn, selectedTable, row) {
     return new Promise((resolve, reject) => {
       ReQLEval(row).then(async (rowObj) => {
         row = convertStringsToDates(selectedTable.editingRecord, rowObj);
-        selectedTable.codeBodyError = null;
+        selectedTable.code.error = null;
 
-        if (selectedTable.codeAction === 'update') {
+        if (selectedTable.code.action === 'update') {
           // Extra protection here if people alter the id when updating
           // Using replace will insert a new record
           // I'm assuming replace is less performant than update so lets use update when possible
@@ -202,7 +208,7 @@ export function saveRow(conn, selectedTable, row) {
             const result = await RethinkDbService.replace(conn, selectedTable.databaseName, selectedTable.name, row);
             handleResult(dispatch, result);
           }
-        } else if (selectedTable.codeAction === 'add') {
+        } else if (selectedTable.code.action === 'add') {
           const result = await RethinkDbService.insert(conn, selectedTable.databaseName, selectedTable.name, row);
           handleResult(dispatch, result);
         }
@@ -219,6 +225,7 @@ export function saveRow(conn, selectedTable, row) {
 }
 
 function handleResult(dispatch, result) {
+  console.log('result', result); // eslint-disable-line no-console
   dispatch({
     type: 'SET_LAST_DB_RESULT',
     lastResult: result
@@ -256,9 +263,9 @@ export function refreshExplorerBody() {
     // Run last query to update view
 
     const conn = getState().main.dbConnection;
-    const dbName = getState().main.selectedTable.databaseName;
-    const tableName = getState().main.selectedTable.name;
-    const query = getState().main.selectedTable.query;
+    const dbName = getState().selectedTable.databaseName;
+    const tableName = getState().selectedTable.name;
+    const query = getState().selectedTable.query;
 
     return dispatch(queryTable(conn, dbName, tableName, query));
   }
@@ -268,8 +275,8 @@ export function refreshExplorerBody() {
 export function deleteRow(row) {
   return (dispatch, getState) => {
     const conn = getState().main.dbConnection;
-    const dbName = getState().main.selectedTable.databaseName;
-    const tableName = getState().main.selectedTable.name;
+    const dbName = getState().selectedTable.databaseName;
+    const tableName = getState().selectedTable.name;
     return RethinkDbService.delete(conn, dbName, tableName, row).then((result) => {
       if (result.value.errors) {
         throw(result.value)

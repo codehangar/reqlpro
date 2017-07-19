@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Dropdown, MenuItem } from 'react-bootstrap';
-import { deleteConnection } from '../Connections/connections.actions';
-import { showConnectionForm } from '../Connections/selectedConnection.actions';
+import { deleteConnection } from '../../../data/connections.actions';
+import { showConnectionForm } from '../../../data/selectedConnection.actions';
 import Segment from '../../../services/segment.service.js';
 
 const Toggle = ({ onClick }) => {
