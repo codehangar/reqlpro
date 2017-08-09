@@ -21,7 +21,8 @@
     "build-mac": "node ./tools/build-mac",
     "build-linux": "node ./tools/build-linux",
     "build-windows": "node ./tools/build-windows",
-    "build-all": "node ./tools/build-all"
+    "build-all": "node ./tools/build-all",
+    "release": "standard-version"
   },
   "babel": {
     "presets": [
@@ -75,6 +76,7 @@
     "redux-freeze": "^0.1.5",
     "sass-loader": "^4.1.1",
     "sinon": "^1.17.4",
+    "standard-version": "^4.2.0",
     "stats-webpack-plugin": "^0.4.3",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
