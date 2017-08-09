@@ -172,7 +172,7 @@ export function code(state = defaultCode, action) {
   return state;
 }
 
-export default combineReducers({
+const selectedTableReducer = combineReducers({
   databaseName,
   name,
   query,
@@ -185,3 +185,11 @@ export default combineReducers({
   lastResult,
   queryError
 });
+
+export default function(state, action) {
+  if (action.type === types.SET_CONNECTION) {
+    state = undefined;
+  }
+
+  return selectedTableReducer(state, action)
+}
