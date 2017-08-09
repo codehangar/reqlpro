@@ -67,7 +67,6 @@ export function getTableData(conn, db, table, query) {
 
         // TODO: Use this to enable auto refreshing
         // const onUpdate = () => dispatch(refreshExplorerBody());
-
         // const result = yield RethinkDbService.getTableData(conn, db, table, queryOpts, onUpdate);
         const result = yield RethinkDbService.getTableData(conn, db, table, queryOpts);
 

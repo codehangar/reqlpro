@@ -138,9 +138,6 @@ const mapDispatchToProps = (dispatch) => {
         properties: {}
       });
     },
-    refreshExplorerBody: () => {
-      dispatch(toggleAutoRrefresh());
-    },
     toggleExplorerBody: (key) => {
       dispatch({
         type: "HIDE_CONNECTION_FORM"
