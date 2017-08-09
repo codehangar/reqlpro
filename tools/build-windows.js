@@ -7,6 +7,7 @@ electronPackager({
   dir: DIR.BUILDS,
   name: packageConfig.productName,
   appVersion: packageConfig.version,
+  electronVersion: packageConfig.devDependencies.electron,
   out: DIR.APPS,
   asar: true,
   overwrite: true,

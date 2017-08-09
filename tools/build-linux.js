@@ -1,9 +1,8 @@
 const electronPackager = require('electron-packager');
 const fs = require('fs');
 const archiver = require('archiver');
-const DIR = require('./build-paths');
 const path = require('path');
-
+const DIR = require('./build-paths');
 const packageConfig = require('../package.json');
 
 const linuxFileOut = path.join(DIR.APPS, 'ReQLPro_' + packageConfig.version + '-linux-x64.zip');
@@ -12,6 +11,7 @@ electronPackager({
   dir: DIR.BUILDS,
   name: packageConfig.productName,
   appVersion: packageConfig.version,
+  electronVersion: packageConfig.devDependencies.electron,
   out: DIR.APPS,
   asar: true,
   overwrite: true,
