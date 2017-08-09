@@ -13,6 +13,7 @@ function getMainWindow() {
   return mainWindow;
 }
 
+const iconPath = path.join(__dirname, '../icon.png');
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
@@ -21,6 +22,7 @@ function createWindow() {
     'min-width': 600,
     'min-height': 400,
     backgroundColor: '#073642',
+    icon: iconPath
   });
 
   mainWindow.setTitle(packageJSON.productName + ' (' + packageJSON.version + ')');
