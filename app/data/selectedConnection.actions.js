@@ -64,7 +64,6 @@ export function getDbConnection(connection) {
               error
             }
           });
-          reject(error);
         });
     });
   }
