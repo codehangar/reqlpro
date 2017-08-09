@@ -4,7 +4,7 @@
   "version": "0.1.1",
   "engine": "node 6.10.3",
   "description": "A simple desktop client to connect to RethinkDB servers to work with data.",
-  "main": "main.js",
+  "main": "./shell/main.js",
   "scripts": {
     "postinstall": "electron-rebuild --version=1.4.15",
     "start": "node ./tools/start",
@@ -17,7 +17,11 @@
     "server-coverage": "node server-coverage",
     "electron": "HOT=1 NODE_ENV=development electron main.js --dev",
     "watch": "webpack --colors --watch",
-    "build-all": "./tools/build-all.sh"
+    "pre-build": "node ./tools/pre-build",
+    "build-mac": "node ./tools/build-mac",
+    "build-linux": "node ./tools/build-linux",
+    "build-windows": "node ./tools/build-windows",
+    "build-all": "node ./tools/build-all"
   },
   "babel": {
     "presets": [
@@ -30,10 +34,11 @@
     "RethinkDB"
   ],
   "author": "CodeHangar, Inc",
-  "license": "",
+  "license": "MIT",
   "bugs": {},
-  "homepage": "http://codehangar.io",
+  "homepage": "http://reqlpro.com",
   "devDependencies": {
+    "archiver": "^2.0.0",
     "asar": "^0.13.0",
     "babel-cli": "^6.18.0",
     "babel-core": "^6.14.0",
@@ -50,11 +55,12 @@
     "css-loader": "^0.26.1",
     "deep-freeze-node": "^1.1.2",
     "electron": "^1.4.15",
-    "electron-packager": "^8.5.1",
+    "electron-packager": "^8.7.2",
     "electron-prebuilt": "^1.4.13",
     "electron-rebuild": "^1.5.11",
-    "electron-winstaller": "^2.3.1",
+    "electron-winstaller": "^2.6.3",
     "file-loader": "^0.9.0",
+    "fs-extra": "^4.0.1",
     "html-webpack-plugin": "2.16.1",
     "istanbul": "^0.4.4",
     "jdenticon": "^1.3.2",
@@ -85,6 +91,7 @@
     "classnames": "^2.2.3",
     "co": "^4.6.0",
     "electron-mocha": "^3.4.0",
+    "electron-squirrel-startup": "^1.0.0",
     "fixed-data-table-2": "^0.8.0",
     "font-awesome": "^4.5.0",
     "immutability-helper": "^2.0.0",
