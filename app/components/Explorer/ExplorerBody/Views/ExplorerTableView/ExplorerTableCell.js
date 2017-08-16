@@ -28,15 +28,7 @@ const ExplorerTableCell = ({
       return <RIEInput value={''} change={dataChangedString} propName={fieldName} shouldBlockWhileLoading={true}
                        classLoading="loading-cell" classEditing="form-control" className="empty-cell"/>;
     } else {
-      if (data) {
-        if (Object.keys(data).length) {
-          return '{Object ...}';
-        } else {
-          return JSON.stringify(data);
-        }
-      } else {
-        return JSON.stringify(data);
-      }
+      return JSON.stringify(data);
     }
   };
 
