@@ -1,8 +1,8 @@
-import keytar from 'keytar';
+const keytar = require('keytar');
 
-export const SERVICE_NAME = 'ReQLPro';
+const SERVICE_NAME = 'ReQLPro';
 
-export function getAccountNameForPassword(host, port, user) {
+function getAccountNameForPassword(host, port, user) {
   if (!host) {
     throw new Error('host is required');
   }
@@ -15,7 +15,7 @@ export function getAccountNameForPassword(host, port, user) {
   return user + '@' + host + ':' + port;
 }
 
-export function getAccountNameForCert(host, port) {
+function getAccountNameForCert(host, port) {
   if (!host) {
     throw new Error('host is required');
   }
@@ -25,7 +25,7 @@ export function getAccountNameForCert(host, port) {
   return host + ':' + port + '_cert';
 }
 
-export function updatePassword(host, port, user, password) {
+function updatePassword(host, port, user, password) {
   if (!user) {
     return Promise.resolve('');
   }
@@ -37,7 +37,7 @@ export function updatePassword(host, port, user, password) {
   }
 }
 
-export function updateCert(host, port, cert) {
+function updateCert(host, port, cert) {
   const account = getAccountNameForCert(host, port);
   if (cert) {
     return keytar.setPassword(SERVICE_NAME, account, cert);
@@ -46,22 +46,27 @@ export function updateCert(host, port, cert) {
   }
 }
 
-export function updateKeysForConnection(connection) {
+function updateKeysForConnection(connection) {
   if (!connection) {
     throw new Error('connection is required');
   }
-  return new Promise(async (resolve, reject) => {
+  return new Promise((resolve, reject) => {
     // Set default host and port if not supplied
     const host = connection.host || 'localhost';
     const port = connection.port || '28015';
-    resolve({
-      pass: await updatePassword(host, port, connection.user, connection.pass),
-      ca: await updateCert(host, port, connection.ca)
+
+    updatePassword(host, port, connection.user, connection.pass).then((pass) => {
+      updateCert(host, port, connection.ca).then((ca) => {
+        resolve({
+          pass: pass || '',
+          ca: ca || ''
+        });
+      });
     });
   });
 }
 
-export function getPassword(host, port, user) {
+function getPassword(host, port, user) {
   if (!user) {
     return Promise.resolve('');
   }
@@ -69,25 +74,37 @@ export function getPassword(host, port, user) {
   return keytar.getPassword(SERVICE_NAME, account);
 }
 
-export function getCert(host, port) {
+function getCert(host, port) {
   const account = getAccountNameForCert(host, port);
   return keytar.getPassword(SERVICE_NAME, account);
 }
 
-export function getKeysForConnection(connection) {
+function getKeysForConnection(connection) {
   if (!connection) {
     throw new Error('connection is required');
   }
-  return new Promise(async (resolve, reject) => {
+  return new Promise((resolve, reject) => {
     // Set default host and port if not supplied
     const host = connection.host || 'localhost';
     const port = connection.port || '28015';
 
-    const pass = await getPassword(host, port, connection.user);
-    const ca = await getCert(host, port);
-    resolve({
-      pass: pass || '',
-      ca: ca || ''
+    getPassword(host, port, connection.user).then((pass) => {
+      getCert(host, port).then((ca) => {
+        resolve({
+          pass: pass || '',
+          ca: ca || ''
+        });
+      });
     });
   });
 }
+
+module.exports.SERVICE_NAME = SERVICE_NAME;
+module.exports.getAccountNameForPassword = getAccountNameForPassword;
+module.exports.getAccountNameForCert = getAccountNameForCert;
+module.exports.updatePassword = updatePassword;
+module.exports.updateCert = updateCert;
+module.exports.updateKeysForConnection = updateKeysForConnection;
+module.exports.getPassword = getPassword;
+module.exports.getCert = getCert;
+module.exports.getKeysForConnection = getKeysForConnection;

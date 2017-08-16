@@ -1,6 +1,3 @@
-import freeze from 'deep-freeze-node';
-import * as types from '../action-types';
-
 let keytar;
 const SERVICE_NAME = 'ReQLPro';
 

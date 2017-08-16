@@ -5,6 +5,9 @@
   "engine": "node 6.10.3",
   "description": "A simple desktop client to connect to RethinkDB servers to work with data.",
   "main": "./shell/main.js",
+  "scripts": {
+    "postinstall": "electron-rebuild --version=1.4.15"
+  },
   "repository": {},
   "keywords": [
     "RethinkDB"
@@ -13,6 +16,7 @@
   "license": "MIT",
   "dependencies": {
     "analytics-node": "^2.1.0",
-    "electron-squirrel-startup": "^1.0.0"
+    "electron-squirrel-startup": "^1.0.0",
+    "keytar": "^4.0.3"
   }
 }

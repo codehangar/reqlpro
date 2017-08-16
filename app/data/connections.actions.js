@@ -1,5 +1,5 @@
 import { writeConfigFile } from '../actions';
-import { updateKeysForConnection } from '../services/keychain.service';
+import { ipcRenderer } from 'electron';
 import * as types from '../action-types';
 import { selectConnection } from './selectedConnection.actions';
 
@@ -11,12 +11,15 @@ export function addConnection(connection) {
     });
     dispatch(writeConfigFile());
 
-    // Add password and cert to system keychain
-    updateKeysForConnection(connection);
-
     // Grab the connection from the updated array of connections, which will have the index property
     const conns = getState().connections;
     dispatch(selectConnection(conns[conns.length - 1]));
+
+    // Add password and cert to system keychain
+    const payload = {
+      conn: connection
+    };
+    ipcRenderer.send('set-password-keys', payload);
   }
 }
 
@@ -28,10 +31,13 @@ export function updateConnection(connection) {
     });
     dispatch(writeConfigFile());
 
-    // Add password and cert to system keychain
-    updateKeysForConnection(connection);
-
     dispatch(selectConnection(connection));
+
+    // Add password and cert to system keychain
+    const payload = {
+      conn: connection
+    };
+    ipcRenderer.send('set-password-keys', payload);
   }
 }
 

@@ -1,5 +1,5 @@
 // Module needed to access global values from main process to any renderer process
-import { remote, ipcRenderer } from 'electron';
+import { ipcRenderer } from 'electron';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App/App';
@@ -7,7 +7,6 @@ import { Provider } from 'react-redux';
 
 import Segment from './services/segment.service';
 import ConfigService from './services/config.service';
-import { getKeysForConnection } from './services/keychain.service';
 import store from './store';
 import { getDbConnection } from './data/selectedConnection.actions';
 
@@ -76,7 +75,7 @@ export function initApp() {
           // Render App Component
           ReactDOM.render(
             <Provider store={store}>
-              <App />
+              <App/>
             </Provider>,
             document.getElementById('app')
           );
@@ -85,11 +84,20 @@ export function initApp() {
 }
 
 const getConnectionsWithPasswords = (connections) => {
-  return Promise.all(connections.map(async (conn) => {
-    const { pass, ca } = await getKeysForConnection(conn);
-    return {...conn, pass, ca};
+  return Promise.all(connections.map((conn) => {
+    const responseEventName = `get-password-keys-reply_${conn.index}`;
+    const payload = {
+      conn,
+      responseEventName
+    };
+    ipcRenderer.send('get-password-keys', payload);
+    return new Promise((resolve, reject) => {
+      ipcRenderer.once(responseEventName, (event, keys) => {
+        resolve({ ...conn, pass: keys.pass, ca: keys.ca });
+      });
+    });
   }));
-}
+};
 
 export function createInitialState(config) {
   return new Promise(async (resolve, reject) => {

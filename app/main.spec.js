@@ -44,10 +44,20 @@ describe('main', () => {
     electron = sinon.stub();
     electron.ipcRenderer = {
       on: function(message, callback) {
-        this.callback = callback;
+        this.callbacks = this.callbacks || {};
+        this.callbacks[message] = callback;
       },
-      send: function(message) {
-        this.callback();
+      once: function(message, callback) {
+        this.callbacks = this.callbacks || {};
+        this.callbacks[message] = callback;
+      },
+      send: function(message, payload) {
+        this.message = message;
+        setTimeout(() => {
+          if (payload.responseEventName) {
+            this.callbacks[payload.responseEventName]({}, { pass: '', ca: '' });
+          }
+        }, 100);
       }
     };
     mockery.registerMock('electron', electron);
@@ -118,16 +128,16 @@ describe('main', () => {
       const fakeConfigFile = {
         email: 'cassie@codehangar.io',
         connections: [
-          { name: 'connection1' }, { name: 'connection2' }
+          { name: 'connection1', index: 0 }, { name: 'connection2', index: 1 }
         ]
       };
       const fakeState = {
         main: { email: 'cassie@codehangar.io' },
         connections: [
-          { name: 'connection1', pass: '', ca: '' }, { name: 'connection2', pass: '', ca: '' }
+          { name: 'connection1', index: 0, pass: '', ca: '' }, { name: 'connection2', index: 1, pass: '', ca: '' }
         ],
         connection: {
-          selected: { name: 'connection1', pass: '', ca: '' }
+          selected: { name: 'connection1', index: 0, pass: '', ca: '' }
         }
       };
       createInitialState(fakeConfigFile)
