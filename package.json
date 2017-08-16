@@ -22,7 +22,13 @@
     "build-linux": "node ./tools/build-linux",
     "build-windows": "node ./tools/build-windows",
     "build-all": "node ./tools/build-all",
-    "release": "standard-version"
+    "release": "standard-version -a"
+  },
+  "standard-version": {
+    "scripts": {
+      "postbump": "node ./tools/postbump",
+      "precommit": "git add package.build.json"
+    }
   },
   "babel": {
     "presets": [
