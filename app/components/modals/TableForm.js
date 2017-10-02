@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
 import { createTable } from '../../data/tables.actions';
-import Segment from '../../services/segment.service.js';
 import * as types from '../../action-types';
 
 const TableForm = ({
@@ -75,9 +74,6 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: types.SET_TABLE_FORM_ERROR,
         tableFormError: ''
-      });
-      Segment.track({
-        event: 'Add Table'
       });
     }
   }

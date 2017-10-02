@@ -2,7 +2,6 @@ import React from'react';
 import ReactDOM from'react-dom';
 import {connect} from 'react-redux';
 import classNames from 'classnames';
-import Segment from'../../services/segment.service.js';
 import {Modal, Button} from 'react-bootstrap';
 import {deleteRow} from '../../actions';
 
@@ -61,19 +60,9 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: 'TOGGLE_CONFIRM_ROW_DELETE'
       });
-
-      Segment.track({
-        event: 'tableview.row.deleteCancel',
-        properties: {}
-      });
     },
     handleDelete: function(rowToDelete) {
       dispatch(deleteRow(rowToDelete));
-
-      Segment.track({
-        event: 'tableview.row.deleteConfirm',
-        properties: {}
-      });
     }
   };
 };

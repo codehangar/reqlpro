@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Segment from '../../services/segment.service.js';
 import { Modal, Button, FormGroup } from 'react-bootstrap';
 import { Control, Form, Field, actions, Errors } from 'react-redux-form';
 import { connect } from 'react-redux';
@@ -163,23 +162,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     onSave: (data) => {
       dispatch(addConnection(data));
-      Segment.track({
-        event: 'Add Connection',
-        properties: {
-          'Uses Permissions': !!data.user,
-          'Uses SSL': !!data.ca
-        }
-      });
     },
     onUpdate: (data) => {
       dispatch(updateConnection(data));
-      Segment.track({
-        event: 'Update Connection',
-        properties: {
-          'Uses Permissions': !!data.user,
-          'Uses SSL': !!data.ca
-        }
-      });
     },
     onDelete: (connection) => {
       if (confirm("Are you sure you want to delete the connection named " + connection.name)) {

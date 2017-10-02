@@ -2,7 +2,7 @@ import * as core from './core';
 import { main } from './main.reducer';
 import store from './store';
 
-let ConfigService, Segment, electron, HS, _store, KeychainService;
+let ConfigService, electron, HS, _store, KeychainService;
 // let remote;
 require.context = function() {
 };
@@ -20,15 +20,6 @@ describe('main', () => {
     mockery.registerMock('./services/config.service', ConfigService);
     ConfigService.readConfigFile = sinon.stub().returns(new Promise(function() {
     }));
-
-    Segment = {
-      identify: sinon.spy()
-    };
-    mockery.registerMock('./services/segment.service', Segment);
-
-    // store = sinon.stub();
-    // store.dispatch = sinon.stub();
-    // mockery.registerMock('./store', store);
 
     mockery.registerMock('./components/Sidebar/Connections/selectedConnection.actions', sinon.stub());
     mockery.registerMock('./components/App/App', sinon.stub());
@@ -77,8 +68,6 @@ describe('main', () => {
       require('./main');
       expect(ConfigService.readConfigFile.callCount).to.equal(1);
     });
-
-    it('should call segment identify after ConfigService.readConfigFile resolves');
 
     it('should call HS.beacon.open if triggered');
 

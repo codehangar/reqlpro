@@ -1,5 +1,4 @@
 import React from 'react';
-import Segment from '../../services/segment.service.js';
 import { connect } from 'react-redux';
 import { writeConfigFile } from '../../actions';
 import { HelpCenter, SendMessage } from '../generic/support-links';
@@ -85,24 +84,6 @@ function mapDispatchToProps(dispatch) {
         created: new Date().toDateString()
       });
       dispatch(writeConfigFile());
-
-      Segment.alias(email);
-
-      Segment.identify({
-        userId: email,
-        traits: {
-          email: email,
-          created: new Date().toDateString()
-        }
-      });
-
-      Segment.track({
-        event: 'Add Email',
-        properties: {
-          email: email
-        }
-      });
-
     }
   }
 }

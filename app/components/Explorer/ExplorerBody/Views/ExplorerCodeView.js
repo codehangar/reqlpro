@@ -2,7 +2,6 @@ import React from 'react';
 import classNames from 'classnames';
 import ace from 'brace';
 import { connect } from "react-redux";
-import Segment from '../../../../services/segment.service';
 import { saveRow } from '../../../../actions';
 
 // Looks weird, but this is necessary to apply the theme to ace editor
@@ -154,11 +153,6 @@ const mapDispatchToProps = (dispatch) => {
     },
     save: (dbConnection, selectedTable, string) => {
       dispatch(saveRow(dbConnection, selectedTable, string));
-
-      Segment.track({
-        event: 'Save Record',
-        properties: {}
-      });
     }
   };
 };

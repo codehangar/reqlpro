@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
 import ExplorerPagination from './ExplorerPagination';
-import Segment from '../../../services/segment.service';
 import ace from 'brace';
 import { connect } from "react-redux";
 import { saveRow, queryTable } from '../../../actions';
@@ -72,15 +71,6 @@ const mapDispatchToProps = (dispatch) => {
       };
 
       dispatch(queryTable(dbConnection, table.databaseName, table.name, query));
-
-      Segment.track({
-        event: 'Paginate',
-        properties: {
-          'type': 'prevPage',
-          'page': table.query.page - 1,
-          'limit': table.query.limit
-        }
-      });
     },
     nextPage: function(dbConnection, table) {
       const query = {
@@ -92,14 +82,6 @@ const mapDispatchToProps = (dispatch) => {
 
       dispatch(queryTable(dbConnection, table.databaseName, table.name, query));
 
-      Segment.track({
-        event: 'Paginate',
-        properties: {
-          'type': 'nextPage',
-          'page': table.query.page + 1,
-          'limit': table.query.limit
-        }
-      });
     },
     prevPageBetween: function() {
       const index = this.props.table.query.index;
@@ -118,11 +100,6 @@ const mapDispatchToProps = (dispatch) => {
       // Allows new Date() to be entered on edit view
       // string = string.replace('new Date()', '"' + new Date() + '"');
       dispatch(saveRow(dbConnection, selectedTable, string));
-
-      Segment.track({
-        event: 'Save Record',
-        properties: {}
-      });
     }
   };
 };
