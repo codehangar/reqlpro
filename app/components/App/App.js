@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Sidebar from '../Sidebar/Sidebar';
-import ExplorerContainer from '../Explorer/Explorer';
+import Explorer from '../Explorer/Explorer';
 import ConnectionFormContainer from '../modals/ConnectionForm';
-import ConfirmRowDelete from '../modals/ConfirmRowDelete';
+import ConfirmRowDelete from '../ConfirmRowDelete/ConfirmRowDelete';
 import DatabaseForm from '../modals/DatabaseForm';
 import DeleteDatabaseForm from '../DeleteDatabaseForm/DeleteDatabaseForm';
-import DeleteTableForm from '../modals/DeleteTableForm';
+import DeleteTableForm from '../DeleteTableForm/DeleteTableForm';
 import TableForm from '../TableForm/TableForm';
 import DevTools from '../DevTools';
 
@@ -40,7 +40,7 @@ const App = React.createClass({
         <TableForm />
         <DeleteTableForm />
         <ConfirmRowDelete />
-        <ExplorerContainer />
+        <Explorer />
         {devTools}
       </div>
     );
