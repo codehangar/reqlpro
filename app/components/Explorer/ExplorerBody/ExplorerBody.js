@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import ExplorerTreeView from './Views/ExplorerTreeView';
-import ExplorerTableView from './Views/ExplorerTableView/ExplorerTableView';
-import ExplorerCodeView from './Views/ExplorerCodeView';
+import ExplorerTreeView from './ExplorerTreeView';
+import ExplorerTableView from './ExplorerTableView/ExplorerTableView';
+import ExplorerCodeView from './ExplorerCodeView';
 import { HelpCenter, SendMessage } from '../../generic/support-links';
 
 class ExplorerBody extends React.Component {
