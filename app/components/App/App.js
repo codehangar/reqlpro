@@ -7,7 +7,7 @@ import ConfirmRowDelete from '../modals/ConfirmRowDelete';
 import DatabaseForm from '../modals/DatabaseForm';
 import DeleteDatabaseForm from '../DeleteDatabaseForm/DeleteDatabaseForm';
 import DeleteTableForm from '../modals/DeleteTableForm';
-import TableForm from '../modals/TableForm';
+import TableForm from '../TableForm/TableForm';
 import DevTools from '../DevTools';
 
 let devTools = '';
