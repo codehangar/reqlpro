@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Sidebar from '../Sidebar/Sidebar';
-import Explorer from '../Explorer/Explorer';
+import ExplorerContainer from '../ExplorerContainer/ExplorerContainer';
 import ConnectionFormContainer from '../modals/ConnectionForm';
 import ConfirmRowDelete from '../ConfirmRowDelete/ConfirmRowDelete';
 import DatabaseForm from '../modals/DatabaseForm';
@@ -40,7 +40,7 @@ const App = React.createClass({
         <TableForm />
         <DeleteTableForm />
         <ConfirmRowDelete />
-        <Explorer />
+        <ExplorerContainer />
         {devTools}
       </div>
     );
