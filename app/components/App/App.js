@@ -4,7 +4,6 @@ import Sidebar from '../Sidebar/Sidebar';
 import ExplorerContainer from '../Explorer/Explorer';
 import ConnectionFormContainer from '../modals/ConnectionForm';
 import ConfirmRowDelete from '../modals/ConfirmRowDelete';
-import EmailIntroContainer from '../modals/EmailIntro';
 import DatabaseForm from '../modals/DatabaseForm';
 import DeleteDatabaseForm from '../modals/DeleteDatabaseForm';
 import DeleteTableForm from '../modals/DeleteTableForm';
@@ -34,7 +33,6 @@ const App = React.createClass({
   render: function() {
     return (
       <div className="content-wrapper">
-        <EmailIntroContainer />
         <Sidebar />
         {this.props.connection && this.props.connection.showForm ? <ConnectionFormContainer /> : ''}
         <DatabaseForm />
