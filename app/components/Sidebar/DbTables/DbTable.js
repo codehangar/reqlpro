@@ -1,6 +1,6 @@
 import React from'react';
 import { connect } from 'react-redux';
-import { queryTable } from '../../../../../actions';
+import { queryTable } from '../../../actions';
 
 const DbTable = ({
   dbConnection,

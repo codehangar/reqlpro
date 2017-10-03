@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ExplorerTreeView from './ExplorerTreeView';
-import ExplorerTableView from './ExplorerTableView/ExplorerTableView';
+import ExplorerTableView from '../ExplorerTableView/ExplorerTableView';
 import ExplorerCodeView from './ExplorerCodeView';
 import { HelpCenter, SendMessage } from '../../generic/support-links';
 

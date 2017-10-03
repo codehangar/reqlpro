@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import DatabasesHeader from './DatabasesHeader';
-import Database from './Database/Database';
+import Database from '../Database/Database';
 
 const Databases = ({
   databases,
