@@ -7,8 +7,8 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 import ExplorerTableCell from './ExplorerTableCell.js';
 import { getColumnNames, getColumnWidth } from './explorer-table-view-utils';
-import { saveRow, saveInlineEdit, refreshExplorerBody } from '../../../../actions';
-import * as types from '../../../../action-types';
+import { saveRow, saveInlineEdit, refreshExplorerBody } from '../../../actions';
+import * as types from '../../../action-types';
 
 class ExplorerTableView extends Component {
 
