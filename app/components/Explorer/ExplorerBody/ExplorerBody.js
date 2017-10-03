@@ -4,7 +4,6 @@ import ExplorerTreeView from './Views/ExplorerTreeView';
 import ExplorerTableView from './Views/ExplorerTableView/ExplorerTableView';
 import ExplorerCodeView from './Views/ExplorerCodeView';
 import { HelpCenter, SendMessage } from '../../generic/support-links';
-import Segment from '../../../services/segment.service.js';
 
 class ExplorerBody extends React.Component {
 
@@ -36,13 +35,6 @@ class ExplorerBody extends React.Component {
   //       console.log('------------------------'); // eslint-disable-line no-console
   //       console.log('isNested', isNested);
   //       console.log('------------------------'); // eslint-disable-line no-console
-  //       Segment.track({
-  //         event: 'View Data',
-  //         properties: {
-  //           view: props.tableType,
-  //           isNested
-  //         }
-  //       });
   //     }
   //   }
   // }

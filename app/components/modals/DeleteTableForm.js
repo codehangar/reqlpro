@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
 import { deleteTable } from '../../data/tables.actions';
-import Segment from '../../services/segment.service.js';
 import * as types from '../../action-types';
 
 const DeleteTableForm = ({
@@ -90,10 +89,6 @@ const mapDispatchToProps = (dispatch) => {
         dispatch({
           type: types.SET_DELETE_TABLE_CONFIRM_ERROR,
           deleteTableConfirmError: false
-        });
-
-        Segment.track({
-          event: 'table.delete'
         });
       } else {
         dispatch({

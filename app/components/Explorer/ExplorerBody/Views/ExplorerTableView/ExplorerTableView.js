@@ -6,7 +6,6 @@ import _ from 'lodash';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import ExplorerTableCell from './ExplorerTableCell.js';
-import Segment from '../../../../../services/segment.service';
 import { refreshExplorerBody } from '../../../../../actions';
 import { getColumnNames, getColumnWidth } from './explorer-table-view-utils';
 import { saveRow, saveInlineEdit } from '../../../../../actions';
@@ -17,7 +16,6 @@ class ExplorerTableView extends Component {
   constructor(props) {
     super(props);
   }
-
 
   componentDidMount() {
     this.resizeTimeoutFunction = () => {
@@ -139,10 +137,6 @@ function mapDispatchToProps(dispatch) {
         field
       });
       dispatch(refreshExplorerBody());
-      Segment.track({
-        event: 'Sort Table Column',
-        properties: {}
-      });
     },
     setColumnWidth: (newColumnWidth, columnKey, selectedTable) => {
       let width = {};
@@ -153,11 +147,6 @@ function mapDispatchToProps(dispatch) {
         databaseName: selectedTable.databaseName,
         tableName: selectedTable.name,
         width
-      });
-
-      Segment.track({
-        event: 'Resize Table Column',
-        properties: {}
       });
     },
     onEditClick: (row) => {
@@ -174,13 +163,7 @@ function mapDispatchToProps(dispatch) {
     },
     saveRowInline: (originalRow, row) => {
       const string = JSON.stringify(row);
-
       dispatch(saveInlineEdit(originalRow, string));
-
-      Segment.track({
-        event: 'Inline Edit Field',
-        properties: {}
-      });
     }
   };
 }
