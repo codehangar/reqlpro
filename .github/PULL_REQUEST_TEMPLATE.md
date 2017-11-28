@@ -1,14 +1,14 @@
 Please fill out the following template to help our maintainers run things smoothly :)
 
-###Description of the Change:
+### Description of the Change:
 ...
 
-###Benefits:
+### Benefits:
 ...
 
-###Possible Drawbacks:
+### Possible Drawbacks:
 ...
 
-#Relevant Issue #s:
+### Relevant Issue #s:
 ...
 

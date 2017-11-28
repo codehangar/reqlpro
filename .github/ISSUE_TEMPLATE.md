@@ -1,13 +1,14 @@
 Please fill out the following template to help the maintainers run things smoothly :)
 
-If you are reporting a bug, please fill out the BUG form below. If you are requesting a feature, please fill out the FEATURE REQUEST form below instead.
+If you are reporting a bug, please fill out the BUG form below. 
+If you are requesting a feature, please fill out the FEATURE REQUEST form below instead.
 
-##BUG
+## BUG
 
-###ReQLPro Version:
+### ReQLPro Version:
 ...
 
-###Environment(OS name and version):
+### Environment(OS name and version):
 ...
 
 ### Expected Behavior:
@@ -16,19 +17,19 @@ If you are reporting a bug, please fill out the BUG form below. If you are reque
 ### Actual Behavior:
 ...
 
-###Steps to reproduce:
+### Steps to reproduce:
   1. ...
   2. ...
   3. ...
 
-##FEATURE REQUEST
+## FEATURE REQUEST
 
 ### Desired Behavior:
 ...
 
-###Why this is a good idea:
+### Why this is a good idea:
 ...
 
-###Potential Challenges/Problems with this feature:
+### Potential Challenges/Problems with this feature:
 ...
 
