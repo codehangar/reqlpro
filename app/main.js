@@ -4,8 +4,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App/App';
 import { Provider } from 'react-redux';
-
-import Segment from './services/segment.service';
 import ConfigService from './services/config.service';
 import store from './store';
 import { getDbConnection } from './data/selectedConnection.actions';
@@ -28,34 +26,6 @@ export function initApp() {
 
       // Identify User with correct settings
       const usesPerms = userConfig.connections.reduce((a, b) => !!a.user || !!b.user, false);
-      Segment.identify({
-        userId: userConfig.email,
-        traits: {
-          email: userConfig.email,
-          created: userConfig.created,
-          connectionsCount: userConfig.connections.length,
-          'Uses Permissions': usesPerms
-        }
-      });
-
-      //track the app open event
-      Segment.track({
-        event: 'Open App'
-      });
-
-      //track any error events
-      window.onerror = function(message, file, line, col, error) {
-        Segment.track({
-          event: 'Error',
-          properties: {
-            message,
-            file,
-            line,
-            col,
-            error
-          }
-        });
-      };
 
       // const initialState = createInitialState(userConfig);
       createInitialState(userConfig)

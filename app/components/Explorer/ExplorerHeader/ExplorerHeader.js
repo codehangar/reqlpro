@@ -1,6 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-import Segment from '../../../services/segment.service';
 import { OverlayTrigger, Tooltip, Checkbox } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { queryTable, refreshExplorerBody } from '../../../actions';
@@ -122,21 +121,9 @@ const mapDispatchToProps = (dispatch) => {
       });
       dispatch(refreshExplorerBody());
 
-      Segment.track({
-        event: 'Set Rows per Page',
-        properties: {
-          'limit': e.target.value,
-          'table size': selectedTable.size
-        }
-      });
     },
     refreshExplorerBody: () => {
       dispatch(refreshExplorerBody());
-
-      Segment.track({
-        event: 'explorer.refreshExplorerBody',
-        properties: {}
-      });
     },
     toggleExplorerBody: (key) => {
       dispatch({

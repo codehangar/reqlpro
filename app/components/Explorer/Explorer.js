@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
+import Loading from '../Loading/Loading';
 import ExplorerHeader from'./ExplorerHeader/ExplorerHeader';
 import ExplorerBody from'./ExplorerBody/ExplorerBody';
 import ExplorerFooter from'./ExplorerFooter/ExplorerFooter';
@@ -8,14 +9,11 @@ import logo from '../../images/logo.png';
 import { HelpCenter, SendMessage } from '../generic/support-links';
 import { showConnectionForm } from '../../data/selectedConnection.actions';
 
-
 const Explorer = ({
   connections,
   connection,
-  tableData,
   connectionError,
   editConnection,
-  addConnection,
   selectedTable,
   selectedConnection
 }) => {
@@ -24,15 +22,6 @@ const Explorer = ({
   const connError = connectionError ? connectionError.error.msg || connectionError.error.message : '';
 
   let content;
-
-  const Loading = (
-    <div className="explorer-container">
-      <div className="explorer-loading">
-        <span className="fa fa-refresh fa-spin"/>
-        <p>Loading...</p>
-      </div>
-    </div>
-  );
 
   const Connected = (
     <div className="explorer-container">
@@ -64,7 +53,7 @@ const Explorer = ({
   );
 
   if (connection.loading) {
-    content = Loading;
+    content = <Loading/>;
   } else if (connectionError && connectionError.connection.name == connection.selected.name) {
     content = (
       <div className="explorer-container">

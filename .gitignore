@@ -10,3 +10,6 @@ apps
 
 # Generated Coverage Report
 coverage/
+
+# Generated Docs Pages
+_docpress

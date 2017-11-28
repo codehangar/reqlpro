@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
 import { createDatabase } from '../../data/databases.actions';
-import Segment from '../../services/segment.service.js';
 import * as types from '../../action-types';
 
 const DatabaseForm = ({
@@ -74,7 +73,6 @@ const mapDispatchToProps = (dispatch) => {
         type: types.SET_DATABASE_FORM_ERROR,
         databaseFormError: ''
       });
-      Segment.track({ event: 'database.save' });
     }
   }
 };
