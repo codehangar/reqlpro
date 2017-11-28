@@ -53,7 +53,7 @@ const Explorer = ({
   );
 
   if (connection.loading) {
-    content = Loading;
+    content = <Loading/>;
   } else if (connectionError && connectionError.connection.name == connection.selected.name) {
     content = (
       <div className="explorer-container">
