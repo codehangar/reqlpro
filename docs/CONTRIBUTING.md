@@ -16,7 +16,7 @@ To submit a pull request, fork the [ReQLPro repository][3] and then clone your f
 Make your suggested changes, `git push` and then [submit a pull request][4]. Note that before we can accept your pull
  requests, you need to sign our [Contributor License Agreement](#contributor-license-agreement).
 
-Please consult our [Local Development Guide][DEVELOPMENT_GUIDE.md] for more information on working on ReQLPro locally.
+Please consult our [Development Guide](DEVELOPMENT_GUIDE.md) for more information on working on ReQLPro locally.
 
 
 
