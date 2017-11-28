@@ -30,6 +30,10 @@
       "precommit": "git add package.build.json"
     }
   },
+  "docpress": {
+    "docs": "docs",
+    "github": "codehangar/reqlpro"
+  },
   "babel": {
     "presets": [
       "es2015",
