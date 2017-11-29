@@ -1,27 +1,35 @@
 language: node_js
+
 node_js:
 - 6.10.3
+
+env:
+  global:
+  - GIT_NAME=Travis CI
+  - GIT_EMAIL=grailians@gmail.com
+  - GITHUB_REPO=codehangar/reqlpro
+  - GIT_SOURCE=_docpress
+  - secure: MTp9ssJhlUDbwzf7xA2kBVacLSVKxHqW3G8yqEOWOkdJpZahrjimXHqDXHM3AiUHlOqjd9DljmiwWnL2KJ+cfeoyIx5ZZNvGdOAZi9pHdnxhYcJPrNEXlJcE4RSuJWMnL/4IHSlDvubwqlI5Q0mE4GXKfJnR4zAHkTZ+SdaDOYGHC2wY8ESQSvV+Sr72DlholdhGOj/XoMksmLEMtlmiiSWIdgPKM6b8/1MkgD4uFzEYZ9m20DI2Wf/B+QTKgJZilFhZRUBI+Pu1kvOikg/6cT4S2FV3E6qXMyDI7KpriCFlp7d2NxDZYyVTa4PtBpCVyaPJ59FTMye7UpyKPMNYanzVChymiD6gP/g75hTLqYHJA/g1KLuM8E97w7YHuiYifrFiK11Zf30yEc3YzGyzn8m45tVLxKkevIETE+rMU3+4HRR43K9yQ1/asFnAZHIx2Qi3e5fW+OjPoJDrN+w2i8oknQzqwXdeN61bh3lrHCc1hKliWVG5n+6tBtBLf1W+5SvxjoyxxQfic5j6s3N7GwEO8cfQ3c3TT0CtpQus0ad3Sn+xQ93cM0ZAFgtGeBB+MtQpp4nDc941fmTGAFNIi2EI4wDb9nBhfmJerA41oOSugko0rJ0LICkBdnkc+K55Gc97x66KF7Tf40c4Nd6NnbGOb8OBg08RSNWdpWh8oZI=
+
 before_install:
 - sudo apt-get update
 - sudo apt-get install libsecret-1-dev
+
 cache:
   directories:
   - node_modules
+
 script:
 - npm run test-coverage
+
 after_script:
 - npm install coveralls@2 && cat ./coverage/lcov.info | ./node_modules/.bin/coveralls
 - ./node_modules/.bin/docpress build
+
 after_success:
 - if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then ./node_modules/.bin/git-update-ghpages -e; fi
+
 notifications:
   slack:
     rooms:
       secure: PDg+aqfKLfWTsWkOsnu4Jf1wFs2uKu5I0QUxuZ2e2bnaEJWr6/3fvvv6dP8G//xTvGFjwtFs2FmNfK5OvuA0RvhPu4FiWsNWbtbkzFqqI48D2fBAzk2r0I/sC8WcCeBJ8ERLB7FOBDWmZHuVA5Rffin8MK6Iu57yV1rX2IN2UMqpITFd+GZOqi9BY5D37uVXhsZm1PDtkIRsXWOC0mesIIJyVU+pj+eWgjljqzhmfZdU5yniB1kJyqtSzHbFK9XtNIV4hc3t0xp0e9TNaQqaPcFSTyT+yHprcQfMIO84h3JAW2OCMivQctpnO83EsGTFt7p9hwEXlcAMVHmaC2e8XFvVDTrACZB07NItvren48hitr++QAfn9lWO+PaycTdhMyp6nEO5ZBFJFhIxNP3wG/ZsmLqqxvKnDTb4b5KqNspdDeyYkGlKoeV3QpR33fHkhGTwS2lkwQ4SkjEZT0etCczbYny0j5GEFiMdy0shbXEbZVHioDabKAIjhlowNLTOAPaQIGl5zNvc1nSCKvlrcmXF+D92JtZgQUiZygA94A/wXdgfRbRroyTBi8PuqN3WSCnoah/MSh0ETwAKRmC502vuOOQoSBI22QbjU/SB0wHjPaLbu//Dw8AOuKe48PduIih3G01iCLlhb5qMFahoOJxJk73mm+bUmgi/TbSkLks=
-env:
-  global:
-    - GIT_NAME: Travis CI
-    - GIT_EMAIL: grailians@gmail.com
-    - GITHUB_REPO: codehangar/reqlpro
-    - GIT_SOURCE: _docpress
-    secure: MTp9ssJhlUDbwzf7xA2kBVacLSVKxHqW3G8yqEOWOkdJpZahrjimXHqDXHM3AiUHlOqjd9DljmiwWnL2KJ+cfeoyIx5ZZNvGdOAZi9pHdnxhYcJPrNEXlJcE4RSuJWMnL/4IHSlDvubwqlI5Q0mE4GXKfJnR4zAHkTZ+SdaDOYGHC2wY8ESQSvV+Sr72DlholdhGOj/XoMksmLEMtlmiiSWIdgPKM6b8/1MkgD4uFzEYZ9m20DI2Wf/B+QTKgJZilFhZRUBI+Pu1kvOikg/6cT4S2FV3E6qXMyDI7KpriCFlp7d2NxDZYyVTa4PtBpCVyaPJ59FTMye7UpyKPMNYanzVChymiD6gP/g75hTLqYHJA/g1KLuM8E97w7YHuiYifrFiK11Zf30yEc3YzGyzn8m45tVLxKkevIETE+rMU3+4HRR43K9yQ1/asFnAZHIx2Qi3e5fW+OjPoJDrN+w2i8oknQzqwXdeN61bh3lrHCc1hKliWVG5n+6tBtBLf1W+5SvxjoyxxQfic5j6s3N7GwEO8cfQ3c3TT0CtpQus0ad3Sn+xQ93cM0ZAFgtGeBB+MtQpp4nDc941fmTGAFNIi2EI4wDb9nBhfmJerA41oOSugko0rJ0LICkBdnkc+K55Gc97x66KF7Tf40c4Nd6NnbGOb8OBg08RSNWdpWh8oZI=
