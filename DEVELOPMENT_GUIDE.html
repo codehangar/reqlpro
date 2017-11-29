@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="assets/style.css?t=615badd5">
+    <script src="assets/script.js?t=42463e55"></script>
+    <title>Development Guide - ReQLPro</title>
+    <meta name="viewport" content="width=device-width">
+  </head>
+  <body class="-menu-visible">
+    <div class="doc-layout">
+      <div class="toggle menu-toggle js-menu-toggle"></div>
+      <div class="menu toc-menu">
+        <li class="menu-item -level-0 -parent">
+          <ul class="submenu">
+            <li class="menu-item -level-1"><a class="link title  link-index" href="index.html">ReQLPro</a>
+            </li>
+            <li class="menu-item -level-1"><a class="link title  link-contributing" href="CONTRIBUTING.html">Contributing</a>
+            </li>
+            <li class="menu-item -level-1"><a class="link title -active link-development_guide" href="DEVELOPMENT_GUIDE.html">Development Guide</a>
+              <ul class="headings heading-list">
+                <li class="heading-item -depth-2"><a class="hlink link-setup" href="#setup">Setup</a>
+                </li>
+                <li class="heading-item -depth-2"><a class="hlink link-file-structure" href="#file-structure">File Structure</a>
+                  <ul class="heading-list -depth-2">
+                    <li class="heading-item -depth-3"><a class="hlink link-generated-directories" href="#generated-directories">Generated Directories</a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="heading-item -depth-2"><a class="hlink link-code-structure" href="#code-structure">Code Structure</a>
+                </li>
+                <li class="heading-item -depth-2"><a class="hlink link-testing-and-code-coverage" href="#testing-and-code-coverage">Testing and Code Coverage</a>
+                </li>
+                <li class="heading-item -depth-2"><a class="hlink link-building-and-packaging-the-app" href="#building-and-packaging-the-app">Building and Packaging the app</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1"><a class="link title  link-user_guide" href="USER_GUIDE.html">User Guide</a>
+            </li>
+          </ul>
+        </li>
+      </div>
+      <div class="body page-development_guide">
+        <div class="header-nav">
+          <div class="right"><a class="iconlink" href="https://github.com/codehangar/reqlpro" data-title="codehangar/reqlpro">
+              <!-- span.title Open in GitHub--><span class="icon -github"></span></a>
+          </div>
+        </div>
+        <div class="markdown-body"><h1 id="reqlpro-local-development-guide">ReQLPro Local Development Guide</h1>
+<h2 id="setup">Setup</h2>
+<p>Clone or download the ReQLPro source code from <a href="https://github.com/codehangar/reqlpro.git">https://github.com/codehangar/reqlpro.git</a></p>
+<p>To install all of ReQLPro&apos;s dependencies, open a terminal and navigate to where you cloned or downloaded ReQLPro and run
+<code>npm install</code></p>
+<p>Then, to start ReQLPro, run
+<code>npm start</code></p>
+<p>Note that ReQLPro requires Nodejs. Check the &quot;engine&quot; field of the <code>package.json</code> for the version currently being built and testing with: i.e. <code>&quot;engine&quot;: &quot;node 6.10.3&quot;</code></p>
+<h4 id="ubuntu">Ubuntu</h4>
+<p><strong>NOTES for developing on Ubuntu</strong>:</p>
+<p>Must run:</p>
+<ul>
+<li>Before npm install: <code>sudo apt-get install libsecret-1-dev</code></li>
+<li>After npm install: <code>npm rebuild node-sass</code></li>
+</ul>
+<h4 id="windows">Windows</h4>
+<p><strong>NOTES for developing on Windows</strong>:
+Be sure to have node-gyp installed:</p>
+<ul>
+<li><a href="https://github.com/nodejs/node-gyp">https://github.com/nodejs/node-gyp</a></li>
+<li><code>npm install --global --production windows-build-tools</code></li>
+<li>If you receive this error:</li>
+</ul>
+<blockquote>
+<p>ERROR in ENOENT: no such file or directory, scandir &apos;...node-sass...&apos;</p>
+</blockquote>
+<ul>
+<li>Try running <code>npm rebuild node-sass</code></li>
+</ul>
+<h2 id="file-structure">File Structure</h2>
+<p>The <code>app</code> directory has all the HTML, CSS, and Javascript essential to most of the application.</p>
+<p>The <code>tools</code> directory is where scripts related to running (for local development), building, and packaging the
+application are held</p>
+<p>The <code>shell</code> directory has all of the files dealing directly with electron setup and configuration.</p>
+<h3 id="generated-directories">Generated Directories</h3>
+<p>The <code>dist</code> directory receives the compiled webpack files</p>
+<p>The <code>builds</code> directory receives:</p>
+<ul>
+<li>a copy of the above <code>dist</code> folder</li>
+<li>a copy of the <code>shell</code> folder</li>
+<li>a copy of the <code>package.build.json</code>, renamed to <code>package.json</code></li>
+<li><strong>NOTE</strong>: <code>package.build.json</code> has been separated in order to install only the dependencies that are required
+outside of the webpack-able app, i.e. anything used by scripts found in <code>shell</code>. This helps reduce the final file
+size of the applications.</li>
+</ul>
+<p>The <code>apps</code> directory receives:</p>
+<ul>
+<li>Electron builds for Mac, Windows, and Linux</li>
+<li>Packaged <code>.dmg</code> for Mac</li>
+<li><code>.zip</code> bundles for Windows and Linux</li>
+</ul>
+<p>The <code>coverage</code> directory receives the output of the istanbul test coverage reports</p>
+<h2 id="code-structure">Code Structure</h2>
+<p>The <code>app/main.js</code> file is the entry file for webpack. It is a React front end using Babel to enable JSX, ES6, and ES7
+features.</p>
+<p>The <code>shell/main.js</code> is the entry point for electron. This file is similar to a server.js file for a nodejs web server.
+It handles spawning the main electron window (renderer) process, and creating the electron menus.</p>
+<h2 id="testing-and-code-coverage">Testing and Code Coverage</h2>
+<p>To run the package test script, open a terminal in your reqlpro folder and run
+<code>npm test</code></p>
+<p>To run tests with a beautiful Nyan Cat reporter, run
+<code>npm run test-nyan</code></p>
+<p>To get a summary of the code coverage of the tests, run
+<code>npm run test-coverage</code></p>
+<p>To see the results of the test coverage, run.
+<code>npm run server-coverage</code></p>
+<h2 id="building-and-packaging-the-app">Building and Packaging the app</h2>
+<p>To build and package the app, open a terminal in your reqlpro folder and run</p>
+<ul>
+<li><code>npm run pre-build</code> for any/all Operation Systems</li>
+</ul>
+<p>Followed by running one of the below, depending upon your system</p>
+<ul>
+<li><code>npm run build-mac</code></li>
+<li><code>npm run build-linux</code></li>
+<li><code>npm run build-windows</code></li>
+</ul>
+
+        </div>
+        <div class="footer-nav">
+          <div class="left"><a href="CONTRIBUTING.html"><span class="title">Contributing</span></a></div>
+          <div class="right"><a href="USER_GUIDE.html"><span class="label">Next: </span><span class="title">User Guide</span></a></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
